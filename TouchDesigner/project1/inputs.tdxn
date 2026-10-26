@@ -1,0 +1,79 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/inputs
+options:
+  include_dat_content: false
+  include_storage: true
+type: baseCOMP
+custom_pars:
+  Simulated:
+  - name: Simlevel
+    style: Float
+    label: Level (sim_level)
+    clampMin: true
+    clampMax: true
+    help: 'Simulated continuous movement value 0-1, as a sensor would send. Signal name: sim_level.'
+  - name: Simtrigger
+    style: Momentary
+    label: Trigger (sim_trigger)
+    help: 'Simulated momentary trigger: 1 while held, else 0. Signal name: sim_trigger.'
+  - name: Simzone
+    style: Toggle
+    label: Zone (sim_zone)
+    help: 'Simulated spatial zone: on = a dancer is in the zone. Signal name: sim_zone.'
+  - name: Simanimate
+    style: Toggle
+    label: Animate Level
+    startSection: true
+    help: Move sim_level up and down automatically (slow sine wave), to test mappings without touching the slider.
+parameters:
+  parentshortcut: Inputs
+  opshortcut: Inputs
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: signals
+  type: nullCHOP
+  parameters:
+    autoexportroot: =parent()
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - merge_signals
+- name: simulated
+  type: constantCHOP
+  parameters:
+    rate: =me.time.rate
+    autoexportroot: =parent()
+  sequences:
+    const:
+    - name: sim_level
+      value: =(0.5 + 0.5 * math.sin(absTime.seconds * 1.3)) if parent.Inputs.par.Simanimate else parent.Inputs.par.Simlevel
+    - name: sim_trigger
+      value: =float(parent.Inputs.par.Simtrigger)
+    - name: sim_zone
+      value: =float(parent.Inputs.par.Simzone)
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: merge_signals
+  type: mergeCHOP
+  parameters:
+    autoexportroot: =parent()
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - simulated
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Movement signals
+  text: 'Every input source adds its channels to merge_signals. The engine reads ''signals'' and applies the input_assignments table. Simulated: sim_level (0-1), sim_trigger, sim_zone.'
+  position: [-70, -70]
+  size: [1470, 330]
+  color: [0.45, 0.45, 0.45]

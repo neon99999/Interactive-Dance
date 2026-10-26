@@ -34,8 +34,12 @@ def Run():
 
 def _extraSteps():
 	"""Hook for later suites (render, inputs). Returns a list of steps."""
-	extra = me.parent().op('render_tests')
-	return extra.module.Steps(_check) if extra is not None else []
+	steps = []
+	for name in ('render_tests', 'input_tests'):
+		extra = me.parent().op(name)
+		if extra is not None:
+			steps += extra.module.Steps(_check)
+	return steps
 
 
 def _next():

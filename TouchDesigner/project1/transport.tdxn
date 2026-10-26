@@ -66,7 +66,7 @@ custom_pars:
     clampMin: true
     normMax: 300.0
     help: Position in seconds that Seek jumps to.
-    value: 16
+    value: 3
   - name: Seek
     style: Pulse
     help: Jump audio and MIDI to Seek To. Notes skipped over by the jump are not fired.
@@ -313,7 +313,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '148'
+        - '175'
       - - tapcount
         - '0'
       dat_content_format: table
