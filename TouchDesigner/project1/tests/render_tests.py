@@ -70,7 +70,47 @@ def Steps(check):
 		master(Blackout=0), base._do(resetLayers, 'reset layers'),
 	]
 
-	return [
+	def layer1(**pars):
+		def step():
+			layer = op.Visuals.op('layer1')
+			for name, value in pars.items():
+				setattr(layer.par, name, value)
+		return base._do(step, 'layer1 %s' % pars)
+
+	def expect_changes(label):
+		"""The image must differ between two reads a few frames apart (animated content)."""
+		seen = []
+
+		def first():
+			seen.append(op.Visuals.op('null_out').numpyArray()[:, :, :3].copy())
+
+		def second():
+			now = op.Visuals.op('null_out').numpyArray()[:, :, :3]
+			diff = float(abs(now - seen[0]).mean())
+			check(s, label, diff > 0.002, 'mean abs change %.4f' % diff)
+		return [base._do(first, label + ' (a)'), base._do(second, label + ' (b)')]
+
+	fx_rows = [['60', 'layer1', 'show', '', ''], ['62', 'layer1.effect', 'set', '2', '']]
+	content = [
+		base._do(resetLayers, 'reset layers'), base._setRows(fx_rows),
+		base._seek(6.0), expect('effect none: solid circle', 640, 360, [1, 1, 1]),
+		base._seek(11.0), expect('MIDI set effect=edges: centre empty', 640, 360, [0, 0, 0]),
+		layer1(Effect='none', Visible=1), base._setRows([]), base._seek(1.0),
+		layer1(Effect='invert'), expect('invert: circle black', 640, 360, [0, 0, 0]),
+		expect('invert: background white', 20, 20, [1, 1, 1]),
+		layer1(Effect='none'), expect('no blur: just outside the rim is black', 832, 360, [0, 0, 0]),
+		layer1(Effect='blur'), base._do(lambda: check(s, 'blur: light spreads past the rim', 0.03 < pixel(832, 360)[0] < 0.5,
+													 str(pixel(832, 360))), 'blur check'),
+		layer1(Effect='none', Content='media', Mediafile='../media/test/test_image.png', Scale=1),
+		expect('image: left of ramp dark', 8, 40, [0, 0, 0]), expect('image: right of ramp bright', 1271, 40, [1, 1, 1]),
+		layer1(Mediafile='../media/test/does_not_exist.png'),
+		base._do(lambda: check(s, 'missing media file does not break the engine', not op.Engine.op('engine').scriptErrors(), ''), 'missing media'),
+		layer1(Content='noise', Mediafile=''),
+	] + expect_changes('noise animates') + [layer1(Content='rings')] + expect_changes('rings animate') + [
+		base._do(resetLayers, 'reset layers'),
+	]
+
+	return content + [
 		base._do(layer_defaults, 'layer defaults'), base._setRows(ROWS),
 		base._seek(4.0), expect('hidden before show', 640, 360, [0, 0, 0]),
 		base._seek(6.0), expect('show + set colour red', 640, 360, [1, 0, 0]),
@@ -91,7 +131,7 @@ def resetLayers():
 			continue
 		for p in layer.customPars:
 			if p.name in ('Visible', 'Opacity', 'Colorr', 'Colorg', 'Colorb', 'Scale', 'X', 'Y', 'Rotate',
-						  'Content', 'Effect'):
+						  'Content', 'Effect', 'Mediafile'):
 				p.val = p.default
 	op.Visuals.par.Level = 1
 	op.Visuals.par.Blackout = 0

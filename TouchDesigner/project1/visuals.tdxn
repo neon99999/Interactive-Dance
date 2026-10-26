@@ -22,10 +22,6 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
-    parameters:
-      outputresolution: custom
-      resolutionh: 720
-      resolutionw: 1280
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantTOP:
@@ -53,6 +49,13 @@ type_defaults:
       autoexportroot: =parent()
       chops: =op.Engine.op('live')
       renameto: '*'
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  switchTOP:
+    parameters:
+      outputresolution: custom
+      resolutionh: 720
+      resolutionw: 1280
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -91,17 +94,47 @@ par_templates:
     normMin: -180.0
     style: Float
   - default: circle
-    help: What the layer shows. MIDI target layerN.content with set value (0 = first item).
+    help: 'What the layer shows. MIDI target layerN.content with set value: 0 circle, 1 square, 2 triangle, 3 noise, 4 rings, 5 media, 6 text.'
     menuLabels:
     - Circle
     - Square
     - Triangle
+    - Noise texture
+    - Rings
+    - Media file (movie or image)
+    - Text
     menuNames:
     - circle
     - square
     - triangle
+    - noise
+    - rings
+    - media
+    - text
     name: Content
     style: Menu
+  - default: none
+    help: 'Image effect on the content. MIDI target layerN.effect with set value: 0 none, 1 blur, 2 edges, 3 invert.'
+    menuLabels:
+    - None
+    - Blur
+    - Edges (outline)
+    - Invert (full frame)
+    menuNames:
+    - none
+    - blur
+    - edges
+    - invert
+    name: Effect
+    style: Menu
+  - help: Movie or image shown when Content is Media file. Path can be relative to the TouchDesigner folder, e.g. ../media/my_clip.mp4. Movies loop on their own clock (not synced to the music).
+    label: Media File
+    name: Mediafile
+    startSection: true
+    style: File
+  - help: Words shown when Content is Text.
+    name: Text
+    style: Str
 type: baseCOMP
 custom_pars:
   Master:
@@ -138,6 +171,7 @@ operators:
   custom_pars:
     Layer:
       $t: layer
+      Text: DANCE
   position: [0, -200]
   children:
   - name: live
@@ -151,28 +185,80 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-    position: [2000, -200]
+    position: [3200, -200]
     inputs:
     - level_opacity
   - name: comp_tint
     type: compositeTOP
-    position: [800, -200]
+    parameters:
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [2000, -200]
     inputs:
-    - switch_content
+    - switch_effect
     - tint_color
+  - name: fit_media
+    type: fitTOP
+    parameters:
+      resolutionw: 1280
+      resolutionh: 720
+    position: [0, -1200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - media_file
+  - name: media_file
+    type: moviefileinTOP
+    parameters:
+      file: =parent.Layer.par.Mediafile.eval()
+      index: =me.time.frame
+      timecodeop: =tdu.Timecode()
+      hwdecode: false
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [-400, -1200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   - name: tint_color
     type: constantTOP
     parameters:
       colorr: =op('live')['red']
       colorg: =op('live')['green']
       colorb: =op('live')['blue']
-    position: [400, -600]
+    position: [1600, -600]
+  - name: effect_blur
+    type: blurTOP
+    parameters:
+      size: 48
+    position: [800, 0]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - switch_content
   - name: live_select
     type: selectCHOP
     parameters:
       channames: =parent.Layer.name + '_*'
       renamefrom: =parent.Layer.name + '_*'
     position: [0, 400]
+  - name: effect_black
+    type: constantTOP
+    parameters:
+      colorr: 0
+      colorg: 0
+      colorb: 0
+    position: [400, -400]
+  - name: effect_edges
+    type: edgeTOP
+    parameters:
+      strength: 4
+    position: [800, -200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - switch_content
   - name: shape_circle
     type: circleTOP
     parameters:
@@ -190,6 +276,26 @@ operators:
     position: [0, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  - name: text_display
+    type: textTOP
+    parameters:
+      text: =parent.Layer.par.Text
+      fontautosize: fitiffat
+      fontsizex: 160
+      fontsizexunit: pixels
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [0, -1400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: effect_invert
+    type: levelTOP
+    parameters:
+      invert: 1
+    position: [1200, -400]
+    inputs:
+    - effect_flatten
   - name: level_opacity
     type: levelTOP
     parameters:
@@ -197,9 +303,52 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-    position: [1600, -200]
+    position: [2800, -200]
     inputs:
     - transform_layer
+  - name: switch_effect
+    type: switchTOP
+    parameters:
+      index: =int(round(op('live')['effect']))
+    position: [1600, -200]
+    inputs:
+    - switch_content
+    - effect_blur
+    - effect_edges
+    - effect_invert
+  - name: texture_noise
+    type: noiseTOP
+    parameters:
+      period: 1.5
+      harmon: 3
+      tz: =(absTime.seconds * 0.15) % 1000
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [0, -600]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: texture_rings
+    type: rampTOP
+    parameters:
+      dat: texture_rings_keys
+      type: circular
+      phase: =(absTime.seconds * 0.3) % 1
+      period: 0.15
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [0, -800]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: effect_flatten
+    type: compositeTOP
+    parameters:
+      operand: over
+    position: [800, -400]
+    inputs:
+    - switch_content
+    - effect_black
   - name: shape_triangle
     type: circleTOP
     parameters:
@@ -212,16 +361,15 @@ operators:
     type: switchTOP
     parameters:
       index: =int(round(op('live')['content']))
-      outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
     position: [400, -200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - shape_circle
     - shape_square
     - shape_triangle
+    - texture_noise
+    - texture_rings
+    - fit_media
+    - text_display
   - name: transform_layer
     type: transformTOP
     parameters:
@@ -233,18 +381,44 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-    position: [1200, -200]
+    position: [2400, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
     inputs:
     - comp_tint
+  - name: texture_rings_keys
+    type: tableDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -920]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    dock: texture_rings
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '1'
+      - '1'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
   annotations:
   - name: annotate1
     mode: annotate
     title: Layer
-    text: 'live: this layer''s values from the engine. Content is chosen by switch_content, tinted by Color, moved/scaled by transform_layer, faded by level_opacity (opacity x visible).'
-    position: [-70, -670]
-    size: [2200, 1230]
+    text: 'live: this layer''s values from the engine. switch_content picks the Content (shapes, noise, rings, media file, text); switch_effect picks the Effect (none, blur, edges, invert); then Color tint, transform (x, y, scale, rotate) and level_opacity (opacity x visible). Layers 2-4 are clones of this network.'
+    position: [-470, -1470]
+    size: [3800, 2030]
     color: [0.45, 0.45, 0.45]
 - name: layer2
   type: baseCOMP
@@ -287,6 +461,9 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    outputresolution: custom
+    resolutionw: 1280
+    resolutionh: 720
   position: [400, 0]
   inputs:
   - layer4
