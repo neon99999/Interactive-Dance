@@ -313,7 +313,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '256'
+        - '283'
       - - tapcount
         - '0'
       dat_content_format: table
