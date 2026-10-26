@@ -91,7 +91,7 @@ tags:
 - tdxn
 storage:
   prev_seconds: 0
-  seeked: false
+  seeked: true
 operators:
 - name: local
   type: baseCOMP
@@ -313,7 +313,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '28'
+        - '50'
       - - tapcount
         - '0'
       dat_content_format: table

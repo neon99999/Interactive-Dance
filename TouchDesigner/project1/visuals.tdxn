@@ -1,0 +1,312 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/visuals
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  circleTOP:
+    parameters:
+      outputresolution: custom
+      radiusunit: pixels
+      resolutionh: 720
+      resolutionw: 1280
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  compositeTOP:
+    parameters:
+      outputresolution: custom
+      resolutionh: 720
+      resolutionw: 1280
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  constantTOP:
+    parameters:
+      outputresolution: custom
+      resolutionh: 720
+      resolutionw: 1280
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  levelTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  nullCHOP:
+    parameters:
+      autoexportroot: =parent()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  outTOP:
+    parameters:
+      label: =me.name
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  selectCHOP:
+    parameters:
+      autoexportroot: =parent()
+      chops: =op.Engine.op('live')
+      renameto: '*'
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+type: baseCOMP
+custom_pars:
+  Master:
+  - name: Level
+    style: Float
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'Overall brightness of the output: 1 = normal, 0 = black. MIDI target master.level (use fade for fade-outs).'
+  - name: Blackout
+    style: Toggle
+    help: On = output is black. MIDI target master.blackout.
+  - name: Flash
+    style: Float
+    clampMin: true
+    clampMax: true
+    help: 'Mix the whole output toward white: 0 = none, 1 = full white. Usually driven by a trigger on master.flash.'
+parameters:
+  parentshortcut: Visuals
+  opshortcut: Visuals
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: out1
+  type: outTOP
+  flags:
+  - display
+  position: [2000, 0]
+  inputs:
+  - null_out
+- name: layer1
+  type: baseCOMP
+  parameters:
+    parentshortcut: Layer
+  custom_pars:
+    Layer:
+    - name: Visible
+      style: Toggle
+      help: 'Starting visibility. MIDI: show / hide / toggle on target layerN (with a duration they fade).'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: Starting opacity 0-1. MIDI target layerN.opacity.
+    - name: Color
+      style: RGBA
+      size: 3
+      default: 1
+      help: Starting colour (multiplies the content). MIDI targets layerN.red / .green / .blue (0-1).
+    - name: Scale
+      style: Float
+      default: 1
+      clampMin: true
+      normMax: 4.0
+      help: Starting size; 1 = normal. MIDI target layerN.scale.
+    - name: X
+      style: Float
+      normMin: -1.0
+      help: 'Starting horizontal position: -1 = left edge, 0 = centre, 1 = right edge. MIDI target layerN.x.'
+    - name: Y
+      style: Float
+      normMin: -1.0
+      help: 'Starting vertical position: -1 = bottom, 0 = centre, 1 = top. MIDI target layerN.y.'
+    - name: Rotate
+      style: Float
+      normMin: -180.0
+      normMax: 180.0
+      help: Starting rotation in degrees. MIDI target layerN.rotate.
+    - name: Content
+      style: Menu
+      default: circle
+      menuNames:
+      - circle
+      - square
+      - triangle
+      menuLabels:
+      - Circle
+      - Square
+      - Triangle
+      help: What the layer shows. MIDI target layerN.content with set value (0 = first item).
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    parameters:
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [2000, -200]
+    inputs:
+    - level_opacity
+  - name: comp_tint
+    type: compositeTOP
+    position: [800, -200]
+    inputs:
+    - switch_content
+    - tint_color
+  - name: tint_color
+    type: constantTOP
+    parameters:
+      colorr: =op('live')['red']
+      colorg: =op('live')['green']
+      colorb: =op('live')['blue']
+    position: [400, -600]
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      channames: =parent.Layer.name + '_*'
+      renamefrom: =parent.Layer.name + '_*'
+    position: [0, 400]
+  - name: shape_circle
+    type: circleTOP
+    parameters:
+      radiusx: 180
+      radiusy: 180
+  - name: shape_square
+    type: rectangleTOP
+    parameters:
+      sizex: 320
+      sizey: 320
+      sizeunit: pixels
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [0, -200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: level_opacity
+    type: levelTOP
+    parameters:
+      opacity: =tdu.clamp(op('live')['opacity'] * op('live')['visible'], 0, 1)
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [1600, -200]
+    inputs:
+    - transform_layer
+  - name: shape_triangle
+    type: circleTOP
+    parameters:
+      radiusx: 200
+      radiusy: 200
+      rotate: 90
+      ispolygon: true
+    position: [0, -400]
+  - name: switch_content
+    type: switchTOP
+    parameters:
+      index: =int(round(op('live')['content']))
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [400, -200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - shape_circle
+    - shape_square
+    - shape_triangle
+  - name: transform_layer
+    type: transformTOP
+    parameters:
+      tx: =op('live')['x'] * 0.5
+      ty: =op('live')['y'] * 0.5
+      rotate: =op('live')['rotate']
+      sx: =op('live')['scale']
+      sy: =op('live')['scale']
+      outputresolution: custom
+      resolutionw: 1280
+      resolutionh: 720
+    position: [1200, -200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - comp_tint
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Layer
+    text: 'live: this layer''s values from the engine. Content is chosen by switch_content, tinted by Color, moved/scaled by transform_layer, faded by level_opacity (opacity x visible).'
+    position: [-70, -670]
+    size: [2200, 1230]
+    color: [0.45, 0.45, 0.45]
+- name: bg_black
+  type: constantTOP
+  parameters:
+    colorr: 0
+    colorg: 0
+    colorb: 0
+  position: [0, -600]
+- name: null_out
+  type: nullTOP
+  position: [1600, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - level_master
+- name: comp_layers
+  type: compositeTOP
+  parameters:
+    operand: over
+  position: [400, 0]
+  inputs:
+  - layer1
+  - bg_black
+- name: cross_flash
+  type: crossTOP
+  parameters:
+    cross: =tdu.clamp(op('master_live')['flash'], 0, 1)
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - comp_layers
+  - flash_white
+- name: flash_white
+  type: constantTOP
+  position: [400, -600]
+- name: master_live
+  type: nullCHOP
+  position: [400, 400]
+  inputs:
+  - master_select
+- name: level_master
+  type: levelTOP
+  parameters:
+    brightness1: =tdu.clamp(op('master_live')['level'], 0, 1) * (1 - tdu.clamp(op('master_live')['blackout'], 0, 1))
+  position: [1200, 0]
+  inputs:
+  - cross_flash
+- name: master_select
+  type: selectCHOP
+  parameters:
+    channames: master_*
+    renamefrom: master_*
+  position: [0, 400]
+- name: output_window
+  type: windowCOMP
+  parameters:
+    winop: null_out
+    title: =me
+  position: [2000, -400]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Visuals
+  text: 'Layers are composited over black (layer 4 on top), then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
+  position: [-70, -670]
+  size: [2300, 1230]
+  color: [0.45, 0.45, 0.45]
