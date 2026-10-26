@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 3
+build: 4
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/engine
@@ -12,6 +12,24 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 type: baseCOMP
+custom_pars:
+  Assignments:
+  - name: Editmidi
+    style: Pulse
+    label: Edit MIDI Assignments
+    help: Open the MIDI assignment table (note, target, action, value, duration) in its own window.
+  - name: Editinputs
+    style: Pulse
+    label: Edit Input Assignments
+    help: Open the input assignment table (signal, target, in_min, in_max, out_min, out_max, smoothing) in its own window.
+  - name: Showerrors
+    style: Pulse
+    label: Show Errors
+    help: Open the list of assignment rows that could not be used, with the reason. Empty means every row is fine.
+  - name: Showlive
+    style: Pulse
+    label: Show Live Values
+    help: Open a viewer of every visual value the engine is sending right now.
 parameters:
   parentshortcut: Engine
   opshortcut: Engine
@@ -68,6 +86,21 @@ operators:
   position: [1200, -200]
   tags:
   - tdxn_exclude:dat_content
+- name: engine_buttons
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    valuechange: false
+    builtin: false
+    file: project1/engine/engine_buttons.py
+    syncfile: true
+  position: [0, -800]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
 - name: midi_assignments
   type: tableDAT
   dat_content:
@@ -234,9 +267,9 @@ annotations:
 - name: annotate1
   mode: annotate
   title: Assignments (edit these)
-  text: 'midi_assignments: note, target, action, value, duration (16 rows). input_assignments: signal, target, in/out range, smoothing. Problems are listed in assignment_errors.'
-  position: [-70, -470]
-  size: [270, 630]
+  text: 'midi_assignments: note, target, action, value, duration (16 rows). input_assignments: signal, target, in/out range, smoothing. Problems are listed in assignment_errors. engine_buttons: the Assignments page buttons open these tables.'
+  position: [-70, -870]
+  size: [270, 1030]
   color: [0.45, 0.45, 0.45]
 - name: annotate2
   mode: annotate

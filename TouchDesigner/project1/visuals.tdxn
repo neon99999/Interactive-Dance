@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 1
+build: 2
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -152,6 +152,15 @@ custom_pars:
     clampMin: true
     clampMax: true
     help: 'Mix the whole output toward white: 0 = none, 1 = full white. Usually driven by a trigger on master.flash.'
+  Output:
+  - name: Openwindow
+    style: Pulse
+    label: Open Output Window
+    help: Open the output window (the final image) for the projector or second screen. Set the monitor on output_window if needed.
+  - name: Closewindow
+    style: Pulse
+    label: Close Output Window
+    help: Close the output window.
 parameters:
   parentshortcut: Visuals
   opshortcut: Visuals
@@ -510,11 +519,26 @@ operators:
   position: [2000, -400]
   size: [160, 130]
   color: [0.67, 0.67, 0.67]
+- name: output_buttons
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    valuechange: false
+    builtin: false
+    file: project1/visuals/output_buttons.py
+    syncfile: true
+  position: [2000, -800]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
 annotations:
 - name: annotate1
   mode: annotate
   title: Visuals
   text: 'Four layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
-  position: [-70, -670]
-  size: [2300, 1630]
+  position: [-70, -870]
+  size: [2300, 1830]
   color: [0.45, 0.45, 0.45]
