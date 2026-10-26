@@ -1,0 +1,466 @@
+format: tdxn
+version: '2.2'
+build: 4
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/transport
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  constantCHOP:
+    parameters:
+      autoexportroot: ..
+      rate: =par("../rate")
+    flags:
+    - viewer
+    size: [130, 90]
+  mathCHOP:
+    parameters:
+      autoexportroot: ..
+    flags:
+    - viewer
+    size: [130, 90]
+  parameterexecuteDAT:
+    parameters:
+      op: ..
+    size: [130, 90]
+  resampleCHOP:
+    parameters:
+      autoexportroot: ..
+      rate: =par("../rate")
+    flags:
+    - viewer
+    size: [130, 90]
+  switchCHOP:
+    parameters:
+      autoexportroot: ..
+    flags:
+    - viewer
+    size: [130, 90]
+  tableDAT:
+    size: [130, 90]
+type: baseCOMP
+custom_pars:
+  Transport:
+  - name: Audiofile
+    style: File
+    label: Audio File
+    help: Music file (WAV or MP3) played in sync with the MIDI file.
+    value: ../media/test/sync_test.wav
+  - name: Midifile
+    style: File
+    label: MIDI File
+    help: Standard MIDI File (.mid) whose Note On events are read on the same clock as the audio.
+    value: ../media/test/sync_test.mid
+  - name: Play
+    style: Toggle
+    startSection: true
+    help: On plays audio and MIDI together from the current position; off pauses both.
+    value: true
+  - name: Reset
+    style: Pulse
+    help: Return audio and MIDI to 0 seconds. Does not fire any notes.
+  - name: Seekto
+    style: Float
+    label: Seek To (s)
+    clampMin: true
+    normMax: 300.0
+    help: Position in seconds that Seek jumps to.
+    value: 4.9
+  - name: Seek
+    style: Pulse
+    help: Jump audio and MIDI to Seek To. Notes skipped over by the jump are not fired.
+  - name: Position
+    style: Float
+    label: Position (s)
+    startSection: true
+    readOnly: true
+    help: Current shared playback position in seconds (read-only).
+    value: =me.time.seconds
+  - name: Length
+    style: Float
+    label: Length (s)
+    readOnly: true
+    help: Length of the loaded audio file in seconds (read-only).
+    value: =float(me.op('info_music')['file_length']) / max(1.0, float(me.op('info_music')['sample_rate']))
+parameters:
+  parentshortcut: Transport
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+storage:
+  prev_seconds: 30
+  seeked: false
+operators:
+- name: local
+  type: baseCOMP
+  position: [-600, 0]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: time
+    type: timeCOMP
+    parameters:
+      rate: =$COOKRATE
+      end: 1801
+      rangelimit: hold
+      rangeend: 1801
+      resetframe: 0
+      independent: true
+      clone: ''
+    position: [210, -170]
+    size: [160, 130]
+    storage:
+      _tdn_palette_handling: blackbox
+    children:
+    - name: rate
+      type: constantCHOP
+      parameters:
+        exportmethod: autoname
+      sequences:
+        const:
+        - name: frame
+          value: =par("../rate")
+      position: [-740, 440]
+    - name: clock
+      type: nullCHOP
+      parameters:
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [400, 620]
+      size: [130, 90]
+      inputs:
+      - scrubber
+    - name: eval1
+      type: evaluateDAT
+      parameters:
+        output: string
+        rowindexend: =$NR - 1
+        rowexpr: strmatch("*",$V)
+        colindexend: =$NC - 1
+        colexpr: strmatch("*",$V)
+      flags:
+      - viewer
+      position: [-480, 1120]
+      size: [130, 90]
+      inputs:
+      - set_state
+      dat_read_only: true
+    - name: hold1
+      type: holdCHOP
+      parameters:
+        sample: whileon
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [-440, 730]
+      size: [130, 90]
+      inputs:
+      - syncframe
+      - get_state
+    - name: limit
+      type: tableDAT
+      parameters:
+        defaultreadencoding: cp1252
+        rows: 2
+        cols: 1
+      flags:
+      - viewer
+      position: [-600, 300]
+      dat_content:
+      - - loop
+      - - clamp
+      dat_content_format: table
+    - name: state
+      type: switchDAT
+      parameters:
+        index: =if(opexists("../abletonlive")==1,1,0)
+      flags:
+      - viewer
+      position: [-250, 1050]
+      size: [130, 90]
+      inputs:
+      - eval1
+      - ableton
+      dat_read_only: true
+    - name: time1
+      type: timelineCHOP
+      parameters:
+        op: ..
+        rate: true
+        exportmethod: datindex
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [-1200, 790]
+      size: [130, 90]
+    - name: cframe
+      type: speedCHOP
+      parameters:
+        min: =par("../rangestart")
+        max: =if(strmatch(pars("limittype"),"loop")==1,par("../rangeend")+1,par("../rangeend"))
+        resetvalue: =tabr("state","resetframe",1)
+        resetonstart: false
+        exportmethod: datname
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [-440, 440]
+      size: [130, 90]
+      inputs:
+      - pausemath
+    - name: math10
+      type: mathCHOP
+      parameters:
+        chanop: div
+      position: [-900, 790]
+      inputs:
+      - resample2
+    - name: math11
+      type: mathCHOP
+      parameters:
+        gain: =par("../rate")*if(int(tabr("state","play",1))==0,1,sign(tabr("state","play",1)))
+      position: [-750, 790]
+      inputs:
+      - math10
+    - name: ableton
+      type: selectDAT
+      parameters:
+        dat: '`ifs(opexists("../abletonsync/oscmodule/state")==1,"../abletonsync/oscmodule/state","")`'
+        rowindexend: =$NR - 1
+        rowexpr: strmatch("*",$V)
+        colindexend: =$NC - 1
+        colexpr: strmatch("*",$V)
+      flags:
+      - viewer
+      position: [-640, 982]
+      size: [122, 78]
+      dat_read_only: true
+    - name: getscrub
+      type: selectCHOP
+      parameters:
+        chops: '`tabr("state","master",1)`/scrubframe'
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [-250, 600]
+      size: [130, 90]
+    - name: override
+      type: nullDAT
+      flags:
+      - viewer
+      position: [-440, 200]
+      size: [130, 90]
+      inputs:
+      - properties
+      dat_read_only: true
+    - name: scrubber
+      type: switchCHOP
+      parameters:
+        index: =tabr("state","scrub",1)
+      position: [210, 620]
+      inputs:
+      - independent
+      - resample1
+    - name: get_state
+      type: constantCHOP
+      sequences:
+        const:
+        - name: play
+          value: =abs(tabr("state","play",1))
+      position: [-600, 670]
+    - name: pausemath
+      type: mathCHOP
+      parameters:
+        gain: =tabr("state","play",1)
+        exportmethod: autoname
+      position: [-590, 440]
+      inputs:
+      - rate
+    - name: resample1
+      type: resampleCHOP
+      position: [-90, 600]
+      inputs:
+      - getscrub
+    - name: resample2
+      type: resampleCHOP
+      position: [-1050, 790]
+      inputs:
+      - time1
+    - name: set_state
+      type: tableDAT
+      parameters:
+        defaultreadencoding: cp1252
+        rows: 8
+        cols: 2
+      flags:
+      - viewer
+      position: [-640, 1120]
+      dat_content:
+      - - play
+        - '`par("../play")`'
+      - - scrub
+        - '0'
+      - - resetframe
+        - '1'
+      - - master
+        - /ui/dialogs/timeline
+      - - units
+        - frames
+      - - rangelimit
+        - loop
+      - - scrubcount
+        - '15'
+      - - tapcount
+        - '0'
+      dat_content_format: table
+    - name: syncframe
+      type: limitCHOP
+      parameters:
+        min: =par("../rangestart")
+        max: =par("../rangeend")+1
+        autoexportroot: ..
+      flags:
+      - viewer
+      position: [-600, 790]
+      size: [130, 90]
+      inputs:
+      - math11
+    - name: properties
+      type: tableDAT
+      parameters:
+        defaultreadencoding: cp1252
+        cols: 3
+      flags:
+      - viewer
+      position: [-600, 200]
+      dat_content:
+      - - parameter
+        - path
+        - value
+      - - limittype
+        - cframe
+        - tab("limit",par("../rangelimit"),0)
+      - - type
+        - syncframe
+        - tab("limit",par("../rangelimit"),0)
+      dat_content_format: table
+    - name: independent
+      type: switchCHOP
+      parameters:
+        index: =clamp(par("../independent")+strmatch("/local/time",opfullpath("..")),0,1)
+      position: [-250, 720]
+      inputs:
+      - hold1
+      - cframe
+    - name: forcecook_override
+      type: parameterexecuteDAT
+      parameters:
+        fromop: ..
+        pars: rangelimit
+        onpulse: false
+        defaultreadencoding: cp1252
+        language: input
+      flags:
+      - viewer
+      position: [-600, 100]
+      dat_content: opcook -F override
+      dat_content_format: text
+- name: note_log
+  type: tableDAT
+  flags:
+  - viewer
+  position: [1200, -1200]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: notes_now
+  type: tableDAT
+  position: [800, -1200]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: info_music
+  type: infoCHOP
+  parameters:
+    op: audiofilein_music
+    autoexportroot: =parent()
+  position: [0, -400]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: note_events
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+    file: project1/transport/note_events.py
+    syncfile: true
+  position: [400, -1200]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: midiin_notes
+  type: midiinCHOP
+  parameters:
+    source: file
+    file: =parent.Transport.par.Midifile
+    simplified: false
+    onebased: false
+    prefix: ''
+    notescope: '[0-127]'
+    controlname: ''
+    rate: =me.time.rate
+    autoexportroot: =parent()
+  position: [0, -1200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: audiofilein_music
+  type: audiofileinCHOP
+  parameters:
+    file: =parent.Transport.par.Audiofile
+    playmode: locked
+    index: =me.time.frame / root.time.rate
+    timecodeop: =tdu.Timecode()
+    repeat: 'off'
+    autoexportroot: =parent()
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: transport_callbacks
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    pars: '*'
+    builtin: false
+    file: project1/transport/transport_callbacks.py
+    syncfile: true
+  position: [-600, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: audiodeviceout_music
+  type: audiodeviceoutCHOP
+  parameters:
+    autoexportroot: =parent()
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - audiofilein_music
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Clock and Audio
+  text: local/time is the single playback clock. Audio File In is Locked to Timeline, so it follows the clock. transport_callbacks handles Play / Reset / Seek.
+  position: [-670, -470]
+  size: [1270, 770]
+  color: [0.45, 0.45, 0.45]
+- name: annotate2
+  mode: annotate
+  title: MIDI Notes
+  text: midiin_notes holds the whole MIDI file as a fixed clip. note_events scans it each frame between the previous and current clock position and writes Note On events to notes_now and note_log.
+  position: [-70, -1270]
+  size: [1470, 330]
+  color: [0.45, 0.45, 0.45]
