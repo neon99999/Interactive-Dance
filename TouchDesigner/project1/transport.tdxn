@@ -57,7 +57,6 @@ custom_pars:
     style: Toggle
     startSection: true
     help: On plays audio and MIDI together from the current position; off pauses both.
-    value: true
   - name: Reset
     style: Pulse
     help: Return audio and MIDI to 0 seconds. Does not fire any notes.
@@ -67,7 +66,7 @@ custom_pars:
     clampMin: true
     normMax: 300.0
     help: Position in seconds that Seek jumps to.
-    value: 4.9
+    value: 6
   - name: Seek
     style: Pulse
     help: Jump audio and MIDI to Seek To. Notes skipped over by the jump are not fired.
@@ -86,11 +85,12 @@ custom_pars:
     value: =float(me.op('info_music')['file_length']) / max(1.0, float(me.op('info_music')['sample_rate']))
 parameters:
   parentshortcut: Transport
+  opshortcut: Transport
 color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
 storage:
-  prev_seconds: 30
+  prev_seconds: 0
   seeked: false
 operators:
 - name: local
@@ -102,6 +102,7 @@ operators:
   - name: time
     type: timeCOMP
     parameters:
+      play: 0
       rate: =$COOKRATE
       end: 1801
       rangelimit: hold
@@ -312,7 +313,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '15'
+        - '28'
       - - tapcount
         - '0'
       dat_content_format: table

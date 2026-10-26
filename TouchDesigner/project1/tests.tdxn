@@ -1,0 +1,31 @@
+format: tdxn
+version: '2.2'
+build: 2
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/tests
+options:
+  include_dat_content: false
+  include_storage: true
+type: baseCOMP
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: results
+  type: tableDAT
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: engine_tests
+  type: textDAT
+  parameters:
+    file: project1/tests/engine_tests.py
+    syncfile: true
+    language: python
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py

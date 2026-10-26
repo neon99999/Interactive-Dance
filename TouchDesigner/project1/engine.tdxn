@@ -1,0 +1,247 @@
+format: tdxn
+version: '2.2'
+build: 3
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/engine
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  tableDAT:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+type: baseCOMP
+parameters:
+  parentshortcut: Engine
+  opshortcut: Engine
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: live
+  type: nullCHOP
+  parameters:
+    autoexportroot: =parent()
+  position: [2000, -200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - datto_live
+- name: engine
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+    file: project1/engine/engine.py
+    syncfile: true
+  position: [800, -200]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: datto_live
+  type: dattoCHOP
+  parameters:
+    dat: live_values
+    rowindexend: =me.inputTable.numRows - 1
+    rowexpr: =re.match('.*',me.inputCell.val) != None
+    colindexend: =me.inputTable.numCols - 1
+    colexpr: =re.match('.*',me.inputCell.val) != None
+    autoexportroot: =parent()
+  position: [1600, -200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: show_logic
+  type: textDAT
+  parameters:
+    file: project1/engine/show_logic.py
+    syncfile: true
+    language: python
+  position: [800, 200]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: live_values
+  type: tableDAT
+  position: [1200, -200]
+  tags:
+  - tdxn_exclude:dat_content
+- name: midi_assignments
+  type: tableDAT
+  dat_content:
+  - - note
+    - target
+    - action
+    - value
+    - duration
+  - - '60'
+    - layer1
+    - show
+    - ''
+    - ''
+  - - '62'
+    - layer1.scale
+    - set
+    - '2'
+    - ''
+  - - '64'
+    - layer1
+    - toggle
+    - ''
+    - ''
+  - - '65'
+    - master.flash
+    - trigger
+    - '1'
+    - '0.5'
+  - - '67'
+    - layer1.opacity
+    - fade
+    - '0'
+    - '2'
+  - - '65'
+    - layer1.x
+    - set
+    - '0.25'
+    - ''
+  - - '67'
+    - layer1.x
+    - set
+    - '-0.25'
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  dat_content_format: table
+- name: assignment_errors
+  type: tableDAT
+  position: [1200, -600]
+  tags:
+  - tdxn_exclude:dat_content
+- name: input_assignments
+  type: tableDAT
+  position: [0, -400]
+  dat_content:
+  - - signal
+    - target
+    - in_min
+    - in_max
+    - out_min
+    - out_max
+    - smoothing
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  dat_content_format: table
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Assignments (edit these)
+  text: 'midi_assignments: note, target, action, value, duration (16 rows). input_assignments: signal, target, in/out range, smoothing. Problems are listed in assignment_errors.'
+  position: [-70, -470]
+  size: [270, 630]
+  color: [0.45, 0.45, 0.45]
+- name: annotate2
+  mode: annotate
+  title: Engine
+  text: 'Every frame: starting values + MIDI assignments at the playback position + input assignments -> live CHOP (layer1_opacity, master_flash ...).'
+  position: [730, -670]
+  size: [1470, 1030]
+  color: [0.45, 0.45, 0.45]
