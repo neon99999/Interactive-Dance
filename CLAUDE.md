@@ -33,6 +33,7 @@ Always ask:
 ## Practice
 - Verify claims with an independent check before reporting them done.
 - Commit small; on PowerShell 5.1 use `git commit -F <file>`.
+- Remote: `origin` = https://github.com/neon99999/Interactive-Dance (public). Pushing still needs asking each time. This repo stores its GitHub token per repo path (`credential.https://github.com.useHttpPath`), separate from the TouchClaude token.
 - Git: `C:\Program Files\Git\cmd\git.exe`. Python: use the full Python 3.12 path, not bare `python`.
 
 <!-- BEGIN Embody/Envoy -- auto-managed, do not edit inside -->
