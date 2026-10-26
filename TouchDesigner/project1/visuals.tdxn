@@ -8,6 +8,11 @@ options:
   include_dat_content: false
   include_storage: true
 type_defaults:
+  baseCOMP:
+    parameters:
+      parentshortcut: Layer
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
       outputresolution: custom
@@ -50,6 +55,53 @@ type_defaults:
       renameto: '*'
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+par_templates:
+  layer:
+  - help: 'Starting visibility. MIDI: show / hide / toggle on target layerN (with a duration they fade).'
+    name: Visible
+    style: Toggle
+  - clampMax: true
+    clampMin: true
+    default: 1
+    help: Starting opacity 0-1. MIDI target layerN.opacity.
+    name: Opacity
+    style: Float
+  - default: 1
+    help: Starting colour (multiplies the content). MIDI targets layerN.red / .green / .blue (0-1).
+    name: Color
+    size: 3
+    style: RGBA
+  - clampMin: true
+    default: 1
+    help: Starting size; 1 = normal. MIDI target layerN.scale.
+    name: Scale
+    normMax: 4.0
+    style: Float
+  - help: 'Starting horizontal position: -1 = left edge, 0 = centre, 1 = right edge. MIDI target layerN.x.'
+    name: X
+    normMin: -1.0
+    style: Float
+  - help: 'Starting vertical position: -1 = bottom, 0 = centre, 1 = top. MIDI target layerN.y.'
+    name: Y
+    normMin: -1.0
+    style: Float
+  - help: Starting rotation in degrees. MIDI target layerN.rotate.
+    name: Rotate
+    normMax: 180.0
+    normMin: -180.0
+    style: Float
+  - default: circle
+    help: What the layer shows. MIDI target layerN.content with set value (0 = first item).
+    menuLabels:
+    - Circle
+    - Square
+    - Triangle
+    menuNames:
+    - circle
+    - square
+    - triangle
+    name: Content
+    style: Menu
 type: baseCOMP
 custom_pars:
   Master:
@@ -83,57 +135,10 @@ operators:
   - null_out
 - name: layer1
   type: baseCOMP
-  parameters:
-    parentshortcut: Layer
   custom_pars:
     Layer:
-    - name: Visible
-      style: Toggle
-      help: 'Starting visibility. MIDI: show / hide / toggle on target layerN (with a duration they fade).'
-    - name: Opacity
-      style: Float
-      default: 1
-      clampMin: true
-      clampMax: true
-      help: Starting opacity 0-1. MIDI target layerN.opacity.
-    - name: Color
-      style: RGBA
-      size: 3
-      default: 1
-      help: Starting colour (multiplies the content). MIDI targets layerN.red / .green / .blue (0-1).
-    - name: Scale
-      style: Float
-      default: 1
-      clampMin: true
-      normMax: 4.0
-      help: Starting size; 1 = normal. MIDI target layerN.scale.
-    - name: X
-      style: Float
-      normMin: -1.0
-      help: 'Starting horizontal position: -1 = left edge, 0 = centre, 1 = right edge. MIDI target layerN.x.'
-    - name: Y
-      style: Float
-      normMin: -1.0
-      help: 'Starting vertical position: -1 = bottom, 0 = centre, 1 = top. MIDI target layerN.y.'
-    - name: Rotate
-      style: Float
-      normMin: -180.0
-      normMax: 180.0
-      help: Starting rotation in degrees. MIDI target layerN.rotate.
-    - name: Content
-      style: Menu
-      default: circle
-      menuNames:
-      - circle
-      - square
-      - triangle
-      menuLabels:
-      - Circle
-      - Square
-      - Triangle
-      help: What the layer shows. MIDI target layerN.content with set value (0 = first item).
-  size: [160, 130]
-  color: [0.67, 0.67, 0.67]
+      $t: layer
+  position: [0, -200]
   children:
   - name: live
     type: nullCHOP
@@ -241,6 +246,29 @@ operators:
     position: [-70, -670]
     size: [2200, 1230]
     color: [0.45, 0.45, 0.45]
+- name: layer2
+  type: baseCOMP
+  parameters:
+    clone: layer1
+  custom_pars:
+    Layer:
+      $t: layer
+- name: layer3
+  type: baseCOMP
+  parameters:
+    clone: layer1
+  custom_pars:
+    Layer:
+      $t: layer
+  position: [0, 200]
+- name: layer4
+  type: baseCOMP
+  parameters:
+    clone: layer1
+  custom_pars:
+    Layer:
+      $t: layer
+  position: [0, 400]
 - name: bg_black
   type: constantTOP
   parameters:
@@ -261,6 +289,9 @@ operators:
     operand: over
   position: [400, 0]
   inputs:
+  - layer4
+  - layer3
+  - layer2
   - layer1
   - bg_black
 - name: cross_flash
@@ -278,7 +309,7 @@ operators:
   position: [400, -600]
 - name: master_live
   type: nullCHOP
-  position: [400, 400]
+  position: [400, 800]
   inputs:
   - master_select
 - name: level_master
@@ -293,7 +324,7 @@ operators:
   parameters:
     channames: master_*
     renamefrom: master_*
-  position: [0, 400]
+  position: [0, 800]
 - name: output_window
   type: windowCOMP
   parameters:
@@ -306,7 +337,7 @@ annotations:
 - name: annotate1
   mode: annotate
   title: Visuals
-  text: 'Layers are composited over black (layer 4 on top), then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
+  text: 'Four layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
   position: [-70, -670]
-  size: [2300, 1230]
+  size: [2300, 1630]
   color: [0.45, 0.45, 0.45]
