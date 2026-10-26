@@ -26,7 +26,7 @@ _backup = {}
 def Run():
 	results = op('results')
 	results.clear(keepFirstRow=True)
-	_queue[:] = _engineSteps() + _invalidConfigSteps() + _extraSteps()
+	_queue[:] = _engineSteps() + _playbackSteps() + _invalidConfigSteps() + _extraSteps()
 	_queue.append(_finish)
 	_backupTables()
 	_next()
@@ -110,6 +110,41 @@ def _engineSteps():
 		_seek(25.0), _expect(s, 'repeat: same end state', {'layer1_visible': 0, 'layer1_scale': 2, 'layer1_opacity': 0, 'layer1_x': -0.25}),
 		_seek(20.3), _expect(s, 'seek into trigger window', {'master_flash': 1}),
 	]
+
+
+def _playbackSteps():
+	"""During real playback, live values must equal a fresh evaluation at the same clock time."""
+	s = 'playback'
+	samples = []
+
+	def start():
+		op.Transport.par.Seekto = 4.5
+		op.Transport.par.Seek.pulse()
+		op.Transport.par.Play = 1
+
+	def sample():
+		live = op.Engine.op('live')
+		samples.append({c.name: float(c.eval()) for c in live.chans()})
+
+	def stop():
+		op.Transport.par.Play = 0
+		engine = op.Engine.op('engine').module
+		sl = op.Engine.op('show_logic').module
+		base = engine._base(sl)
+		worst = 0.0
+		for snap in samples:
+			expected = sl.evaluate(engine._midi['events'], base, snap['clock_seconds'])
+			for k, v in expected.items():
+				worst = max(worst, abs(snap[k.replace('.', '_')] - v))
+		times = [round(snap['clock_seconds'], 2) for snap in samples]
+		_check(s, 'live values == evaluate(clock) during playback', worst <= TOL and len(samples) >= 20,
+			   '%d samples %s..%s, max diff %.4f' % (len(samples), times[0], times[-1], worst))
+		_check(s, 'clock advanced while playing', times[-1] > times[0] + 1.0, '%s -> %s' % (times[0], times[-1]))
+
+	steps = [_setRows(TEST_ROWS), _do(start, 'play from 4.5')]
+	steps += [_do(sample, 'sample')] * 30
+	steps.append(_do(stop, 'stop and compare'))
+	return steps
 
 
 def _invalidConfigSteps():

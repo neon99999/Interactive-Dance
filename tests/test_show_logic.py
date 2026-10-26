@@ -162,6 +162,17 @@ class Evaluate(unittest.TestCase):
 		run2 = [sl.evaluate(ev, BASE, t) for t in times]
 		self.assertEqual(run1, run2)
 
+	def test_long_song_is_fast_enough(self):
+		import time
+		rows = [[str(60 + i), 'layer%d.opacity' % (i % 4 + 1), 'fade', str(i % 2), '0.5'] for i in range(16)]
+		note_ons = [(i * 0.12, 60 + i % 16) for i in range(2000)]  # 4 minutes, 2000 notes
+		ev, _ = events_for(rows, note_ons)
+		start = time.perf_counter()
+		for _ in range(20):
+			sl.evaluate(ev, BASE, 240.0)
+		per_frame_ms = (time.perf_counter() - start) / 20 * 1000
+		self.assertLess(per_frame_ms, 8.0, 'evaluate took %.2f ms' % per_frame_ms)
+
 	def test_unassigned_notes_ignored(self):
 		ev, _ = events_for([['60', 'layer1', 'show', '', '']], [(5.0, 61)])
 		self.assertEqual(ev, [])

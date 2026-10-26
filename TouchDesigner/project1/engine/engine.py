@@ -35,6 +35,7 @@ def onFrameStart(frame):
 	dt = 0.0 if _last_seconds is None else max(0.0, now - _last_seconds)
 	_last_seconds = now
 	state = _mapper.apply(_inputs['assignments'], _signals(), state, dt)
+	state['clock.seconds'] = _transportSeconds()
 	_publish(state)
 
 
