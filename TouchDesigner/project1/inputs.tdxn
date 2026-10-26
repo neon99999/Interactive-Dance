@@ -1,12 +1,43 @@
 format: tdxn
 version: '2.2'
-build: 1
+build: 3
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
 options:
   include_dat_content: false
   include_storage: true
+type_defaults:
+  analyzeTOP:
+    parameters:
+      format: mono32float
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  cropTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  mergeCHOP:
+    parameters:
+      autoexportroot: =parent()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  toptoCHOP:
+    parameters:
+      a: ''
+      autoexportroot: =parent()
+      b: ''
+      g: ''
+      rate: =me.time.rate
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
 type: baseCOMP
 custom_pars:
   Simulated:
@@ -29,6 +60,71 @@ custom_pars:
     label: Animate Level
     startSection: true
     help: Move sim_level up and down automatically (slow sine wave), to test mappings without touching the slider.
+  OSC:
+  - name: Oscenable
+    style: Toggle
+    label: Receive OSC
+    help: Listen for OSC messages (UDP) on the port below. Each OSC address becomes a signal, e.g. /dancer/level -> dancer/level. Off by default.
+  - name: Oscport
+    style: Int
+    label: OSC Port
+    default: 7000
+    min: 1.0
+    max: 65535.0
+    clampMin: true
+    clampMax: true
+    normMin: 1000.0
+    normMax: 12000.0
+    help: UDP port to listen on. The sending app or device must send to this computer on this port.
+  Serial:
+  - name: Serialenable
+    style: Toggle
+    label: Read Serial
+    help: Read lines of text from a serial (USB) device such as an Arduino. Off by default.
+  - name: Serialport
+    style: StrMenu
+    label: Port
+    menuSource: op('./serial_in').par.port
+    help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
+  - name: Serialbaud
+    style: Int
+    label: Baud Rate
+    default: 9600
+    min: 300.0
+    clampMin: true
+    normMin: 9600.0
+    normMax: 115200.0
+    help: Must match Serial.begin(...) in the device sketch, e.g. 9600 or 115200.
+  - name: Serialnames
+    style: Str
+    label: Value Names
+    help: 'Names for lines of plain numbers, in order, e.g. "accel, zone" turns "0.5,1" into serial_accel and serial_zone. Blank: serial_1, serial_2 ... Lines of name=value pairs name themselves.'
+  Camera:
+  - name: Camerasource
+    style: Menu
+    label: Source
+    default: 'off'
+    menuNames:
+    - 'off'
+    - camera
+    - test
+    menuLabels:
+    - 'Off'
+    - Camera
+    - Test Pattern
+    help: 'Off: no camera, all camera signals 0. Camera: a webcam. Test Pattern: a moving dot, to try camera mappings without a camera.'
+  - name: Cameradevice
+    style: StrMenu
+    label: Device
+    menuSource: op('./camera_in').par.device
+    help: Which camera to use. The menu lists the cameras TouchDesigner can see.
+  - name: Camerasensitivity
+    style: Float
+    label: Sensitivity
+    default: 10
+    clampMin: true
+    normMax: 50.0
+    help: Multiplies the amount of movement seen. Raise it if camera_motion stays small; signals are clamped to 0-1 by the input assignment ranges.
 parameters:
   parentshortcut: Inputs
   opshortcut: Inputs
@@ -36,15 +132,58 @@ color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
 operators:
+- name: osc_in
+  type: oscinCHOP
+  parameters:
+    active: =parent.Inputs.par.Oscenable
+    port: =parent.Inputs.par.Oscport
+    autoexportroot: =parent()
+  position: [0, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
 - name: signals
   type: nullCHOP
   parameters:
     autoexportroot: =parent()
-  position: [1200, 0]
+  position: [4800, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
   - merge_signals
+- name: camera_in
+  type: videodeviceinTOP
+  parameters:
+    active: =parent.Inputs.par.Camerasource == 'camera'
+    device: =parent.Inputs.par.Cameradevice
+  position: [0, -2900]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: chop_left
+  type: toptoCHOP
+  parameters:
+    top: analyze_left
+    r: camera_left
+  position: [3200, -2500]
+- name: crop_left
+  type: cropTOP
+  parameters:
+    cropright: 0.5
+  position: [2400, -2500]
+  inputs:
+  - diff_frames
+- name: serial_in
+  type: serialDAT
+  parameters:
+    active: =parent.Inputs.par.Serialenable
+    port: =parent.Inputs.par.Serialport
+    baudrate: =parent.Inputs.par.Serialbaud
+    stopbits: '1'
+    callbacks: serial_in_callbacks
+    fromop: =parent()
+  position: [0, -1600]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dat_read_only: true
 - name: simulated
   type: constantCHOP
   parameters:
@@ -60,20 +199,211 @@ operators:
       value: =float(parent.Inputs.par.Simzone)
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
-- name: merge_signals
-  type: mergeCHOP
+- name: camera_off
+  type: constantTOP
   parameters:
-    autoexportroot: =parent()
-  position: [800, 0]
+    colorr: 0
+    colorg: 0
+    colorb: 0
+    outputresolution: custom
+    resolutionw: 160
+    resolutionh: 90
+  position: [0, -2500]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: chop_right
+  type: toptoCHOP
+  parameters:
+    top: analyze_right
+    r: camera_right
+  position: [3200, -3300]
+- name: crop_right
+  type: cropTOP
+  parameters:
+    cropleft: 0.5
+  position: [2400, -3300]
+  inputs:
+  - diff_frames
+- name: fit_camera
+  type: resolutionTOP
+  parameters:
+    outputresolution: custom
+    resolutionw: 160
+    resolutionh: 90
+  position: [800, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
+  - switch_camera
+- name: camera_test
+  type: circleTOP
+  parameters:
+    radiusx: 0.15
+    radiusy: 0.15
+    centerx: =0.35 * math.sin(absTime.frame / 60 * 2)
+    outputresolution: custom
+    resolutionw: 160
+    resolutionh: 90
+  position: [0, -3300]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: chop_motion
+  type: toptoCHOP
+  parameters:
+    top: analyze_motion
+    r: camera_motion
+  position: [3200, -2900]
+- name: diff_frames
+  type: compositeTOP
+  parameters:
+    operand: difference
+  position: [2000, -2900]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - mono_camera
+  - previous_frame
+- name: mono_camera
+  type: monochromeTOP
+  position: [1200, -2900]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - fit_camera
+- name: osc_signals
+  type: selectCHOP
+  parameters:
+    chops: ='osc_in' if parent.Inputs.par.Oscenable else ''
+    autoexportroot: =parent()
+  position: [400, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: serial_chop
+  type: dattoCHOP
+  parameters:
+    dat: ='serial_values' if parent.Inputs.par.Serialenable else ''
+    rowindexend: =me.inputTable.numRows - 1
+    rowexpr: =re.match('.*',me.inputCell.val) != None
+    colindexend: =me.inputTable.numCols - 1
+    colexpr: =re.match('.*',me.inputCell.val) != None
+    autoexportroot: =parent()
+  position: [1200, -1600]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: analyze_left
+  type: analyzeTOP
+  position: [2800, -2500]
+  inputs:
+  - crop_left
+- name: merge_camera
+  type: mergeCHOP
+  position: [3600, -2900]
+  inputs:
+  - chop_motion
+  - chop_left
+  - chop_right
+- name: serial_parse
+  type: textDAT
+  parameters:
+    file: project1/inputs/serial_parse.py
+  position: [400, -1600]
+- name: analyze_right
+  type: analyzeTOP
+  position: [2800, -3300]
+  inputs:
+  - crop_right
+- name: merge_signals
+  type: mergeCHOP
+  position: [4400, 0]
+  inputs:
   - simulated
+  - osc_signals
+  - serial_chop
+  - camera_sensitivity
+- name: serial_values
+  type: tableDAT
+  position: [800, -1600]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: switch_camera
+  type: switchTOP
+  parameters:
+    index: =parent.Inputs.par.Camerasource.menuIndex
+  position: [400, -2900]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - camera_off
+  - camera_in
+  - camera_test
+- name: analyze_motion
+  type: analyzeTOP
+  position: [2800, -2900]
+  inputs:
+  - diff_frames
+- name: previous_frame
+  type: cacheTOP
+  parameters:
+    cachesize: 2
+    outputindex: -1
+  position: [1600, -3300]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - mono_camera
+- name: camera_sensitivity
+  type: mathCHOP
+  parameters:
+    gain: =parent.Inputs.par.Camerasensitivity
+    autoexportroot: =parent()
+  position: [4000, -2900]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - merge_camera
+- name: serial_in_callbacks
+  type: textDAT
+  parameters:
+    file: project1/inputs/serial_in_callbacks.py
+  flags:
+  - viewer
+  position: [0, -1720]
+  dock: serial_in
 annotations:
 - name: annotate1
   mode: annotate
-  title: Movement signals
-  text: 'Every input source adds its channels to merge_signals. The engine reads ''signals'' and applies the input_assignments table. Simulated: sim_level (0-1), sim_trigger, sim_zone.'
+  title: Simulated movement
+  text: sim_level (0-1), sim_trigger, sim_zone from the Simulated page. Use them to try mappings without sensors.
   position: [-70, -70]
-  size: [1470, 330]
+  size: [400, 330]
+  color: [0.45, 0.45, 0.45]
+- name: annotate2
+  mode: annotate
+  title: OSC
+  text: 'Each OSC address becomes a signal: /dancer/level -> dancer/level. osc_signals passes them on only while Receive OSC is on (OSC page: enable + port).'
+  position: [-70, -870]
+  size: [670, 330]
+  color: [0.45, 0.45, 0.45]
+- name: annotate3
+  mode: annotate
+  title: Serial
+  text: Lines from a USB device -> serial_parse -> serial_values -> serial_* signals (Serial page).
+  position: [-70, -1790]
+  size: [1400, 450]
+  color: [0.45, 0.45, 0.45]
+- name: annotate4
+  mode: annotate
+  title: Camera motion
+  text: 'Frame difference of a small grey camera image: camera_motion (whole frame), camera_left, camera_right (halves). Camera page: source, device, sensitivity.'
+  position: [-70, -3370]
+  size: [4270, 1130]
+  color: [0.45, 0.45, 0.45]
+- name: annotate5
+  mode: annotate
+  title: All signals
+  text: Every source merges here. The engine reads 'signals'.
+  position: [4330, -70]
+  size: [670, 330]
   color: [0.45, 0.45, 0.45]

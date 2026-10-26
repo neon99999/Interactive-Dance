@@ -12,6 +12,12 @@ ROWS = [
 	['no_such_signal', 'layer1.rotate', '', '', '', '', ''],
 	['sim_level', 'layer3.x', '0.5', '1', '1', '-1', ''],
 ]
+ADAPTER_ROWS = [
+	['test/level', 'layer4.opacity', '', '', '', '', ''],
+	['serial_accel', 'layer4.scale', '0', '1', '1', '3', ''],
+	['serial_2', 'layer4.x', '', '', '', '', ''],
+	['camera_motion', 'layer4.rotate', '0', '0.05', '0', '90', ''],
+]
 BAD_ROWS = [
 	['sim_level', 'layer9.opacity', '', '', '', '', ''],
 	['sim_level', 'layer1.opacity', '0.5', '0.5', '', '', ''],
@@ -65,10 +71,46 @@ def Steps(check):
 		check(s, 'engine still running', not op.Engine.op('engine').scriptErrors(), op.Engine.op('engine').scriptErrors())
 
 	def reset():
-		for name in ('Simlevel', 'Simtrigger', 'Simzone', 'Simanimate'):
-			op.Inputs.par[name].val = 0
+		inputs = op.Inputs
+		inputs.op('osc_in').par.resetchannelspulse.pulse()
+		for name in ('Simlevel', 'Simtrigger', 'Simzone', 'Simanimate', 'Oscenable', 'Serialenable'):
+			inputs.par[name].val = 0
+		inputs.par.Serialnames = ''
+		inputs.par.Camerasource = 'off'
+		inputs.op('osc_in').par.localaddress = ''
+		inputs.op('serial_values').clear()
+
+	def osc_on():
+		op.Inputs.op('osc_in').par.localaddress = '127.0.0.1'
+		op.Inputs.par.Oscenable = 1
+
+	def osc_send():
+		import socket
+		import struct
+		pad = lambda b: b + bytes(1) * (4 - len(b) % 4)
+		packet = pad(b'/test/level') + pad(b',f') + struct.pack('>f', 0.6)
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock.sendto(packet, ('127.0.0.1', int(op.Inputs.par.Oscport)))
+		sock.close()
+
+	def serial_line(line, names=''):
+		def step():
+			inputs = op.Inputs
+			inputs.par.Serialenable = 1
+			inputs.par.Serialnames = names
+			inputs.op('serial_in_callbacks').module.onReceive(inputs.op('serial_in'), 0, line, b'')
+		return base._do(step, 'serial line %r' % line)
+
+	def camera_moving():
+		v = base._live('layer4_rotate')
+		check(s, 'camera test pattern -> motion', v > 1, 'layer4_rotate %.2f' % v)
+
+	def no_errors():
+		errs = op.Inputs.errors(recurse=True) + op.Engine.op('engine').scriptErrors()
+		check(s, 'adapters: no errors without devices', not errs, errs)
 
 	wait = base._do(lambda: None, 'wait')
+	send = base._do(osc_send, 'osc send')  # UDP: send a few times, as a real sender would
 	return [
 		base._do(start, 'pause at 3s'), base._do(reset, 'sim defaults'), setRows(ROWS), wait,
 		base._do(note_clock, 'note clock'),
@@ -82,6 +124,20 @@ def Steps(check):
 		sim(Simzone=1), base._expect(s, 'zone on -> layer2 visible', {'layer2_visible': 1}),
 		sim(Simzone=0), base._expect(s, 'zone off -> layer2 hidden', {'layer2_visible': 0}),
 		base._do(clock_still, 'clock still'),
+		setRows(ADAPTER_ROWS), base._do(osc_on, 'osc on'), wait, wait,
+		send, wait, send, wait, send, wait,
+		base._expect(s, 'osc /test/level -> layer4 opacity', {'layer4_opacity': 0.6}),
+		serial_line('accel=0.5'), base._expect(s, 'serial name=value', {'layer4_scale': 2}),
+		serial_line('0.25 0.5', 'accel'), base._expect(s, 'serial plain numbers + names', {'layer4_scale': 1.5, 'layer4_x': 0.5}),
+		serial_line('hello'), base._expect(s, 'serial bad line keeps values', {'layer4_scale': 1.5}),
+		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'test'), 'camera test'), wait, wait,
+		base._do(camera_moving, 'camera moving'),
+		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'off'), 'camera off'), wait,
+		base._expect(s, 'camera off -> motion 0', {'layer4_rotate': 0}),
+		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'camera'), 'camera, none attached'), wait, wait,
+		base._do(no_errors, 'no errors'),
+		base._do(reset, 'all inputs off'), wait,
+		base._expect(s, 'inputs off -> base values', {'layer4_opacity': 1, 'layer4_scale': 1, 'layer4_x': 0, 'layer4_rotate': 0}),
 		setRows(BAD_ROWS), wait, base._do(errors, 'input errors'),
 		base._do(reset, 'sim defaults'),
 	]
