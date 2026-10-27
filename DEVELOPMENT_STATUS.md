@@ -1,8 +1,8 @@
 # Development status
 
-Last updated 2026-10-26.
+Last updated 2026-10-27.
 
-**Latest working project:** `TouchDesigner/DanceWorkshop.toe`, at git commit `f8df998` or later on `main`. It was saved, reopened and retested: all 63 checks pass. Commits after Task 01 are local only; nothing has been pushed since `6627104`.
+**Latest working project:** `TouchDesigner/DanceWorkshop.toe`, at git commit `f8df998` or later on `main`. It was saved, reopened and retested: all 63 checks pass. All commits are pushed to GitHub.
 
 ## Milestones
 
@@ -41,9 +41,13 @@ Last updated 2026-10-26.
 
 **Task 01 sync test:** `op('/project1/test_t01/sync_test').module.Start()` (passed when Task 01 was done).
 
+## Verified by hand (2026-10-27)
+
+- **Listening:** the user played the test track and the visuals line up with the audio. The output buffer still adds a small delay (about 0.15 s, more over remote desktop); there is no latency setting yet.
+- **Simulated inputs:** the user drove the simulated channels and saw the visuals respond.
+
 ## Not verified (needs a person or hardware)
 
-- **Listening:** the audio lags the visuals by the output buffer (about 0.15 s, more over remote desktop). Not measured by ear, and there is no latency setting yet.
 - **Movies:** Content "media" was tested with a still image. A movie plays on its own clock, not synced to the music, seek or pause.
 - **Real serial device:** no hardware was connected. Lines were fed to the same callback the Serial DAT uses.
 - **Real webcam:** none on this machine, which runs over remote desktop. The camera chain was tested with the moving test pattern.
@@ -78,7 +82,7 @@ Last updated 2026-10-26.
 
 ## Manual tests to do
 
-1. Play the test track and listen: do the visual events line up with the tones at 5, 10, 15 and 20 s?
+1. ~~Play the test track and listen~~ (done 2026-10-27).
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
 4. Connect an Arduino that prints `accel=0.5` lines; pick the port and baud; map `serial_accel`.
