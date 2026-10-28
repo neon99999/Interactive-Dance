@@ -66,6 +66,7 @@ Last updated 2026-10-27.
 - The camera signals are raw motion amounts, so they need **Sensitivity** or an input range to tune.
 - `layer2`-`layer4` are clones: edit the network inside `layer1` only.
 - Notes are reported up to one frame late (17 ms at 60 fps).
+- The engine replays every note up to the playback position each frame, so its cost grows with the song's note count: 0.14 ms per frame for a few notes, about 4 ms at the end of a 5,000-note file (measured 2026-10-28). Songs are expected to have at most about 100 notes, so this is not optimized. If dense files are ever needed, keep state snapshots every few seconds and replay from the nearest one.
 
 ## Deferred
 
