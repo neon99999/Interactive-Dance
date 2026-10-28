@@ -167,6 +167,7 @@ TouchDesigner/
     visuals.tdxn           layers, compositing, output
     midi_monitor.tdxn      shows MIDI notes as they play
     tests.tdxn, tests/     in-TouchDesigner tests
+Firmware/                  wearable motion sensor firmware (PlatformIO, see Firmware/README.md)
 media/test/                test audio, MIDI and image
 tests/                     plain-Python unit tests
 tools/                     helper scripts

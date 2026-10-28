@@ -1,0 +1,42 @@
+// Build-time settings for the wearable firmware.
+//
+// PIN ASSIGNMENTS ARE PROVISIONAL: they follow the XIAO ESP32-C6 pin labels
+// but have not been checked against the real wiring. Confirm each one on the
+// hardware before relying on it.
+
+#pragma once
+
+#include <stdint.h>
+
+namespace dance {
+
+constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
+constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 1;
+
+constexpr uint32_t SERIAL_BAUD = 115200;
+constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
+constexpr uint32_t HEARTBEAT_LOG_MS = 5000;   // "still alive" log interval
+
+// Which dancer's wearable this is; sent in every packet. Set per device
+// before flashing (later this may come from flash storage instead).
+#ifndef DANCE_WEARABLE_ID
+#define DANCE_WEARABLE_ID 1
+#endif
+constexpr uint8_t WEARABLE_ID = DANCE_WEARABLE_ID;
+
+// --- Pins (XIAO ESP32-C6 label -> GPIO). Provisional, see above. ---
+constexpr int PIN_I2C_SDA = 22;      // D4, default I2C SDA, to the LSM6DS3TR-C
+constexpr int PIN_I2C_SCL = 23;      // D5, default I2C SCL
+constexpr int PIN_BUTTON = 1;        // D1, pushbutton to GND (internal pull-up planned)
+constexpr int PIN_HAPTIC = 2;        // D2, base of the NPN transistor driving the motor
+constexpr int PIN_BATTERY_ADC = 0;   // A0/D0, LiPo through an external voltage divider
+
+// LSM6DS3TR-C I2C address: 0x6A, or 0x6B when its SDO/SA0 pin is high
+// (the Adafruit breakout defaults to 0x6A).
+constexpr uint8_t IMU_I2C_ADDRESS = 0x6A;
+
+// Battery voltage = ADC pin voltage * this ratio (2.0 for two equal resistors).
+constexpr float BATTERY_DIVIDER_RATIO = 2.0f;
+
+}  // namespace dance
