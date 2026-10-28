@@ -23,7 +23,8 @@ What it does:
 2. Open `TouchDesigner/DanceWorkshop.toe` in TouchDesigner.
 3. Go into `project1` (double-click it). The **Dance toolkit - start here** box holds four components. Click one and press **P** to see its controls; press **I** to go inside.
 4. On **transport**, turn **Play** on. The test track plays (a click every second, tones at 5, 10, 15 and 20 s) and the demo assignments show a circle at 5 s, double its size at 10 s, hide it at 15 s and flash the screen at 20 s.
-5. On **visuals**, press **Open Output Window** (Output page) to show the result full screen.
+5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays.
+6. On **visuals**, press **Open Output Window** (Output page) to show the result full screen.
 
 The final image is `visuals/null_out`. It is also shown as the background of the `visuals` network.
 
@@ -109,6 +110,15 @@ The camera input measures how much the picture changes between frames, over the 
 
 **Body tracking:** for skeleton tracking, the [MediaPipe TouchDesigner plugin](https://github.com/torinmb/mediapipe-touchdesigner) by Torin Blankensmith and Dom Scott is a good fit. It runs MediaPipe inside TouchDesigner with no separate install. It is not included here. To use it, download `release.zip` from its releases page, drag `MediaPipe.tox` into `inputs`, add a Select CHOP that picks the channels you want (e.g. a wrist position), and wire it into `merge_signals`. Those channel names then work in the input table.
 
+### midi_monitor: check your MIDI file
+
+A panel next to the other components. While the music plays it shows the number of each MIDI note as it happens, large, with the background flashing on each new note, so you can see at a glance whether the notes land where you expect in the music. The line below shows the note names (60 = C4; Ableton calls the same note C3) and the playback time.
+
+- **Hold Time** (Monitor page): how long each note stays on screen, 1.5 s by default. Notes played together are shown together.
+- Like the engine it follows the playback position, so pausing, seeking and Reset show the notes due at that point.
+- The numbers are the ones to use in the MIDI assignment table.
+- To see it bigger, right-click it and choose **View...**.
+
 ### visuals: four layers
 
 `visuals/layer1` to `layer4` each have a **Layer** page with the starting look:
@@ -155,6 +165,7 @@ TouchDesigner/
     inputs.tdxn            movement signals
     inputs/serial_parse.py serial line parser (pure Python, unit-tested)
     visuals.tdxn           layers, compositing, output
+    midi_monitor.tdxn      shows MIDI notes as they play
     tests.tdxn, tests/     in-TouchDesigner tests
 media/test/                test audio, MIDI and image
 tests/                     plain-Python unit tests

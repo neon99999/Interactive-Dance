@@ -1,0 +1,103 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/midi_monitor
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  textTOP:
+    parameters:
+      font: Arial
+      fontsizexunit: pixels
+      outputresolution: custom
+      resolutionh: 360
+      resolutionw: 640
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+type: containerCOMP
+custom_pars:
+  Monitor:
+  - name: Holdtime
+    style: Float
+    label: Hold Time
+    default: 1.5
+    min: 0.1
+    clampMin: true
+    normMin: 0.2
+    normMax: 5.0
+    help: Seconds each note stays on screen after it plays. The newest note flashes, then fades over this time.
+parameters:
+  w: 640
+  h: 360
+  resizecomp: =me
+  repocomp: =me
+  top: null_out
+  parentshortcut: Monitor
+flags:
+- viewer
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: monitor
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+    file: project1/midi_monitor/monitor.py
+    syncfile: true
+  position: [0, -400]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: null_out
+  type: nullTOP
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - over_text
+- name: over_text
+  type: compositeTOP
+  parameters:
+    operand: over
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - text_notes
+  - text_info
+- name: text_info
+  type: textTOP
+  parameters:
+    text: 0.00 s
+    fontsizex: 26
+    positiony: 18
+    aligny: bottom
+    bgcolorr: 0.08
+    bgcolorg: 0.08
+    bgcolorb: 0.08
+    bgalpha: 1
+  position: [0, -200]
+- name: text_notes
+  type: textTOP
+  parameters:
+    text: ''
+    bold: true
+    fontautosize: fitiffat
+    fontsizex: 130
+    positiony: 20
+    fontalpha: 0.3
+  position: [0, 200]
+annotations:
+- name: annotate1
+  mode: annotate
+  title: MIDI note monitor
+  text: 'monitor runs each frame: the notes played in the last Hold Time seconds -> text_notes (big note numbers) and text_info (note names, playback time). The background flashes on each new note.'
+  position: [-70, -470]
+  size: [1070, 930]
+  color: [0.45, 0.45, 0.45]

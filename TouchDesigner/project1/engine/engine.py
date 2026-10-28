@@ -44,8 +44,8 @@ def _transportSeconds():
 	return float(transport.time.seconds) if transport else 0.0
 
 
-def _noteOns():
-	"""((seconds, note) for every Note On in the MIDI file, cache key)."""
+def noteOns():
+	"""((seconds, note) for every Note On in the MIDI file, cache key). Also read by midi_monitor."""
 	transport = getattr(op, 'Transport', None)
 	clip = transport.op('midiin_notes') if transport else None
 	if clip is None or clip.numChans == 0:
@@ -68,7 +68,7 @@ def _noteOns():
 
 def _refreshMidi(sl):
 	table = op('midi_assignments')
-	notes, notes_key = _noteOns()
+	notes, notes_key = noteOns()
 	key = (table.text, notes_key)
 	if key == _midi['key']:
 		return

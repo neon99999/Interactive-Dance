@@ -290,3 +290,22 @@ class InputMapper:
 			if key not in live:
 				del self._smoothed[key]
 		return state
+
+
+NOTE_NAMES = ('C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B')
+
+
+def noteName(note):
+	"""60 -> 'C4' (the common convention; some DAWs, e.g. Ableton, call 60 'C3')."""
+	return '%s%d' % (NOTE_NAMES[note % 12], note // 12 - 1)
+
+
+def recentNotes(note_ons, t, hold):
+	"""Notes that started within the last hold seconds before t: [(note, age)], oldest first.
+
+	Used by the MIDI monitor. Like evaluate, it depends only on the playback
+	position, so seeking shows exactly what is due there.
+	"""
+	recent = [(t - start, note) for start, note in note_ons if 0.0 <= t - start < hold]
+	recent.sort(key=lambda item: (-item[0], item[1]))
+	return [(note, age) for age, note in recent]

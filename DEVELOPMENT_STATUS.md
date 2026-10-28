@@ -17,6 +17,7 @@ Last updated 2026-10-27.
 | 6 | Simulated movement input | `ed5ae8a` | Done, tested |
 | 7 | OSC, serial and camera adapters | `50d1363` | OSC tested locally. Serial: parser only, no hardware. Camera: test pattern only, no webcam |
 | 8 | Usability and documentation | `f8df998` | Done. Output-window buttons tested; table buttons tested with a stub (no windows opened) |
+| 9 | MIDI note monitor (`midi_monitor`) | see git log | Done. Tested with the user's own MIDI file: seek, and notes appearing and clearing during playback |
 
 ## Tests
 
@@ -35,7 +36,7 @@ Last updated 2026-10-27.
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **32 of 32** pass (25 show logic, 7 serial parser). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **34 of 34** pass (27 show logic, 7 serial parser). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 

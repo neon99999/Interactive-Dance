@@ -3,7 +3,8 @@
 Run from the Textport:  op('/project1/tests/engine_tests').module.Run()
 Each step runs a few frames after the previous one so the engine and the
 renders have cooked. Results land in tests/results (suite, check, PASS/FAIL).
-Assignment tables are backed up and restored around the tests.
+Assignment tables and the transport's audio and MIDI files are backed up and
+restored around the tests; the tests run on the test media in media/test.
 """
 
 STEP_FRAMES = 3
@@ -19,6 +20,9 @@ TEST_ROWS = [
 	['67', 'layer1.x', 'set', '-0.25', ''],
 ]
 
+TEST_MEDIA = {'Audiofile': '../media/test/sync_test.wav', 'Midifile': '../media/test/sync_test.mid'}
+MEDIA_LOAD_FRAMES = 10
+
 _queue = []
 _backup = {}
 
@@ -29,7 +33,7 @@ def Run():
 	_queue[:] = _engineSteps() + _playbackSteps() + _invalidConfigSteps() + _extraSteps()
 	_queue.append(_finish)
 	_backupTables()
-	_next()
+	run(_next, delayFrames=MEDIA_LOAD_FRAMES)
 
 
 def _extraSteps():
@@ -171,9 +175,18 @@ def _backupTables():
 	for name in ('midi_assignments', 'input_assignments'):
 		table = op.Engine.op(name)
 		_backup[name] = [[c.val for c in row] for row in table.rows()]
+	op.Engine.op('input_assignments').clear(keepFirstRow=True)  # the user's mappings would override MIDI values
+	for name, path in TEST_MEDIA.items():
+		par = op.Transport.par[name]
+		_backup[name] = (par.mode, par.val, par.expr)
+		par.val = path
 
 
 def _finish():
+	for name in TEST_MEDIA:
+		mode, val, expr = _backup.pop(name)
+		par = op.Transport.par[name]
+		par.val, par.expr, par.mode = val, expr, mode
 	for name, rows in _backup.items():
 		table = op.Engine.op(name)
 		table.clear()

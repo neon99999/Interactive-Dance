@@ -223,5 +223,19 @@ class Inputs(unittest.TestCase):
 		self.assertEqual(sl.InputMapper().apply(a, {'a': 1, 'b': 1}, dict(BASE), 0)['layer1.x'], 1.0)
 
 
+class Monitor(unittest.TestCase):
+
+	def test_note_names(self):
+		self.assertEqual([sl.noteName(n) for n in (60, 61, 69, 0, 127)], ['C4', 'C#4', 'A4', 'C-1', 'G9'])
+
+	def test_recent_notes_window(self):
+		notes = [(5.0, 60), (10.0, 62), (10.0, 64), (11.0, 65)]
+		self.assertEqual(sl.recentNotes(notes, 4.9, 1.5), [])
+		self.assertEqual(sl.recentNotes(notes, 5.0, 1.5), [(60, 0.0)])
+		self.assertEqual(sl.recentNotes(notes, 6.5, 1.5), [])
+		self.assertEqual([n for n, _ in sl.recentNotes(notes, 11.2, 1.5)], [62, 64, 65])
+		self.assertEqual(sl.recentNotes([], 3.0, 1.5), [])
+
+
 if __name__ == '__main__':
 	unittest.main()
