@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 3
+build: 5
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
@@ -152,9 +152,8 @@ operators:
   - merge_signals
 - name: camera_in
   type: videodeviceinTOP
-  parameters:
-    active: =parent.Inputs.par.Camerasource == 'camera'
-    device: =parent.Inputs.par.Cameradevice
+  flags:
+  - viewer
   position: [0, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]

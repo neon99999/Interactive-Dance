@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 7
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/transport
@@ -24,6 +24,8 @@ type_defaults:
   parameterexecuteDAT:
     parameters:
       op: ..
+    flags:
+    - viewer
     size: [130, 90]
   resampleCHOP:
     parameters:
@@ -47,16 +49,17 @@ custom_pars:
     style: File
     label: Audio File
     help: Music file (WAV or MP3) played in sync with the MIDI file.
-    value: ../media/test/sync_test.wav
+    value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ClaudeTouch/Dance Stuff/Magallanes - In-Correcto 216- El árbol de los esfuerzos - 05 Mucho Gusto.mp3
   - name: Midifile
     style: File
     label: MIDI File
     help: Standard MIDI File (.mid) whose Note On events are read on the same clock as the audio.
-    value: ../media/test/sync_test.mid
+    value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ClaudeTouch/Dance Stuff/midi_export.mid
   - name: Play
     style: Toggle
     startSection: true
     help: On plays audio and MIDI together from the current position; off pauses both.
+    value: true
   - name: Reset
     style: Pulse
     help: Return audio and MIDI to 0 seconds. Does not fire any notes.
@@ -90,7 +93,7 @@ color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
 storage:
-  prev_seconds: 0
+  prev_seconds: 86.05
   seeked: false
 operators:
 - name: local
@@ -102,11 +105,10 @@ operators:
   - name: time
     type: timeCOMP
     parameters:
-      play: 0
       rate: =$COOKRATE
-      end: 1801
+      end: 16513
       rangelimit: hold
-      rangeend: 1801
+      rangeend: 16513
       resetframe: 0
       independent: true
       clone: ''
@@ -313,7 +315,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '283'
+        - '372'
       - - tapcount
         - '0'
       dat_content_format: table
@@ -364,8 +366,6 @@ operators:
         onpulse: false
         defaultreadencoding: cp1252
         language: input
-      flags:
-      - viewer
       position: [-600, 100]
       dat_content: opcook -F override
       dat_content_format: text
@@ -373,13 +373,13 @@ operators:
   type: tableDAT
   flags:
   - viewer
-  position: [1200, -1200]
+  position: [400, -550]
   color: [0.67, 0.67, 0.67]
   tags:
   - tdxn_exclude:dat_content
 - name: notes_now
   type: tableDAT
-  position: [800, -1200]
+  position: [125, -550]
   color: [0.67, 0.67, 0.67]
   tags:
   - tdxn_exclude:dat_content
@@ -388,7 +388,7 @@ operators:
   parameters:
     op: audiofilein_music
     autoexportroot: =parent()
-  position: [0, -400]
+  position: [0, -125]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
 - name: note_events
@@ -398,7 +398,9 @@ operators:
     framestart: true
     file: project1/transport/note_events.py
     syncfile: true
-  position: [400, -1200]
+  flags:
+  - viewer
+  position: [-205, -555]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
   tags:
@@ -415,7 +417,7 @@ operators:
     controlname: ''
     rate: =me.time.rate
     autoexportroot: =parent()
-  position: [0, -1200]
+  position: [-605, -555]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
 - name: audiofilein_music
@@ -437,7 +439,7 @@ operators:
     builtin: false
     file: project1/transport/transport_callbacks.py
     syncfile: true
-  position: [-600, -400]
+  position: [0, -250]
   color: [0.9, 0.3, 0.4]
   tags:
   - py
@@ -455,13 +457,13 @@ annotations:
   mode: annotate
   title: Clock and Audio
   text: local/time is the single playback clock. Audio File In is Locked to Timeline, so it follows the clock. transport_callbacks handles Play / Reset / Seek.
-  position: [-670, -470]
-  size: [1270, 770]
+  position: [-670, -284]
+  size: [1270, 584]
   color: [0.45, 0.45, 0.45]
 - name: annotate2
   mode: annotate
   title: MIDI Notes
   text: midiin_notes holds the whole MIDI file as a fixed clip. note_events scans it each frame between the previous and current clock position and writes Note On events to notes_now and note_log.
-  position: [-70, -1270]
-  size: [1470, 330]
+  position: [-675, -647]
+  size: [1281, 352]
   color: [0.45, 0.45, 0.45]

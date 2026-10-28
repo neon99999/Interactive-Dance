@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 6
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/engine
@@ -41,7 +41,9 @@ operators:
   type: nullCHOP
   parameters:
     autoexportroot: =parent()
-  position: [2000, -200]
+  flags:
+  - viewer
+  position: [1425, 75]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
@@ -53,7 +55,7 @@ operators:
     framestart: true
     file: project1/engine/engine.py
     syncfile: true
-  position: [800, -200]
+  position: [800, 75]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
   tags:
@@ -67,7 +69,7 @@ operators:
     colindexend: =me.inputTable.numCols - 1
     colexpr: =re.match('.*',me.inputCell.val) != None
     autoexportroot: =parent()
-  position: [1600, -200]
+  position: [1225, 75]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
 - name: show_logic
@@ -83,7 +85,9 @@ operators:
   - py
 - name: live_values
   type: tableDAT
-  position: [1200, -200]
+  flags:
+  - viewer
+  position: [1025, 75]
   tags:
   - tdxn_exclude:dat_content
 - name: engine_buttons
@@ -96,13 +100,16 @@ operators:
     builtin: false
     file: project1/engine/engine_buttons.py
     syncfile: true
-  position: [0, -800]
+  position: [445, -134]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
   tags:
   - py
 - name: midi_assignments
   type: tableDAT
+  flags:
+  - viewer
+  position: [445, 91]
   dat_content:
   - - note
     - target
@@ -192,12 +199,14 @@ operators:
   dat_content_format: table
 - name: assignment_errors
   type: tableDAT
-  position: [1200, -600]
+  position: [800, -100]
   tags:
   - tdxn_exclude:dat_content
 - name: input_assignments
   type: tableDAT
-  position: [0, -400]
+  flags:
+  - viewer
+  position: [445, -9]
   dat_content:
   - - signal
     - target
@@ -206,19 +215,19 @@ operators:
     - out_min
     - out_max
     - smoothing
-  - - ''
+  - - sim_trigger
+    - master.flash
+    - '0'
+    - '1'
+    - '0'
+    - '1'
     - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
-  - - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
+  - - sim_level
+    - layer4.opacity
+    - '0'
+    - '1'
+    - '0'
+    - '1'
     - ''
   - - ''
     - ''
@@ -268,13 +277,13 @@ annotations:
   mode: annotate
   title: Assignments (edit these)
   text: 'midi_assignments: note, target, action, value, duration (16 rows). input_assignments: signal, target, in/out range, smoothing. Problems are listed in assignment_errors. engine_buttons: the Assignments page buttons open these tables.'
-  position: [-70, -870]
-  size: [270, 1030]
+  position: [375, -175]
+  size: [270, 551]
   color: [0.45, 0.45, 0.45]
 - name: annotate2
   mode: annotate
   title: Engine
   text: 'Every frame: starting values + MIDI assignments at the playback position + input assignments -> live CHOP (layer1_opacity, master_flash ...).'
-  position: [730, -670]
-  size: [1470, 1030]
+  position: [730, -176]
+  size: [917, 536]
   color: [0.45, 0.45, 0.45]

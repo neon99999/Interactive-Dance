@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 1
+build: 2
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/midi_monitor
@@ -29,12 +29,13 @@ custom_pars:
     normMin: 0.2
     normMax: 5.0
     help: Seconds each note stays on screen after it plays. The newest note flashes, then fades over this time.
+    value: 3
 parameters:
   w: 640
   h: 360
   resizecomp: =me
   repocomp: =me
-  top: null_out
+  top: ./null_out
   parentshortcut: Monitor
 flags:
 - viewer
@@ -56,6 +57,8 @@ operators:
   - py
 - name: null_out
   type: nullTOP
+  flags:
+  - viewer
   position: [800, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -74,7 +77,7 @@ operators:
 - name: text_info
   type: textTOP
   parameters:
-    text: 0.00 s
+    text: 86.05 s
     fontsizex: 26
     positiony: 18
     aligny: bottom

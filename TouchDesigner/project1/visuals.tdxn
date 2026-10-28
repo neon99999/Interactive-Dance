@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 2
+build: 4
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -172,7 +172,8 @@ operators:
   type: outTOP
   flags:
   - display
-  position: [2000, 0]
+  - viewer
+  position: [1450, 0]
   inputs:
   - null_out
 - name: layer1
@@ -458,10 +459,12 @@ operators:
     colorr: 0
     colorg: 0
     colorb: 0
-  position: [0, -600]
+  position: [0, -325]
 - name: null_out
   type: nullTOP
-  position: [1600, 0]
+  flags:
+  - viewer
+  position: [1050, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
@@ -473,6 +476,8 @@ operators:
     outputresolution: custom
     resolutionw: 1280
     resolutionh: 720
+  flags:
+  - viewer
   position: [400, 0]
   inputs:
   - layer4
@@ -484,7 +489,9 @@ operators:
   type: crossTOP
   parameters:
     cross: =tdu.clamp(op('master_live')['flash'], 0, 1)
-  position: [800, 0]
+  flags:
+  - viewer
+  position: [650, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
@@ -492,17 +499,21 @@ operators:
   - flash_white
 - name: flash_white
   type: constantTOP
-  position: [400, -600]
+  flags:
+  - viewer
+  position: [400, -300]
 - name: master_live
   type: nullCHOP
-  position: [400, 800]
+  position: [425, 575]
   inputs:
   - master_select
 - name: level_master
   type: levelTOP
   parameters:
     brightness1: =tdu.clamp(op('master_live')['level'], 0, 1) * (1 - tdu.clamp(op('master_live')['blackout'], 0, 1))
-  position: [1200, 0]
+  flags:
+  - viewer
+  position: [850, 0]
   inputs:
   - cross_flash
 - name: master_select
@@ -510,13 +521,15 @@ operators:
   parameters:
     channames: master_*
     renamefrom: master_*
-  position: [0, 800]
+  position: [25, 575]
 - name: output_window
   type: windowCOMP
   parameters:
     winop: null_out
     title: =me
-  position: [2000, -400]
+  flags:
+  - viewer
+  position: [1025, -175]
   size: [160, 130]
   color: [0.67, 0.67, 0.67]
 - name: output_buttons
@@ -529,7 +542,9 @@ operators:
     builtin: false
     file: project1/visuals/output_buttons.py
     syncfile: true
-  position: [2000, -800]
+  flags:
+  - viewer
+  position: [1250, -175]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
   tags:
@@ -539,6 +554,6 @@ annotations:
   mode: annotate
   title: Visuals
   text: 'Four layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
-  position: [-70, -870]
-  size: [2300, 1830]
+  position: [-70, -371]
+  size: [1731, 1126]
   color: [0.45, 0.45, 0.45]
