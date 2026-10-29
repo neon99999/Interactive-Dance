@@ -14,7 +14,7 @@ Granted (may do unattended):
 - Create and edit files in this folder; delete files Claude created.
 - Start long-running background processes (test servers, recorders), and stop them when done.
 - Web lookups for documentation.
-- Read and edit the shared TD knowledge folder (see "Shared TD knowledge" below; granted 2026-10-29). No git pull, commit or push there without asking.
+- Read the shared TD knowledge folder and submit lessons to its inbox with its submit script (see "Shared TD knowledge" below; granted 2026-10-29). No direct edits to its topic files, and no git pull, commit or push there without asking.
 - In the Dance Workshop TD project (granted 2026-10-26): anything needed to build and test the current task (create, edit, delete and rewire operators; save the `.toe`; reopen it) without checking in. Never touch the other TD project (TouchClaude_01) if it is open.
 
 Ask each time:
@@ -42,10 +42,10 @@ Reusable lessons shared by Claude instances across TD projects and computers liv
 - `embody-envoy.md`: Embody/Envoy (TDXN round trips, externalizing, tool quirks)
 - `hardware-serial.md`: Serial DAT, line formats, ESP32/ESP8266 firmware
 
-Read the relevant file at the start of a session and before work in that area. When a lesson is confirmed here and would help other projects, add it there:
-- Read the file immediately before editing it (other instances edit it too) and append; never rewrite others' entries.
-- Use a new topic file if a subject grows.
-- Record only verified knowledge, never secrets.
+Read its `CLAUDE.md` first, then the relevant topic file at the start of a session and before work in that area; search all of them when TD behaves unexpectedly. When a lesson is confirmed here and would help other projects, submit it through the inbox, one lesson per file:
+- Never edit the topic files or other submissions directly; a scheduled maintenance process merges, deduplicates and queues conflicts for review.
+- Write the submission (format in `inbox/README.md`, project name `Dance Workshop`) as a draft in the scratchpad, then run `powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\mwadd\Documents\Claude\td-knowledge-tools\td-submit-lesson.ps1" -Draft <draft.md>`.
+- Record only verified knowledge, never secrets. Do not pull, commit, rebase or push the knowledge repo; the scheduled sync does that.
 
 Project-specific status and configuration stay in this repo (DEVELOPMENT_STATUS.md, README.md).
 
