@@ -1,0 +1,202 @@
+format: tdxn
+version: '2.2'
+build: 2
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/wearable_monitor
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  scriptDAT:
+    parameters:
+      callbacks: labels_callbacks
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  textDAT:
+    parameters:
+      syncfile: true
+    flags:
+    - viewer
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+  textTOP:
+    parameters:
+      alignx: left
+      font: Artifakt Element
+      fontsizex: 22
+      fontsizexunit: pixels
+      outputresolution: custom
+      resolutionh: 720
+      resolutionw: 1280
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+type: containerCOMP
+custom_pars:
+  Wearables:
+  - name: Wearable
+    style: Menu
+    label: Show Wearable
+    default: all
+    menuNames:
+    - all
+    - '1'
+    - '2'
+    - '3'
+    menuLabels:
+    - All three
+    - Wearable 1
+    - Wearable 2
+    - Wearable 3
+    help: Which wearables the panel shows. All three side by side, or one wearable full width (one per dancer).
+  - name: Gyrorange
+    style: Float
+    label: Gyro Range (dps)
+    default: 500
+    min: 1.0
+    clampMin: true
+    normMin: 50.0
+    normMax: 2000.0
+    help: Rotation speed at the ends of the gyro bars, in degrees per second.
+parameters:
+  w: 1280
+  h: 720
+  resizecomp: =me
+  repocomp: =me
+  top: ./null_out
+  parentshortcut: Wearables
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: signals
+  type: selectCHOP
+  parameters:
+    chops: ../inputs/signals
+    channames: serial_w[1-3]_*
+    autoexportroot: =parent()
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: null_out
+  type: nullTOP
+  position: [1600, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - glsl_panel
+- name: text_left
+  type: textTOP
+  parameters:
+    specdat: labels_left
+  position: [800, -400]
+- name: glsl_panel
+  type: glslTOP
+  parameters:
+    pixeldat: glsl_panel_pixel
+    computedat: glsl_panel_compute
+    outputresolution: custom
+    resolutionw: 1280
+    resolutionh: 720
+    format: rgba8fixed
+  sequences:
+    vec:
+    - name: uLayout
+      valuex: =mod('labels_callbacks').PAD
+      valuey: =mod('labels_callbacks').HEADER
+      valuez: =mod('labels_callbacks').ROW
+      valuew: =mod('labels_callbacks').LABEL_W
+    - name: uRanges
+      valuex: =mod('labels_callbacks').VALUE_W
+      valuey: =parent.Wearables.par.Gyrorange
+      valuez: =90
+      valuew: =180
+    - name: uSlots
+      valuex: =mod('labels_callbacks').slots()[0]
+      valuey: =mod('labels_callbacks').slots()[1]
+      valuez: =mod('labels_callbacks').slots()[2]
+      valuew: =mod('labels_callbacks').slots()[3]
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - values_tex
+  - text_left
+  - text_right
+- name: text_right
+  type: textTOP
+  parameters:
+    specdat: labels_right
+  position: [800, -800]
+- name: values_tex
+  type: choptoTOP
+  parameters:
+    chop: panel_values
+    format: mono32float
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: labels_left
+  type: scriptDAT
+  position: [400, -400]
+  dat_read_only: true
+- name: labels_right
+  type: scriptDAT
+  position: [400, -800]
+  dat_read_only: true
+- name: panel_values
+  type: scriptCHOP
+  parameters:
+    callbacks: panel_values_callbacks
+    autoexportroot: =parent()
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - signals
+- name: glsl_panel_info
+  type: infoDAT
+  parameters:
+    op: glsl_panel
+  flags:
+  - viewer
+  position: [1350, -120]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dock: glsl_panel
+  dat_read_only: true
+- name: glsl_panel_pixel
+  type: textDAT
+  parameters:
+    file: project1/wearable_monitor/glsl_panel_pixel.glsl
+    language: glsl
+    extension: frag
+  position: [1200, -120]
+  tags:
+  - glsl
+  dock: glsl_panel
+- name: labels_callbacks
+  type: textDAT
+  parameters:
+    file: project1/wearable_monitor/labels_callbacks.py
+    language: python
+  position: [400, -520]
+  tags:
+  - py
+  dock: labels_left
+- name: panel_values_callbacks
+  type: textDAT
+  parameters:
+    file: project1/wearable_monitor/panel_values_callbacks.py
+    language: python
+  position: [400, -120]
+  tags:
+  - py
+  dock: panel_values
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Wearable Signal Panel
+  text: 'Top row: signals from inputs -> panel_values (fixed w1..w3 channel set, live worked out here) -> values_tex -> glsl_panel draws cards, bars and lamps -> null_out. Below: labels_left / labels_right build the text positions (labels_callbacks) for text_left / text_right, which glsl_panel colours. Show Wearable picks all three or one.'
+  position: [-70, -870]
+  size: [1870, 1130]
+  color: [0.45, 0.45, 0.45]

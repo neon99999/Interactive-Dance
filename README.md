@@ -23,7 +23,7 @@ What it does:
 2. Open `TouchDesigner/DanceWorkshop.toe` in TouchDesigner.
 3. Go into `project1` (double-click it). The **Dance toolkit - start here** box holds four components. Click one and press **P** to see its controls; press **I** to go inside.
 4. On **transport**, turn **Play** on. The test track plays (a click every second, tones at 5, 10, 15 and 20 s) and the demo assignments show a circle at 5 s, double its size at 10 s, hide it at 15 s and flash the screen at 20 s.
-5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays. To check a wearable motion sensor, watch **imu_monitor**.
+5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays. To check a wearable motion sensor, watch **imu_monitor** (raw motion graphs) or **wearable_monitor** (every dancer signal).
 6. On **visuals**, press **Open Output Window** (Output page) to show the result full screen.
 
 The final image is `visuals/null_out`. It is also shown as the background of the `visuals` network.
@@ -145,6 +145,15 @@ Directions are on the body: the wearable is worn chip side out, USB connector to
 
 Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Range** (the value at the edge of each graph) and **Signal Prefix** (pick Wearable 1-4 for `serial_w1_` ... through the receiver, or Wearable on USB for `serial_`). Until data arrives the panel says what to switch on.
 
+### wearable_monitor: see every dancer signal
+
+A panel with one card per wearable, so dancers can see what each signal does before it is mapped to anything. Each card shows the mode (WRIST or ANKLE, also as the colour of the top stripe), LIVE or NO SIGNAL, and one row per signal: an **activity** bar, **gyro x/y/z** and **pitch/roll** bars that grow left or right from the middle, and lamps for **hit** (with the hit direction), **still** and **button**. The value is printed at the right of each row.
+
+- **Show Wearable** (Wearables page): **All three** side by side, or **Wearable 1/2/3** alone, full width (one wearable per dancer).
+- **Gyro Range**: the rotation speed at the end of the gyro bars (500 degrees per second by default). Pitch runs to ±90° and roll to ±180°.
+- A wearable counts as LIVE while its readings keep changing (they do, slightly, even when it is held still) and the receiver has not reported it lost; after 1 s with no new reading it shows NO SIGNAL and fades.
+- It reads the same `serial_wN_...` signals as the assignment table, so switch on **inputs > Serial** as for imu_monitor.
+
 ### visuals: four layers
 
 `visuals/layer1` to `layer4` each have a **Layer** page with the starting look:
@@ -193,6 +202,7 @@ TouchDesigner/
     visuals.tdxn           layers, compositing, output
     midi_monitor.tdxn      shows MIDI notes as they play
     imu_monitor.tdxn       graphs a wearable's motion sensor
+    wearable_monitor.tdxn  shows every wearable signal live, per wearable
     tests.tdxn, tests/     in-TouchDesigner tests
 Firmware/                  wearable motion sensor firmware (PlatformIO, see Firmware/README.md)
 media/test/                test audio, MIDI and image

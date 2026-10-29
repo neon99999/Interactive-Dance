@@ -64,8 +64,9 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 - **Protocol v3:** the Motion packet carries the signals. The receiver still reads v2 packets, so a v0.5 wearable keeps working with the new receiver (flash the receiver first).
 - **Receiver fw v0.2:** prints the signals after the raw values; zeroes `act`, `hit`, `still` and `btn` when a wearable is lost; detects two wearables with the same id (`DUP`). The display always shows rows for wearables 1-3 with the mode, an activity bar, hit direction, still and button markers and tilt, and draws one small piece per loop pass so serial output to TouchDesigner goes first.
 - **Tuning tool:** `Firmware/tools/motion_model.py`, a Python copy of the detectors that reads the numbers from `config.h`, analyses recordings and checks them against the firmware's own results. `tests/test_motion_model.py` (13 tests) checks the design on made-up movements: one hit per punch with its counter-spike, two punches, all six directions, the axis mapping, ankle vs wrist thresholds, tilt, activity, still.
-- **Not tested automatically:** the C++ itself (no C++ compiler for this computer on MINI-PC). The in-TD tests could not run on MINI-PC (TouchDesigner's main thread is stalled there).
-- **Still to build:** the TouchDesigner panel that shows every signal live, three wearables side by side or one selected. It needs a working TouchDesigner.
+- **Not tested automatically:** the C++ itself (no C++ compiler for this computer on MINI-PC).
+- **TouchDesigner panel `wearable_monitor`** (2026-10-29, MINI-PC): one card per wearable with the mode, LIVE / NO SIGNAL, bars for activity, gyro x/y/z, pitch and roll, and lamps for hit (with direction), still and button. **Show Wearable** shows all three side by side or one full width. Tested in TouchDesigner by feeding made-up receiver lines through the real serial callback (`serial_in_callbacks.onReceive`): the values, bars, lamps, mode and the one-wearable view were checked by captured frames, LIVE turns on while readings change, goes off 1 s after they stop and at once on `wN_live=0`. Not yet seen with a real wearable. Its cook cost is about 3-4 ms per frame while it is on screen (two Text TOPs and their tables re-cook every frame); nothing while it is not shown.
+- **MINI-PC TouchDesigner brought back in line with the files:** after a restart the live `imu_monitor` and `inputs` still had the old prefix field and DTR on; they were reloaded from their `.tdxn` files (DTR off and the prefix menu are now live). The in-TD tests passed 63 of 63 afterwards (one earlier run had 2 engine timing checks fail at about 40 fps; the rerun passed).
 
 ## Not verified (needs a person or hardware)
 
@@ -112,4 +113,5 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
 8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
-9. Flash receiver v0.2 and wearables v0.6 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
+9. Flash receiver v0.2 and wearables v0.7 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
+10. With receiver v0.2 and a v0.7 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
