@@ -85,7 +85,7 @@ Lying flat and still, the IMU should read about 1 g on one axis and close to 0 o
 | Boot, USB serial log, heartbeat | Runs on a board (heartbeat seen in the monitor) |
 | Motor pin held LOW from boot | Written; **not checked on hardware** |
 | IMU detection and readings | v0.2 run on a board: found at 0x6A, about 1 g at rest, values follow tilting and turning |
-| v0.3 `name=value` output at 50 Hz, read by TouchDesigner | Compiles; TouchDesigner side tested with simulated lines; **not yet run with the board** |
+| v0.3 `name=value` output at 50 Hz, read by TouchDesigner | Run on a board (LAPTOP, 2026-10-28): `imu_monitor` graphs follow tilting |
 | ESP-NOW, button, battery | Placeholders only |
 | Receiver | Source placeholder; no build target |
 | Pin numbers in `config.h` | IMU on D4/D5 matches the wiring; button, motor, battery **provisional** |

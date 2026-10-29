@@ -36,7 +36,7 @@ Last updated 2026-10-27.
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **34 of 34** pass (27 show logic, 7 serial parser). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **35 of 35** pass (27 show logic, 8 serial parser). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -47,10 +47,13 @@ Last updated 2026-10-27.
 - **Listening:** the user played the test track and the visuals line up with the audio. The output buffer still adds a small delay (about 0.15 s, more over remote desktop); there is no latency setting yet.
 - **Simulated inputs:** the user drove the simulated channels and saw the visuals respond.
 
+## Verified on hardware (2026-10-28, LAPTOP)
+
+- **Wearable IMU over USB serial:** a XIAO ESP32-C6 with the LSM6DS3TR-C (firmware v0.3, branch `feature/wearable-sensors`) sent readings to `inputs > Serial` on COM4, and the `imu_monitor` graphs moved when the user tilted it. This is the first real serial device. Mapping `serial_ax` etc. onto visuals has not been tried yet.
+
 ## Not verified (needs a person or hardware)
 
 - **Movies:** Content "media" was tested with a still image. A movie plays on its own clock, not synced to the music, seek or pause.
-- **Real serial device:** no hardware was connected. Lines were fed to the same callback the Serial DAT uses.
 - **Real webcam:** none on this machine, which runs over remote desktop. The camera chain was tested with the moving test pattern.
 - **OSC from another device:** only tested from this computer to itself (127.0.0.1). Another device may also need the Windows firewall to allow TouchDesigner, and the user decides that.
 - **macOS:** untested. Nothing Windows-specific was used. The camera driver and serial port names differ, and both are picked from menus.
@@ -87,7 +90,7 @@ Last updated 2026-10-27.
 1. ~~Play the test track and listen~~ (done 2026-10-27).
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
-4. Connect an Arduino that prints `accel=0.5` lines; pick the port and baud; map `serial_accel`.
+4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28). Still to try: map `serial_ax` in the input table and drive a visual.
 5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
