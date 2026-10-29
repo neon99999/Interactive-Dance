@@ -1,6 +1,6 @@
 // Wearable firmware entry point: boot, identify, start each module, then run
-// the modules' update loops. The IMU is implemented; the other modules are
-// placeholders for now (see README.md).
+// the modules' update loops. The IMU and the ESP-NOW link are implemented; the
+// other modules are placeholders for now (see README.md).
 
 #include <Arduino.h>
 
@@ -44,9 +44,15 @@ void logHeartbeat(uint32_t now) {
   Serial.printf("[heartbeat] uptime %lu s, wearable %u, fw v%u.%u, imu ", static_cast<unsigned long>(now / 1000),
                 dance::WEARABLE_ID, dance::FIRMWARE_VERSION_MAJOR, dance::FIRMWARE_VERSION_MINOR);
   if (imu::isReady()) {
-    Serial.printf("ok at 0x%02X\n", imu::address());
+    Serial.printf("ok at 0x%02X", imu::address());
   } else {
-    Serial.println("not found");
+    Serial.print("not found");
+  }
+  if (espnow_link::isReady()) {
+    Serial.printf(", espnow sent %lu failed %lu\n", static_cast<unsigned long>(espnow_link::sentCount()),
+                  static_cast<unsigned long>(espnow_link::failedCount()));
+  } else {
+    Serial.println(", espnow off");
   }
 }
 

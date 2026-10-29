@@ -1,9 +1,19 @@
 // ESP-NOW link to the receiver.
-// Placeholder: begin() only logs. Later: start Wi-Fi in station mode, init
-// ESP-NOW, add the receiver as a peer and send protocol.h packets.
+// begin() starts Wi-Fi in station mode on ESPNOW_CHANNEL (protocol.h) and
+// sends a Hello; update() broadcasts every new IMU reading as a Motion packet,
+// at most every ESPNOW_SEND_MS. Broadcast needs no receiver address, so any
+// receiver on the channel picks the packets up.
 #pragma once
 
+#include <stdint.h>
+
 namespace espnow_link {
+
 bool begin();
 void update();
+
+bool isReady();
+uint32_t sentCount();    // packets handed to the radio
+uint32_t failedCount();  // packets the radio refused to queue
+
 }  // namespace espnow_link
