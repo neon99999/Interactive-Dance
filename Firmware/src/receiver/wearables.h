@@ -18,8 +18,20 @@ struct Wearable {
   uint16_t ratePerSecond = 0;
   uint16_t packetsThisSecond = 0;
   uint8_t firmwareMajor = 0, firmwareMinor = 0;  // from Hello; 0.0 until one arrives
-  int16_t ax = 0, ay = 0, az = 0;  // protocol.h fixed point (thousandths of a g)
+  uint8_t protocolVersion = 0;     // of the last packet
+  uint8_t mac[6] = {};             // sender of the last packet
+  uint32_t duplicateMs = 0;        // last packet from a second device with this id
+  bool duplicateSeen = false;
+  // protocol.h fixed point:
+  int16_t ax = 0, ay = 0, az = 0;  // thousandths of a g
   int16_t gx = 0, gy = 0, gz = 0;  // tenths of a degree per second
+  // Motion processing, protocol v3 (wearable fw v0.6) and later:
+  bool hasMotion = false;
+  int16_t pitch = 0, roll = 0;     // tenths of a degree
+  uint16_t activity = 0;           // 0..MOTION_ACTIVITY_FULL
+  bool hit = false;
+  uint8_t hits = 0;
+  bool gyroCalibrated = false;
 };
 
 // Index 0 is wearable id 1.

@@ -121,11 +121,22 @@ A panel next to the other components. While the music plays it shows the number 
 
 ### imu_monitor: check a wearable sensor
 
-A panel that graphs the motion of a wearable (see `Firmware/`; wearables send by radio to a receiver plugged into this computer): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
+A panel that graphs the raw motion of a wearable (see `Firmware/`; up to three wearables send by radio to a receiver plugged into this computer): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
 
 1. Plug the wearable in by USB and close any other serial monitor (only one program can use the port).
 2. On **inputs > Serial**: **Read Serial** on, **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200).
-3. Through the receiver, wearable 1 arrives as the signals `serial_w1_ax` ... `serial_w1_gz` (wearable 2 as `serial_w2_...`), 50 readings a second, plus `serial_w1_live` (1 while connected, 0 when lost). A wearable on USB arrives as `serial_ax` ... `serial_gz`. These names also work in the input assignment table.
+3. Through the receiver, wearable 1 arrives as the signals `serial_w1_ax` ... `serial_w1_gz` (wearable 2 as `serial_w2_...`, wearable 3 as `serial_w3_...`), about 100 readings a second, plus `serial_w1_live` (1 while connected, 0 when lost). A wearable on USB arrives as `serial_ax` ... `serial_gz`. These names also work in the input assignment table.
+
+Wearables on firmware v0.6 or later also send their own motion processing, worked out on the wearable from every sensor sample (208 a second), so short movements are not missed:
+
+| Signal | Range | Meaning |
+|---|---|---|
+| `serial_w1_act` | 0 to 1 | Activity: how much the wearable is moving. Rises fast, falls over about half a second. Good for a level or opacity. |
+| `serial_w1_hit` | 0 or 1 | 1 for 0.12 s after a sharp hit or stamp (more than 1.5 g above gravity). Good for a flash, e.g. to `master.flash` with the default 0-1 ranges. |
+| `serial_w1_pitch` | -90 to 90 | Tilt in degrees, forwards and backwards (about the sensor's y axis). |
+| `serial_w1_roll` | -180 to 180 | Tilt in degrees, side to side (about the sensor's x axis). |
+
+Tilt is 0 when the sensor lies flat, chip side up; how that maps to the body depends on how the wearable is worn. The wearable measures its gyro drift at power-up, so **keep it still for a second after switching it on** (the receiver's display shows `cal` until it has). When a wearable is lost, `act` and `hit` drop to 0, so nothing stays switched on; `pitch`, `roll` and the raw values keep their last reading.
 
 Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Range** (the value at the edge of each graph) and **Signal Prefix** (pick Wearable 1-4 for `serial_w1_` ... through the receiver, or Wearable on USB for `serial_`). Until data arrives the panel says what to switch on.
 

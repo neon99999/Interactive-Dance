@@ -20,15 +20,15 @@ constexpr uint8_t WHO_AM_I_VALUE = 0x6A;
 
 constexpr uint8_t CTRL3_SW_RESET = 0x01;
 constexpr uint8_t CTRL3_BDU_IF_INC = 0x44;  // block data update + address auto-increment
-constexpr uint8_t CTRL1_XL_104HZ_4G = 0x48;
-constexpr uint8_t CTRL2_G_104HZ_2000DPS = 0x4C;
-constexpr float ACCEL_G_PER_LSB = 0.000122f;  // +-4 g
-constexpr float GYRO_DPS_PER_LSB = 0.070f;    // +-2000 dps
+// 208 Hz. +-8 g leaves room for hits and stamps (+-4 g clipped them).
+constexpr uint8_t CTRL1_XL_208HZ_8G = 0x5C;      // ODR_XL 0101, FS_XL 11 = +-8 g
+constexpr uint8_t CTRL2_G_208HZ_2000DPS = 0x5C;  // ODR_G 0101, FS_G 11 = 2000 dps
+constexpr float ACCEL_G_PER_LSB = 0.000244f;     // +-8 g
+constexpr float GYRO_DPS_PER_LSB = 0.070f;       // +-2000 dps
 
 uint8_t sensorAddress = 0;
 Reading reading = {};
 uint32_t lastReadMs = 0;
-uint32_t lastLogMs = 0;
 uint32_t lastRetryMs = 0;
 
 bool writeRegister(uint8_t reg, uint8_t value) {
@@ -80,8 +80,8 @@ bool detect() {
 bool configure() {
   if (!writeRegister(REG_CTRL3_C, CTRL3_SW_RESET)) return false;
   delay(20);
-  return writeRegister(REG_CTRL3_C, CTRL3_BDU_IF_INC) && writeRegister(REG_CTRL1_XL, CTRL1_XL_104HZ_4G) &&
-         writeRegister(REG_CTRL2_G, CTRL2_G_104HZ_2000DPS);
+  return writeRegister(REG_CTRL3_C, CTRL3_BDU_IF_INC) && writeRegister(REG_CTRL1_XL, CTRL1_XL_208HZ_8G) &&
+         writeRegister(REG_CTRL2_G, CTRL2_G_208HZ_2000DPS);
 }
 
 bool start() {
@@ -92,13 +92,15 @@ bool start() {
     sensorAddress = 0;
     return false;
   }
-  Serial.printf("[imu] LSM6DS3TR-C ready at 0x%02X: 104 Hz, +-4 g, +-2000 dps\n", sensorAddress);
+  Serial.printf("[imu] LSM6DS3TR-C ready at 0x%02X: 208 Hz, +-8 g, +-2000 dps\n", sensorAddress);
   return true;
 }
 
 int16_t toInt16(const uint8_t* bytes) { return static_cast<int16_t>(bytes[0] | (bytes[1] << 8)); }
 
-bool readSensor() {
+// Returns false when the sensor stops answering; sets fresh when a new sample was read.
+bool readSensor(bool& fresh) {
+  fresh = false;
   uint8_t status = 0;
   if (!readRegisters(sensorAddress, REG_STATUS, &status, 1)) return false;
   if ((status & 0x03) == 0) return true;  // no new accel or gyro sample yet
@@ -111,6 +113,8 @@ bool readSensor() {
   reading.ay = toInt16(raw + 8) * ACCEL_G_PER_LSB;
   reading.az = toInt16(raw + 10) * ACCEL_G_PER_LSB;
   reading.timeMs = millis();
+  reading.timeUs = micros();
+  fresh = true;
   return true;
 }
 
@@ -126,30 +130,25 @@ bool begin() {
   return false;
 }
 
-void update() {
+bool update() {
   const uint32_t now = millis();
   if (!isReady()) {
     if (now - lastRetryMs >= dance::IMU_RETRY_MS) {
       lastRetryMs = now;
       if (!start()) scanBus();
     }
-    return;
+    return false;
   }
-  if (now - lastReadMs < dance::IMU_READ_MS) return;
+  if (now - lastReadMs < dance::IMU_READ_MS) return false;
   lastReadMs = now;
-  if (!readSensor()) {
+  bool fresh = false;
+  if (!readSensor(fresh)) {
     Serial.printf("[imu] lost the sensor at 0x%02X\n", sensorAddress);
     sensorAddress = 0;
     lastRetryMs = now;
-    return;
+    return false;
   }
-  if (dance::IMU_LOG_MS > 0 && now - lastLogMs >= dance::IMU_LOG_MS) {
-    lastLogMs = now;
-    // name=value pairs: the TouchDesigner inputs component reads these as
-    // serial_ax ... serial_gz (accel in g, gyro in degrees per second).
-    Serial.printf("ax=%.3f ay=%.3f az=%.3f gx=%.1f gy=%.1f gz=%.1f\n", reading.ax, reading.ay, reading.az, reading.gx,
-                  reading.gy, reading.gz);
-  }
+  return fresh;
 }
 
 bool isReady() { return sensorAddress != 0; }

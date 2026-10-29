@@ -13,6 +13,10 @@
 //
 // Defined so far: Hello and Motion. Button, battery and haptic packets come
 // with the features that need them.
+//
+// History: v2 Motion carried the raw IMU reading only (MotionPacketV2, kept so
+// a receiver still reads wearables on fw v0.4-v0.5). v3 adds the wearable's
+// motion processing: tilt, activity and a hit flag.
 
 #pragma once
 
@@ -22,7 +26,8 @@
 namespace dance {
 
 constexpr uint8_t PROTOCOL_MAGIC = 0xDA;
-constexpr uint8_t PROTOCOL_VERSION = 2;
+constexpr uint8_t PROTOCOL_VERSION = 3;
+constexpr uint8_t PROTOCOL_VERSION_OLDEST = 2;  // oldest version a receiver still accepts
 
 // ESP-NOW v1 payload limit; keeps packets readable by ESP8266 and every ESP32.
 constexpr size_t ESPNOW_MAX_PAYLOAD = 250;
@@ -59,17 +64,34 @@ struct HelloPacket {
 constexpr float MOTION_ACCEL_PER_UNIT = 0.001f;
 constexpr float MOTION_GYRO_PER_UNIT = 0.1f;
 
-struct MotionPacket {
+constexpr float MOTION_ANGLE_PER_UNIT = 0.1f;       // tilt in tenths of a degree
+constexpr uint16_t MOTION_ACTIVITY_FULL = 1000;     // activity 0..1000 = 0..1
+constexpr uint8_t MOTION_FLAG_HIT = 0x01;           // a hit happened in the last HIT_HOLD_MS
+constexpr uint8_t MOTION_FLAG_GYRO_CALIBRATED = 0x02;
+
+// v2 layout: raw reading only.
+struct MotionPacketV2 {
   PacketHeader header;
   int16_t ax, ay, az;  // x MOTION_ACCEL_PER_UNIT = g
   int16_t gx, gy, gz;  // x MOTION_GYRO_PER_UNIT = degrees per second
+};
+
+struct MotionPacket {
+  PacketHeader header;
+  int16_t ax, ay, az;  // x MOTION_ACCEL_PER_UNIT = g
+  int16_t gx, gy, gz;  // x MOTION_GYRO_PER_UNIT = degrees per second, gyro bias removed
+  int16_t pitch, roll; // x MOTION_ANGLE_PER_UNIT = degrees of tilt from gravity
+  uint16_t activity;   // 0..MOTION_ACTIVITY_FULL, how much the wearable is moving
+  uint8_t flags;       // MOTION_FLAG_*
+  uint8_t hits;        // hits counted since boot, wraps at 255
 };
 
 #pragma pack(pop)
 
 static_assert(sizeof(PacketHeader) == 6, "PacketHeader layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(HelloPacket) == 8, "HelloPacket layout changed: bump PROTOCOL_VERSION");
-static_assert(sizeof(MotionPacket) == 18, "MotionPacket layout changed: bump PROTOCOL_VERSION");
+static_assert(sizeof(MotionPacketV2) == 18, "MotionPacketV2 is a fixed old layout");
+static_assert(sizeof(MotionPacket) == 26, "MotionPacket layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(MotionPacket) <= ESPNOW_MAX_PAYLOAD, "packet too large for ESP-NOW");
 
 inline PacketHeader makeHeader(PacketType type, uint8_t wearableId, uint16_t sequence) {
@@ -77,7 +99,8 @@ inline PacketHeader makeHeader(PacketType type, uint8_t wearableId, uint16_t seq
 }
 
 inline bool isValidHeader(const PacketHeader& header) {
-  return header.magic == PROTOCOL_MAGIC && header.version == PROTOCOL_VERSION;
+  return header.magic == PROTOCOL_MAGIC && header.version >= PROTOCOL_VERSION_OLDEST &&
+         header.version <= PROTOCOL_VERSION;
 }
 
 }  // namespace dance

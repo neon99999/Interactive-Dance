@@ -8,6 +8,7 @@
 
 #include "config.h"
 #include "imu.h"
+#include "motion.h"
 #include "protocol.h"
 
 namespace espnow_link {
@@ -20,8 +21,7 @@ bool ready = false;
 uint16_t sequence = 0;
 uint32_t sent = 0;
 uint32_t failed = 0;
-uint32_t lastSendMs = 0;
-uint32_t lastSentReadingMs = 0;
+uint32_t lastSentSample = 0;
 
 int16_t toFixed(float value, float perUnit) {
   const float units = roundf(value / perUnit);
@@ -42,14 +42,23 @@ void sendHello() {
   send(&packet, sizeof(packet));
 }
 
-void sendMotion(const imu::Reading& r) {
+void sendMotion(const imu::Reading& r, const motion::State& m) {
+  uint8_t flags = 0;
+  if (m.hit) flags |= dance::MOTION_FLAG_HIT;
+  if (m.gyroCalibrated) flags |= dance::MOTION_FLAG_GYRO_CALIBRATED;
   dance::MotionPacket packet{dance::makeHeader(dance::PacketType::Motion, dance::WEARABLE_ID, sequence++),
                              toFixed(r.ax, dance::MOTION_ACCEL_PER_UNIT),
                              toFixed(r.ay, dance::MOTION_ACCEL_PER_UNIT),
                              toFixed(r.az, dance::MOTION_ACCEL_PER_UNIT),
-                             toFixed(r.gx, dance::MOTION_GYRO_PER_UNIT),
-                             toFixed(r.gy, dance::MOTION_GYRO_PER_UNIT),
-                             toFixed(r.gz, dance::MOTION_GYRO_PER_UNIT)};
+                             toFixed(m.gx, dance::MOTION_GYRO_PER_UNIT),
+                             toFixed(m.gy, dance::MOTION_GYRO_PER_UNIT),
+                             toFixed(m.gz, dance::MOTION_GYRO_PER_UNIT),
+                             toFixed(m.pitch, dance::MOTION_ANGLE_PER_UNIT),
+                             toFixed(m.roll, dance::MOTION_ANGLE_PER_UNIT),
+                             static_cast<uint16_t>(lroundf(constrain(m.activity, 0.0f, 1.0f) *
+                                                           dance::MOTION_ACTIVITY_FULL)),
+                             flags,
+                             m.hits};
   send(&packet, sizeof(packet));
 }
 
@@ -84,13 +93,10 @@ bool begin() {
 
 void update() {
   if (!ready || !imu::isReady()) return;
-  const imu::Reading& reading = imu::latest();
-  if (reading.timeMs == 0 || reading.timeMs == lastSentReadingMs) return;  // nothing new
-  const uint32_t now = millis();
-  if (now - lastSendMs < dance::ESPNOW_SEND_MS) return;
-  lastSendMs = now;
-  lastSentReadingMs = reading.timeMs;
-  sendMotion(reading);
+  const motion::State& m = motion::state();
+  if (m.samples - lastSentSample < dance::ESPNOW_SEND_EVERY_SAMPLES) return;
+  lastSentSample = m.samples;
+  sendMotion(imu::latest(), m);
 }
 
 bool isReady() { return ready; }

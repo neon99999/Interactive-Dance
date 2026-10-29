@@ -1,8 +1,8 @@
 // ESP-NOW link to the receiver.
 // begin() starts Wi-Fi in station mode on ESPNOW_CHANNEL (protocol.h) and
-// sends a Hello; update() broadcasts every new IMU reading as a Motion packet,
-// at most every ESPNOW_SEND_MS. Broadcast needs no receiver address, so any
-// receiver on the channel picks the packets up.
+// sends a Hello; update() broadcasts a Motion packet (the IMU reading plus the
+// motion processing) every ESPNOW_SEND_EVERY_SAMPLES new samples. Broadcast
+// needs no receiver address, so any receiver on the channel picks the packets up.
 #pragma once
 
 #include <stdint.h>

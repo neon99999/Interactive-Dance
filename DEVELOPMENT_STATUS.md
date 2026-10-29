@@ -36,7 +36,7 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **36 of 36** pass (27 show logic, 9 serial parser). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **37 of 37** pass (27 show logic, 10 serial parser, including the receiver's v0.2 line format). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -55,6 +55,16 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 - **Wireless with fw v0.5:** the user flashed v0.5 and confirmed the whole chain: wearable to receiver over ESP-NOW, the receiver display, TouchDesigner at 921600 baud, input assignments (`serial_w1_ax` to `layer1.x`, `serial_w1_ay` to `layer1.y`) driving the visuals, and `imu_monitor` with prefix `serial_w1_`.
 - **Still to check on LAPTOP:** commit `7184ee0` restored the imu_monitor prefix menu, the no-data hint, the baud help and DTR off, which a save from a TouchDesigner session left open across a `git pull` had reverted. The files were checked by hand but not yet loaded in TouchDesigner, and the 63 in-TD tests have not been run on this branch. Close TouchDesigner before every `git pull`.
 
+## Built, not yet on hardware (2026-10-29, branch `feature/wearable-sensors`)
+
+Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable2`, `wearable3`, `receiver`) compile with no warnings in our code.
+
+- **Wearable fw v0.6:** motion processing on every sensor sample (now 208 Hz, +-8 g): gyro bias calibrated at power-up while still, tilt (`pitch`, `roll`), activity (`act`, 0-1) and hits (`hit`, held 120 ms so a frame cannot miss it). Sends about 104 packets a second (was 50) for lower latency. Build environments for ids 1, 2 and 3.
+- **Protocol v3:** the Motion packet carries the processed values. The receiver still reads v2 packets, so a v0.5 wearable keeps working with the new receiver (flash the receiver first).
+- **Receiver fw v0.2:** prints `w<id>_pitch`, `_roll`, `_act`, `_hit` after the raw values; sets `act` and `hit` to 0 when a wearable is lost; detects two wearables with the same id (`DUP`). The display always shows rows for wearables 1-3, adds an activity bar, hit/calibration marker and tilt, and draws one small piece per loop pass so serial output to TouchDesigner goes first.
+- **TouchDesigner:** no changes needed; the new signals (`serial_w1_act` etc.) appear in the input assignment table by name. The motion thresholds are starting values to tune on a dancer.
+- **Not tested automatically:** the C++ motion processing (no host C++ compiler on MINI-PC). The in-TD tests could not run on MINI-PC (TouchDesigner's main thread is stalled there).
+
 ## Not verified (needs a person or hardware)
 
 - **Movies:** Content "media" was tested with a still image. A movie plays on its own clock, not synced to the music, seek or pause.
@@ -68,7 +78,7 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 ## Known limitations
 
 - Only Note On is used (no velocity, channel or Note Off).
-- If a sensor stops sending, its last OSC or serial value holds until the source is turned off.
+- If a sensor stops sending, its last OSC or serial value holds until the source is turned off. Exception: through the receiver (fw v0.2), a lost wearable's `act` and `hit` drop to 0.
 - OSC address names keep their slashes (`dancer/level`), which can look odd in tables.
 - The camera signals are raw motion amounts, so they need **Sensitivity** or an input range to tune.
 - `layer2`-`layer4` are clones: edit the network inside `layer1` only.
@@ -95,7 +105,8 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
 4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28, over USB and wirelessly through the receiver, including driving a visual through the input table).
-8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
 5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
+8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
+9. Flash receiver v0.2 and wearables v0.6 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.

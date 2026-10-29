@@ -1,6 +1,6 @@
 // Wearable firmware entry point: boot, identify, start each module, then run
-// the modules' update loops. The IMU and the ESP-NOW link are implemented; the
-// other modules are placeholders for now (see README.md).
+// the modules' update loops. The IMU, motion processing and the ESP-NOW link
+// are implemented; the other modules are placeholders for now (see README.md).
 
 #include <Arduino.h>
 
@@ -10,11 +10,13 @@
 #include "espnow_link.h"
 #include "haptic.h"
 #include "imu.h"
+#include "motion.h"
 #include "protocol.h"
 
 namespace {
 
 uint32_t lastHeartbeatMs = 0;
+uint32_t lastLogMs = 0;
 
 void waitForSerial() {
   const uint32_t start = millis();
@@ -44,7 +46,9 @@ void logHeartbeat(uint32_t now) {
   Serial.printf("[heartbeat] uptime %lu s, wearable %u, fw v%u.%u, imu ", static_cast<unsigned long>(now / 1000),
                 dance::WEARABLE_ID, dance::FIRMWARE_VERSION_MAJOR, dance::FIRMWARE_VERSION_MINOR);
   if (imu::isReady()) {
-    Serial.printf("ok at 0x%02X", imu::address());
+    const motion::State& m = motion::state();
+    Serial.printf("ok at 0x%02X, gyro %s, hits %u", imu::address(), m.gyroCalibrated ? "calibrated" : "NOT calibrated",
+                  m.hits);
   } else {
     Serial.print("not found");
   }
@@ -54,6 +58,18 @@ void logHeartbeat(uint32_t now) {
   } else {
     Serial.println(", espnow off");
   }
+}
+
+// One name=value line for TouchDesigner over USB (Read Serial on, 115200),
+// read as serial_ax ... serial_hit. The receiver prints the same names with
+// a w<id>_ prefix.
+void logReading(uint32_t now) {
+  if (dance::IMU_LOG_MS == 0 || now - lastLogMs < dance::IMU_LOG_MS) return;
+  lastLogMs = now;
+  const imu::Reading& r = imu::latest();
+  const motion::State& m = motion::state();
+  Serial.printf("ax=%.3f ay=%.3f az=%.3f gx=%.1f gy=%.1f gz=%.1f pitch=%.1f roll=%.1f act=%.3f hit=%u\n", r.ax, r.ay,
+                r.az, m.gx, m.gy, m.gz, m.pitch, m.roll, m.activity, m.hit ? 1 : 0);
 }
 
 }  // namespace
@@ -78,14 +94,17 @@ void setup() {
 }
 
 void loop() {
-  imu::update();
+  const uint32_t now = millis();
+  if (imu::update()) {
+    motion::update(imu::latest());
+    espnow_link::update();  // send first: the radio is the low-latency path
+    logReading(now);
+  }
   button::update();
   battery::update();
   haptic::update();
-  espnow_link::update();
   replayIdentityOnKeypress();
 
-  const uint32_t now = millis();
   if (now - lastHeartbeatMs >= dance::HEARTBEAT_LOG_MS) {
     lastHeartbeatMs = now;
     logHeartbeat(now);

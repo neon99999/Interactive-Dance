@@ -59,6 +59,17 @@ class ParseLine(unittest.TestCase):
 		self.assertEqual(sp.parseLine('a=1,b=2;c=3\td=4')[0],
 			{'serial_a': 1.0, 'serial_b': 2.0, 'serial_c': 3.0, 'serial_d': 4.0})
 
+	def test_receiver_lines(self):
+		# Receiver v0.2 lines, as Firmware/src/receiver/main.cpp prints them.
+		values, problems = sp.parseLine('w2_ax=0.012 w2_ay=-0.021 w2_az=1.003 w2_gx=0.4 w2_gy=-0.3 w2_gz=0.1 '
+			'w2_pitch=-12.5 w2_roll=170.0 w2_act=0.031 w2_hit=1')
+		self.assertEqual(problems, [])
+		self.assertEqual(len(values), 10)
+		self.assertEqual((values['serial_w2_pitch'], values['serial_w2_act'], values['serial_w2_hit']),
+			(-12.5, 0.031, 1.0))
+		self.assertEqual(sp.parseLine('w3_live=0 w3_act=0 w3_hit=0')[0],
+			{'serial_w3_live': 0.0, 'serial_w3_act': 0.0, 'serial_w3_hit': 0.0})
+
 	def test_prefix_and_names(self):
 		self.assertEqual(sp.parseNames(' accel, zone ;x '), ['accel', 'zone', 'x'])
 		self.assertEqual(sp.parseLine('3', prefix='s_')[0], {'s_1': 3.0})

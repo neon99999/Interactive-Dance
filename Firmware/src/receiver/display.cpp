@@ -19,22 +19,35 @@ constexpr int16_t WIDTH = 160;
 constexpr int16_t HEIGHT = 128;
 constexpr int16_t TITLE_HEIGHT = 11;
 constexpr int16_t ROW_TOP = 14;
-constexpr int16_t ROW_HEIGHT = 27;  // name line, accel bars, gyro bars
-constexpr uint8_t MAX_ROWS = (HEIGHT - ROW_TOP) / ROW_HEIGHT;  // 4
+constexpr int16_t ROW_HEIGHT = 38;  // name line, accel bars, gyro bars, activity line
 constexpr int16_t BAR_WIDTH = 50;
 constexpr int16_t BAR_HEIGHT = 6;
 constexpr int16_t BAR_GAP = 3;
 constexpr int ACCEL_FULL_SCALE = 2000;  // 2 g in protocol units fills a bar
 constexpr int GYRO_FULL_SCALE = 5000;   // 500 dps
+constexpr int16_t LINE_CHARS = 26;
+constexpr int16_t DETAIL_X = 2 + BAR_WIDTH + BAR_GAP + 2;  // tilt text, right of the activity bar
+constexpr int16_t DETAIL_CHARS = (WIDTH - DETAIL_X) / 6;
+
+static_assert(ROW_TOP + rx::DISPLAY_SLOTS * ROW_HEIGHT <= HEIGHT, "wearable rows do not fit on the screen");
 
 constexpr uint16_t GREY = 0x7BEF;
 constexpr uint16_t DARK = 0x2104;
+constexpr uint16_t ORANGE = 0xFD20;
 constexpr uint16_t TITLE_BG = 0x000F;  // dark blue
 constexpr uint16_t AXIS_COLOURS[3] = {ST77XX_RED, ST77XX_GREEN, ST77XX_BLUE};
 
 Adafruit_ST7735 tft(rx::PIN_TFT_CS, rx::PIN_TFT_DC, rx::PIN_TFT_RST);
-uint32_t lastDrawMs = 0;
-int shownRows = -1;  // rows on screen; -1 forces a full redraw
+
+// Text is drawn into these off-screen buffers and sent to the display in one
+// block. Printing straight to the display sends every pixel on its own,
+// which takes about 15 ms a line and would hold back the serial output.
+GFXcanvas16 lineCanvas(LINE_CHARS * 6, 8);
+GFXcanvas16 detailCanvas(DETAIL_CHARS * 6, 8);
+
+uint32_t cycleStartMs = 0;
+uint8_t nextPiece = 0;  // 0 = title, 1..DISPLAY_SLOTS = a wearable's row
+bool cycleRunning = false;
 
 // Colour test card: four labelled stripes. Red must be on the left; if it
 // shows blue, change RX_TFT_TAB in receiver_config.h.
@@ -52,10 +65,20 @@ void drawTestCard() {
   tft.setTextSize(1);
 }
 
-void drawText(int16_t x, int16_t y, uint16_t colour, const char* text) {
-  tft.setTextColor(colour, ST77XX_BLACK);  // background colour overwrites old text
-  tft.setCursor(x, y);
-  tft.print(text);
+void startText(GFXcanvas16& canvas, uint16_t background) {
+  canvas.fillScreen(background);
+  canvas.setTextWrap(false);
+  canvas.setCursor(0, 0);
+}
+
+void printText(GFXcanvas16& canvas, uint16_t colour, const char* text) {
+  canvas.setTextColor(colour);
+  canvas.print(text);
+}
+
+void sendText(GFXcanvas16& canvas, int16_t x, int16_t y) {
+  if (!canvas.getBuffer()) return;  // out of memory at boot: no text, the bars still work
+  tft.drawRGBBitmap(x, y, canvas.getBuffer(), canvas.width(), canvas.height());
 }
 
 // A bar centred on zero: grows right for positive values, left for negative.
@@ -71,40 +94,77 @@ void drawBar(int16_t x, int16_t y, int value, int fullScale, uint16_t colour) {
   tft.drawFastVLine(centre, y, BAR_HEIGHT, GREY);
 }
 
+// A bar filling from the left, for activity 0..MOTION_ACTIVITY_FULL.
+void drawLevel(int16_t x, int16_t y, int value, uint16_t colour) {
+  const int16_t length = static_cast<int16_t>(constrain(static_cast<long>(value) * BAR_WIDTH /
+                                                        dance::MOTION_ACTIVITY_FULL, 0, BAR_WIDTH));
+  tft.fillRect(x, y, length, BAR_HEIGHT, colour);
+  tft.fillRect(x + length, y, BAR_WIDTH - length, BAR_HEIGHT, DARK);
+}
+
 void drawTitle(uint32_t now) {
-  char line[27];
-  snprintf(line, sizeof(line), "Dance RX  ch %u", dance::ESPNOW_CHANNEL);
-  tft.setTextColor(ST77XX_WHITE, TITLE_BG);
-  tft.setCursor(2, 2);
-  tft.print(line);
-  snprintf(line, sizeof(line), "%6lus", static_cast<unsigned long>(now / 1000));
-  tft.setCursor(WIDTH - 2 - 7 * 6, 2);
-  tft.print(line);
+  // Wearables beyond the rows on screen still reach TouchDesigner; count them.
+  uint8_t others = 0;
+  for (uint8_t i = rx::DISPLAY_SLOTS; i < rx::MAX_WEARABLES; ++i) others += rx::wearables[i].live ? 1 : 0;
+  char line[48];  // anything past LINE_CHARS is cut off at the canvas edge
+  char extra[8] = "";
+  if (others) snprintf(extra, sizeof(extra), " +%u", others);
+  snprintf(line, sizeof(line), "Dance RX ch %u%-5s%7lus", dance::ESPNOW_CHANNEL, extra,
+           static_cast<unsigned long>(now / 1000));
+  startText(lineCanvas, TITLE_BG);
+  printText(lineCanvas, ST77XX_WHITE, line);
+  sendText(lineCanvas, 2, 2);
 }
 
-void drawWaiting() {
-  char line[27];
-  drawText(4, 40, ST77XX_WHITE, "Waiting for wearables");
-  snprintf(line, sizeof(line), "channel %u, protocol v%u", dance::ESPNOW_CHANNEL, dance::PROTOCOL_VERSION);
-  drawText(4, 56, GREY, line);
-  snprintf(line, sizeof(line), "bad %lu  dropped %lu", static_cast<unsigned long>(rx::totals.badPackets),
-           static_cast<unsigned long>(radio::droppedCount()));
-  drawText(4, 72, GREY, line);
-}
+void drawRow(uint8_t slot, uint32_t now) {
+  const uint8_t id = slot + 1;
+  const rx::Wearable& w = rx::wearables[slot];
+  const int16_t y = ROW_TOP + slot * ROW_HEIGHT;
+  const bool duplicate = w.duplicateSeen && now - w.duplicateMs < rx::DUPLICATE_SHOW_MS;
 
-void drawRow(uint8_t row, uint8_t id, const rx::Wearable& w) {
-  const int16_t y = ROW_TOP + row * ROW_HEIGHT;
-  char line[27];
-  snprintf(line, sizeof(line), "W%u %-4s %3u/s lost %-6lu", id, w.live ? "LIVE" : "LOST", w.ratePerSecond,
-           static_cast<unsigned long>(w.lost));
-  drawText(2, y, w.live ? ST77XX_GREEN : ST77XX_RED, line);
+  char line[48];  // anything past LINE_CHARS is cut off at the canvas edge
+  uint16_t colour;
+  if (!w.seen) {
+    snprintf(line, sizeof(line), "W%u --   waiting", id);
+    colour = GREY;
+  } else {
+    snprintf(line, sizeof(line), "W%u %-4s %3u/s lost %-6lu", id, duplicate ? "DUP" : w.live ? "LIVE" : "LOST",
+             w.ratePerSecond, static_cast<unsigned long>(w.lost));
+    colour = duplicate ? ST77XX_YELLOW : w.live ? ST77XX_GREEN : ST77XX_RED;
+  }
+  startText(lineCanvas, ST77XX_BLACK);
+  printText(lineCanvas, colour, line);
+  sendText(lineCanvas, 2, y);
+
   const int accel[3] = {w.ax, w.ay, w.az};
   const int gyro[3] = {w.gx, w.gy, w.gz};
   for (int axis = 0; axis < 3; ++axis) {
     const int16_t x = 2 + axis * (BAR_WIDTH + BAR_GAP);
-    drawBar(x, y + 10, accel[axis], ACCEL_FULL_SCALE, AXIS_COLOURS[axis]);
-    drawBar(x, y + 10 + BAR_HEIGHT + 2, gyro[axis], GYRO_FULL_SCALE, AXIS_COLOURS[axis]);
+    drawBar(x, y + 10, w.seen ? accel[axis] : 0, ACCEL_FULL_SCALE, AXIS_COLOURS[axis]);
+    drawBar(x, y + 10 + BAR_HEIGHT + 2, w.seen ? gyro[axis] : 0, GYRO_FULL_SCALE, AXIS_COLOURS[axis]);
   }
+
+  // Activity bar, then the hit or calibration marker and the tilt.
+  const int16_t detailY = y + 10 + 2 * (BAR_HEIGHT + 2);
+  drawLevel(2, detailY + 1, w.hasMotion ? w.activity : 0, w.hit ? ST77XX_YELLOW : ST77XX_WHITE);
+  startText(detailCanvas, ST77XX_BLACK);
+  if (!w.seen) {
+    // blank
+  } else if (!w.hasMotion) {
+    printText(detailCanvas, GREY, "old fw: no tilt");
+  } else {
+    if (w.hit) {
+      printText(detailCanvas, ST77XX_YELLOW, "HIT");
+    } else if (!w.gyroCalibrated) {
+      printText(detailCanvas, ORANGE, "cal");
+    } else {
+      printText(detailCanvas, GREY, "   ");
+    }
+    char tilt[DETAIL_CHARS + 1];
+    snprintf(tilt, sizeof(tilt), " p%4d r%4d", w.pitch / 10, w.roll / 10);
+    printText(detailCanvas, GREY, tilt);
+  }
+  sendText(detailCanvas, DETAIL_X, detailY);
 }
 
 }  // namespace
@@ -119,28 +179,22 @@ void begin() {
   tft.fillScreen(ST77XX_BLACK);
   tft.fillRect(0, 0, WIDTH, TITLE_HEIGHT, TITLE_BG);
   Serial.println("[display] ST7735 started (test card shown)");
+  if (!lineCanvas.getBuffer() || !detailCanvas.getBuffer()) Serial.println("[display] no memory for text");
 }
 
 void update(uint32_t now) {
-  if (now - lastDrawMs < rx::DISPLAY_REFRESH_MS) return;
-  lastDrawMs = now;
-
-  // The first MAX_ROWS wearables seen, in id order.
-  uint8_t ids[MAX_ROWS];
-  uint8_t rows = 0;
-  for (uint8_t i = 0; i < rx::MAX_WEARABLES && rows < MAX_ROWS; ++i) {
-    if (rx::wearables[i].seen) ids[rows++] = i + 1;
+  if (!cycleRunning) {
+    if (now - cycleStartMs < rx::DISPLAY_REFRESH_MS) return;
+    cycleStartMs = now;
+    cycleRunning = true;
+    nextPiece = 0;
   }
-  if (rows != shownRows) {  // layout changed: clear below the title
-    tft.fillRect(0, TITLE_HEIGHT, WIDTH, HEIGHT - TITLE_HEIGHT, ST77XX_BLACK);
-    shownRows = rows;
+  if (nextPiece == 0) {
+    drawTitle(now);
+  } else {
+    drawRow(nextPiece - 1, now);
   }
-  drawTitle(now);
-  if (rows == 0) {
-    drawWaiting();
-    return;
-  }
-  for (uint8_t row = 0; row < rows; ++row) drawRow(row, ids[row], rx::wearables[ids[row] - 1]);
+  if (++nextPiece > rx::DISPLAY_SLOTS) cycleRunning = false;
 }
 
 }  // namespace display
