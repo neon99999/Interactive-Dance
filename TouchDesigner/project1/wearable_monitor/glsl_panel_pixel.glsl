@@ -111,7 +111,9 @@ void main() {
     float leftText = texelFetch(sTD2DInputs[1], px, 0).a;
     float rightText = texelFetch(sTD2DInputs[2], px, 0).a;
     bool inHeader = p.y > res.y - header;
-    vec3 leftColor = inHeader && p.x > x0 + pad + 56.0 ? modeColor : TEXT;
+    // Header: the mode name in its colour; the signal prefix line below it muted.
+    bool titleLine = p.y > res.y - 80.0;
+    vec3 leftColor = !inHeader ? TEXT : !titleLine ? mix(DIM, TEXT, 0.6) : p.x > x0 + pad + 56.0 ? modeColor : TEXT;
     vec3 rightColor = TEXT;
     if (inHeader) {
         rightColor = C_LIVE;

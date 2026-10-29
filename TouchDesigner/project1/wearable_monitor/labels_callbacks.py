@@ -18,10 +18,13 @@ VALUE_W = 104   # value column, right of the bars
 TITLE_Y = HEIGHT - 60
 TEXT_Y = -10    # Text TOP draws a centred line about this much above its y
 
-SIGNAL_ROWS = (('act', 'activity'), ('gx', 'gyro x'), ('gy', 'gyro y'), ('gz', 'gyro z'),
-	('pitch', 'pitch'), ('roll', 'roll'), ('hit', 'hit'), ('still', 'still'), ('btn', 'button'))
+PREFIX_Y = HEIGHT - 94  # second header line: the signal name prefix
+
+# Each row is labelled with its signal name, so it can be typed into the input
+# assignment table as prefix + name (e.g. serial_w1_act).
+SIGNAL_ROWS = ('act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'still', 'btn')
 MODES = {1: 'WRIST', 2: 'ANKLE'}
-DIRECTIONS = {1: 'forward', 2: 'back', 3: 'up', 4: 'down', 5: 'left', 6: 'right'}
+DIRECTIONS = {1: 'fwd', 2: 'back', 3: 'up', 4: 'down', 5: 'left', 6: 'right'}
 
 
 def visibleWearables():
@@ -49,7 +52,9 @@ def valueText(name, read):
 	if name in ('pitch', 'roll'):
 		return '%+.0f°' % value
 	if name == 'hit':
-		return DIRECTIONS.get(int(read('hitdir')), '')
+		# The latest hitdir, as its number (the signal value) and its name.
+		direction = int(read('hitdir'))
+		return '%d %s' % (direction, DIRECTIONS[direction]) if direction in DIRECTIONS else ''
 	return 'on' if value > 0.5 else 'off'
 
 
@@ -74,6 +79,7 @@ def onCook(scriptOp):
 		else:
 			mode = MODES.get(int(read('mode')), '')
 			scriptOp.appendRow([round(x), TITLE_Y + TEXT_Y, 'W%d   %s' % (w, mode)])
-		for row, (name, label) in enumerate(SIGNAL_ROWS):
-			text = valueText(name, read) if rightSide else label
+			scriptOp.appendRow([round(x), PREFIX_Y + TEXT_Y, 'serial_w%d_...' % w])
+		for row, name in enumerate(SIGNAL_ROWS):
+			text = valueText(name, read) if rightSide else name
 			scriptOp.appendRow([round(x), round(rowY(row)) + TEXT_Y, text])
