@@ -50,6 +50,8 @@ Last updated 2026-10-27.
 ## Verified on hardware (2026-10-28, LAPTOP)
 
 - **Wearable IMU over USB serial:** a XIAO ESP32-C6 with the LSM6DS3TR-C (firmware v0.3, branch `feature/wearable-sensors`) sent readings to `inputs > Serial` on COM4, and the `imu_monitor` graphs moved when the user tilted it. This is the first real serial device. The user then mapped the IMU signals in the input assignment table and they drove a visual.
+- **Wireless (ESP-NOW):** the wearable (fw v0.4) broadcast its IMU readings to a NodeMCU 1.0 (ESP8266) receiver, whose ST7735 display showed the wearable LIVE with moving bars. Through the receiver on COM3 at 921600 baud, TouchDesigner received `serial_w1_ax` ... and an input assignment drove a visual.
+- **Found on hardware:** the TouchDesigner Serial DAT's default DTR setting held the NodeMCU in reset (its USB chip drives the reset pins), so `serial_in` now has DTR and RTS off. The wearable stalled its radio while its USB cable was plugged in with no program reading it; fixed in fw v0.5 (not yet flashed). imu_monitor with the receiver's `serial_w1_` prefix was checked here with simulated lines only.
 
 ## Not verified (needs a person or hardware)
 

@@ -121,13 +121,13 @@ A panel next to the other components. While the music plays it shows the number 
 
 ### imu_monitor: check a wearable sensor
 
-A panel that graphs the motion of a wearable (see `Firmware/`): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
+A panel that graphs the motion of a wearable (see `Firmware/`; wearables send by radio to a receiver plugged into this computer): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
 
 1. Plug the wearable in by USB and close any other serial monitor (only one program can use the port).
-2. On **inputs > Serial**: **Read Serial** on, **Port** = the wearable's port, **Baud Rate** 115200.
-3. The wearable sends lines like `ax=0.01 ay=-0.02 az=1.03 gx=0.3 gy=-2.5 gz=-0.8`, 50 per second. They arrive as the signals `serial_ax` ... `serial_gz`, which also work in the input assignment table.
+2. On **inputs > Serial**: **Read Serial** on, **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200).
+3. Through the receiver, wearable 1 arrives as the signals `serial_w1_ax` ... `serial_w1_gz` (wearable 2 as `serial_w2_...`), 50 readings a second, plus `serial_w1_live` (1 while connected, 0 when lost). A wearable on USB arrives as `serial_ax` ... `serial_gz`. These names also work in the input assignment table.
 
-Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Range** (the value at the edge of each graph) and **Signal Prefix** (`serial_` for a wearable on USB). Until data arrives the panel says what to switch on.
+Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Range** (the value at the edge of each graph) and **Signal Prefix** (pick Wearable 1-4 for `serial_w1_` ... through the receiver, or Wearable on USB for `serial_`). Until data arrives the panel says what to switch on.
 
 ### visuals: four layers
 
