@@ -1,6 +1,6 @@
 # Development status
 
-Last updated 2026-10-27.
+Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensors`, not yet merged into `main`.
 
 **Latest working project:** `TouchDesigner/DanceWorkshop.toe`, at git commit `f8df998` or later on `main`. It was saved, reopened and retested: all 63 checks pass. All commits are pushed to GitHub.
 
@@ -51,7 +51,9 @@ Last updated 2026-10-27.
 
 - **Wearable IMU over USB serial:** a XIAO ESP32-C6 with the LSM6DS3TR-C (firmware v0.3, branch `feature/wearable-sensors`) sent readings to `inputs > Serial` on COM4, and the `imu_monitor` graphs moved when the user tilted it. This is the first real serial device. The user then mapped the IMU signals in the input assignment table and they drove a visual.
 - **Wireless (ESP-NOW):** the wearable (fw v0.4) broadcast its IMU readings to a NodeMCU 1.0 (ESP8266) receiver, whose ST7735 display showed the wearable LIVE with moving bars. Through the receiver on COM3 at 921600 baud, TouchDesigner received `serial_w1_ax` ... and an input assignment drove a visual.
-- **Found on hardware:** the TouchDesigner Serial DAT's default DTR setting held the NodeMCU in reset (its USB chip drives the reset pins), so `serial_in` now has DTR and RTS off. The wearable stalled its radio while its USB cable was plugged in with no program reading it; fixed in fw v0.5 (not yet flashed). imu_monitor with the receiver's `serial_w1_` prefix was checked here with simulated lines only.
+- **Found on hardware:** the TouchDesigner Serial DAT's default DTR setting held the NodeMCU in reset (its USB chip drives the reset pins), so `serial_in` now has DTR and RTS off. The wearable stalled its radio while its USB cable was plugged in with no program reading it; fixed in fw v0.5.
+- **Wireless with fw v0.5:** the user flashed v0.5 and confirmed the whole chain: wearable to receiver over ESP-NOW, the receiver display, TouchDesigner at 921600 baud, input assignments (`serial_w1_ax` to `layer1.x`, `serial_w1_ay` to `layer1.y`) driving the visuals, and `imu_monitor` with prefix `serial_w1_`.
+- **Still to check on LAPTOP:** commit `7184ee0` restored the imu_monitor prefix menu, the no-data hint, the baud help and DTR off, which a save from a TouchDesigner session left open across a `git pull` had reverted. The files were checked by hand but not yet loaded in TouchDesigner, and the 63 in-TD tests have not been run on this branch. Close TouchDesigner before every `git pull`.
 
 ## Not verified (needs a person or hardware)
 
@@ -92,7 +94,8 @@ Last updated 2026-10-27.
 1. ~~Play the test track and listen~~ (done 2026-10-27).
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
-4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28, including driving a visual through the input table).
+4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28, over USB and wirelessly through the receiver, including driving a visual through the input table).
+8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
 5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
