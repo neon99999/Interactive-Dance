@@ -14,6 +14,7 @@ Granted (may do unattended):
 - Create and edit files in this folder; delete files Claude created.
 - Start long-running background processes (test servers, recorders), and stop them when done.
 - Web lookups for documentation.
+- Read and edit the shared TD knowledge folder (see "Shared TD knowledge" below; granted 2026-10-29). No git pull, commit or push there without asking.
 - In the Dance Workshop TD project (granted 2026-10-26): anything needed to build and test the current task (create, edit, delete and rewire operators; save the `.toe`; reopen it) without checking in. Never touch the other TD project (TouchClaude_01) if it is open.
 
 Ask each time:
@@ -34,6 +35,19 @@ Always ask:
 - End every reply that needs input with a numbered **Questions** list as the very last thing, each with a line of context and a recommendation, so they can be answered one by one.
 - On-body tests are not possible for a while (no body mounts or dancers yet). Hardware tests are desk or hand-held (breadboard) until the user says otherwise.
 - Machines: MINI-PC (this one) is in the studio with no boards attached; the user reaches it over remote desktop from home. All hardware work (flashing, recordings, serial) happens on LAPTOP. GitHub is the hand-over, so anything LAPTOP needs must be pushed (ask first).
+
+## Shared TD knowledge
+Reusable lessons shared by Claude instances across TD projects and computers live in `C:\Users\mwadd\Documents\Claude\SharedTdKnowledge\Claude-TD-Knowledge` (git repo `Claude-TD-Knowledge`):
+- `lessons.md`: general TD, testing, performance and Windows tooling
+- `embody-envoy.md`: Embody/Envoy (TDXN round trips, externalizing, tool quirks)
+- `hardware-serial.md`: Serial DAT, line formats, ESP32/ESP8266 firmware
+
+Read the relevant file at the start of a session and before work in that area. When a lesson is confirmed here and would help other projects, add it there:
+- Read the file immediately before editing it (other instances edit it too) and append; never rewrite others' entries.
+- Use a new topic file if a subject grows.
+- Record only verified knowledge, never secrets.
+
+Project-specific status and configuration stay in this repo (DEVELOPMENT_STATUS.md, README.md).
 
 ## Practice
 - Verify claims with an independent check before reporting them done.
