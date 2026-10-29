@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 2;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 3;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
@@ -37,7 +37,7 @@ constexpr int PIN_BATTERY_ADC = 0;   // A0/D0, LiPo through an external voltage 
 constexpr uint8_t IMU_I2C_ADDRESS = 0x6A;
 constexpr uint32_t I2C_CLOCK_HZ = 400000;
 constexpr uint32_t IMU_READ_MS = 10;      // poll the sensor (it samples at 104 Hz)
-constexpr uint32_t IMU_LOG_MS = 250;      // print a reading this often; 0 = never
+constexpr uint32_t IMU_LOG_MS = 20;       // print a reading this often (50 Hz); 0 = never
 constexpr uint32_t IMU_RETRY_MS = 3000;   // look for a missing sensor again
 
 // Battery voltage = ADC pin voltage * this ratio (2.0 for two equal resistors).

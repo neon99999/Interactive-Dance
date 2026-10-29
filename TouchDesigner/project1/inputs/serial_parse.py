@@ -10,6 +10,8 @@ already print are understood.
 Plain numbers are named from the names list ('accel, zone'), otherwise
 1, 2, 3 ... Every name gets the prefix, e.g. serial_accel or serial_1.
 Pieces that are not numbers are skipped and reported, never raised.
+Lines starting with # or [ are log messages ('[imu] ready'), not values,
+and are skipped.
 """
 
 import math
@@ -36,7 +38,7 @@ def parseLine(line, names=(), prefix='serial_'):
 	"""One line of sensor text -> ({name: value}, [problems])."""
 	line = str(line).strip()
 	values, problems = {}, []
-	if not line:
+	if not line or line[0] in '#[':
 		return values, problems
 	pairs = _PAIR.findall(line)
 	if pairs:

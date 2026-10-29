@@ -44,6 +44,11 @@ class ParseLine(unittest.TestCase):
 		self.assertEqual(sp.parseLine(''), ({}, []))
 		self.assertEqual(sp.parseLine('   '), ({}, []))
 
+	def test_log_lines_skipped(self):
+		for line in ('[heartbeat] uptime 5 s, imu ok at 0x6A', '# comment 1 2', '  [imu] a=1'):
+			self.assertEqual(sp.parseLine(line), ({}, []), line)
+		self.assertEqual(sp.parseLine('ax=0.5 gz=-2.5')[0], {'serial_ax': 0.5, 'serial_gz': -2.5})
+
 	def test_prefix_and_names(self):
 		self.assertEqual(sp.parseNames(' accel, zone ;x '), ['accel', 'zone', 'x'])
 		self.assertEqual(sp.parseLine('3', prefix='s_')[0], {'s_1': 3.0})

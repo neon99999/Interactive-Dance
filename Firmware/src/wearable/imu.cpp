@@ -145,8 +145,10 @@ void update() {
   }
   if (dance::IMU_LOG_MS > 0 && now - lastLogMs >= dance::IMU_LOG_MS) {
     lastLogMs = now;
-    Serial.printf("[imu] accel g %6.2f %6.2f %6.2f   gyro dps %8.1f %8.1f %8.1f\n", reading.ax, reading.ay,
-                  reading.az, reading.gx, reading.gy, reading.gz);
+    // name=value pairs: the TouchDesigner inputs component reads these as
+    // serial_ax ... serial_gz (accel in g, gyro in degrees per second).
+    Serial.printf("ax=%.3f ay=%.3f az=%.3f gx=%.1f gy=%.1f gz=%.1f\n", reading.ax, reading.ay, reading.az, reading.gx,
+                  reading.gy, reading.gz);
   }
 }
 

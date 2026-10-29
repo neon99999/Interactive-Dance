@@ -1,0 +1,231 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/imu_monitor
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  textTOP:
+    parameters:
+      font: Artifakt Element
+      fontsizexunit: pixels
+      outputresolution: custom
+      resolutionh: 480
+      resolutionw: 640
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+type: containerCOMP
+custom_pars:
+  IMU:
+  - name: Prefix
+    style: Str
+    label: Signal Prefix
+    default: serial_
+    help: Start of the IMU signal names in inputs/signals. A wearable on USB serial sends ax=... gx=..., which arrive as serial_ax ... serial_gz.
+  - name: Window
+    style: Float
+    label: Window (s)
+    default: 5
+    min: 1.0
+    clampMin: true
+    normMin: 1.0
+    normMax: 20.0
+    help: How many seconds of movement the two graphs show.
+  - name: Accelrange
+    style: Float
+    label: Accel Range (g)
+    default: 2
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 16.0
+    help: Acceleration at the top and bottom edge of the accel graph, in g. 1 g is gravity; the sensor measures up to 4 g.
+  - name: Gyrorange
+    style: Float
+    label: Gyro Range (dps)
+    default: 500
+    min: 1.0
+    clampMin: true
+    normMin: 50.0
+    normMax: 2000.0
+    help: Rotation speed at the top and bottom edge of the gyro graph, in degrees per second. The sensor measures up to 2000.
+parameters:
+  w: 640
+  h: 480
+  resizecomp: =me
+  repocomp: =me
+  top: ./null_out
+  parentshortcut: Imu
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: imu
+  type: mergeCHOP
+  parameters:
+    duplicate: last
+    autoexportroot: =parent()
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - defaults
+  - live
+- name: live
+  type: selectCHOP
+  parameters:
+    chops: ../inputs/signals
+    channames: =' '.join(parent.Imu.par.Prefix.eval() + n for n in ('ax', 'ay', 'az', 'gx', 'gy', 'gz'))
+    renamefrom: =parent.Imu.par.Prefix.eval() + '*'
+    renameto: '*'
+    autoexportroot: =parent()
+  position: [0, -200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: trail
+  type: trailCHOP
+  parameters:
+    wlength: =parent.Imu.par.Window
+    rate: =me.time.rate
+    autoexportroot: =parent()
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - imu
+- name: defaults
+  type: constantCHOP
+  parameters:
+    rate: =me.time.rate
+    autoexportroot: =parent()
+  sequences:
+    const:
+    - name: ax
+    - name: ay
+    - name: az
+    - name: gx
+    - name: gy
+    - name: gz
+  position: [0, 200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: null_out
+  type: nullTOP
+  position: [2400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - over_text
+- name: glsl_plot
+  type: glslTOP
+  parameters:
+    pixeldat: glsl_plot_pixel
+    computedat: glsl_plot_compute
+    outputresolution: custom
+    resolutionw: 640
+    resolutionh: 480
+    format: rgba8fixed
+  sequences:
+    vec:
+    - name: uRange
+      valuex: =parent.Imu.par.Accelrange
+      valuey: =parent.Imu.par.Gyrorange
+  position: [1600, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - trail_tex
+- name: over_text
+  type: compositeTOP
+  parameters:
+    operand: over
+  position: [2000, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - text_values
+  - label_accel
+  - label_gyro
+  - glsl_plot
+- name: trail_tex
+  type: choptoTOP
+  parameters:
+    chop: trail
+    format: mono32float
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: label_gyro
+  type: textTOP
+  parameters:
+    text: ='rotation  ±%g deg/s      x red   y green   z blue' % parent.Imu.par.Gyrorange.eval()
+    fontsizex: 16
+    positionx: 10
+    positiony: -186
+    alignx: left
+    aligny: top
+    fontcolorr: 0.7
+    fontcolorg: 0.7
+    fontcolorb: 0.7
+  position: [1600, -800]
+- name: label_accel
+  type: textTOP
+  parameters:
+    text: ='acceleration  ±%g g      x red   y green   z blue' % parent.Imu.par.Accelrange.eval()
+    fontsizex: 16
+    positionx: 10
+    positiony: -6
+    alignx: left
+    aligny: top
+    fontcolorr: 0.7
+    fontcolorg: 0.7
+    fontcolorb: 0.7
+  position: [1600, -600]
+- name: text_values
+  type: textTOP
+  parameters:
+    text: '=(''accel g   ax %+.2f   ay %+.2f   az %+.2f\ngyro dps   gx %+.0f   gy %+.0f   gz %+.0f'' % tuple(op(''imu'')[c].eval() for c in (''ax'', ''ay'', ''az'', ''gx'', ''gy'', ''gz''))) if op(''live'').numChans else ''No IMU data. On inputs > Serial: Read Serial on, Port = the wearable, Baud Rate 115200. Close the PlatformIO monitor first.'''
+    wordwrap: true
+    fontsizex: 22
+    positiony: -180
+    bgcolorr: 0.08
+    bgcolorg: 0.08
+    bgcolorb: 0.08
+  position: [1600, -400]
+- name: glsl_plot_info
+  type: infoDAT
+  parameters:
+    op: glsl_plot
+  flags:
+  - viewer
+  position: [1675, -120]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dock: glsl_plot
+  dat_read_only: true
+- name: glsl_plot_pixel
+  type: textDAT
+  parameters:
+    file: project1/imu_monitor/glsl_plot_pixel.glsl
+    syncfile: true
+    language: glsl
+    extension: frag
+  flags:
+  - viewer
+  position: [1525, -120]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - glsl
+  dock: glsl_plot
+annotations:
+- name: annotate1
+  mode: annotate
+  title: IMU monitor
+  text: The wearable's six IMU signals (Signal Prefix + ax ay az gx gy gz) from inputs/signals -> imu (zeros when no data) -> trail (last Window seconds) -> trail_tex -> glsl_plot draws the accel and gyro graphs; text TOPs add labels and current values.
+  position: [-70, -870]
+  size: [2670, 1330]
+  color: [0.45, 0.45, 0.45]

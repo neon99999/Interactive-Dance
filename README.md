@@ -23,7 +23,7 @@ What it does:
 2. Open `TouchDesigner/DanceWorkshop.toe` in TouchDesigner.
 3. Go into `project1` (double-click it). The **Dance toolkit - start here** box holds four components. Click one and press **P** to see its controls; press **I** to go inside.
 4. On **transport**, turn **Play** on. The test track plays (a click every second, tones at 5, 10, 15 and 20 s) and the demo assignments show a circle at 5 s, double its size at 10 s, hide it at 15 s and flash the screen at 20 s.
-5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays.
+5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays. To check a wearable motion sensor, watch **imu_monitor**.
 6. On **visuals**, press **Open Output Window** (Output page) to show the result full screen.
 
 The final image is `visuals/null_out`. It is also shown as the background of the `visuals` network.
@@ -104,7 +104,7 @@ accel=0.52, zone=1        name=value (or name:value) pairs -> serial_accel, seri
 0.52,1                    plain numbers (comma, space or ;) -> named by Value Names, e.g. "accel, zone"; otherwise serial_1, serial_2
 ```
 
-Pieces that are not numbers are skipped. The values hold until the next line arrives.
+Pieces that are not numbers are skipped, and lines starting with `#` or `[` are treated as log messages and ignored. The values hold until the next line arrives.
 
 The camera input measures how much the picture changes between frames, over the whole image and over the left and right halves. To use a value as an on/off zone, give it a narrow in range, e.g. `camera_left`, in 0.05-0.06, out 0-1.
 
@@ -118,6 +118,16 @@ A panel next to the other components. While the music plays it shows the number 
 - Like the engine it follows the playback position, so pausing, seeking and Reset show the notes due at that point.
 - The numbers are the ones to use in the MIDI assignment table.
 - To see it bigger, right-click it and choose **View...**.
+
+### imu_monitor: check a wearable sensor
+
+A panel that graphs the motion of a wearable (see `Firmware/`): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
+
+1. Plug the wearable in by USB and close any other serial monitor (only one program can use the port).
+2. On **inputs > Serial**: **Read Serial** on, **Port** = the wearable's port, **Baud Rate** 115200.
+3. The wearable sends lines like `ax=0.01 ay=-0.02 az=1.03 gx=0.3 gy=-2.5 gz=-0.8`, 50 per second. They arrive as the signals `serial_ax` ... `serial_gz`, which also work in the input assignment table.
+
+Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Range** (the value at the edge of each graph) and **Signal Prefix** (`serial_` for a wearable on USB). Until data arrives the panel says what to switch on.
 
 ### visuals: four layers
 
@@ -166,6 +176,7 @@ TouchDesigner/
     inputs/serial_parse.py serial line parser (pure Python, unit-tested)
     visuals.tdxn           layers, compositing, output
     midi_monitor.tdxn      shows MIDI notes as they play
+    imu_monitor.tdxn       graphs a wearable's motion sensor
     tests.tdxn, tests/     in-TouchDesigner tests
 Firmware/                  wearable motion sensor firmware (PlatformIO, see Firmware/README.md)
 media/test/                test audio, MIDI and image

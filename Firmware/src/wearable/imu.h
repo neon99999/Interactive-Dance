@@ -1,8 +1,9 @@
 // IMU: Adafruit LSM6DS3TR-C accelerometer + gyroscope over I2C.
 // Talks to the sensor's registers directly (no library). begin() scans the I2C
 // bus, finds the sensor at 0x6A or 0x6B and configures it; update() reads it at
-// IMU_READ_MS and logs a reading every IMU_LOG_MS. If the sensor is missing it
-// retries every IMU_RETRY_MS, so a loose wire can be fixed without a reset.
+// IMU_READ_MS and prints a reading every IMU_LOG_MS as a name=value line that
+// the TouchDesigner serial input reads. If the sensor is missing it retries
+// every IMU_RETRY_MS, so a loose wire can be fixed without a reset.
 #pragma once
 
 #include <stdint.h>

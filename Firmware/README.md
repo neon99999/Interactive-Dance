@@ -2,7 +2,7 @@
 
 Firmware for the wireless wearable motion sensors used with the Interactive Dance TouchDesigner toolkit. Each wearable sends its movement over ESP-NOW to a receiver, which passes it on to TouchDesigner.
 
-**Status:** the wearable boots, logs over USB serial, identifies itself and reads the IMU (accelerometer and gyroscope), printing readings to the serial log. The button, motor, battery and ESP-NOW modules are still placeholders. Boot and heartbeat have run on a board; **the IMU code compiles but has not yet been run on the hardware.**
+**Status:** the wearable boots, logs over USB serial, identifies itself and reads the IMU (accelerometer and gyroscope), sending 50 readings a second over USB serial. The button, motor, battery and ESP-NOW modules are still placeholders. The IMU readings were checked on a board with v0.2 (values follow tilting and turning).
 
 ## Hardware (per wearable)
 
@@ -52,7 +52,7 @@ The first build downloads the platform and toolchain (about 1 GB). On Windows, r
 ## Expected serial output
 
 ```
-Interactive Dance wearable v0.2
+Interactive Dance wearable v0.3
   wearable id 1, protocol v1
   chip ESP32-C6 rev ..., 160 MHz, efuse MAC ...
 [imu] I2C on SDA 22, SCL 23
@@ -62,12 +62,14 @@ Interactive Dance wearable v0.2
 [battery] placeholder: ADC pin 0, divider x2.0, not read
 [espnow] placeholder: protocol v1, not started
 boot complete
-[imu] accel g   0.01  -0.02   1.00   gyro dps      0.4     -0.3      0.1
+ax=0.012 ay=-0.021 az=1.003 gx=0.4 gy=-0.3 gz=0.1
 ...
-[heartbeat] uptime 5 s, wearable 1, fw v0.2, imu ok at 0x6A
+[heartbeat] uptime 5 s, wearable 1, fw v0.3, imu ok at 0x6A
 ```
 
 The boot lines are usually printed before the serial monitor has opened (the board resets after flashing and the USB port reconnects), so often only the later lines show. **Type any key in the monitor** to print the identity again; the heartbeat line also shows the firmware version and the IMU state. The `[haptic]` line always prints too early to be seen.
+
+Readings are `name=value` lines: `ax ay az` in g, `gx gy gz` in degrees per second. TouchDesigner's `inputs` component reads them over USB serial (Read Serial on, 115200) as `serial_ax` ... `serial_gz`, and `imu_monitor` graphs them. Log lines start with `[` so TouchDesigner ignores them. Close the PlatformIO monitor first: only one program can open the port.
 
 Lying flat and still, the IMU should read about 1 g on one axis and close to 0 on the others, with the gyro near 0. If it says `not found`, the scan line lists what is on the I2C bus: `none` means a wiring or power problem; the firmware keeps looking every 3 s, so a wire can be fixed without a reset.
 
@@ -82,7 +84,8 @@ Lying flat and still, the IMU should read about 1 g on one axis and close to 0 o
 | Builds for `seeed_xiao_esp32c6` with Arduino | Compiles with no warnings (MINI-PC, 2026-10-28): RAM 4.8%, flash 22.2% |
 | Boot, USB serial log, heartbeat | Runs on a board (heartbeat seen in the monitor) |
 | Motor pin held LOW from boot | Written; **not checked on hardware** |
-| IMU detection and readings | Written and compiles; **not yet run on the hardware** |
+| IMU detection and readings | v0.2 run on a board: found at 0x6A, about 1 g at rest, values follow tilting and turning |
+| v0.3 `name=value` output at 50 Hz, read by TouchDesigner | Compiles; TouchDesigner side tested with simulated lines; **not yet run with the board** |
 | ESP-NOW, button, battery | Placeholders only |
 | Receiver | Source placeholder; no build target |
 | Pin numbers in `config.h` | IMU on D4/D5 matches the wiring; button, motor, battery **provisional** |
