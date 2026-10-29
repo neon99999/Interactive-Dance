@@ -49,7 +49,7 @@ Last updated 2026-10-27.
 
 ## Verified on hardware (2026-10-28, LAPTOP)
 
-- **Wearable IMU over USB serial:** a XIAO ESP32-C6 with the LSM6DS3TR-C (firmware v0.3, branch `feature/wearable-sensors`) sent readings to `inputs > Serial` on COM4, and the `imu_monitor` graphs moved when the user tilted it. This is the first real serial device. Mapping `serial_ax` etc. onto visuals has not been tried yet.
+- **Wearable IMU over USB serial:** a XIAO ESP32-C6 with the LSM6DS3TR-C (firmware v0.3, branch `feature/wearable-sensors`) sent readings to `inputs > Serial` on COM4, and the `imu_monitor` graphs moved when the user tilted it. This is the first real serial device. The user then mapped the IMU signals in the input assignment table and they drove a visual.
 
 ## Not verified (needs a person or hardware)
 
@@ -90,7 +90,7 @@ Last updated 2026-10-27.
 1. ~~Play the test track and listen~~ (done 2026-10-27).
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
-4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28). Still to try: map `serial_ax` in the input table and drive a visual.
+4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28, including driving a visual through the input table).
 5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
