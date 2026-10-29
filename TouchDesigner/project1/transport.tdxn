@@ -59,7 +59,6 @@ custom_pars:
     style: Toggle
     startSection: true
     help: On plays audio and MIDI together from the current position; off pauses both.
-    value: true
   - name: Reset
     style: Pulse
     help: Return audio and MIDI to 0 seconds. Does not fire any notes.
@@ -93,7 +92,7 @@ color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
 storage:
-  prev_seconds: 86.05
+  prev_seconds: 1.2
   seeked: false
 operators:
 - name: local
@@ -105,6 +104,7 @@ operators:
   - name: time
     type: timeCOMP
     parameters:
+      play: 0
       rate: =$COOKRATE
       end: 16513
       rangelimit: hold
@@ -315,7 +315,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '372'
+        - '374'
       - - tapcount
         - '0'
       dat_content_format: table

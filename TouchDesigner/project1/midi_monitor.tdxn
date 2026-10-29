@@ -17,6 +17,8 @@ type_defaults:
       resolutionw: 640
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+    tags:
+    - tdxn_exclude:text
 type: containerCOMP
 custom_pars:
   Monitor:
@@ -77,7 +79,6 @@ operators:
 - name: text_info
   type: textTOP
   parameters:
-    text: 86.05 s
     fontsizex: 26
     positiony: 18
     aligny: bottom
@@ -89,7 +90,6 @@ operators:
 - name: text_notes
   type: textTOP
   parameters:
-    text: ''
     bold: true
     fontautosize: fitiffat
     fontsizex: 130
