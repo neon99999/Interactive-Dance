@@ -3,8 +3,9 @@
 Run from the Textport:  op('/project1/tests/engine_tests').module.Run()
 Each step runs a few frames after the previous one so the engine and the
 renders have cooked. Results land in tests/results (suite, check, PASS/FAIL).
-Assignment tables and the transport's audio and MIDI files are backed up and
-restored around the tests; the tests run on the test media in media/test.
+Assignment tables, the transport's audio and MIDI files and the inputs'
+settings (Serial, OSC, Simulated, Camera) are backed up and restored around
+the tests; the tests run on the test media in media/test.
 """
 
 STEP_FRAMES = 3
@@ -25,6 +26,7 @@ MEDIA_LOAD_FRAMES = 10
 
 _queue = []
 _backup = {}
+_inputsBackup = {}
 
 
 def Run():
@@ -180,6 +182,28 @@ def _backupTables():
 		par = op.Transport.par[name]
 		_backup[name] = (par.mode, par.val, par.expr)
 		par.val = path
+	_backupInputs()
+
+
+def _backupInputs():
+	"""Save what input_tests changes on inputs: its settings, the OSC address and the serial values."""
+	inputs = op.Inputs
+	_inputsBackup.clear()
+	_inputsBackup['pars'] = [(p.name, p.mode, p.val, p.expr) for p in inputs.customPars if not p.isPulse]
+	_inputsBackup['oscaddress'] = inputs.op('osc_in').par.localaddress.val
+	_inputsBackup['serial_values'] = [[c.val for c in row] for row in inputs.op('serial_values').rows()]
+
+
+def _restoreInputs():
+	inputs = op.Inputs
+	for name, mode, val, expr in _inputsBackup.get('pars', []):
+		par = inputs.par[name]
+		par.val, par.expr, par.mode = val, expr, mode
+	inputs.op('osc_in').par.localaddress = _inputsBackup.get('oscaddress', '')
+	table = inputs.op('serial_values')
+	table.clear()
+	for row in _inputsBackup.get('serial_values', []):
+		table.appendRow(row)
 
 
 def _finish():
@@ -192,6 +216,7 @@ def _finish():
 		table.clear()
 		for row in rows:
 			table.appendRow(row)
+	_restoreInputs()
 	op.Transport.par.Reset.pulse()
 	results = op('results')
 	fails = sum(1 for r in range(1, results.numRows) if results[r, 2].val != 'PASS')
