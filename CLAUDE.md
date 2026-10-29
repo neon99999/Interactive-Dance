@@ -54,6 +54,7 @@ Project-specific status and configuration stay in this repo (DEVELOPMENT_STATUS.
 - Commit small; on PowerShell 5.1 use `git commit -F <file>`.
 - Remote: `origin` = https://github.com/neon99999/Interactive-Dance (public). Pushing still needs asking each time. This repo stores its GitHub token per repo path (`credential.https://github.com.useHttpPath`), separate from the TouchClaude token.
 - Git: `C:\Program Files\Git\cmd\git.exe`. Python: use the full Python 3.12 path, not bare `python`.
+- The `.toe` is the source of truth (Embody's TDXN mode is Export-on-Save): opening the project keeps the COMPs stored in the `.toe`, and a pulled `.tdxn` does not replace them; only `.py`/`.glsl` files sync live. So any change to a network or its parameters must be saved into `DanceWorkshop.toe` and that `.toe` committed and pushed with it, or LAPTOP never sees it (learned 2026-10-29). Before saving, check the `.tdxn` diffs for unrelated live changes the save would carry (test values, toggled layers). TD saves also write `DanceWorkshop.N.toe` and move the previous numbered copy to `Backup/`; both are local only (gitignored).
 - A panel COMP's Background TOP (`par.top`) resolves from the COMP's parent network: a TOP inside the container needs `./null_out`, not `null_out`. Verify a panel by capturing the COMP itself, not only its inner TOP.
 
 <!-- BEGIN Embody/Envoy -- auto-managed, do not edit inside -->
