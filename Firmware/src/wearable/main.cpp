@@ -61,6 +61,11 @@ void logHeartbeat(uint32_t now) {
 void setup() {
   // The motor must be off before anything else can delay boot.
   haptic::begin();
+  // USB serial must never hold up the loop. When the USB cable is plugged in
+  // but no program has the port open, each print would otherwise wait for
+  // the buffer to empty, and the radio would only send in bursts.
+  Serial.setTxBufferSize(1024);
+  Serial.setTxTimeoutMs(0);
   Serial.begin(dance::SERIAL_BAUD);
   waitForSerial();
   logIdentity();

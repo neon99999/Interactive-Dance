@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 4;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 5;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
