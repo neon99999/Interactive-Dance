@@ -1,5 +1,6 @@
 // Wearable firmware entry point: boot, identify, start each module, then run
-// the modules' update loops. Modules are placeholders for now (see README.md).
+// the modules' update loops. The IMU is implemented; the other modules are
+// placeholders for now (see README.md).
 
 #include <Arduino.h>
 
@@ -31,6 +32,24 @@ void logIdentity() {
                 static_cast<unsigned long>(ESP.getCpuFreqMHz()), chipId);
 }
 
+// The boot log is often printed before a serial monitor is open, so any key
+// typed in the monitor prints the identity again.
+void replayIdentityOnKeypress() {
+  if (!Serial.available()) return;
+  while (Serial.available()) Serial.read();
+  logIdentity();
+}
+
+void logHeartbeat(uint32_t now) {
+  Serial.printf("[heartbeat] uptime %lu s, wearable %u, fw v%u.%u, imu ", static_cast<unsigned long>(now / 1000),
+                dance::WEARABLE_ID, dance::FIRMWARE_VERSION_MAJOR, dance::FIRMWARE_VERSION_MINOR);
+  if (imu::isReady()) {
+    Serial.printf("ok at 0x%02X\n", imu::address());
+  } else {
+    Serial.println("not found");
+  }
+}
+
 }  // namespace
 
 void setup() {
@@ -53,11 +72,12 @@ void loop() {
   battery::update();
   haptic::update();
   espnow_link::update();
+  replayIdentityOnKeypress();
 
   const uint32_t now = millis();
   if (now - lastHeartbeatMs >= dance::HEARTBEAT_LOG_MS) {
     lastHeartbeatMs = now;
-    Serial.printf("[heartbeat] uptime %lu s\n", static_cast<unsigned long>(now / 1000));
+    logHeartbeat(now);
   }
   delay(1);
 }

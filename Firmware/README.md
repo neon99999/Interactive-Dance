@@ -2,7 +2,7 @@
 
 Firmware for the wireless wearable motion sensors used with the Interactive Dance TouchDesigner toolkit. Each wearable sends its movement over ESP-NOW to a receiver, which passes it on to TouchDesigner.
 
-**Status:** architecture only. The wearable firmware boots, logs over USB serial and identifies itself. Every hardware module is a placeholder. It compiles; **nothing has been tested on hardware yet.**
+**Status:** the wearable boots, logs over USB serial, identifies itself and reads the IMU (accelerometer and gyroscope), printing readings to the serial log. The button, motor, battery and ESP-NOW modules are still placeholders. Boot and heartbeat have run on a board; **the IMU code compiles but has not yet been run on the hardware.**
 
 ## Hardware (per wearable)
 
@@ -24,7 +24,7 @@ Firmware/
   src/
     wearable/
       main.cpp          boot, identity log, module start-up, main loop, heartbeat log
-      imu.*             LSM6DS3TR-C (placeholder)
+      imu.*             LSM6DS3TR-C, read directly over I2C (no library)
       espnow_link.*     ESP-NOW link to the receiver (placeholder)
       button.*          pushbutton (placeholder)
       haptic.*          vibration motor (holds the motor pin LOW; no patterns yet)
@@ -52,18 +52,24 @@ The first build downloads the platform and toolchain (about 1 GB). On Windows, r
 ## Expected serial output
 
 ```
-Interactive Dance wearable v0.1
+Interactive Dance wearable v0.2
   wearable id 1, protocol v1
   chip ESP32-C6 rev ..., 160 MHz, efuse MAC ...
-[imu] placeholder: LSM6DS3TR-C expected at 0x6A (SDA 22, SCL 23), not started
+[imu] I2C on SDA 22, SCL 23
+[imu] I2C devices: 0x6A
+[imu] LSM6DS3TR-C ready at 0x6A: 104 Hz, +-4 g, +-2000 dps
 [button] placeholder: pin 1, not read
 [battery] placeholder: ADC pin 0, divider x2.0, not read
 [espnow] placeholder: protocol v1, not started
 boot complete
-[heartbeat] uptime 5 s
+[imu] accel g   0.01  -0.02   1.00   gyro dps      0.4     -0.3      0.1
+...
+[heartbeat] uptime 5 s, wearable 1, fw v0.2, imu ok at 0x6A
 ```
 
-The `[haptic]` line prints before the serial port is open, so it is usually not shown.
+The boot lines are usually printed before the serial monitor has opened (the board resets after flashing and the USB port reconnects), so often only the later lines show. **Type any key in the monitor** to print the identity again; the heartbeat line also shows the firmware version and the IMU state. The `[haptic]` line always prints too early to be seen.
+
+Lying flat and still, the IMU should read about 1 g on one axis and close to 0 on the others, with the gyro near 0. If it says `not found`, the scan line lists what is on the I2C bus: `none` means a wiring or power problem; the firmware keeps looking every 3 s, so a wire can be fixed without a reset.
 
 ## Protocol
 
@@ -73,12 +79,13 @@ The `[haptic]` line prints before the serial port is open, so it is usually not 
 
 | Item | State |
 |---|---|
-| Builds for `seeed_xiao_esp32c6` with Arduino | Compiles with no warnings (MINI-PC, 2026-10-28): RAM 4.4%, flash 19.4% |
-| Boot, USB serial log, identity, heartbeat | Written; **not run on a board** |
+| Builds for `seeed_xiao_esp32c6` with Arduino | Compiles with no warnings (MINI-PC, 2026-10-28): RAM 4.8%, flash 22.2% |
+| Boot, USB serial log, heartbeat | Runs on a board (heartbeat seen in the monitor) |
 | Motor pin held LOW from boot | Written; **not checked on hardware** |
-| IMU, ESP-NOW, button, battery | Placeholders only |
+| IMU detection and readings | Written and compiles; **not yet run on the hardware** |
+| ESP-NOW, button, battery | Placeholders only |
 | Receiver | Source placeholder; no build target |
-| Pin numbers in `config.h` | **Provisional**, not checked against the wiring |
+| Pin numbers in `config.h` | IMU on D4/D5 matches the wiring; button, motor, battery **provisional** |
 
 To check on the hardware first:
 
