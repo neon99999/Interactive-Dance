@@ -11,7 +11,7 @@ type_defaults:
   textTOP:
     parameters:
       filtertype: linear
-      font: Artifakt Element
+      font: Arial
       fontsizexunit: pixels
       outputresolution: custom
       resolutionh: 480

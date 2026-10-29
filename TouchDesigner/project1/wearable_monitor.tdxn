@@ -23,7 +23,7 @@ type_defaults:
   textTOP:
     parameters:
       alignx: left
-      font: Artifakt Element
+      font: Arial
       fontsizex: 22
       fontsizexunit: pixels
       outputresolution: custom
