@@ -23,7 +23,7 @@ type_defaults:
   textTOP:
     parameters:
       alignx: left
-      font: Arial
+      fontfile: C:/Windows/Fonts/arial.ttf
       fontsizex: 22
       fontsizexunit: pixels
       outputresolution: custom
