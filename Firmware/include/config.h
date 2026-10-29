@@ -1,7 +1,7 @@
 // Build-time settings for the wearable firmware.
 //
-// PIN ASSIGNMENTS: the IMU's I2C pins (D4/D5) match the wiring. The button,
-// motor and battery pins are still provisional; confirm them on the hardware.
+// PIN ASSIGNMENTS: the IMU (D4/D5), button (D1) and motor (D2) pins are
+// confirmed on the hardware. The battery pin is still provisional.
 
 #pragma once
 

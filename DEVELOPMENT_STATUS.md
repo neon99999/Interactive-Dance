@@ -55,6 +55,10 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 - **Wireless with fw v0.5:** the user flashed v0.5 and confirmed the whole chain: wearable to receiver over ESP-NOW, the receiver display, TouchDesigner at 921600 baud, input assignments (`serial_w1_ax` to `layer1.x`, `serial_w1_ay` to `layer1.y`) driving the visuals, and `imu_monitor` with prefix `serial_w1_`.
 - **Still to check on LAPTOP:** commit `7184ee0` restored the imu_monitor prefix menu, the no-data hint, the baud help and DTR off, which a save from a TouchDesigner session left open across a `git pull` had reverted. The files were checked by hand but not yet loaded in TouchDesigner, and the 63 in-TD tests have not been run on this branch. Close TouchDesigner before every `git pull`.
 
+## Verified on hardware (2026-10-29, LAPTOP)
+
+- **Wearable fw v0.7, button and motor:** on a breadboard over USB, the button on D1 reads `btn=1` while held and a 1.5 s hold switches wrist/ankle (`[mode]` line, `mode` value). The motor on D2 (NPN transistor) buzzes twice for ankle and once for wrist, from the button and from `a`/`w`. Lying flat: gyro calibrated, `still=1`, pitch and roll about -1 deg; activity noise 0.012 (ankle) / 0.020 (wrist), half the still threshold. Hits, ESP-NOW with v0.7 and receiver v0.2 still to test.
+
 ## Built, not yet on hardware (2026-10-29, branch `feature/wearable-sensors`)
 
 Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable2`, `wearable3`, `receiver`) compile with no warnings in our code.

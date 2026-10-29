@@ -4,8 +4,10 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 
 **Status:**
 - **Verified on hardware (LAPTOP, 2026-10-28):** wearable v0.5 and receiver v0.1 with one wearable. The wearable reads the IMU and sends 50 readings a second by ESP-NOW. The receiver (an ESP8266 NodeMCU) forwards them to TouchDesigner over USB and shows status on a small display.
-- **Compiled, not yet run on boards:** wearable v0.7 and receiver v0.2. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
-- The battery module is still a placeholder. The button and motor code is written but the parts are not wired yet.
+- **Verified on hardware (LAPTOP, 2026-10-29):** wearable v0.7 over USB on a breadboard: the button on D1 (`btn`, and a 1.5 s hold switches wrist/ankle), the vibration motor on D2 through an NPN transistor (2 buzzes for ankle, 1 for wrist, from the button and from `a`/`w`), and the readings lying flat (gyro calibrated, `still=1`, pitch and roll about -1 deg).
+- **Not yet run on boards:** receiver v0.2, and the v0.7 signals over ESP-NOW. Hits and the thresholds are untested until the recordings are in.
+- **Compiled:** wearable v0.7 and receiver v0.2. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
+- The battery module is still a placeholder.
 
 ## Hardware (per wearable)
 
