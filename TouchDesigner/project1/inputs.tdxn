@@ -98,8 +98,8 @@ custom_pars:
     min: 300.0
     clampMin: true
     normMin: 9600.0
-    normMax: 115200.0
-    help: Must match Serial.begin(...) in the device sketch, e.g. 9600 or 115200.
+    normMax: 921600.0
+    help: 'Must match the device: 921600 for the wireless receiver (NodeMCU), 115200 for a wearable plugged in by USB, or Serial.begin(...) in your own sketch.'
     value: 921600
   - name: Serialnames
     style: Str
@@ -185,6 +185,7 @@ operators:
     port: =parent.Inputs.par.Serialport
     baudrate: =parent.Inputs.par.Serialbaud
     stopbits: '1'
+    dtr: disable
     callbacks: serial_in_callbacks
     fromop: =parent()
   position: [0, -1600]
