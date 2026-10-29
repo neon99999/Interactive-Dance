@@ -104,7 +104,7 @@ accel=0.52, zone=1        name=value (or name:value) pairs -> serial_accel, seri
 0.52,1                    plain numbers (comma, space or ;) -> named by Value Names, e.g. "accel, zone"; otherwise serial_1, serial_2
 ```
 
-Pieces that are not numbers are skipped, and lines starting with `#` or `[` are treated as log messages and ignored. The values hold until the next line arrives.
+Pieces that are not numbers are skipped, and lines starting with `#` or `[` are treated as log messages and ignored. Lines with non-printing characters (noise from a wrong baud rate, or a board's boot message) are skipped too. The values hold until the next line arrives.
 
 The camera input measures how much the picture changes between frames, over the whole image and over the left and right halves. To use a value as an on/off zone, give it a narrow in range, e.g. `camera_left`, in 0.05-0.06, out 0-1.
 

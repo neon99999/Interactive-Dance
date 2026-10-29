@@ -36,7 +36,7 @@ Last updated 2026-10-27.
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **35 of 35** pass (27 show logic, 8 serial parser). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **35 of 35** pass (27 show logic, 9 serial parser). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 

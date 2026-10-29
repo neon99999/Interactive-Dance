@@ -49,6 +49,16 @@ class ParseLine(unittest.TestCase):
 			self.assertEqual(sp.parseLine(line), ({}, []), line)
 		self.assertEqual(sp.parseLine('ax=0.5 gz=-2.5')[0], {'serial_ax': 0.5, 'serial_gz': -2.5})
 
+	def test_noise_skipped(self):
+		# Wrong baud rate or a boot message joined onto the first real line.
+		values, problems = sp.parseLine('\x00\x8fh"\x12J\x07w1_ax=0.5 w1_ay=1')
+		self.assertEqual(values, {})
+		self.assertEqual(len(problems), 1)
+		# Printable junk glued to a name: that pair is dropped, the rest kept.
+		self.assertEqual(sp.parseLine('h"J_____w1_ax=0.5 w1_ay=1')[0], {'serial_w1_ay': 1.0})
+		self.assertEqual(sp.parseLine('a=1,b=2;c=3\td=4')[0],
+			{'serial_a': 1.0, 'serial_b': 2.0, 'serial_c': 3.0, 'serial_d': 4.0})
+
 	def test_prefix_and_names(self):
 		self.assertEqual(sp.parseNames(' accel, zone ;x '), ['accel', 'zone', 'x'])
 		self.assertEqual(sp.parseLine('3', prefix='s_')[0], {'s_1': 3.0})
