@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 6;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 7;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
@@ -27,7 +27,7 @@ constexpr uint8_t WEARABLE_ID = DANCE_WEARABLE_ID;
 // --- Pins (XIAO ESP32-C6 label -> GPIO). See above. ---
 constexpr int PIN_I2C_SDA = 22;      // D4, default I2C SDA, to the LSM6DS3TR-C
 constexpr int PIN_I2C_SCL = 23;      // D5, default I2C SCL
-constexpr int PIN_BUTTON = 1;        // D1, pushbutton to GND (internal pull-up planned)
+constexpr int PIN_BUTTON = 1;        // D1, pushbutton to GND (internal pull-up)
 constexpr int PIN_HAPTIC = 2;        // D2, base of the NPN transistor driving the motor
 constexpr int PIN_BATTERY_ADC = 0;   // A0/D0, LiPo through an external voltage divider
 
@@ -42,10 +42,20 @@ constexpr uint32_t IMU_RETRY_MS = 3000;   // look for a missing sensor again
 
 // Send a Motion packet over ESP-NOW for every this-many new IMU samples:
 // 2 of 208 Hz = 104 packets a second, about 10 ms apart. Lower latency costs
-// radio and serial bandwidth: three wearables at 104 Hz use about 45% of the
+// radio and serial bandwidth: three wearables at 104 Hz use about 60% of the
 // receiver's 921600 baud line. The channel is in protocol.h because the
 // receiver must use the same one.
 constexpr uint8_t ESPNOW_SEND_EVERY_SAMPLES = 2;
+
+// --- Body axes. ---
+// Wearing standard: chip side facing out, USB connector towards the hand
+// (wrist) or the toes (ankle). Body axes: x forward (towards the USB), y left,
+// z up (out of the chip face). Which sensor axis points which way depends on
+// how the IMU board sits on the wearable: +1/+2/+3 = sensor +x/+y/+z,
+// -1/-2/-3 = the opposite. Check with the hand test in README.md.
+constexpr int8_t BODY_FORWARD_AXIS = +1;
+constexpr int8_t BODY_LEFT_AXIS = +2;
+constexpr int8_t BODY_UP_AXIS = +3;
 
 // --- Motion processing (motion.cpp), run on every IMU sample. ---
 // Gyro bias: measured at boot while the wearable lies still. It counts as
@@ -58,20 +68,42 @@ constexpr float GYRO_STILL_DPS = 3.0f;
 // acceleration is close to 1 g (not during a jump or a hit).
 constexpr float TILT_TIME_CONSTANT_S = 0.5f;
 constexpr float TILT_GRAVITY_TOLERANCE_G = 0.25f;
-// Activity, 0..1: the larger of acceleration away from 1 g and rotation
-// speed, each as a fraction of its full-scale value, rising within RISE and
-// falling within FALL (time constants).
-constexpr float ACTIVITY_FULL_ACCEL_G = 1.5f;
-constexpr float ACTIVITY_FULL_GYRO_DPS = 600.0f;
+// Activity rises and falls with these time constants.
 constexpr float ACTIVITY_RISE_S = 0.03f;
 constexpr float ACTIVITY_FALL_S = 0.4f;
-// Hit: acceleration more than HIT_THRESHOLD_G above 1 g. The hit flag stays
-// on for HIT_HOLD_MS so TouchDesigner, which reads once per frame, cannot
-// miss it; a new hit needs the acceleration to drop below half the
-// threshold and HIT_REARM_MS to pass.
-constexpr float HIT_THRESHOLD_G = 1.5f;
+// Hit: the flag stays on for HIT_HOLD_MS so TouchDesigner, which reads once
+// per frame, cannot miss it. A punch is a spike one way (speeding up) and
+// often one the other way (stopping): everything within HIT_WINDOW_MS is one
+// hit, and a new one also needs the acceleration to fall below half the
+// threshold first.
 constexpr uint32_t HIT_HOLD_MS = 120;
-constexpr uint32_t HIT_REARM_MS = 150;
+constexpr uint32_t HIT_WINDOW_MS = 250;
+// Still: movement below the mode's stillLevel for STILL_MS; it ends when
+// movement goes above twice stillLevel.
+constexpr uint32_t STILL_MS = 500;
+
+// Per wearing mode. STARTING VALUES, not yet tuned on a body.
+//   fullAccelG, fullGyroDps: movement at which activity reaches 1
+//   hitThresholdG: acceleration (gravity removed) that counts as a hit
+//   stillLevel: movement, as a fraction of full, below which the wearer is still
+struct ModeSettings {
+  const char* name;
+  float fullAccelG;
+  float fullGyroDps;
+  float hitThresholdG;
+  float stillLevel;
+};
+constexpr ModeSettings WRIST_SETTINGS = {"wrist", 1.5f, 600.0f, 1.5f, 0.04f};
+// Ankles take a jolt at every step, so hits need a harder stamp or kick.
+constexpr ModeSettings ANKLE_SETTINGS = {"ankle", 2.5f, 500.0f, 3.0f, 0.04f};
+
+// --- Button and mode. ---
+// Holding the button this long switches between wrist and ankle mode; the
+// motor then buzzes once for wrist, twice for ankle. The mode is kept in
+// flash. Over USB serial, typing w or a sets it too.
+constexpr uint32_t BUTTON_DEBOUNCE_MS = 30;
+constexpr uint32_t BUTTON_LONG_PRESS_MS = 1500;
+constexpr uint32_t HAPTIC_BUZZ_MS = 150;  // one buzz, and the gap between buzzes
 
 // Battery voltage = ADC pin voltage * this ratio (2.0 for two equal resistors).
 constexpr float BATTERY_DIVIDER_RATIO = 2.0f;

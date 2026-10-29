@@ -12,6 +12,8 @@ spool/
 *.ndjson.gz
 logs/
 *.log
+# ...but motion recordings for tuning the wearables are kept
+!Firmware/recordings/*.log
 
 # Python
 venv/

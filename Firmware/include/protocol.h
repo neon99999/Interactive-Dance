@@ -16,7 +16,8 @@
 //
 // History: v2 Motion carried the raw IMU reading only (MotionPacketV2, kept so
 // a receiver still reads wearables on fw v0.4-v0.5). v3 adds the wearable's
-// motion processing: tilt, activity and a hit flag.
+// motion processing: tilt, activity, hit with direction, still, the button
+// and the wearing mode, all on the body axes (config.h).
 
 #pragma once
 
@@ -59,15 +60,25 @@ struct HelloPacket {
   uint8_t firmwareMinor;
 };
 
+// Where the wearable is worn. Each mode has its own thresholds (config.h).
+enum class Mode : uint8_t { Wrist = 1, Ankle = 2 };
+
+// Direction of a hit along the body axes: forward is towards the USB
+// connector (the hand or the toes), up is out of the chip face, left and
+// right as seen looking down on the chip face with the USB pointing away.
+enum class HitDirection : uint8_t { None = 0, Forward = 1, Back = 2, Up = 3, Down = 4, Left = 5, Right = 6 };
+
 // Fixed-point so the packet stays small: accel in thousandths of a g
-// (+-4 g fits easily), gyro in tenths of a degree per second (+-2000 dps).
+// (+-8 g fits easily), gyro in tenths of a degree per second (+-2000 dps).
 constexpr float MOTION_ACCEL_PER_UNIT = 0.001f;
 constexpr float MOTION_GYRO_PER_UNIT = 0.1f;
 
 constexpr float MOTION_ANGLE_PER_UNIT = 0.1f;       // tilt in tenths of a degree
 constexpr uint16_t MOTION_ACTIVITY_FULL = 1000;     // activity 0..1000 = 0..1
-constexpr uint8_t MOTION_FLAG_HIT = 0x01;           // a hit happened in the last HIT_HOLD_MS
-constexpr uint8_t MOTION_FLAG_GYRO_CALIBRATED = 0x02;
+constexpr uint8_t MOTION_FLAG_HIT = 0x01;           // a hit started within the last HIT_HOLD_MS
+constexpr uint8_t MOTION_FLAG_STILL = 0x02;         // held still for STILL_MS
+constexpr uint8_t MOTION_FLAG_BUTTON = 0x04;        // button held down
+constexpr uint8_t MOTION_FLAG_GYRO_CALIBRATED = 0x08;
 
 // v2 layout: raw reading only.
 struct MotionPacketV2 {
@@ -76,14 +87,17 @@ struct MotionPacketV2 {
   int16_t gx, gy, gz;  // x MOTION_GYRO_PER_UNIT = degrees per second
 };
 
+// v3. Axes are the body axes: x forward, y left, z up.
 struct MotionPacket {
   PacketHeader header;
-  int16_t ax, ay, az;  // x MOTION_ACCEL_PER_UNIT = g
-  int16_t gx, gy, gz;  // x MOTION_GYRO_PER_UNIT = degrees per second, gyro bias removed
-  int16_t pitch, roll; // x MOTION_ANGLE_PER_UNIT = degrees of tilt from gravity
-  uint16_t activity;   // 0..MOTION_ACTIVITY_FULL, how much the wearable is moving
-  uint8_t flags;       // MOTION_FLAG_*
-  uint8_t hits;        // hits counted since boot, wraps at 255
+  int16_t ax, ay, az;     // x MOTION_ACCEL_PER_UNIT = g
+  int16_t gx, gy, gz;     // x MOTION_GYRO_PER_UNIT = degrees per second, gyro bias removed
+  int16_t pitch, roll;    // x MOTION_ANGLE_PER_UNIT = degrees of tilt from gravity
+  uint16_t activity;      // 0..MOTION_ACTIVITY_FULL, how much the wearable is moving
+  uint8_t flags;          // MOTION_FLAG_*
+  uint8_t hitDirection;   // HitDirection of the latest hit, None before the first
+  uint8_t hits;           // hits counted since boot, wraps at 255
+  uint8_t mode;           // Mode
 };
 
 #pragma pack(pop)
@@ -91,7 +105,7 @@ struct MotionPacket {
 static_assert(sizeof(PacketHeader) == 6, "PacketHeader layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(HelloPacket) == 8, "HelloPacket layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(MotionPacketV2) == 18, "MotionPacketV2 is a fixed old layout");
-static_assert(sizeof(MotionPacket) == 26, "MotionPacket layout changed: bump PROTOCOL_VERSION");
+static_assert(sizeof(MotionPacket) == 28, "MotionPacket layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(MotionPacket) <= ESPNOW_MAX_PAYLOAD, "packet too large for ESP-NOW");
 
 inline PacketHeader makeHeader(PacketType type, uint8_t wearableId, uint16_t sequence) {

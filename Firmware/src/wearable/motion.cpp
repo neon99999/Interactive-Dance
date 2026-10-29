@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "config.h"
+#include "mode.h"
 
 namespace motion {
 
@@ -27,7 +28,10 @@ bool tiltStarted = false;
 
 bool hitArmed = true;
 bool anyHit = false;
-uint32_t lastHitMs = 0;
+uint32_t hitStartMs = 0;
+
+bool quiet = false;
+uint32_t quietSinceMs = 0;
 
 float wrap180(float degrees) {
   while (degrees > 180.0f) degrees -= 360.0f;
@@ -35,11 +39,15 @@ float wrap180(float degrees) {
   return degrees;
 }
 
+// One body axis from a sensor vector: +1/+2/+3 = sensor x/y/z, negative = reversed.
+float bodyAxis(const float sensor[3], int8_t code) {
+  return code > 0 ? sensor[code - 1] : -sensor[-code - 1];
+}
+
 // Averages the gyro over GYRO_CALIBRATION_MS windows until one is still.
-void calibrateGyro(const imu::Reading& r) {
-  const float g[3] = {r.gx, r.gy, r.gz};
+void calibrateGyro(const float g[3], uint32_t nowMs) {
   if (windowCount == 0) {
-    windowStartMs = r.timeMs;
+    windowStartMs = nowMs;
     for (int i = 0; i < 3; ++i) {
       sum[i] = 0;
       low[i] = high[i] = g[i];
@@ -51,7 +59,7 @@ void calibrateGyro(const imu::Reading& r) {
     high[i] = fmaxf(high[i], g[i]);
   }
   ++windowCount;
-  if (r.timeMs - windowStartMs < dance::GYRO_CALIBRATION_MS) return;
+  if (nowMs - windowStartMs < dance::GYRO_CALIBRATION_MS) return;
 
   bool still = true;
   float mean[3];
@@ -70,9 +78,9 @@ void calibrateGyro(const imu::Reading& r) {
   }
 }
 
-void updateTilt(const imu::Reading& r, float accelMagnitude, float dt) {
-  const float gravityRoll = atan2f(r.ay, r.az) * DEGREES_PER_RADIAN;
-  const float gravityPitch = atan2f(-r.ax, sqrtf(r.ay * r.ay + r.az * r.az)) * DEGREES_PER_RADIAN;
+void updateTilt(float accelMagnitude, float dt) {
+  const float gravityRoll = atan2f(s.ay, s.az) * DEGREES_PER_RADIAN;
+  const float gravityPitch = atan2f(s.ax, sqrtf(s.ay * s.ay + s.az * s.az)) * DEGREES_PER_RADIAN;
   const bool gravityTrusted = fabsf(accelMagnitude - 1.0f) < dance::TILT_GRAVITY_TOLERANCE_G;
   if (!tiltStarted) {
     if (!gravityTrusted) return;
@@ -81,9 +89,10 @@ void updateTilt(const imu::Reading& r, float accelMagnitude, float dt) {
     tiltStarted = true;
     return;
   }
-  // Follow the gyro, then pull a little towards gravity.
+  // Follow the gyro (turning about the left axis tips the forward end down),
+  // then pull a little towards gravity.
   s.roll = wrap180(s.roll + s.gx * dt);
-  s.pitch = constrain(s.pitch + s.gy * dt, -90.0f, 90.0f);
+  s.pitch = constrain(s.pitch - s.gy * dt, -90.0f, 90.0f);
   if (gravityTrusted && dt > 0) {
     const float k = dt / (dance::TILT_TIME_CONSTANT_S + dt);
     s.roll = wrap180(s.roll + k * wrap180(gravityRoll - s.roll));
@@ -91,46 +100,87 @@ void updateTilt(const imu::Reading& r, float accelMagnitude, float dt) {
   }
 }
 
-void updateActivity(float accelMagnitude, float dt) {
-  const float linear = fabsf(accelMagnitude - 1.0f) / dance::ACTIVITY_FULL_ACCEL_G;
-  const float spin = sqrtf(s.gx * s.gx + s.gy * s.gy + s.gz * s.gz) / dance::ACTIVITY_FULL_GYRO_DPS;
-  const float target = fminf(1.0f, fmaxf(linear, spin));
+dance::HitDirection directionOf(float x, float y, float z) {
+  const float ax = fabsf(x), ay = fabsf(y), az = fabsf(z);
+  if (ax >= ay && ax >= az) return x > 0 ? dance::HitDirection::Forward : dance::HitDirection::Back;
+  if (ay >= az) return y > 0 ? dance::HitDirection::Left : dance::HitDirection::Right;
+  return z > 0 ? dance::HitDirection::Up : dance::HitDirection::Down;
+}
+
+// The acceleration with gravity (from the tilt) taken away, then a hit when
+// it passes the mode's threshold. Its direction is that of the first spike.
+void updateHit(const dance::ModeSettings& m, uint32_t nowMs) {
+  const float pitch = s.pitch / DEGREES_PER_RADIAN, roll = s.roll / DEGREES_PER_RADIAN;
+  const float lx = s.ax - sinf(pitch);
+  const float ly = s.ay - sinf(roll) * cosf(pitch);
+  const float lz = s.az - cosf(roll) * cosf(pitch);
+  const float size = sqrtf(lx * lx + ly * ly + lz * lz);
+  if (!hitArmed && nowMs - hitStartMs >= dance::HIT_WINDOW_MS && size < m.hitThresholdG * 0.5f) hitArmed = true;
+  if (hitArmed && size > m.hitThresholdG) {
+    hitArmed = false;
+    anyHit = true;
+    hitStartMs = nowMs;
+    s.hitDirection = directionOf(lx, ly, lz);
+    ++s.hits;
+  }
+  s.hit = anyHit && nowMs - hitStartMs < dance::HIT_HOLD_MS;
+}
+
+// Movement: the larger of acceleration away from 1 g and rotation speed,
+// each as a fraction of the mode's full scale.
+float movement(const dance::ModeSettings& m, float accelMagnitude) {
+  const float linear = fabsf(accelMagnitude - 1.0f) / m.fullAccelG;
+  const float spin = sqrtf(s.gx * s.gx + s.gy * s.gy + s.gz * s.gz) / m.fullGyroDps;
+  return fmaxf(linear, spin);
+}
+
+void updateActivity(float amount, float dt) {
   if (dt <= 0) return;
+  const float target = fminf(1.0f, amount);
   const float timeConstant = target > s.activity ? dance::ACTIVITY_RISE_S : dance::ACTIVITY_FALL_S;
   s.activity += (target - s.activity) * (1.0f - expf(-dt / timeConstant));
 }
 
-void updateHit(float accelMagnitude, uint32_t nowMs) {
-  const float excess = accelMagnitude - 1.0f;
-  if (!hitArmed && excess < dance::HIT_THRESHOLD_G * 0.5f && nowMs - lastHitMs >= dance::HIT_REARM_MS) {
-    hitArmed = true;
+void updateStill(const dance::ModeSettings& m, float amount, uint32_t nowMs) {
+  if (amount < m.stillLevel) {
+    if (!quiet) {
+      quiet = true;
+      quietSinceMs = nowMs;
+    }
+    if (nowMs - quietSinceMs >= dance::STILL_MS) s.still = true;
+  } else {
+    quiet = false;
+    if (amount > 2.0f * m.stillLevel) s.still = false;
   }
-  if (hitArmed && excess > dance::HIT_THRESHOLD_G) {
-    hitArmed = false;
-    anyHit = true;
-    lastHitMs = nowMs;
-    ++s.hits;
-  }
-  s.hit = anyHit && nowMs - lastHitMs < dance::HIT_HOLD_MS;
 }
 
 }  // namespace
 
 void update(const imu::Reading& r) {
-  if (!s.gyroCalibrated) calibrateGyro(r);
-  s.gx = r.gx - bias[0];
-  s.gy = r.gy - bias[1];
-  s.gz = r.gz - bias[2];
+  const float sensorAccel[3] = {r.ax, r.ay, r.az};
+  const float sensorGyro[3] = {r.gx, r.gy, r.gz};
+  s.ax = bodyAxis(sensorAccel, dance::BODY_FORWARD_AXIS);
+  s.ay = bodyAxis(sensorAccel, dance::BODY_LEFT_AXIS);
+  s.az = bodyAxis(sensorAccel, dance::BODY_UP_AXIS);
+  float g[3] = {bodyAxis(sensorGyro, dance::BODY_FORWARD_AXIS), bodyAxis(sensorGyro, dance::BODY_LEFT_AXIS),
+                bodyAxis(sensorGyro, dance::BODY_UP_AXIS)};
+  if (!s.gyroCalibrated) calibrateGyro(g, r.timeMs);
+  s.gx = g[0] - bias[0];
+  s.gy = g[1] - bias[1];
+  s.gz = g[2] - bias[2];
 
   float dt = haveLastSample ? (r.timeUs - lastUs) * 1e-6f : 0.0f;
   if (dt > MAX_STEP_S) dt = 0;
   lastUs = r.timeUs;
   haveLastSample = true;
 
-  const float accelMagnitude = sqrtf(r.ax * r.ax + r.ay * r.ay + r.az * r.az);
-  updateTilt(r, accelMagnitude, dt);
-  updateActivity(accelMagnitude, dt);
-  updateHit(accelMagnitude, r.timeMs);
+  const dance::ModeSettings& m = mode::settings();
+  const float accelMagnitude = sqrtf(s.ax * s.ax + s.ay * s.ay + s.az * s.az);
+  updateTilt(accelMagnitude, dt);
+  updateHit(m, r.timeMs);
+  const float amount = movement(m, accelMagnitude);
+  updateActivity(amount, dt);
+  updateStill(m, amount, r.timeMs);
   ++s.samples;
 }
 

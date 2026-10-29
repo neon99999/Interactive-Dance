@@ -32,7 +32,8 @@ Always ask:
 
 ## Working with the user
 - End every reply that needs input with a numbered **Questions** list as the very last thing, each with a line of context and a recommendation, so they can be answered one by one.
-- On-body tests are not possible for a while (no body mounts or dancers yet). Hardware tests are desk or hand-held until the user says otherwise.
+- On-body tests are not possible for a while (no body mounts or dancers yet). Hardware tests are desk or hand-held (breadboard) until the user says otherwise.
+- Machines: MINI-PC (this one) is in the studio with no boards attached; the user reaches it over remote desktop from home. All hardware work (flashing, recordings, serial) happens on LAPTOP. GitHub is the hand-over, so anything LAPTOP needs must be pushed (ask first).
 
 ## Practice
 - Verify claims with an independent check before reporting them done.

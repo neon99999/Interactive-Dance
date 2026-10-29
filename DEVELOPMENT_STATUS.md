@@ -36,7 +36,7 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **37 of 37** pass (27 show logic, 10 serial parser, including the receiver's v0.2 line format). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **50 of 50** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -59,11 +59,13 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 
 Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable2`, `wearable3`, `receiver`) compile with no warnings in our code.
 
-- **Wearable fw v0.6:** motion processing on every sensor sample (now 208 Hz, +-8 g): gyro bias calibrated at power-up while still, tilt (`pitch`, `roll`), activity (`act`, 0-1) and hits (`hit`, held 120 ms so a frame cannot miss it). Sends about 104 packets a second (was 50) for lower latency. Build environments for ids 1, 2 and 3.
-- **Protocol v3:** the Motion packet carries the processed values. The receiver still reads v2 packets, so a v0.5 wearable keeps working with the new receiver (flash the receiver first).
-- **Receiver fw v0.2:** prints `w<id>_pitch`, `_roll`, `_act`, `_hit` after the raw values; sets `act` and `hit` to 0 when a wearable is lost; detects two wearables with the same id (`DUP`). The display always shows rows for wearables 1-3, adds an activity bar, hit/calibration marker and tilt, and draws one small piece per loop pass so serial output to TouchDesigner goes first.
-- **TouchDesigner:** no changes needed; the new signals (`serial_w1_act` etc.) appear in the input assignment table by name. The motion thresholds are starting values to tune on a dancer.
-- **Not tested automatically:** the C++ motion processing (no host C++ compiler on MINI-PC). The in-TD tests could not run on MINI-PC (TouchDesigner's main thread is stalled there).
+- **Agreed signal set** (with the user, 2026-10-29), per wearable: `act` (0-1), rotation `gx gy gz`, tilt `pitch` and `roll`, `hit` with `hitdir` (1-6 on the body: forward, back, up, down, left, right), `still` (a freeze) and `btn`, plus `mode`. Raw acceleration stays for `imu_monitor`. Kept for later: `spin` and `jump`.
+- **Wearable fw v0.7:** the signals are worked out on every sensor sample (now 208 Hz, +-8 g), on body axes (chip side out, USB towards the hand or toes; the IMU's axes are mapped in `config.h`). A punch and its counter-spike count as one hit; the direction is the first spike's. Wrist and ankle modes with their own thresholds (starting values); a 1.5 s button press or `w`/`a` over USB switches, kept in flash, confirmed by 1 or 2 motor buzzes. Record mode (`r` over USB) prints every raw sample for tuning. About 104 packets a second. Build environments for ids 1, 2 and 3.
+- **Protocol v3:** the Motion packet carries the signals. The receiver still reads v2 packets, so a v0.5 wearable keeps working with the new receiver (flash the receiver first).
+- **Receiver fw v0.2:** prints the signals after the raw values; zeroes `act`, `hit`, `still` and `btn` when a wearable is lost; detects two wearables with the same id (`DUP`). The display always shows rows for wearables 1-3 with the mode, an activity bar, hit direction, still and button markers and tilt, and draws one small piece per loop pass so serial output to TouchDesigner goes first.
+- **Tuning tool:** `Firmware/tools/motion_model.py`, a Python copy of the detectors that reads the numbers from `config.h`, analyses recordings and checks them against the firmware's own results. `tests/test_motion_model.py` (13 tests) checks the design on made-up movements: one hit per punch with its counter-spike, two punches, all six directions, the axis mapping, ankle vs wrist thresholds, tilt, activity, still.
+- **Not tested automatically:** the C++ itself (no C++ compiler for this computer on MINI-PC). The in-TD tests could not run on MINI-PC (TouchDesigner's main thread is stalled there).
+- **Still to build:** the TouchDesigner panel that shows every signal live, three wearables side by side or one selected. It needs a working TouchDesigner.
 
 ## Not verified (needs a person or hardware)
 
@@ -92,6 +94,7 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 - MediaPipe body tracking: documented in the README, not included; it needs a download.
 - A timeout that drops stale sensor values.
 - A friendlier editor than the table viewers.
+- More wearable signals: `spin` (a sustained turn) and `jump` (brief weightlessness, reliable on the ankle only).
 
 ## Dependencies
 

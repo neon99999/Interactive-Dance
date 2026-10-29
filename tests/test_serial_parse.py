@@ -62,13 +62,14 @@ class ParseLine(unittest.TestCase):
 	def test_receiver_lines(self):
 		# Receiver v0.2 lines, as Firmware/src/receiver/main.cpp prints them.
 		values, problems = sp.parseLine('w2_ax=0.012 w2_ay=-0.021 w2_az=1.003 w2_gx=0.4 w2_gy=-0.3 w2_gz=0.1 '
-			'w2_pitch=-12.5 w2_roll=170.0 w2_act=0.031 w2_hit=1')
+			'w2_pitch=-12.5 w2_roll=170.0 w2_act=0.031 w2_hit=1 w2_hitdir=3 w2_still=0 w2_btn=1 w2_mode=2')
 		self.assertEqual(problems, [])
-		self.assertEqual(len(values), 10)
-		self.assertEqual((values['serial_w2_pitch'], values['serial_w2_act'], values['serial_w2_hit']),
-			(-12.5, 0.031, 1.0))
-		self.assertEqual(sp.parseLine('w3_live=0 w3_act=0 w3_hit=0')[0],
-			{'serial_w3_live': 0.0, 'serial_w3_act': 0.0, 'serial_w3_hit': 0.0})
+		self.assertEqual(len(values), 14)
+		self.assertEqual((values['serial_w2_pitch'], values['serial_w2_act'], values['serial_w2_hitdir'],
+			values['serial_w2_mode']), (-12.5, 0.031, 3.0, 2.0))
+		self.assertEqual(sp.parseLine('w3_live=0 w3_act=0 w3_hit=0 w3_still=0 w3_btn=0')[0],
+			{'serial_w3_live': 0.0, 'serial_w3_act': 0.0, 'serial_w3_hit': 0.0, 'serial_w3_still': 0.0,
+			'serial_w3_btn': 0.0})
 
 	def test_prefix_and_names(self):
 		self.assertEqual(sp.parseNames(' accel, zone ;x '), ['accel', 'zone', 'x'])

@@ -26,7 +26,8 @@ constexpr int16_t BAR_GAP = 3;
 constexpr int ACCEL_FULL_SCALE = 2000;  // 2 g in protocol units fills a bar
 constexpr int GYRO_FULL_SCALE = 5000;   // 500 dps
 constexpr int16_t LINE_CHARS = 26;
-constexpr int16_t DETAIL_X = 2 + BAR_WIDTH + BAR_GAP + 2;  // tilt text, right of the activity bar
+constexpr int16_t LEVEL_WIDTH = 44;                    // activity bar
+constexpr int16_t DETAIL_X = 2 + LEVEL_WIDTH + 4;      // markers and tilt, right of it
 constexpr int16_t DETAIL_CHARS = (WIDTH - DETAIL_X) / 6;
 
 static_assert(ROW_TOP + rx::DISPLAY_SLOTS * ROW_HEIGHT <= HEIGHT, "wearable rows do not fit on the screen");
@@ -96,10 +97,32 @@ void drawBar(int16_t x, int16_t y, int value, int fullScale, uint16_t colour) {
 
 // A bar filling from the left, for activity 0..MOTION_ACTIVITY_FULL.
 void drawLevel(int16_t x, int16_t y, int value, uint16_t colour) {
-  const int16_t length = static_cast<int16_t>(constrain(static_cast<long>(value) * BAR_WIDTH /
-                                                        dance::MOTION_ACTIVITY_FULL, 0, BAR_WIDTH));
+  const int16_t length = static_cast<int16_t>(constrain(static_cast<long>(value) * LEVEL_WIDTH /
+                                                        dance::MOTION_ACTIVITY_FULL, 0, LEVEL_WIDTH));
   tft.fillRect(x, y, length, BAR_HEIGHT, colour);
-  tft.fillRect(x + length, y, BAR_WIDTH - length, BAR_HEIGHT, DARK);
+  tft.fillRect(x + length, y, LEVEL_WIDTH - length, BAR_HEIGHT, DARK);
+}
+
+const char* modeName(uint8_t mode) {
+  switch (static_cast<dance::Mode>(mode)) {
+    case dance::Mode::Wrist: return "wrist";
+    case dance::Mode::Ankle: return "ankle";
+  }
+  return "";  // old firmware sends no mode
+}
+
+// Three letters, to fit the row.
+const char* directionName(uint8_t direction) {
+  switch (static_cast<dance::HitDirection>(direction)) {
+    case dance::HitDirection::Forward: return "fwd";
+    case dance::HitDirection::Back: return "bck";
+    case dance::HitDirection::Up: return "up ";
+    case dance::HitDirection::Down: return "dwn";
+    case dance::HitDirection::Left: return "lft";
+    case dance::HitDirection::Right: return "rgt";
+    case dance::HitDirection::None: break;
+  }
+  return "HIT";
 }
 
 void drawTitle(uint32_t now) {
@@ -128,8 +151,8 @@ void drawRow(uint8_t slot, uint32_t now) {
     snprintf(line, sizeof(line), "W%u --   waiting", id);
     colour = GREY;
   } else {
-    snprintf(line, sizeof(line), "W%u %-4s %3u/s lost %-6lu", id, duplicate ? "DUP" : w.live ? "LIVE" : "LOST",
-             w.ratePerSecond, static_cast<unsigned long>(w.lost));
+    snprintf(line, sizeof(line), "W%u %-5s %-4s %3u/s x%u", id, modeName(w.mode),
+             duplicate ? "DUP" : w.live ? "LIVE" : "LOST", w.ratePerSecond, w.lostPerSecond);
     colour = duplicate ? ST77XX_YELLOW : w.live ? ST77XX_GREEN : ST77XX_RED;
   }
   startText(lineCanvas, ST77XX_BLACK);
@@ -144,7 +167,8 @@ void drawRow(uint8_t slot, uint32_t now) {
     drawBar(x, y + 10 + BAR_HEIGHT + 2, w.seen ? gyro[axis] : 0, GYRO_FULL_SCALE, AXIS_COLOURS[axis]);
   }
 
-  // Activity bar, then the hit or calibration marker and the tilt.
+  // Activity bar, then the markers (hit direction or cal, S still, B button)
+  // and the tilt: "fwd S B p-12 r  34".
   const int16_t detailY = y + 10 + 2 * (BAR_HEIGHT + 2);
   drawLevel(2, detailY + 1, w.hasMotion ? w.activity : 0, w.hit ? ST77XX_YELLOW : ST77XX_WHITE);
   startText(detailCanvas, ST77XX_BLACK);
@@ -154,14 +178,16 @@ void drawRow(uint8_t slot, uint32_t now) {
     printText(detailCanvas, GREY, "old fw: no tilt");
   } else {
     if (w.hit) {
-      printText(detailCanvas, ST77XX_YELLOW, "HIT");
+      printText(detailCanvas, ST77XX_YELLOW, directionName(w.hitDirection));
     } else if (!w.gyroCalibrated) {
       printText(detailCanvas, ORANGE, "cal");
     } else {
       printText(detailCanvas, GREY, "   ");
     }
-    char tilt[DETAIL_CHARS + 1];
-    snprintf(tilt, sizeof(tilt), " p%4d r%4d", w.pitch / 10, w.roll / 10);
+    printText(detailCanvas, ST77XX_CYAN, w.still ? " S" : "  ");
+    printText(detailCanvas, ST77XX_WHITE, w.button ? " B" : "  ");
+    char tilt[24];
+    snprintf(tilt, sizeof(tilt), " p%3d r%4d", w.pitch / 10, w.roll / 10);
     printText(detailCanvas, GREY, tilt);
   }
   sendText(detailCanvas, DETAIL_X, detailY);

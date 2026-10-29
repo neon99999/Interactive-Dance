@@ -11,8 +11,8 @@ constexpr const char* FIRMWARE_NAME = "Interactive Dance receiver";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
 constexpr uint8_t FIRMWARE_VERSION_MINOR = 2;
 
-// Faster than the wearable's 115200: each wearable on fw v0.6 sends about
-// 14 KB/s of text (104 lines a second), so three use about 45% of 921600 baud
+// Faster than the wearable's 115200: each wearable on fw v0.7 sends about
+// 18 KB/s of text (104 lines a second), so three use about 60% of 921600 baud
 // (about 92 KB/s). The USB chip on the NodeMCU handles 921600.
 // TouchDesigner's inputs > Serial > Baud Rate must match.
 constexpr uint32_t SERIAL_BAUD = 921600;

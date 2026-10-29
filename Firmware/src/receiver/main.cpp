@@ -3,12 +3,13 @@
 // Listens for protocol.h packets over ESP-NOW and forwards each wearable's
 // motion to TouchDesigner as one serial line of name=value pairs:
 //   w1_ax=0.012 w1_ay=-0.021 w1_az=1.003 w1_gx=0.4 w1_gy=-0.3 w1_gz=0.1
-//   w1_pitch=-1.2 w1_roll=0.8 w1_act=0.031 w1_hit=0
-// which inputs > Serial reads as serial_w1_ax ... serial_w1_hit. Wearables on
-// fw v0.4-v0.5 (protocol v2) send no motion processing, so their lines stop
-// after w1_gz. When a wearable appears or goes quiet it also prints
-// w1_live=1 or w1_live=0; going quiet also sets w1_act and w1_hit to 0, so
-// nothing is left switched on. Log lines start with [ so TouchDesigner
+//   w1_pitch=-1.2 w1_roll=0.8 w1_act=0.031 w1_hit=0 w1_hitdir=0 w1_still=1
+//   w1_btn=0 w1_mode=1
+// which inputs > Serial reads as serial_w1_ax ... serial_w1_mode. Wearables
+// on fw v0.4-v0.5 (protocol v2) send no motion processing, so their lines
+// stop after w1_gz. When a wearable appears or goes quiet it also prints
+// w1_live=1 or w1_live=0; going quiet also sets act, hit, still and btn to 0,
+// so nothing is left switched on. Log lines start with [ so TouchDesigner
 // ignores them. The display shows the same state.
 //
 // Latency first: every loop pass forwards all waiting packets before the
@@ -63,7 +64,7 @@ char* appendValue(char* out, uint8_t id, const char* name, int value, int decima
 }
 
 void printMotion(uint8_t id, const rx::Wearable& w) {
-  char line[200];
+  char line[240];
   char* p = line;
   p = appendValue(p, id, "ax", w.ax, 3);
   p = appendValue(p, id, "ay", w.ay, 3);
@@ -75,7 +76,8 @@ void printMotion(uint8_t id, const rx::Wearable& w) {
     p = appendValue(p, id, "pitch", w.pitch, 1);
     p = appendValue(p, id, "roll", w.roll, 1);
     p = appendValue(p, id, "act", w.activity, 3);  // MOTION_ACTIVITY_FULL is 1000
-    p += sprintf(p, "w%u_hit=%u ", id, w.hit ? 1 : 0);
+    p += sprintf(p, "w%u_hit=%u w%u_hitdir=%u w%u_still=%u w%u_btn=%u w%u_mode=%u ", id, w.hit ? 1 : 0, id,
+                 w.hitDirection, id, w.still ? 1 : 0, id, w.button ? 1 : 0, id, w.mode);
   }
   p[-1] = '\n';  // replaces the last trailing space
   Serial.write(line, p - line);
@@ -88,8 +90,12 @@ void setLive(uint8_t id, rx::Wearable& w, bool live) {
     Serial.printf("w%u_live=1\n", id);
   } else {
     w.activity = 0;
-    w.hit = false;
-    Serial.printf(w.hasMotion ? "w%u_live=0 w%u_act=0 w%u_hit=0\n" : "w%u_live=0\n", id, id, id);
+    w.hit = w.still = w.button = false;
+    if (w.hasMotion) {
+      Serial.printf("w%u_live=0 w%u_act=0 w%u_hit=0 w%u_still=0 w%u_btn=0\n", id, id, id, id, id);
+    } else {
+      Serial.printf("w%u_live=0\n", id);
+    }
   }
   Serial.printf("[rx] wearable %u %s\n", id, live ? "connected" : "lost");
 }
@@ -142,8 +148,12 @@ bool readPacket(const radio::RawPacket& raw, dance::PacketType type, uint8_t ver
     w.roll = motion.roll;
     w.activity = motion.activity;
     w.hit = motion.flags & dance::MOTION_FLAG_HIT;
+    w.still = motion.flags & dance::MOTION_FLAG_STILL;
+    w.button = motion.flags & dance::MOTION_FLAG_BUTTON;
     w.gyroCalibrated = motion.flags & dance::MOTION_FLAG_GYRO_CALIBRATED;
+    w.hitDirection = motion.hitDirection;
     w.hits = motion.hits;
+    w.mode = motion.mode;
     w.hasMotion = true;
     return true;
   }
@@ -175,7 +185,10 @@ void handlePacket(const radio::RawPacket& raw, uint32_t now) {
   w.protocolVersion = header.version;
   // Count gaps in the sequence. A big jump means the wearable restarted.
   const uint16_t gap = header.sequence - w.lastSequence;
-  if (w.seen && gap > 1 && gap < 1000) w.lost += gap - 1;
+  if (w.seen && gap > 1 && gap < 1000) {
+    w.lost += gap - 1;
+    w.lostThisSecond += gap - 1;
+  }
   w.seen = true;
   w.lastSequence = header.sequence;
   w.lastPacketMs = now;
@@ -191,6 +204,8 @@ void everySecond(uint32_t now) {
     rx::Wearable& w = rx::wearables[i];
     w.ratePerSecond = w.packetsThisSecond;
     w.packetsThisSecond = 0;
+    w.lostPerSecond = w.lostThisSecond;
+    w.lostThisSecond = 0;
     if (w.live && now - w.lastPacketMs > rx::LOST_AFTER_MS) setLive(i + 1, w, false);
   }
 }

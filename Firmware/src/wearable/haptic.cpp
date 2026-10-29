@@ -6,14 +6,34 @@
 
 namespace haptic {
 
+namespace {
+
+uint8_t stepsLeft = 0;  // on and off steps still to run: two per buzz
+uint32_t stepStartMs = 0;
+
+void setMotor(bool on) { digitalWrite(dance::PIN_HAPTIC, on ? HIGH : LOW); }
+
+}  // namespace
+
 bool begin() {
-  // Keep the transistor off so the motor cannot run while the rest is a placeholder.
+  // Keep the transistor off so the motor cannot run at boot.
   pinMode(dance::PIN_HAPTIC, OUTPUT);
-  digitalWrite(dance::PIN_HAPTIC, LOW);
-  Serial.printf("[haptic] placeholder: pin %d held LOW (motor off), no patterns yet\n", dance::PIN_HAPTIC);
+  setMotor(false);
+  Serial.printf("[haptic] pin %d, motor off\n", dance::PIN_HAPTIC);
   return true;
 }
 
-void update() {}
+void buzz(uint8_t count) {
+  stepsLeft = count * 2;
+  stepStartMs = millis();
+  setMotor(stepsLeft > 0);
+}
+
+void update() {
+  if (stepsLeft == 0 || millis() - stepStartMs < dance::HAPTIC_BUZZ_MS) return;
+  stepStartMs = millis();
+  --stepsLeft;
+  setMotor(stepsLeft % 2 == 0 && stepsLeft > 0);
+}
 
 }  // namespace haptic

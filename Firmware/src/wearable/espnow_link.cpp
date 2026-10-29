@@ -6,8 +6,10 @@
 #include <esp_wifi.h>
 #include <math.h>
 
+#include "button.h"
 #include "config.h"
 #include "imu.h"
+#include "mode.h"
 #include "motion.h"
 #include "protocol.h"
 
@@ -42,14 +44,16 @@ void sendHello() {
   send(&packet, sizeof(packet));
 }
 
-void sendMotion(const imu::Reading& r, const motion::State& m) {
+void sendMotion(const motion::State& m) {
   uint8_t flags = 0;
   if (m.hit) flags |= dance::MOTION_FLAG_HIT;
+  if (m.still) flags |= dance::MOTION_FLAG_STILL;
+  if (button::isPressed()) flags |= dance::MOTION_FLAG_BUTTON;
   if (m.gyroCalibrated) flags |= dance::MOTION_FLAG_GYRO_CALIBRATED;
   dance::MotionPacket packet{dance::makeHeader(dance::PacketType::Motion, dance::WEARABLE_ID, sequence++),
-                             toFixed(r.ax, dance::MOTION_ACCEL_PER_UNIT),
-                             toFixed(r.ay, dance::MOTION_ACCEL_PER_UNIT),
-                             toFixed(r.az, dance::MOTION_ACCEL_PER_UNIT),
+                             toFixed(m.ax, dance::MOTION_ACCEL_PER_UNIT),
+                             toFixed(m.ay, dance::MOTION_ACCEL_PER_UNIT),
+                             toFixed(m.az, dance::MOTION_ACCEL_PER_UNIT),
                              toFixed(m.gx, dance::MOTION_GYRO_PER_UNIT),
                              toFixed(m.gy, dance::MOTION_GYRO_PER_UNIT),
                              toFixed(m.gz, dance::MOTION_GYRO_PER_UNIT),
@@ -58,7 +62,9 @@ void sendMotion(const imu::Reading& r, const motion::State& m) {
                              static_cast<uint16_t>(lroundf(constrain(m.activity, 0.0f, 1.0f) *
                                                            dance::MOTION_ACTIVITY_FULL)),
                              flags,
-                             m.hits};
+                             static_cast<uint8_t>(m.hitDirection),
+                             m.hits,
+                             static_cast<uint8_t>(mode::current())};
   send(&packet, sizeof(packet));
 }
 
@@ -96,7 +102,7 @@ void update() {
   const motion::State& m = motion::state();
   if (m.samples - lastSentSample < dance::ESPNOW_SEND_EVERY_SAMPLES) return;
   lastSentSample = m.samples;
-  sendMotion(imu::latest(), m);
+  sendMotion(m);
 }
 
 bool isReady() { return ready; }
