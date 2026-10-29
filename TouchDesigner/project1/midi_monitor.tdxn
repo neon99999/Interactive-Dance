@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 2
+build: 3
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/midi_monitor
@@ -10,13 +10,15 @@ options:
 type_defaults:
   textTOP:
     parameters:
-      font: Arial
+      font: Artifakt Element
       fontsizexunit: pixels
       outputresolution: custom
       resolutionh: 360
       resolutionw: 640
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+    tags:
+    - tdxn_exclude:text
 type: containerCOMP
 custom_pars:
   Monitor:
@@ -50,7 +52,7 @@ operators:
     framestart: true
     file: project1/midi_monitor/monitor.py
     syncfile: true
-  position: [0, -400]
+  position: [0, -175]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
   tags:
@@ -59,7 +61,7 @@ operators:
   type: nullTOP
   flags:
   - viewer
-  position: [800, 0]
+  position: [550, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
@@ -68,6 +70,8 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+  flags:
+  - viewer
   position: [400, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -77,30 +81,30 @@ operators:
 - name: text_info
   type: textTOP
   parameters:
-    text: 86.05 s
-    fontsizex: 26
+    fontsizex: 47
     positiony: 18
     aligny: bottom
     bgcolorr: 0.08
     bgcolorg: 0.08
     bgcolorb: 0.08
     bgalpha: 1
-  position: [0, -200]
+  position: [0, -75]
 - name: text_notes
   type: textTOP
   parameters:
-    text: ''
     bold: true
     fontautosize: fitiffat
     fontsizex: 130
     positiony: 20
     fontalpha: 0.3
-  position: [0, 200]
+  flags:
+  - viewer
+  position: [0, 50]
 annotations:
 - name: annotate1
   mode: annotate
   title: MIDI note monitor
   text: 'monitor runs each frame: the notes played in the last Hold Time seconds -> text_notes (big note numbers) and text_info (note names, playback time). The background flashes on each new note.'
-  position: [-70, -470]
-  size: [1070, 930]
+  position: [-70, -204]
+  size: [775, 452]
   color: [0.45, 0.45, 0.45]
