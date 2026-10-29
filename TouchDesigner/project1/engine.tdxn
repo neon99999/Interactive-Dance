@@ -9,7 +9,6 @@ options:
   include_storage: true
 type_defaults:
   tableDAT:
-    size: [130, 90]
     color: [0.67, 0.67, 0.67]
 type: baseCOMP
 custom_pars:
@@ -88,6 +87,7 @@ operators:
   flags:
   - viewer
   position: [1025, 75]
+  size: [130, 90]
   tags:
   - tdxn_exclude:dat_content
 - name: engine_buttons
@@ -110,6 +110,7 @@ operators:
   flags:
   - viewer
   position: [445, 91]
+  size: [130, 90]
   dat_content:
   - - note
     - target
@@ -200,13 +201,15 @@ operators:
 - name: assignment_errors
   type: tableDAT
   position: [800, -100]
+  size: [130, 90]
   tags:
   - tdxn_exclude:dat_content
 - name: input_assignments
   type: tableDAT
   flags:
   - viewer
-  position: [445, -9]
+  position: [425, -25]
+  size: [158, 90]
   dat_content:
   - - signal
     - target
@@ -229,20 +232,20 @@ operators:
     - '0'
     - '1'
     - ''
-  - - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
-  - - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
-    - ''
+  - - serial_w1_ax
+    - layer1.x
+    - '-1'
+    - '1'
+    - '-1'
+    - '1'
+    - '.1'
+  - - serial_w1_ay
+    - layer1.y
+    - '-1'
+    - '1'
+    - '-1'
+    - '1'
+    - '.1'
   - - ''
     - ''
     - ''

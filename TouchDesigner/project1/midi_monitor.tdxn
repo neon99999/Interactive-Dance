@@ -10,6 +10,7 @@ options:
 type_defaults:
   textTOP:
     parameters:
+      filtertype: linear
       font: Artifakt Element
       fontsizexunit: pixels
       outputresolution: custom
@@ -59,6 +60,8 @@ operators:
   - py
 - name: null_out
   type: nullTOP
+  parameters:
+    filtertype: linear
   flags:
   - viewer
   position: [550, 0]
@@ -70,6 +73,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    filtertype: linear
   flags:
   - viewer
   position: [400, 0]

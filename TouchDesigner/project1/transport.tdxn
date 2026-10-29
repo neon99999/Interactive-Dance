@@ -92,7 +92,7 @@ color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
 storage:
-  prev_seconds: 1.2
+  prev_seconds: 0
   seeked: false
 operators:
 - name: local
@@ -315,7 +315,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '374'
+        - '401'
       - - tapcount
         - '0'
       dat_content_format: table

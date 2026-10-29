@@ -10,10 +10,13 @@ options:
 type_defaults:
   analyzeTOP:
     parameters:
+      filtertype: linear
       format: mono32float
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   cropTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   mergeCHOP:
@@ -81,11 +84,13 @@ custom_pars:
     style: Toggle
     label: Read Serial
     help: Read lines of text from a serial (USB) device such as an Arduino. Off by default.
+    value: true
   - name: Serialport
     style: StrMenu
     label: Port
     menuSource: op('./serial_in').par.port
     help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
+    value: com3
   - name: Serialbaud
     style: Int
     label: Baud Rate
@@ -93,8 +98,8 @@ custom_pars:
     min: 300.0
     clampMin: true
     normMin: 9600.0
-    normMax: 921600.0
-    help: 'Must match the device: 921600 for the wireless receiver (NodeMCU), 115200 for a wearable plugged in by USB, or Serial.begin(...) in your own sketch.'
+    normMax: 115200.0
+    help: Must match Serial.begin(...) in the device sketch, e.g. 9600 or 115200.
     value: 921600
   - name: Serialnames
     style: Str
@@ -153,6 +158,8 @@ operators:
   - merge_signals
 - name: camera_in
   type: videodeviceinTOP
+  parameters:
+    filtertype: linear
   flags:
   - viewer
   position: [0, -2900]
@@ -178,7 +185,6 @@ operators:
     port: =parent.Inputs.par.Serialport
     baudrate: =parent.Inputs.par.Serialbaud
     stopbits: '1'
-    dtr: disable
     callbacks: serial_in_callbacks
     fromop: =parent()
   position: [0, -1600]
@@ -209,6 +215,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -2500]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -231,6 +238,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [800, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -245,6 +253,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -258,6 +267,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: difference
+    filtertype: linear
   position: [2000, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -266,6 +276,8 @@ operators:
   - previous_frame
 - name: mono_camera
   type: monochromeTOP
+  parameters:
+    filtertype: linear
   position: [1200, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -332,6 +344,7 @@ operators:
   type: switchTOP
   parameters:
     index: =parent.Inputs.par.Camerasource.menuIndex
+    filtertype: linear
   position: [400, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -349,6 +362,7 @@ operators:
   parameters:
     cachesize: 2
     outputindex: -1
+    filtertype: linear
   position: [1600, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]

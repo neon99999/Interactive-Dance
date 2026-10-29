@@ -10,6 +10,7 @@ options:
 type_defaults:
   textTOP:
     parameters:
+      filtertype: linear
       font: Artifakt Element
       fontsizexunit: pixels
       outputresolution: custom
@@ -21,22 +22,11 @@ type: containerCOMP
 custom_pars:
   IMU:
   - name: Prefix
-    style: StrMenu
+    style: Str
     label: Signal Prefix
-    default: serial_w1_
-    menuNames:
-    - serial_w1_
-    - serial_w2_
-    - serial_w3_
-    - serial_w4_
-    - serial_
-    menuLabels:
-    - Wearable 1 (receiver)
-    - Wearable 2 (receiver)
-    - Wearable 3 (receiver)
-    - Wearable 4 (receiver)
-    - Wearable on USB
-    help: Start of the IMU signal names in inputs/signals. Through the wireless receiver, wearable N arrives as serial_wN_ax ... serial_wN_gz, so use serial_w1_ for wearable 1. A wearable plugged in by USB arrives as serial_ax ..., so use serial_.
+    default: serial_
+    help: Start of the IMU signal names in inputs/signals. A wearable on USB serial sends ax=... gx=..., which arrive as serial_ax ... serial_gz.
+    value: serial_w1_
   - name: Window
     style: Float
     label: Window (s)
@@ -71,6 +61,8 @@ parameters:
   repocomp: =me
   top: ./null_out
   parentshortcut: Imu
+flags:
+- viewer
 color: [0.3, 0.5, 0.9]
 tags:
 - tdxn
@@ -80,6 +72,8 @@ operators:
   parameters:
     duplicate: last
     autoexportroot: =parent()
+  flags:
+  - viewer
   position: [400, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -126,6 +120,8 @@ operators:
   color: [0.67, 0.67, 0.67]
 - name: null_out
   type: nullTOP
+  parameters:
+    filtertype: linear
   position: [2400, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -139,6 +135,7 @@ operators:
     outputresolution: custom
     resolutionw: 640
     resolutionh: 480
+    filtertype: linear
     format: rgba8fixed
   sequences:
     vec:
@@ -154,6 +151,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    filtertype: linear
   position: [2000, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -166,6 +164,7 @@ operators:
   type: choptoTOP
   parameters:
     chop: trail
+    filtertype: linear
     format: mono32float
   position: [1200, 0]
   size: [130, 90]
@@ -199,7 +198,7 @@ operators:
 - name: text_values
   type: textTOP
   parameters:
-    text: '=(''accel g   ax %+.2f   ay %+.2f   az %+.2f\ngyro dps   gx %+.0f   gy %+.0f   gz %+.0f'' % tuple(op(''imu'')[c].eval() for c in (''ax'', ''ay'', ''az'', ''gx'', ''gy'', ''gz''))) if op(''live'').numChans else ''No '' + parent.Imu.par.Prefix.eval() + ''ax... signals. inputs > Serial: Read Serial on, receiver port at 921600. A wearable on USB: 115200 and Signal Prefix serial_'''
+    text: '=(''accel g   ax %+.2f   ay %+.2f   az %+.2f\ngyro dps   gx %+.0f   gy %+.0f   gz %+.0f'' % tuple(op(''imu'')[c].eval() for c in (''ax'', ''ay'', ''az'', ''gx'', ''gy'', ''gz''))) if op(''live'').numChans else ''No IMU data. On inputs > Serial: Read Serial on, Port = the wearable, Baud Rate 115200. Close the PlatformIO monitor first.'''
     wordwrap: true
     fontsizex: 22
     positiony: -180
