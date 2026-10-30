@@ -8,7 +8,7 @@ What it does:
 - four visual layers: shapes, noise and ring textures, video or stills, and text, with simple effects
 - a table that turns MIDI notes into visual actions (show, hide, toggle, trigger, fade, set value)
 - a second table that maps movement signals onto visual values, with range and smoothing
-- movement inputs: simulated controls, OSC, serial (USB) sensors, and camera motion
+- movement inputs: simulated controls, OSC, serial (USB) sensors, camera motion, and body tracking with MediaPipe
 
 **Status:** all eight development milestones are done and tested inside TouchDesigner on Windows. Real sensors, a real webcam and macOS have not been tested yet; see [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md).
 
@@ -96,6 +96,7 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 | **OSC** | one per OSC address: `/dancer/level` becomes `dancer/level` | Turn on **Receive OSC**; send to this computer on **OSC Port** (7000) |
 | **Serial** | `serial_<name>` | Turn on **Read Serial**, pick the **Port** and **Baud Rate** |
 | **Camera** | `camera_motion`, `camera_left`, `camera_right` | **Source**: Off, Camera or Test Pattern. Raise **Sensitivity** if values stay small |
+| **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy` | **Source**: Off, Camera (MediaPipe) or Test Dancer. Pick the **Webcam**. Needs the MediaPipe plugin (below) |
 
 Serial devices should print one line per reading, in either of these forms:
 
@@ -108,7 +109,29 @@ Pieces that are not numbers are skipped, and lines starting with `#` or `[` are 
 
 The camera input measures how much the picture changes between frames, over the whole image and over the left and right halves. To use a value as an on/off zone, give it a narrow in range, e.g. `camera_left`, in 0.05-0.06, out 0-1.
 
-**Body tracking:** for skeleton tracking, the [MediaPipe TouchDesigner plugin](https://github.com/torinmb/mediapipe-touchdesigner) by Torin Blankensmith and Dom Scott is a good fit. It runs MediaPipe inside TouchDesigner with no separate install. It is not included here. To use it, download `release.zip` from its releases page, drag `MediaPipe.tox` into `inputs`, add a Select CHOP that picks the channels you want (e.g. a wrist position), and wire it into `merge_signals`. Those channel names then work in the input table.
+### Body tracking (Pose page)
+
+Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torinmb/mediapipe-touchdesigner) by Torin Blankensmith and Dom Scott (v0.6.0). It runs MediaPipe's pose model inside TouchDesigner, with no separate program and no internet.
+
+**Setup, once per computer:** the plugin's `MediaPipe.tox` (187 MB) is too large for GitHub, so it is not in this repository.
+
+1. Download `release.zip` from the plugin's [v0.6.0 release](https://github.com/torinmb/mediapipe-touchdesigner/releases/tag/v0.6.0).
+2. Copy the `.tox` files from its `release/toxes/` folder into `TouchDesigner/toxes/` in this repository (create the folder). Git ignores it.
+3. Open (or reopen) the project. `inputs/mediapipe` loads `toxes/MediaPipe.tox` itself.
+
+**Use:** on **inputs**, Pose page, set **Source** to **Camera (MediaPipe)** and pick the **Webcam**. MediaPipe only runs while Source is Camera (MediaPipe), because it costs frame time. **Test Dancer** is a made-up dancer that walks and waves its arms, to try pose mappings without a camera. Use only one of the Camera page and the Pose page with a webcam at a time: a webcam can be open in only one place.
+
+| Signal | 0 | 1 |
+|---|---|---|
+| `pose_present` | nobody seen | a dancer is seen |
+| `pose_x` | left edge of the picture | right edge (**Flip Left/Right** reverses it) |
+| `pose_hand_l`, `pose_hand_r` | hand at hip height (0.5 = one torso length above the hips) | hand two torso lengths above the hips (arm straight up) |
+| `pose_spread` | hands together | arms stretched wide |
+| `pose_energy` | standing still | big, fast movement (**Energy Sensitivity** scales it) |
+
+- Left and right are the dancer's own. Sizes are in torso lengths, so the values are the same near the camera or far from it. If the hips are out of the picture (a close webcam), the torso is estimated from the shoulders.
+- **Smoothing** (seconds) steadies jittery values; **Hold When Lost** keeps the last values through short dropouts before they fall to 0.
+- MediaPipe follows one dancer (its Pose page, number of poses = 1).
 
 ### midi_monitor: check your MIDI file
 
@@ -177,7 +200,7 @@ The automatic tests run inside TouchDesigner, take under a minute and leave your
 op('/project1/tests/engine_tests').module.Run()
 ```
 
-Results appear in `project1/tests/results` (63 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines and the camera test pattern.
+Results appear in `project1/tests/results` (65 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines, the camera test pattern and the pose Test Dancer.
 
 The plain-Python unit tests (show logic and the serial parser) need no TouchDesigner:
 

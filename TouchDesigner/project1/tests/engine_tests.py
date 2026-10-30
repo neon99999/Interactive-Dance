@@ -3,9 +3,10 @@
 Run from the Textport:  op('/project1/tests/engine_tests').module.Run()
 Each step runs a few frames after the previous one so the engine and the
 renders have cooked. Results land in tests/results (suite, check, PASS/FAIL).
-Assignment tables, the transport's audio and MIDI files and the inputs'
-settings (Serial, OSC, Simulated, Camera) are backed up and restored around
-the tests; the tests run on the test media in media/test.
+Assignment tables, the transport's audio and MIDI files, the inputs'
+settings (Serial, OSC, Simulated, Camera, Pose) and the visuals' layer and
+master settings are backed up and restored around the tests. The tests run
+on the test media in media/test, starting from default layer settings.
 """
 
 STEP_FRAMES = 3
@@ -27,6 +28,7 @@ MEDIA_LOAD_FRAMES = 10
 _queue = []
 _backup = {}
 _inputsBackup = {}
+_visualsBackup = []
 
 
 def Run():
@@ -183,6 +185,25 @@ def _backupTables():
 		_backup[name] = (par.mode, par.val, par.expr)
 		par.val = path
 	_backupInputs()
+	_backupVisuals()
+
+
+def _visualsComps():
+	return [op.Visuals] + [c for c in (op.Visuals.op('layer%d' % i) for i in range(1, 5)) if c is not None]
+
+
+def _backupVisuals():
+	"""Save the user's layer and master settings, then start the tests from the defaults."""
+	_visualsBackup[:] = [(comp, p.name, p.mode, p.val, p.expr)
+		for comp in _visualsComps() for p in comp.customPars if not p.isPulse and not p.isMomentary]
+	op('render_tests').module.resetLayers()
+
+
+def _restoreVisuals():
+	for comp, name, mode, val, expr in _visualsBackup:
+		par = comp.par[name]
+		par.val, par.expr, par.mode = val, expr, mode
+	_visualsBackup.clear()
 
 
 def _backupInputs():
@@ -217,6 +238,7 @@ def _finish():
 		for row in rows:
 			table.appendRow(row)
 	_restoreInputs()
+	_restoreVisuals()
 	op.Transport.par.Reset.pulse()
 	results = op('results')
 	fails = sum(1 for r in range(1, results.numRows) if results[r, 2].val != 'PASS')

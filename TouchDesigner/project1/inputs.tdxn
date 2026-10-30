@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 5
+build: 8
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
@@ -10,13 +10,10 @@ options:
 type_defaults:
   analyzeTOP:
     parameters:
-      filtertype: linear
       format: mono32float
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   cropTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   mergeCHOP:
@@ -131,6 +128,50 @@ custom_pars:
     clampMin: true
     normMax: 50.0
     help: Multiplies the amount of movement seen. Raise it if camera_motion stays small; signals are clamped to 0-1 by the input assignment ranges.
+  Pose:
+  - name: Posesource
+    style: Menu
+    label: Source
+    default: 'off'
+    menuNames:
+    - 'off'
+    - camera
+    - test
+    menuLabels:
+    - 'Off'
+    - Camera (MediaPipe)
+    - Test Dancer
+    help: 'Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Camera (MediaPipe): track a dancer with the webcam chosen below. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.'
+  - name: Posecamera
+    style: StrMenu
+    label: Webcam
+    menuSource: op('./mediapipe/MediaPipe').par.Webcam
+    help: Which webcam MediaPipe uses. Close other apps using it, and set the Camera page Source to Off if it uses the same webcam.
+  - name: Poseflipx
+    style: Toggle
+    label: Flip Left/Right
+    help: 'Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.'
+  - name: Posesmooth
+    style: Float
+    label: Smoothing (s)
+    startSection: true
+    default: 0.1
+    clampMin: true
+    help: 'Time in seconds that pose signals take to follow the dancer. Raise it if values jitter, lower it if they feel late. 0: no smoothing.'
+  - name: Posesensitivity
+    style: Float
+    label: Energy Sensitivity
+    default: 1
+    clampMin: true
+    normMax: 5.0
+    help: Multiplies pose_energy. Raise it if pose_energy stays small during big movement.
+  - name: Posehold
+    style: Float
+    label: Hold When Lost (s)
+    default: 0.5
+    clampMin: true
+    normMax: 2.0
+    help: When MediaPipe loses the dancer for less than this many seconds, the pose signals keep their last values; after that they drop to 0.
 parameters:
   parentshortcut: Inputs
   opshortcut: Inputs
@@ -158,8 +199,6 @@ operators:
   - merge_signals
 - name: camera_in
   type: videodeviceinTOP
-  parameters:
-    filtertype: linear
   flags:
   - viewer
   position: [0, -2900]
@@ -178,6 +217,14 @@ operators:
   position: [2400, -2500]
   inputs:
   - diff_frames
+- name: pose_chop
+  type: scriptCHOP
+  parameters:
+    callbacks: pose_chop_callbacks
+    autoexportroot: =parent()
+  position: [400, -4200]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
 - name: serial_in
   type: serialDAT
   parameters:
@@ -216,7 +263,6 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
-    filtertype: linear
   position: [0, -2500]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -239,7 +285,6 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
-    filtertype: linear
   position: [800, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -254,7 +299,6 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
-    filtertype: linear
   position: [0, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -268,7 +312,6 @@ operators:
   type: compositeTOP
   parameters:
     operand: difference
-    filtertype: linear
   position: [2000, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -277,8 +320,6 @@ operators:
   - previous_frame
 - name: mono_camera
   type: monochromeTOP
-  parameters:
-    filtertype: linear
   position: [1200, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -316,6 +357,11 @@ operators:
   - chop_motion
   - chop_left
   - chop_right
+- name: pose_signals
+  type: textDAT
+  parameters:
+    file: project1/inputs/pose_signals.py
+  position: [0, -4600]
 - name: serial_parse
   type: textDAT
   parameters:
@@ -334,6 +380,21 @@ operators:
   - osc_signals
   - serial_chop
   - camera_sensitivity
+  - pose_chop
+- name: pose_settings
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: Posesource
+    builtin: false
+    file: project1/inputs/pose_settings.py
+    syncfile: true
+  position: [400, -4600]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
 - name: serial_values
   type: tableDAT
   position: [800, -1600]
@@ -345,7 +406,6 @@ operators:
   type: switchTOP
   parameters:
     index: =parent.Inputs.par.Camerasource.menuIndex
-    filtertype: linear
   position: [400, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -363,7 +423,6 @@ operators:
   parameters:
     cachesize: 2
     outputindex: -1
-    filtertype: linear
   position: [1600, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -379,6 +438,14 @@ operators:
   color: [0.67, 0.67, 0.67]
   inputs:
   - merge_camera
+- name: pose_chop_callbacks
+  type: textDAT
+  parameters:
+    file: project1/inputs/pose_chop_callbacks.py
+  flags:
+  - viewer
+  position: [400, -4320]
+  dock: pose_chop
 - name: serial_in_callbacks
   type: textDAT
   parameters:
@@ -422,4 +489,11 @@ annotations:
   text: Every source merges here. The engine reads 'signals'.
   position: [4330, -70]
   size: [670, 330]
+  color: [0.45, 0.45, 0.45]
+- name: annotate6
+  mode: annotate
+  title: Body tracking (MediaPipe)
+  text: mediapipe/MediaPipe loads toxes/MediaPipe.tox (not in git; download per machine) and runs only while Pose page Source is Camera (pose_settings). pose_chop -> pose_present, pose_x, pose_hand_l, pose_hand_r, pose_spread, pose_energy (pose_signals).
+  position: [-70, -4670]
+  size: [670, 770]
   color: [0.45, 0.45, 0.45]

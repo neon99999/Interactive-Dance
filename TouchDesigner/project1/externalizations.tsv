@@ -1,28 +1,31 @@
 path	type	strategy	rel_file_path	timestamp	dirty	build	touch_build	node_x	node_y	node_color
 /project1/externalizations	table	tsv	project1/externalizations.tsv	2026-10-26 20:49:29 UTC				-150	0	0.9000,0.3000,0.4000
-/project1/transport	base	tdxn	project1/transport.tdxn	2026-10-29 17:54:17 UTC		7	099.2025.32280	370	-28	0.3000,0.5000,0.9000
+/project1/transport	base	tdxn	project1/transport.tdxn	2026-10-30 02:50:39 UTC		7	099.2025.32280	370	-28	0.3000,0.5000,0.9000
 /project1/test_t01	base	tdxn	project1/test_t01.tdxn	2026-10-26 22:05:00 UTC		2	099.2025.32280	420	-328	0.3000,0.5000,0.9000
 /project1/transport/note_events	execute	py	project1/transport/note_events.py	2026-10-26 22:03:23 UTC				-205	-555	0.9000,0.3000,0.4000
 /project1/transport/transport_callbacks	parexec	py	project1/transport/transport_callbacks.py	2026-10-26 22:03:23 UTC				0	-250	0.9000,0.3000,0.4000
 /project1/test_t01/sync_test	text	py	project1/test_t01/sync_test.py	2026-10-26 22:03:24 UTC				0	0	0.9000,0.3000,0.4000
-/project1/engine	base	tdxn	project1/engine.tdxn	2026-10-29 17:53:33 UTC		6	099.2025.32280	870	-28	0.3000,0.5000,0.9000
+/project1/engine	base	tdxn	project1/engine.tdxn	2026-10-30 02:50:39 UTC		6	099.2025.32280	870	-28	0.3000,0.5000,0.9000
 /project1/engine/show_logic	text	py	project1/engine/show_logic.py	2026-10-26 23:01:59 UTC				800	200	0.9000,0.3000,0.4000
 /project1/engine/engine	execute	py	project1/engine/engine.py	2026-10-26 23:01:59 UTC				800	75	0.9000,0.3000,0.4000
 /project1/tests	base	tdxn	project1/tests.tdxn	2026-10-26 23:12:37 UTC		4	099.2025.32280	670	-328	0.3000,0.5000,0.9000
 /project1/tests/engine_tests	text	py	project1/tests/engine_tests.py	2026-10-26 23:01:59 UTC				0	0	0.9000,0.3000,0.4000
-/project1/visuals	base	tdxn	project1/visuals.tdxn	2026-10-29 17:54:17 UTC		4	099.2025.32280	1070	-28	0.3000,0.5000,0.9000
+/project1/visuals	base	tdxn	project1/visuals.tdxn	2026-10-30 02:50:39 UTC		5	099.2025.32280	1070	-28	0.3000,0.5000,0.9000
 /project1/tests/render_tests	text	py	project1/tests/render_tests.py	2026-10-26 23:04:45 UTC				0	-400	0.9000,0.3000,0.4000
-/project1/inputs	base	tdxn	project1/inputs.tdxn	2026-10-29 17:54:17 UTC		5	099.2025.32280	645	-28	0.3000,0.5000,0.9000
+/project1/inputs	base	tdxn	project1/inputs.tdxn	2026-10-30 02:53:18 UTC		8	099.2025.32280	645	-28	0.3000,0.5000,0.9000
 /project1/tests/input_tests	text	py	project1/tests/input_tests.py	2026-10-26 23:12:37 UTC				0	-800	0.9000,0.3000,0.4000
 /project1/inputs/serial_parse	text	py	project1/inputs/serial_parse.py	2026-10-26 23:16:40 UTC				400	-1600	0.9000,0.3000,0.4000
 /project1/inputs/serial_in_callbacks	text	py	project1/inputs/serial_in_callbacks.py	2026-10-26 23:16:41 UTC				0	-1720	0.9000,0.3000,0.4000
 /project1/engine/engine_buttons	parexec	py	project1/engine/engine_buttons.py	2026-10-26 23:22:19 UTC				445	-134	0.9000,0.3000,0.4000
 /project1/visuals/output_buttons	parexec	py	project1/visuals/output_buttons.py	2026-10-26 23:22:20 UTC				1250	-175	0.9000,0.3000,0.4000
 /project1/midi_monitor/monitor	execute	py	project1/midi_monitor/monitor.py	2026-10-28 18:56:38 UTC				0	-175	0.9000,0.3000,0.4000
-/project1/midi_monitor	container	tdxn	project1/midi_monitor.tdxn	2026-10-29 17:54:17 UTC		3	099.2025.32280	1270	-21	0.3000,0.5000,0.9000
+/project1/midi_monitor	container	tdxn	project1/midi_monitor.tdxn	2026-10-29 22:51:16 UTC		3	099.2025.32280	1270	-21	0.3000,0.5000,0.9000
 /project1/imu_monitor/glsl_plot_pixel	text	glsl	project1/imu_monitor/glsl_plot_pixel.glsl	2026-10-29 00:13:58 UTC				1525	-120	0.9000,0.3000,0.4000
-/project1/imu_monitor	container	tdxn	project1/imu_monitor.tdxn	2026-10-29 17:54:17 UTC		2	099.2025.32280	1600	-28	0.3000,0.5000,0.9000
+/project1/imu_monitor	container	tdxn	project1/imu_monitor.tdxn	2026-10-29 22:51:16 UTC		2	099.2025.32280	1600	-28	0.3000,0.5000,0.9000
 /project1/wearable_monitor/panel_values_callbacks	text	py	project1/wearable_monitor/panel_values_callbacks.py	2026-10-29 17:51:36 UTC				400	-120	0.9000,0.3000,0.4000
 /project1/wearable_monitor/labels_callbacks	text	py	project1/wearable_monitor/labels_callbacks.py	2026-10-29 17:51:36 UTC				400	-520	0.9000,0.3000,0.4000
 /project1/wearable_monitor/glsl_panel_pixel	text	glsl	project1/wearable_monitor/glsl_panel_pixel.glsl	2026-10-29 17:51:37 UTC				1200	-120	0.9000,0.3000,0.4000
-/project1/wearable_monitor	container	tdxn	project1/wearable_monitor.tdxn	2026-10-29 17:52:31 UTC		2	099.2025.32280	2000	-28	0.3000,0.5000,0.9000
+/project1/wearable_monitor	container	tdxn	project1/wearable_monitor.tdxn	2026-10-29 22:51:17 UTC		2	099.2025.32280	2000	-28	0.3000,0.5000,0.9000
+/project1/inputs/pose_signals	text	py	project1/inputs/pose_signals.py	2026-10-30 02:47:36 UTC				0	-4600	0.9000,0.3000,0.4000
+/project1/inputs/pose_chop_callbacks	text	py	project1/inputs/pose_chop_callbacks.py	2026-10-30 02:47:36 UTC				400	-4320	0.9000,0.3000,0.4000
+/project1/inputs/pose_settings	parexec	py	project1/inputs/pose_settings.py	2026-10-30 02:47:37 UTC				400	-4600	0.9000,0.3000,0.4000

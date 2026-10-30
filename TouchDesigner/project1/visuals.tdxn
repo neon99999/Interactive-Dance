@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 5
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -15,7 +15,6 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
       radiusunit: pixels
       resolutionh: 720
@@ -23,21 +22,16 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
       resolutionh: 720
       resolutionw: 1280
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   nullCHOP:
@@ -47,7 +41,6 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   outTOP:
     parameters:
-      filtertype: linear
       label: =me.name
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -60,7 +53,6 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   switchTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
       resolutionh: 720
       resolutionw: 1280
@@ -224,7 +216,6 @@ operators:
     parameters:
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [0, -1200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -240,7 +231,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [-400, -1200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -255,7 +245,6 @@ operators:
     type: blurTOP
     parameters:
       size: 48
-      filtertype: linear
     position: [800, 0]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -278,7 +267,6 @@ operators:
     type: edgeTOP
     parameters:
       strength: 4
-      filtertype: linear
     position: [800, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -298,7 +286,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [0, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -312,7 +299,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -352,7 +338,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [0, -600]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -366,7 +351,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [0, -800]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -410,7 +394,6 @@ operators:
       outputresolution: custom
       resolutionw: 1280
       resolutionh: 720
-      filtertype: linear
     position: [2400, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -482,8 +465,6 @@ operators:
   position: [0, -325]
 - name: null_out
   type: nullTOP
-  parameters:
-    filtertype: linear
   flags:
   - viewer
   position: [1050, 0]
@@ -511,7 +492,6 @@ operators:
   type: crossTOP
   parameters:
     cross: =tdu.clamp(op('master_live')['flash'], 0, 1)
-    filtertype: linear
   flags:
   - viewer
   position: [650, 0]

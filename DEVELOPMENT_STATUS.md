@@ -18,10 +18,11 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 | 7 | OSC, serial and camera adapters | `50d1363` | OSC tested locally. Serial: parser only, no hardware. Camera: test pattern only, no webcam |
 | 8 | Usability and documentation | `f8df998` | Done. Output-window buttons tested; table buttons tested with a stub (no windows opened) |
 | 9 | MIDI note monitor (`midi_monitor`) | see git log | Done. Tested with the user's own MIDI file: seek, and notes appearing and clearing during playback |
+| 10 | Body tracking with MediaPipe (inputs, Pose page) | see git log | Built 2026-10-29. Tested with the Test Dancer and unit tests; not yet with a real webcam (LAPTOP) |
 
 ## Tests
 
-**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()`. Results go to `tests/results`; the last run, after a reopen, passed **63 of 63**.
+**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()`. Results go to `tests/results`; the last run (2026-10-29, MINI-PC, with the body tracking checks) passed **65 of 65**.
 
 - **engine (12):** each action; a chord with simultaneous events; a conflict where the later row wins; pause; forward and backward seek; seek into a trigger window; reset; repeated playback.
 - **playback (2):** during real playback, the live values equal a fresh evaluation at the clock time (30 samples); the clock advances.
@@ -36,7 +37,7 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
 
-**Plain Python:** `python -m unittest discover -s tests`: **50 of 50** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **66 of 66** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model, 16 body tracking). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -71,6 +72,8 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 - **Not tested automatically:** the C++ itself (no C++ compiler for this computer on MINI-PC).
 - **TouchDesigner panel `wearable_monitor`** (2026-10-29, MINI-PC): one card per wearable with the mode, LIVE / NO SIGNAL, bars for activity, gyro x/y/z, pitch and roll, and lamps for hit (with direction), still and button. **Show Wearable** shows all three side by side or one full width. Tested in TouchDesigner by feeding made-up receiver lines through the real serial callback (`serial_in_callbacks.onReceive`): the values, bars, lamps, mode and the one-wearable view were checked by captured frames, LIVE turns on while readings change, goes off 1 s after they stop and at once on `wN_live=0`. Not yet seen with a real wearable. Its cook cost is about 3-4 ms per frame while it is on screen (two Text TOPs and their tables re-cook every frame); nothing while it is not shown.
 - **MINI-PC TouchDesigner brought back in line with the files:** after a restart the live `imu_monitor` and `inputs` still had the old prefix field and DTR on; they were reloaded from their `.tdxn` files (DTR off and the prefix menu are now live). The in-TD tests passed 63 of 63 afterwards (one earlier run had 2 engine timing checks fail at about 40 fps; the rerun passed).
+- **Body tracking (MediaPipe), 2026-10-29, MINI-PC:** the MediaPipe TouchDesigner plugin v0.6.0 loads on TD 2025.32280 (`inputs/mediapipe`, from the git-ignored `TouchDesigner/toxes/`; only pose detection on, and it cooks only while Pose **Source** is Camera). `pose_signals.py` turns the landmarks into `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, measured in torso lengths (estimated from the shoulders when the hips are out of the picture); `tests/test_pose_signals.py` (16 tests). The chain was checked with the plugin's leftover sample landmarks and with the Test Dancer through `signals`; `pose_chop` costs about 0.3 ms per frame. Not yet tried with a webcam: there is none on MINI-PC. The plugin's Webcam menu fills from the cameras the browser finds once it runs.
+- **Tests now leave the visuals as they were:** the render tests reset every layer to its defaults and never put them back, and the engine tests assumed default layers, so with `layer1` **Visible** on two engine checks failed. The suite now backs up the visuals' layer and master settings, starts from the defaults, and restores them at the end (checked: 65 of 65 pass with `layer1` Visible on, and it stays on).
 - **Tests now restore the inputs' settings:** the input tests used to leave Serial, OSC, Simulated and Camera switched off and the serial values cleared; the tests now back them up and put them back (checked: settings and serial values identical after a run, 63 of 63 pass).
 
 ## Not verified (needs a person or hardware)
@@ -97,7 +100,6 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 
 - An audio latency offset, until it is measured on the show setup.
 - Movie playback synced to the music.
-- MediaPipe body tracking: documented in the README, not included; it needs a download.
 - A timeout that drops stale sensor values.
 - A friendlier editor than the table viewers.
 - More wearable signals: `spin` (a sustained turn) and `jump` (brief weightlessness, reliable on the ankle only).
@@ -105,6 +107,7 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 ## Dependencies
 
 - TouchDesigner 2025.32280 or later. The project uses only native operators and no extra Python packages.
+- Body tracking only: the MediaPipe TouchDesigner plugin v0.6.0, downloaded once per computer into `TouchDesigner/toxes/` (see README).
 - Embody/Envoy, which ships in the project, saves components as text. It is not needed to run the toolkit.
 - The unit tests need Python 3.10 or later, standard library only.
 
@@ -120,3 +123,4 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
 9. Flash receiver v0.2 and wearables v0.7 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
 10. With receiver v0.2 and a v0.7 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
+11. On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.

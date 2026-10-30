@@ -17,6 +17,8 @@ ADAPTER_ROWS = [
 	['serial_accel', 'layer4.scale', '0', '1', '1', '3', ''],
 	['serial_2', 'layer4.x', '', '', '', '', ''],
 	['camera_motion', 'layer4.rotate', '0', '0.05', '0', '90', ''],
+	['pose_present', 'layer3.x', '', '', '', '', ''],
+	['pose_x', 'layer3.y', '', '', '', '', ''],
 ]
 BAD_ROWS = [
 	['sim_level', 'layer9.opacity', '', '', '', '', ''],
@@ -77,6 +79,7 @@ def Steps(check):
 			inputs.par[name].val = 0
 		inputs.par.Serialnames = ''
 		inputs.par.Camerasource = 'off'
+		inputs.par.Posesource = 'off'
 		inputs.op('osc_in').par.localaddress = ''
 		inputs.op('serial_values').clear()
 
@@ -104,6 +107,10 @@ def Steps(check):
 	def camera_moving():
 		v = base._live('layer4_rotate')
 		check(s, 'camera test pattern -> motion', v > 1, 'layer4_rotate %.2f' % v)
+
+	def pose_seen():
+		x, y = base._live('layer3_x'), base._live('layer3_y')
+		check(s, 'pose test dancer -> pose_present, pose_x', x == 1 and 0 < y < 1, 'layer3_x %.2f, layer3_y %.2f' % (x, y))
 
 	def no_errors():
 		errs = op.Inputs.errors(recurse=True) + op.Engine.op('engine').scriptErrors()
@@ -134,6 +141,10 @@ def Steps(check):
 		base._do(camera_moving, 'camera moving'),
 		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'off'), 'camera off'), wait,
 		base._expect(s, 'camera off -> motion 0', {'layer4_rotate': 0}),
+		base._do(lambda: setattr(op.Inputs.par, 'Posesource', 'test'), 'pose test'), wait, wait,
+		base._do(pose_seen, 'pose seen'),
+		base._do(lambda: setattr(op.Inputs.par, 'Posesource', 'off'), 'pose off'), wait,
+		base._expect(s, 'pose off -> pose signals 0', {'layer3_x': 0, 'layer3_y': 0}),
 		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'camera'), 'camera, none attached'), wait, wait,
 		base._do(no_errors, 'no errors'),
 		base._do(reset, 'all inputs off'), wait,
