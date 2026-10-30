@@ -18,8 +18,8 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 | 7 | OSC, serial and camera adapters | `50d1363` | OSC tested locally. Serial: parser only, no hardware. Camera: test pattern only, no webcam |
 | 8 | Usability and documentation | `f8df998` | Done. Output-window buttons tested; table buttons tested with a stub (no windows opened) |
 | 9 | MIDI note monitor (`midi_monitor`) | see git log | Done. Tested with the user's own MIDI file: seek, and notes appearing and clearing during playback |
-| 10 | Body tracking with MediaPipe (inputs, Pose page) | `5d007ba` | Built 2026-10-29. The user confirmed MediaPipe tracking on LAPTOP with a webcam; the pose signals' values are still to be checked there |
-| 11 | Stage zones, `pose_monitor`, mapping page with presets, MIDI preset switching, English/Spanish (`lang`) | see git log | Built 2026-10-29 (overnight, MINI-PC). Tested in TouchDesigner with the Test Dancer and simulated inputs; not yet on LAPTOP with a webcam |
+| 10 | Body tracking with MediaPipe (inputs, Pose page) | `5d007ba` | Built 2026-10-29. Confirmed by the user on LAPTOP with a webcam (2026-10-29) |
+| 11 | Stage zones, `pose_monitor`, mapping page with presets, MIDI preset switching, English/Spanish (`lang`) | `fa157fa` | Built 2026-10-29 (overnight, MINI-PC). Confirmed by the user on LAPTOP with a webcam (2026-10-29); Spanish texts still need a native speaker's review |
 
 ## Tests
 
@@ -80,7 +80,9 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 - **Tests now leave the visuals as they were:** the render tests reset every layer to its defaults and never put them back, and the engine tests assumed default layers, so with `layer1` **Visible** on two engine checks failed. The suite now backs up the visuals' layer and master settings, starts from the defaults, and restores them at the end (checked: 65 of 65 pass with `layer1` Visible on, and it stays on).
 - **Tests now restore the inputs' settings:** the input tests used to leave Serial, OSC, Simulated and Camera switched off and the serial values cleared; the tests now back them up and put them back (checked: settings and serial values identical after a run, 63 of 63 pass).
 
-## Built overnight 2026-10-29 (MINI-PC), to check on LAPTOP
+## Built overnight 2026-10-29 (MINI-PC), confirmed on LAPTOP 2026-10-29
+
+The user ran manual tests 11-14 on LAPTOP with the webcam and reported that all of them work.
 
 - **Stage zones** (inputs, Pose page): **Stage Zones** 1-5 (default 3) and **Zone Margin** (default 0.05 of the picture width, a hysteresis band so standing on a border does not flicker). New signals `pose_zone` (1..N, 0 when nobody is seen) and `pose_zone1` ... `pose_zone5`, from the smoothed `pose_x`, so Flip Left/Right flips them too.
 - **`pose_monitor`** panel: MediaPipe's camera picture with the zones drawn over it (borders, margin bands), the dancer's position line, our own skeleton from the landmarks the signals use, a zone strip under the picture lighting the current zone, and bars for position, hands, spread and energy. Checked by captured frames with the Test Dancer (no webcam on MINI-PC). Cost while on screen about 3 ms CPU + 1.4 ms GPU per frame on MINI-PC; nothing while not shown.
@@ -135,7 +137,8 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
 9. Flash receiver v0.2 and wearables v0.7 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
 10. With receiver v0.2 and a v0.7 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
-11. On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.
-12. On LAPTOP with the webcam, open `pose_monitor` (right-click > View...): check our skeleton sits on MediaPipe's drawing, walk through the zones and watch the strip and `pose_zone` change without flicker on a border, and try **Stage Zones** 2-5 and **Flip Left/Right**.
-13. On `mappings`, try the starter presets A-D with the Test Dancer and then a real dancer; add a MIDI row `set mapping.preset 2` and check the switch lands at its note.
-14. Switch **Language / Idioma** to Español and have a Spanish speaker read the Pose page, the mapping page and pose_monitor.
+11. ~~On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.~~ (done 2026-10-29, LAPTOP).
+12. ~~On LAPTOP with the webcam, open `pose_monitor` (right-click > View...): check our skeleton sits on MediaPipe's drawing, walk through the zones and watch the strip and `pose_zone` change without flicker on a border, and try **Stage Zones** 2-5 and **Flip Left/Right**.~~ (done 2026-10-29, LAPTOP).
+13. ~~On `mappings`, try the starter presets A-D with the Test Dancer and then a real dancer; add a MIDI row `set mapping.preset 2` and check the switch lands at its note.~~ (done 2026-10-29, LAPTOP).
+14. Switch **Language / Idioma** to Español (switch works, 2026-10-29) and have a Spanish speaker read the Pose page, the mapping page and pose_monitor (`lang/strings.tsv`, `es` column).
+15. Before the workshop: start the mapping page empty, or with a preset made for the workshop (preset A is active for testing now).
