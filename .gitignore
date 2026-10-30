@@ -53,6 +53,10 @@ briefs/
 # TouchDesigner cache
 TouchDesigner/TDImportCache/
 
+# MediaPipe plugin toxes (500 MB+, too big for GitHub; each machine downloads
+# release.zip from github.com/torinmb/mediapipe-touchdesigner, see README)
+TouchDesigner/toxes/
+
 # TouchDesigner numbered saves (Embody keeps DanceWorkshop.toe as the current copy)
 TouchDesigner/*.[0-9]*.toe
 
