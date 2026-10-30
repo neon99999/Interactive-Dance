@@ -18,6 +18,11 @@ TRIGGER_DEFAULT_S = 0.2
 LAYER_DEFAULTS = {'visible': 0.0, 'opacity': 1.0, 'red': 1.0, 'green': 1.0, 'blue': 1.0,
 				  'scale': 1.0, 'x': 0.0, 'y': 0.0, 'rotate': 0.0, 'content': 0.0, 'effect': 0.0}
 MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0}
+# Show controls that are not visuals. mapping.preset: a MIDI 'set' to 1-4
+# switches the mapping page to preset A-D at that moment of the song (0 = no
+# switch yet). Like every value it is replayed from the timeline, so seeking
+# lands on the right preset.
+CONTROL_DEFAULTS = {'mapping.preset': 0.0}
 LAYER_PARAMS = tuple(LAYER_DEFAULTS)
 MASTER_PARAMS = tuple(MASTER_DEFAULTS)
 
@@ -26,13 +31,14 @@ def defaultBase(num_layers=4):
 	"""Base values used when a layer or the master controls are missing."""
 	base = {'layer%d.%s' % (i, p): v for i in range(1, num_layers + 1) for p, v in LAYER_DEFAULTS.items()}
 	base.update({'master.%s' % p: v for p, v in MASTER_DEFAULTS.items()})
+	base.update(CONTROL_DEFAULTS)
 	return base
 
 
 def knownParams(num_layers=4):
 	"""Every assignable parameter name, e.g. 'layer1.opacity', 'master.flash'."""
 	names = ['layer%d.%s' % (i, p) for i in range(1, num_layers + 1) for p in LAYER_PARAMS]
-	return names + ['master.%s' % p for p in MASTER_PARAMS]
+	return names + ['master.%s' % p for p in MASTER_PARAMS] + list(CONTROL_DEFAULTS)
 
 
 class Assignment:

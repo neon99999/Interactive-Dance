@@ -1,0 +1,570 @@
+format: tdxn
+version: '2.2'
+build: 2
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/mappings
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  tableDAT:
+    size: [130, 90]
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+type: baseCOMP
+custom_pars:
+  Mappings:
+  - name: Preset
+    style: Menu
+    default: A
+    menuNames:
+    - A
+    - B
+    - C
+    - D
+    menuLabels:
+    - Preset A
+    - Preset B
+    - Preset C
+    - Preset D
+    help: Which set of 8 mappings is active. Edits are saved into the chosen preset at once.
+  - name: Followmidi
+    style: Toggle
+    label: Follow MIDI
+    default: true
+    help: 'On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.'
+  Mappings 1-4:
+  - name: Map1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Mapping 1 is used while on.
+    value: true
+  - name: Map1signal
+    style: StrMenu
+    label: 1 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: pose_hand_l
+  - name: Map1target
+    style: StrMenu
+    label: 1 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer1.scale
+  - name: Map1from
+    style: Float
+    label: 1 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.5
+  - name: Map1to
+    style: Float
+    label: 1 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 2
+  - name: Map1smooth
+    style: Float
+    label: 1 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map1sens
+    style: Float
+    label: 1 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Mapping 2 is used while on.
+    value: true
+  - name: Map2signal
+    style: StrMenu
+    label: 2 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: pose_hand_r
+  - name: Map2target
+    style: StrMenu
+    label: 2 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer2.scale
+  - name: Map2from
+    style: Float
+    label: 2 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.5
+  - name: Map2to
+    style: Float
+    label: 2 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 2
+  - name: Map2smooth
+    style: Float
+    label: 2 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map2sens
+    style: Float
+    label: 2 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Mapping 3 is used while on.
+    value: true
+  - name: Map3signal
+    style: StrMenu
+    label: 3 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: pose_x
+  - name: Map3target
+    style: StrMenu
+    label: 3 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer1.x
+  - name: Map3from
+    style: Float
+    label: 3 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: -1
+  - name: Map3to
+    style: Float
+    label: 3 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map3smooth
+    style: Float
+    label: 3 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map3sens
+    style: Float
+    label: 3 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Mapping 4 is used while on.
+    value: true
+  - name: Map4signal
+    style: StrMenu
+    label: 4 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: pose_spread
+  - name: Map4target
+    style: StrMenu
+    label: 4 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer1.opacity
+  - name: Map4from
+    style: Float
+    label: 4 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.2
+  - name: Map4to
+    style: Float
+    label: 4 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map4smooth
+    style: Float
+    label: 4 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map4sens
+    style: Float
+    label: 4 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  Mappings 5-8:
+  - name: Map5on
+    style: Toggle
+    label: 5 On
+    startSection: true
+    help: Mapping 5 is used while on.
+  - name: Map5signal
+    style: StrMenu
+    label: 5 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map5target
+    style: StrMenu
+    label: 5 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map5from
+    style: Float
+    label: 5 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map5to
+    style: Float
+    label: 5 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map5smooth
+    style: Float
+    label: 5 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map5sens
+    style: Float
+    label: 5 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map6on
+    style: Toggle
+    label: 6 On
+    startSection: true
+    help: Mapping 6 is used while on.
+  - name: Map6signal
+    style: StrMenu
+    label: 6 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map6target
+    style: StrMenu
+    label: 6 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map6from
+    style: Float
+    label: 6 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map6to
+    style: Float
+    label: 6 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map6smooth
+    style: Float
+    label: 6 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map6sens
+    style: Float
+    label: 6 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map7on
+    style: Toggle
+    label: 7 On
+    startSection: true
+    help: Mapping 7 is used while on.
+  - name: Map7signal
+    style: StrMenu
+    label: 7 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map7target
+    style: StrMenu
+    label: 7 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map7from
+    style: Float
+    label: 7 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map7to
+    style: Float
+    label: 7 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map7smooth
+    style: Float
+    label: 7 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map7sens
+    style: Float
+    label: 7 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map8on
+    style: Toggle
+    label: 8 On
+    startSection: true
+    help: Mapping 8 is used while on.
+  - name: Map8signal
+    style: StrMenu
+    label: 8 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map8target
+    style: StrMenu
+    label: 8 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map8from
+    style: Float
+    label: 8 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map8to
+    style: Float
+    label: 8 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map8smooth
+    style: Float
+    label: 8 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map8sens
+    style: Float
+    label: 8 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  Presets:
+  - name: Copyfrom
+    style: Menu
+    label: Copy From
+    default: A
+    menuNames:
+    - A
+    - B
+    - C
+    - D
+    menuLabels:
+    - Preset A
+    - Preset B
+    - Preset C
+    - Preset D
+    help: Preset to copy from.
+  - name: Copyto
+    style: Menu
+    label: Copy To
+    default: B
+    menuNames:
+    - A
+    - B
+    - C
+    - D
+    menuLabels:
+    - Preset A
+    - Preset B
+    - Preset C
+    - Preset D
+    help: Preset to copy into. Its mappings are replaced.
+  - name: Copy
+    style: Pulse
+    label: Copy Preset
+    help: Copy every mapping of Copy From into Copy To.
+  - name: Clear
+    style: Pulse
+    label: Clear Current Preset
+    startSection: true
+    help: Turn off and empty all 8 mappings of the current preset.
+  - name: Refresh
+    style: Pulse
+    label: Refresh Menus
+    help: Update the Movement menus with signals that appeared since (e.g. a new OSC address).
+parameters:
+  parentshortcut: Mappings
+  opshortcut: Mappings
+sequences:
+  ext:
+  - object: op('./MappingsExt').module.MappingsExt(me)
+    name: Mappings
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: presets
+  type: tableDAT
+  parameters:
+    file: project1/mappings/presets.tsv
+    syncfile: true
+    rows: 33
+    cols: 9
+  position: [0, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: MappingsExt
+  type: textDAT
+  parameters:
+    file: project1/mappings/MappingsExt.py
+- name: assignments
+  type: tableDAT
+  position: [400, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - signal
+    - target
+    - in_min
+    - in_max
+    - out_min
+    - out_max
+    - smoothing
+  - - pose_hand_l
+    - layer1.scale
+    - '0'
+    - '1'
+    - '0.5'
+    - '2'
+    - '0.1'
+  - - pose_hand_r
+    - layer2.scale
+    - '0'
+    - '1'
+    - '0.5'
+    - '2'
+    - '0.1'
+  - - pose_x
+    - layer1.x
+    - '0'
+    - '1'
+    - '-1'
+    - '1'
+    - '0.1'
+  - - pose_spread
+    - layer1.opacity
+    - '0'
+    - '1'
+    - '0.2'
+    - '1'
+    - '0.1'
+  dat_content_format: table
+- name: midi_preset
+  type: selectCHOP
+  parameters:
+    chops: ../engine/live
+    channames: mapping_preset
+    autoexportroot: =parent()
+  position: [0, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: signal_menu
+  type: tableDAT
+  position: [800, -400]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: target_menu
+  type: tableDAT
+  position: [1200, -400]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: mapping_logic
+  type: textDAT
+  parameters:
+    file: project1/mappings/mapping_logic.py
+  position: [400, 0]
+- name: mapping_changed
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    builtin: false
+    file: project1/mappings/mapping_changed.py
+    syncfile: true
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: midi_preset_changed
+  type: chopexecuteDAT
+  parameters:
+    fromop: =parent()
+    chop: midi_preset
+    file: project1/mappings/midi_preset_changed.py
+    syncfile: true
+  position: [400, -800]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Mapping page (8 slots, presets A-D)
+  text: MappingsExt + mapping_logic turn the slots into assignments (read by the engine). presets holds A-D. signal_menu / target_menu feed the slot menus (rebuilt by RefreshMenus, in the current language). midi_preset follows the engine's mapping_preset channel so a MIDI note can switch presets during the song.
+  position: [-70, -870]
+  size: [1470, 1130]
+  color: [0.45, 0.45, 0.45]

@@ -11,13 +11,20 @@ the same whether the dancer is near the camera or far from it. When the hips
 are out of the picture (a close webcam), the torso is estimated from the
 shoulder width; the shoulders must be seen.
 
-Signals, all 0-1:
+Signals, 0-1 unless noted:
   pose_present  1 while a dancer is seen
   pose_x        where the dancer is across the picture (hips), 0 left, 1 right
   pose_hand_l   left hand height: 0 at the hips, 0.5 one torso above, 1 two torsos above
   pose_hand_r   right hand height, the same scale
   pose_spread   distance between the hands: 0 together, 1 arms stretched wide
   pose_energy   how much the arms, legs and head are moving
+  pose_zone     which stage zone the dancer is in, 1 to the number of zones
+                (counted from pose_x = 0); 0 when nobody is seen
+  pose_zone1 .. pose_zone5   1 while the dancer is in that zone, else 0
+
+Zones split pose_x into equal parts. To stop a dancer standing on a border
+from flickering between two zones, the dancer must cross the border by the
+zone margin before the zone changes.
 """
 
 import json
@@ -31,7 +38,9 @@ L_HIP, R_HIP = 23, 24
 ENERGY_POINTS = (0, 13, 14, 15, 16, 25, 26, 27, 28)
 NUM_LANDMARKS = 33
 
-SIGNALS = ('pose_present', 'pose_x', 'pose_hand_l', 'pose_hand_r', 'pose_spread', 'pose_energy')
+MAX_ZONES = 5
+ZONE_SIGNALS = ('pose_zone',) + tuple('pose_zone%d' % i for i in range(1, MAX_ZONES + 1))
+SIGNALS = ('pose_present', 'pose_x', 'pose_hand_l', 'pose_hand_r', 'pose_spread', 'pose_energy') + ZONE_SIGNALS
 MIN_VISIBILITY = 0.5   # below this a landmark is treated as not seen
 MIN_TORSO = 0.02       # a smaller torso (fraction of the picture) is noise, not a dancer
 SPAN_TORSOS = 2.8      # wrist-to-wrist distance with arms stretched wide, in torso lengths
@@ -41,6 +50,16 @@ ENERGY_FULL = 3.0      # average movement in torso lengths per second that reads
 
 def clamp01(value):
 	return 0.0 if value < 0.0 else 1.0 if value > 1.0 else value
+
+
+def zoneOf(x, zones, current=0, margin=0.05):
+	"""The zone (1..zones) that x (0-1) is in, keeping current until x is margin past its border."""
+	zones = max(1, min(MAX_ZONES, int(zones)))
+	if 1 <= current <= zones:
+		low, high = (current - 1) / zones, current / zones
+		if low - margin <= x <= high + margin:
+			return current
+	return min(zones, max(1, int(x * zones) + 1))
 
 
 def parsePose(text):
@@ -114,8 +133,8 @@ class PoseTracker:
 		self.lastTime = None
 		self.lastSeen = None
 
-	def update(self, points, now, smooth=0.1, sensitivity=1.0, hold=0.5, flipX=False):
-		"""Signals for this frame. now is in seconds; smooth and hold are in seconds."""
+	def update(self, points, now, smooth=0.1, sensitivity=1.0, hold=0.5, flipX=False, zones=3, zoneMargin=0.05):
+		"""Signals for this frame. now, smooth and hold are in seconds; zoneMargin is a fraction of the picture width."""
 		dt = now - self.lastTime if self.lastTime is not None else 0.0
 		self.lastTime = now
 		found = measure(points)
@@ -144,6 +163,10 @@ class PoseTracker:
 		for name, value in found.items():
 			self.values[name] += alpha * (value - self.values[name])
 		self.values['pose_present'] = 1.0
+		zone = zoneOf(self.values['pose_x'], zones, int(self.values['pose_zone']), zoneMargin)
+		self.values['pose_zone'] = float(zone)
+		for i in range(1, MAX_ZONES + 1):
+			self.values['pose_zone%d' % i] = 1.0 if i == zone else 0.0
 		self.previous = points
 		return dict(self.values)
 

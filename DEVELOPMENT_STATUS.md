@@ -18,11 +18,12 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 | 7 | OSC, serial and camera adapters | `50d1363` | OSC tested locally. Serial: parser only, no hardware. Camera: test pattern only, no webcam |
 | 8 | Usability and documentation | `f8df998` | Done. Output-window buttons tested; table buttons tested with a stub (no windows opened) |
 | 9 | MIDI note monitor (`midi_monitor`) | see git log | Done. Tested with the user's own MIDI file: seek, and notes appearing and clearing during playback |
-| 10 | Body tracking with MediaPipe (inputs, Pose page) | see git log | Built 2026-10-29. Tested with the Test Dancer and unit tests; not yet with a real webcam (LAPTOP) |
+| 10 | Body tracking with MediaPipe (inputs, Pose page) | `5d007ba` | Built 2026-10-29. The user confirmed MediaPipe tracking on LAPTOP with a webcam; the pose signals' values are still to be checked there |
+| 11 | Stage zones, `pose_monitor`, mapping page with presets, MIDI preset switching, English/Spanish (`lang`) | see git log | Built 2026-10-29 (overnight, MINI-PC). Tested in TouchDesigner with the Test Dancer and simulated inputs; not yet on LAPTOP with a webcam |
 
 ## Tests
 
-**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()`. Results go to `tests/results`; the last run (2026-10-29, MINI-PC, with the body tracking checks) passed **65 of 65**.
+**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()`. Results go to `tests/results`; the last run (2026-10-29, MINI-PC, with the mapping checks) passed **79 of 79**.
 
 - **engine (12):** each action; a chord with simultaneous events; a conflict where the later row wins; pause; forward and backward seek; seek into a trigger window; reset; repeated playback.
 - **playback (2):** during real playback, the live values equal a fresh evaluation at the clock time (30 samples); the clock advances.
@@ -36,8 +37,11 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
   - serial lines: name=value pairs, plain numbers with names, and a bad line
   - the camera test pattern, camera off, and camera selected with no camera attached
   - all inputs off restores the base values
+- **mappings (14):** a mapping page preset drives a visual; a MIDI row `set mapping.preset 2` switches to preset B at its note and a later row back to A (also when seeking); Follow MIDI off ignores them; choosing a Visual fills in its natural From/To and writes the engine row; the Preset menu; Spanish labels and menus and back to English; pose_monitor has no errors and all its values.
 
-**Plain Python:** `python -m unittest discover -s tests`: **66 of 66** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model, 16 body tracking). 2000 notes evaluate in under 1 ms.
+The suite backs up and restores the mapping page and the language, and empties the mapping presets while it runs (their rows would override the values under test).
+
+**Plain Python:** `python -m unittest discover -s tests`: **81 of 81** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model, 20 body tracking including stage zones, 11 mapping page). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -75,6 +79,14 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 - **Body tracking (MediaPipe), 2026-10-29, MINI-PC:** the MediaPipe TouchDesigner plugin v0.6.0 loads on TD 2025.32280 (`inputs/mediapipe`, from the git-ignored `TouchDesigner/toxes/`; only pose detection on, and it cooks only while Pose **Source** is Camera). `pose_signals.py` turns the landmarks into `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, measured in torso lengths (estimated from the shoulders when the hips are out of the picture); `tests/test_pose_signals.py` (16 tests). The chain was checked with the plugin's leftover sample landmarks and with the Test Dancer through `signals`; `pose_chop` costs about 0.3 ms per frame. Not yet tried with a webcam: there is none on MINI-PC. The plugin's Webcam menu fills from the cameras the browser finds once it runs.
 - **Tests now leave the visuals as they were:** the render tests reset every layer to its defaults and never put them back, and the engine tests assumed default layers, so with `layer1` **Visible** on two engine checks failed. The suite now backs up the visuals' layer and master settings, starts from the defaults, and restores them at the end (checked: 65 of 65 pass with `layer1` Visible on, and it stays on).
 - **Tests now restore the inputs' settings:** the input tests used to leave Serial, OSC, Simulated and Camera switched off and the serial values cleared; the tests now back them up and put them back (checked: settings and serial values identical after a run, 63 of 63 pass).
+
+## Built overnight 2026-10-29 (MINI-PC), to check on LAPTOP
+
+- **Stage zones** (inputs, Pose page): **Stage Zones** 1-5 (default 3) and **Zone Margin** (default 0.05 of the picture width, a hysteresis band so standing on a border does not flicker). New signals `pose_zone` (1..N, 0 when nobody is seen) and `pose_zone1` ... `pose_zone5`, from the smoothed `pose_x`, so Flip Left/Right flips them too.
+- **`pose_monitor`** panel: MediaPipe's camera picture with the zones drawn over it (borders, margin bands), the dancer's position line, our own skeleton from the landmarks the signals use, a zone strip under the picture lighting the current zone, and bars for position, hands, spread and energy. Checked by captured frames with the Test Dancer (no webcam on MINI-PC). Cost while on screen about 3 ms CPU + 1.4 ms GPU per frame on MINI-PC; nothing while not shown.
+- **`mappings`** (the mapping page): 8 slots (On, Movement, Visual, From, To, Smoothing, Sensitivity), presets A-D with starter presets, Copy/Clear. Its rows go to the engine after the input table. The Visual menu comes from the engine's `knownParams()`, so new visual values show up by themselves. A MIDI row `set mapping.preset 1-4` switches presets during the song (new engine value `mapping.preset`, replayed like any other on seek). Found and fixed while testing: Parameter Execute callbacks arrive a frame after a preset loads, which had reset From/To to the natural range on every preset switch; a change is now judged against the stored preset.
+- **`lang`**: **Language / Idioma** switches the Pose page, the mapping page (labels, help, menus) and pose_monitor between English and Spanish, from `lang/strings` (key, en, es). The Spanish texts were written by Claude and should be read by a Spanish speaker before the workshop.
+- **Wearable enclosure (Fusion 360, from the enclosure session):** parametric model done, 74.4 × 40.5 × 18.7 mm with a 2 mm lid; battery pocket for the measured 59.2 × 26.5 × 9.7 mm cell; the motor (10 mm × 3.2 mm, still a placeholder box) stands against the end wall; a 1.5 mm shelf screwed to two rails holds the XIAO, IMU and button, with a 4 mm wire slot; three parametric test pieces (battery pocket, insert hole, button hole). Open: which end of the battery the lead exits (decides the wire slot) and which edge of the XIAO has the BAT+/BAT− pads. Not started: printing the test pieces, a fit check, final parameter names and a parts list.
 
 ## Not verified (needs a person or hardware)
 
@@ -124,3 +136,6 @@ Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable
 9. Flash receiver v0.2 and wearables v0.7 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
 10. With receiver v0.2 and a v0.7 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
 11. On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.
+12. On LAPTOP with the webcam, open `pose_monitor` (right-click > View...): check our skeleton sits on MediaPipe's drawing, walk through the zones and watch the strip and `pose_zone` change without flicker on a border, and try **Stage Zones** 2-5 and **Flip Left/Right**.
+13. On `mappings`, try the starter presets A-D with the Test Dancer and then a real dancer; add a MIDI row `set mapping.preset 2` and check the switch lands at its note.
+14. Switch **Language / Idioma** to Español and have a Spanish speaker read the Pose page, the mapping page and pose_monitor.

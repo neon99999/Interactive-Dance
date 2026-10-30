@@ -2,7 +2,9 @@
 
   value = the layer / master parameter (the starting look)
         -> MIDI assignments replayed up to the transport position (show_logic.evaluate)
-        -> input assignments driven by live signals (show_logic.InputMapper)
+        -> input assignments driven by live signals (show_logic.InputMapper):
+           the input_assignments table, then the mapping page's rows
+           (mappings/assignments), which win for the same target
 
 The MIDI part is a pure function of the playback position, so pausing repeats
 nothing and seeking or Reset restores the right state. Inputs keep working
@@ -19,6 +21,7 @@ MASTER_PARS = {'level': 'Level', 'blackout': 'Blackout', 'flash': 'Flash'}
 
 _midi = {'key': None, 'events': [], 'errors': []}
 _inputs = {'key': None, 'assignments': [], 'errors': []}
+MAPPING_ROW_OFFSET = 1000  # mapping page rows are numbered from here, apart from the table's rows
 _mapper = None
 _last_seconds = None
 
@@ -79,10 +82,19 @@ def _refreshMidi(sl):
 
 def _refreshInputs(sl):
 	table = op('input_assignments')
-	if table.text == _inputs['key']:
+	mappings = getattr(op, 'Mappings', None)
+	mapped = mappings.op('assignments') if mappings else None
+	key = (table.text, mapped.text if mapped is not None else '')
+	if key == _inputs['key']:
 		return
 	assignments, errors = sl.parseInputAssignments([[c.val for c in row] for row in table.rows()])
-	_inputs.update(key=table.text, assignments=assignments, errors=errors)
+	if mapped is not None:
+		more, more_errors = sl.parseInputAssignments([[c.val for c in row] for row in mapped.rows()])
+		for a in more:
+			a.row += MAPPING_ROW_OFFSET
+		assignments += more
+		errors += ['mapping page: ' + e for e in more_errors]
+	_inputs.update(key=key, assignments=assignments, errors=errors)
 	_writeErrors()
 
 

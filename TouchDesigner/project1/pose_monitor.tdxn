@@ -1,0 +1,161 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/pose_monitor
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  textDAT:
+    parameters:
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+type: containerCOMP
+parameters:
+  w: 1280
+  h: 720
+  resizecomp: =me
+  repocomp: =me
+  top: ./null_out
+  parentshortcut: PoseMonitor
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: labels
+  type: scriptDAT
+  parameters:
+    callbacks: labels_callbacks
+  position: [400, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dat_read_only: true
+- name: null_out
+  type: nullTOP
+  position: [1600, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - glsl_panel
+- name: glsl_panel
+  type: glslTOP
+  parameters:
+    pixeldat: glsl_panel_pixel
+    computedat: glsl_panel_compute
+    outputresolution: custom
+    resolutionw: 1280
+    resolutionh: 720
+    format: rgba8fixed
+  sequences:
+    vec:
+    - name: uLayout
+      valuex: =mod('labels_callbacks').PICTURE_W
+      valuey: =mod('labels_callbacks').PICTURE_H
+      valuez: =mod('labels_callbacks').PANEL_X
+      valuew: =mod('labels_callbacks').ROWS_TOP
+    - name: uRows
+      valuex: =mod('labels_callbacks').ROW
+      valuey: =mod('labels_callbacks').PAD
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - values_tex
+  - camera_video
+  - text_labels
+- name: values_tex
+  type: choptoTOP
+  parameters:
+    chop: panel_values
+    format: mono32float
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: pose_values
+  type: selectCHOP
+  parameters:
+    chops: ../inputs/pose_chop
+    autoexportroot: =parent()
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: text_labels
+  type: textTOP
+  parameters:
+    specdat: labels
+    fontfile: C:/Windows/Fonts/arial.ttf
+    fontsizex: 22
+    fontsizexunit: pixels
+    alignx: left
+    outputresolution: custom
+    resolutionw: 1280
+    resolutionh: 720
+  position: [800, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: camera_video
+  type: selectTOP
+  parameters:
+    top: ../inputs/mediapipe/MediaPipe/video
+  position: [800, -400]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: panel_values
+  type: scriptCHOP
+  parameters:
+    callbacks: panel_values_callbacks
+    autoexportroot: =parent()
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - pose_values
+- name: glsl_panel_info
+  type: infoDAT
+  parameters:
+    op: glsl_panel
+  flags:
+  - viewer
+  position: [1350, -120]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dock: glsl_panel
+  dat_read_only: true
+- name: glsl_panel_pixel
+  type: textDAT
+  parameters:
+    file: project1/pose_monitor/glsl_panel_pixel.glsl
+    language: glsl
+    extension: frag
+  flags:
+  - viewer
+  position: [1200, -120]
+  tags:
+  - glsl
+  dock: glsl_panel
+- name: labels_callbacks
+  type: textDAT
+  parameters:
+    file: project1/pose_monitor/labels_callbacks.py
+    language: python
+  position: [400, -920]
+  tags:
+  - py
+- name: panel_values_callbacks
+  type: textDAT
+  parameters:
+    file: project1/pose_monitor/panel_values_callbacks.py
+    language: python
+  position: [400, -120]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Pose monitor panel
+  text: 'Camera picture with stage zones and the tracked body, zone strip, pose signal bars. Values: panel_values (order = shader texel index). Text: labels -> text_labels. Drawing: glsl_panel.'
+  position: [-70, -990]
+  size: [1870, 1250]
+  color: [0.45, 0.45, 0.45]

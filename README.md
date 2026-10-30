@@ -8,9 +8,12 @@ What it does:
 - four visual layers: shapes, noise and ring textures, video or stills, and text, with simple effects
 - a table that turns MIDI notes into visual actions (show, hide, toggle, trigger, fade, set value)
 - a second table that maps movement signals onto visual values, with range and smoothing
-- movement inputs: simulated controls, OSC, serial (USB) sensors, camera motion, and body tracking with MediaPipe
+- a mapping page for dancers: 8 movement-to-visual mappings in presets A-D, which MIDI notes can switch during the song
+- movement inputs: simulated controls, OSC, serial (USB) sensors, camera motion, and body tracking with MediaPipe, including stage zones
+- monitor panels for MIDI notes, wearable sensors and body tracking
+- English and Spanish labels for the controls dancers use
 
-**Status:** all eight development milestones are done and tested inside TouchDesigner on Windows. Real sensors, a real webcam and macOS have not been tested yet; see [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md).
+**Status:** the development milestones are done and tested inside TouchDesigner on Windows. The wearables have run on a breadboard and MediaPipe with a webcam on the show laptop; macOS is untested; see [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md).
 
 ## Requirements
 
@@ -96,7 +99,7 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 | **OSC** | one per OSC address: `/dancer/level` becomes `dancer/level` | Turn on **Receive OSC**; send to this computer on **OSC Port** (7000) |
 | **Serial** | `serial_<name>` | Turn on **Read Serial**, pick the **Port** and **Baud Rate** |
 | **Camera** | `camera_motion`, `camera_left`, `camera_right` | **Source**: Off, Camera or Test Pattern. Raise **Sensitivity** if values stay small |
-| **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy` | **Source**: Off, Camera (MediaPipe) or Test Dancer. Pick the **Webcam**. Needs the MediaPipe plugin (below) |
+| **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, `pose_zone`, `pose_zone1` ... `pose_zone5` | **Source**: Off, Camera (MediaPipe) or Test Dancer. Pick the **Webcam**. Needs the MediaPipe plugin (below) |
 
 Serial devices should print one line per reading, in either of these forms:
 
@@ -132,6 +135,16 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 - Left and right are the dancer's own. Sizes are in torso lengths, so the values are the same near the camera or far from it. If the hips are out of the picture (a close webcam), the torso is estimated from the shoulders.
 - **Smoothing** (seconds) steadies jittery values; **Hold When Lost** keeps the last values through short dropouts before they fall to 0.
 - MediaPipe follows one dancer (its Pose page, number of poses = 1).
+
+**Stage zones:** **Stage Zones** (1-5, default 3) splits the picture into equal zones from left to right. `pose_zone` is the zone the dancer is in (1 = left, 0 = nobody seen), and `pose_zone1` ... `pose_zone5` are 1 in their zone and 0 elsewhere, ready for a layer's `visible`. **Zone Margin** (0.05 = 5 % of the picture width) is how far past a border the dancer must go before the zone changes, so standing on a border does not flicker. The zones follow `pose_x`, so **Flip Left/Right** flips them too.
+
+### pose_monitor: see the body tracking
+
+A panel next to wearable_monitor. The camera picture (from MediaPipe) fills the left, with the stage zones drawn over it: zone borders in amber, the margin either side as a shaded band, the dancer's position as a green line and the body as a teal skeleton. Below the picture, one block per zone lights up while the dancer is in it. On the right: BODY TRACKING, the source, DANCER SEEN or NO DANCER, bars for position, left and right hand, arms spread and energy, and the current zone.
+
+- The picture only shows with **Source** = Camera (MediaPipe); with the Test Dancer the skeleton is drawn on a plain background.
+- Our skeleton is drawn from the same landmarks the pose signals use, over MediaPipe's own drawing, so if the two line up the signals are measuring the right person.
+- To see it bigger, right-click it and choose **View...**.
 
 ### midi_monitor: check your MIDI file
 
@@ -178,6 +191,31 @@ A panel with one card per wearable, so dancers can see what each signal does bef
 - Each row is labelled with its signal name, and the card's header shows the prefix (`serial_w1_...`). Put them together for the input assignment table: the `act` row of wearable 1 is `serial_w1_act`. The hit row's value is the latest `hitdir` as a number and a name (`1 fwd`); the mode in the header is `serial_w1_mode` and LIVE is `serial_w1_live`.
 - It reads the same `serial_wN_...` signals as the assignment table, so switch on **inputs > Serial** as for imu_monitor.
 
+### mappings: the mapping page for dancers
+
+A friendlier front for the input table. **mappings** has 8 slots on its **Mappings 1-4** and **Mappings 5-8** pages. Each slot connects one movement to one visual:
+
+| Control | What it does |
+|---|---|
+| **On** | Use this slot |
+| **Movement** | A signal from the menu: body tracking, wearables 1-3 (activity, rotation, tilt, hit, still, button), simulated and camera signals |
+| **Visual** | A value from the menu, e.g. Layer 1: size or Whole image: flash |
+| **From** / **To** | The visual's value at no movement and at full movement. Choosing a Visual fills in its natural range (size 0.5-2, rotate 0-360, X -1 to 1, others 0-1); reverse them to invert |
+| **Smoothing** | Seconds; higher is calmer |
+| **Sensitivity** | 1 = the full movement reaches To; 2 = half the movement does |
+
+Dancers never type sensor ranges: each movement's range is built in (gyro ±500 degrees per second, pitch ±90, roll ±180, everything else 0-1).
+
+- **Preset** (Mappings page) picks A, B, C or D. Every edit is saved into the current preset at once. **Presets** page: **Copy Preset** (From/To) and **Clear Current Preset**.
+- The mapping rows go to the engine after the input table, so a mapping wins over both the input table and MIDI for its visual.
+- **Switching presets during the song:** add a MIDI row `note, mapping.preset, set, 2` and that note selects preset B (1 = A ... 4 = D). Like every MIDI action it follows the playback position, so seeking lands on the right preset. **Follow MIDI** off ignores these rows.
+- The Visual menu is built from the engine's list of values, so when visuals get new values they appear in the menu by themselves (with their raw name until a translation is added to `lang/strings`).
+- Starter presets: **A** body (hands -> layer sizes, position -> layer 1 X, arms spread -> layer 1 opacity), **B** zones (zone 1-3 -> layers 1-3 visible, energy -> flash), **C** wearables (activity -> layer sizes, wearable 1 roll -> rotate, hit -> flash), **D** mixed. Change them freely.
+
+### lang: English / Español
+
+**Language / Idioma** on **lang** switches the labels, help texts and menus of the mapping page and the Pose page, and the texts on pose_monitor, between English and Spanish. The texts are in `lang/strings` (key, en, es): edit a cell to change a translation; a missing Spanish text falls back to English.
+
 ### visuals: four layers
 
 `visuals/layer1` to `layer4` each have a **Layer** page with the starting look:
@@ -200,9 +238,9 @@ The automatic tests run inside TouchDesigner, take under a minute and leave your
 op('/project1/tests/engine_tests').module.Run()
 ```
 
-Results appear in `project1/tests/results` (65 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines, the camera test pattern and the pose Test Dancer.
+Results appear in `project1/tests/results` (79 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines, the camera test pattern, the pose Test Dancer, the mapping page, MIDI preset switching and the language switch.
 
-The plain-Python unit tests (show logic and the serial parser) need no TouchDesigner:
+The plain-Python unit tests (show logic, serial parser, motion model, pose signals and the mapping page) need no TouchDesigner:
 
 ```
 python -m unittest discover -s tests -v
@@ -227,6 +265,10 @@ TouchDesigner/
     midi_monitor.tdxn      shows MIDI notes as they play
     imu_monitor.tdxn       graphs a wearable's motion sensor
     wearable_monitor.tdxn  shows every wearable signal live, per wearable
+    pose_monitor.tdxn      camera picture with stage zones and the tracked body
+    mappings.tdxn          the mapping page (8 mappings, presets A-D)
+    mappings/mapping_logic.py  catalogues and row building (pure Python, unit-tested)
+    lang.tdxn, lang/strings.tsv  English / Spanish texts
     tests.tdxn, tests/     in-TouchDesigner tests
 Firmware/                  wearable motion sensor firmware (PlatformIO, see Firmware/README.md)
 media/test/                test audio, MIDI and image

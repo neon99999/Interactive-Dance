@@ -1,0 +1,79 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/lang
+options:
+  include_dat_content: false
+  include_storage: true
+type: baseCOMP
+custom_pars:
+  Language:
+  - name: Language
+    style: Menu
+    label: Language / Idioma
+    default: en
+    menuNames:
+    - en
+    - es
+    menuLabels:
+    - English
+    - Español
+    help: Language of the controls and panels dancers use. / Idioma de los controles y paneles que usan los bailarines.
+parameters:
+  parentshortcut: Lang
+  opshortcut: Lang
+sequences:
+  ext:
+  - object: op('./LangExt').module.LangExt(me)
+    name: Lang
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: LangExt
+  type: textDAT
+  parameters:
+    file: project1/lang/LangExt.py
+    syncfile: true
+    language: python
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: strings
+  type: tableDAT
+  parameters:
+    file: project1/lang/strings.tsv
+    syncfile: true
+    rows: 256
+    cols: 3
+  position: [400, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: language_changed
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: Language
+    builtin: false
+    file: project1/lang/language_changed.py
+    syncfile: true
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Language (English / Español)
+  text: 'strings: key, en, es. LangExt.T(key) looks texts up; Apply() relabels the Pose and Mappings pages. language_changed runs Apply when Language changes.'
+  position: [-70, -70]
+  size: [1070, 330]
+  color: [0.45, 0.45, 0.45]

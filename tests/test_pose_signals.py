@@ -141,6 +141,34 @@ class Tracker(unittest.TestCase):
 		self.assertAlmostEqual(v['pose_x'], 0.8)
 
 
+class Zones(unittest.TestCase):
+
+	def test_equal_zones(self):
+		self.assertEqual([ps.zoneOf(x, 3) for x in (0.0, 0.2, 0.34, 0.5, 0.7, 1.0)], [1, 1, 2, 2, 3, 3])
+		self.assertEqual([ps.zoneOf(x, 2) for x in (0.1, 0.6)], [1, 2])
+		self.assertEqual(ps.zoneOf(0.9, 9), 5)  # at most MAX_ZONES
+		self.assertEqual(ps.zoneOf(0.9, 0), 1)
+
+	def test_margin_stops_flicker_at_a_border(self):
+		self.assertEqual(ps.zoneOf(0.36, 3, current=1, margin=0.05), 1)  # just over the border: stays
+		self.assertEqual(ps.zoneOf(0.39, 3, current=1, margin=0.05), 2)  # past the margin: changes
+		self.assertEqual(ps.zoneOf(0.30, 3, current=2, margin=0.05), 2)
+		self.assertEqual(ps.zoneOf(0.36, 3, current=1, margin=0.0), 2)
+
+	def test_tracker_zone_signals(self):
+		t = ps.PoseTracker()
+		v = t.update(standing(cx=0.8), 0.0, zones=4)
+		self.assertEqual(v['pose_zone'], 4.0)
+		self.assertEqual([v['pose_zone%d' % i] for i in range(1, 6)], [0, 0, 0, 1, 0])
+		v = t.update(None, 1.0, hold=0.5)
+		self.assertEqual(v['pose_zone'], 0.0)
+		self.assertEqual(v['pose_zone4'], 0.0)
+
+	def test_zone_follows_flip(self):
+		v = ps.PoseTracker().update(standing(cx=0.1), 0.0, flipX=True, zones=3)
+		self.assertEqual(v['pose_zone'], 3.0)
+
+
 class TestPose(unittest.TestCase):
 
 	def test_made_up_dancer_covers_the_ranges(self):

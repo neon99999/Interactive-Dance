@@ -1,0 +1,256 @@
+﻿key	en	es
+signal.pose_present	Body: dancer seen	Cuerpo: bailarín visible
+signal.pose_x	Body: position left-right	Cuerpo: posición izquierda-derecha
+signal.pose_hand_l	Body: left hand height	Cuerpo: altura mano izquierda
+signal.pose_hand_r	Body: right hand height	Cuerpo: altura mano derecha
+signal.pose_spread	Body: arms spread	Cuerpo: apertura de brazos
+signal.pose_energy	Body: energy	Cuerpo: energía
+signal.pose_zone	Body: zone number	Cuerpo: número de zona
+signal.pose_zone1	Body: in zone 1	Cuerpo: en zona 1
+signal.pose_zone2	Body: in zone 2	Cuerpo: en zona 2
+signal.pose_zone3	Body: in zone 3	Cuerpo: en zona 3
+signal.pose_zone4	Body: in zone 4	Cuerpo: en zona 4
+signal.pose_zone5	Body: in zone 5	Cuerpo: en zona 5
+signal.serial_w1_act	Wearable 1: activity	Sensor 1: actividad
+signal.serial_w1_gx	Wearable 1: twist speed	Sensor 1: velocidad de torsión
+signal.serial_w1_gy	Wearable 1: tilt speed	Sensor 1: velocidad de inclinación
+signal.serial_w1_gz	Wearable 1: turn speed	Sensor 1: velocidad de giro
+signal.serial_w1_pitch	Wearable 1: tilt up-down	Sensor 1: inclinación arriba-abajo
+signal.serial_w1_roll	Wearable 1: tilt sideways	Sensor 1: inclinación lateral
+signal.serial_w1_hit	Wearable 1: hit	Sensor 1: golpe
+signal.serial_w1_hitdir	Wearable 1: hit direction	Sensor 1: dirección del golpe
+signal.serial_w1_still	Wearable 1: still	Sensor 1: quieto
+signal.serial_w1_btn	Wearable 1: button	Sensor 1: botón
+signal.serial_w1_mode	Wearable 1: mode	Sensor 1: modo
+signal.serial_w2_act	Wearable 2: activity	Sensor 2: actividad
+signal.serial_w2_gx	Wearable 2: twist speed	Sensor 2: velocidad de torsión
+signal.serial_w2_gy	Wearable 2: tilt speed	Sensor 2: velocidad de inclinación
+signal.serial_w2_gz	Wearable 2: turn speed	Sensor 2: velocidad de giro
+signal.serial_w2_pitch	Wearable 2: tilt up-down	Sensor 2: inclinación arriba-abajo
+signal.serial_w2_roll	Wearable 2: tilt sideways	Sensor 2: inclinación lateral
+signal.serial_w2_hit	Wearable 2: hit	Sensor 2: golpe
+signal.serial_w2_hitdir	Wearable 2: hit direction	Sensor 2: dirección del golpe
+signal.serial_w2_still	Wearable 2: still	Sensor 2: quieto
+signal.serial_w2_btn	Wearable 2: button	Sensor 2: botón
+signal.serial_w2_mode	Wearable 2: mode	Sensor 2: modo
+signal.serial_w3_act	Wearable 3: activity	Sensor 3: actividad
+signal.serial_w3_gx	Wearable 3: twist speed	Sensor 3: velocidad de torsión
+signal.serial_w3_gy	Wearable 3: tilt speed	Sensor 3: velocidad de inclinación
+signal.serial_w3_gz	Wearable 3: turn speed	Sensor 3: velocidad de giro
+signal.serial_w3_pitch	Wearable 3: tilt up-down	Sensor 3: inclinación arriba-abajo
+signal.serial_w3_roll	Wearable 3: tilt sideways	Sensor 3: inclinación lateral
+signal.serial_w3_hit	Wearable 3: hit	Sensor 3: golpe
+signal.serial_w3_hitdir	Wearable 3: hit direction	Sensor 3: dirección del golpe
+signal.serial_w3_still	Wearable 3: still	Sensor 3: quieto
+signal.serial_w3_btn	Wearable 3: button	Sensor 3: botón
+signal.serial_w3_mode	Wearable 3: mode	Sensor 3: modo
+signal.sim_level	Test: level	Prueba: nivel
+signal.sim_trigger	Test: trigger	Prueba: disparo
+signal.sim_zone	Test: zone	Prueba: zona
+signal.camera_motion	Camera: motion	Cámara: movimiento
+signal.camera_left	Camera: motion left	Cámara: movimiento izquierda
+signal.camera_right	Camera: motion right	Cámara: movimiento derecha
+target.layer1.visible	Layer 1 visible	Capa 1 visible
+target.layer1.opacity	Layer 1 opacity	Capa 1 opacidad
+target.layer1.red	Layer 1 red	Capa 1 rojo
+target.layer1.green	Layer 1 green	Capa 1 verde
+target.layer1.blue	Layer 1 blue	Capa 1 azul
+target.layer1.scale	Layer 1 size	Capa 1 tamaño
+target.layer1.x	Layer 1 position x	Capa 1 posición x
+target.layer1.y	Layer 1 position y	Capa 1 posición y
+target.layer1.rotate	Layer 1 rotation	Capa 1 rotación
+target.layer1.content	Layer 1 content	Capa 1 contenido
+target.layer1.effect	Layer 1 effect	Capa 1 efecto
+target.layer2.visible	Layer 2 visible	Capa 2 visible
+target.layer2.opacity	Layer 2 opacity	Capa 2 opacidad
+target.layer2.red	Layer 2 red	Capa 2 rojo
+target.layer2.green	Layer 2 green	Capa 2 verde
+target.layer2.blue	Layer 2 blue	Capa 2 azul
+target.layer2.scale	Layer 2 size	Capa 2 tamaño
+target.layer2.x	Layer 2 position x	Capa 2 posición x
+target.layer2.y	Layer 2 position y	Capa 2 posición y
+target.layer2.rotate	Layer 2 rotation	Capa 2 rotación
+target.layer2.content	Layer 2 content	Capa 2 contenido
+target.layer2.effect	Layer 2 effect	Capa 2 efecto
+target.layer3.visible	Layer 3 visible	Capa 3 visible
+target.layer3.opacity	Layer 3 opacity	Capa 3 opacidad
+target.layer3.red	Layer 3 red	Capa 3 rojo
+target.layer3.green	Layer 3 green	Capa 3 verde
+target.layer3.blue	Layer 3 blue	Capa 3 azul
+target.layer3.scale	Layer 3 size	Capa 3 tamaño
+target.layer3.x	Layer 3 position x	Capa 3 posición x
+target.layer3.y	Layer 3 position y	Capa 3 posición y
+target.layer3.rotate	Layer 3 rotation	Capa 3 rotación
+target.layer3.content	Layer 3 content	Capa 3 contenido
+target.layer3.effect	Layer 3 effect	Capa 3 efecto
+target.layer4.visible	Layer 4 visible	Capa 4 visible
+target.layer4.opacity	Layer 4 opacity	Capa 4 opacidad
+target.layer4.red	Layer 4 red	Capa 4 rojo
+target.layer4.green	Layer 4 green	Capa 4 verde
+target.layer4.blue	Layer 4 blue	Capa 4 azul
+target.layer4.scale	Layer 4 size	Capa 4 tamaño
+target.layer4.x	Layer 4 position x	Capa 4 posición x
+target.layer4.y	Layer 4 position y	Capa 4 posición y
+target.layer4.rotate	Layer 4 rotation	Capa 4 rotación
+target.layer4.content	Layer 4 content	Capa 4 contenido
+target.layer4.effect	Layer 4 effect	Capa 4 efecto
+target.master.level	Master level	Nivel general
+target.master.blackout	Blackout	Apagón
+target.master.flash	Flash	Destello
+mappings.Preset.label	Preset	Preset
+mappings.Preset.help	Which set of 8 mappings is active. Edits are saved into the chosen preset at once.	Qué grupo de 8 conexiones está activo. Los cambios se guardan en el preset elegido al instante.
+mappings.Followmidi.label	Follow MIDI	Seguir MIDI
+mappings.Followmidi.help	On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.	Activo: una fila MIDI "set mapping.preset 1-4" cambia el preset (A-D) en ese momento de la canción. Apagado: solo este menú lo cambia.
+mappings.Map1on.label	1 On	1 Activo
+mappings.Map1on.help	Mapping 1 is used while on.	La conexión 1 se usa mientras está activa.
+mappings.Map1signal.label	1 Movement	1 Movimiento
+mappings.Map1signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map1target.label	1 Visual	1 Visual
+mappings.Map1target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map1from.label	1 From	1 Desde
+mappings.Map1from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map1to.label	1 To	1 Hasta
+mappings.Map1to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map1smooth.label	1 Smoothing	1 Suavizado
+mappings.Map1smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map1sens.label	1 Sensitivity	1 Sensibilidad
+mappings.Map1sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map2on.label	2 On	2 Activo
+mappings.Map2on.help	Mapping 2 is used while on.	La conexión 2 se usa mientras está activa.
+mappings.Map2signal.label	2 Movement	2 Movimiento
+mappings.Map2signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map2target.label	2 Visual	2 Visual
+mappings.Map2target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map2from.label	2 From	2 Desde
+mappings.Map2from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map2to.label	2 To	2 Hasta
+mappings.Map2to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map2smooth.label	2 Smoothing	2 Suavizado
+mappings.Map2smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map2sens.label	2 Sensitivity	2 Sensibilidad
+mappings.Map2sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map3on.label	3 On	3 Activo
+mappings.Map3on.help	Mapping 3 is used while on.	La conexión 3 se usa mientras está activa.
+mappings.Map3signal.label	3 Movement	3 Movimiento
+mappings.Map3signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map3target.label	3 Visual	3 Visual
+mappings.Map3target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map3from.label	3 From	3 Desde
+mappings.Map3from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map3to.label	3 To	3 Hasta
+mappings.Map3to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map3smooth.label	3 Smoothing	3 Suavizado
+mappings.Map3smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map3sens.label	3 Sensitivity	3 Sensibilidad
+mappings.Map3sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map4on.label	4 On	4 Activo
+mappings.Map4on.help	Mapping 4 is used while on.	La conexión 4 se usa mientras está activa.
+mappings.Map4signal.label	4 Movement	4 Movimiento
+mappings.Map4signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map4target.label	4 Visual	4 Visual
+mappings.Map4target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map4from.label	4 From	4 Desde
+mappings.Map4from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map4to.label	4 To	4 Hasta
+mappings.Map4to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map4smooth.label	4 Smoothing	4 Suavizado
+mappings.Map4smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map4sens.label	4 Sensitivity	4 Sensibilidad
+mappings.Map4sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map5on.label	5 On	5 Activo
+mappings.Map5on.help	Mapping 5 is used while on.	La conexión 5 se usa mientras está activa.
+mappings.Map5signal.label	5 Movement	5 Movimiento
+mappings.Map5signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map5target.label	5 Visual	5 Visual
+mappings.Map5target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map5from.label	5 From	5 Desde
+mappings.Map5from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map5to.label	5 To	5 Hasta
+mappings.Map5to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map5smooth.label	5 Smoothing	5 Suavizado
+mappings.Map5smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map5sens.label	5 Sensitivity	5 Sensibilidad
+mappings.Map5sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map6on.label	6 On	6 Activo
+mappings.Map6on.help	Mapping 6 is used while on.	La conexión 6 se usa mientras está activa.
+mappings.Map6signal.label	6 Movement	6 Movimiento
+mappings.Map6signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map6target.label	6 Visual	6 Visual
+mappings.Map6target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map6from.label	6 From	6 Desde
+mappings.Map6from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map6to.label	6 To	6 Hasta
+mappings.Map6to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map6smooth.label	6 Smoothing	6 Suavizado
+mappings.Map6smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map6sens.label	6 Sensitivity	6 Sensibilidad
+mappings.Map6sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map7on.label	7 On	7 Activo
+mappings.Map7on.help	Mapping 7 is used while on.	La conexión 7 se usa mientras está activa.
+mappings.Map7signal.label	7 Movement	7 Movimiento
+mappings.Map7signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map7target.label	7 Visual	7 Visual
+mappings.Map7target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map7from.label	7 From	7 Desde
+mappings.Map7from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map7to.label	7 To	7 Hasta
+mappings.Map7to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map7smooth.label	7 Smoothing	7 Suavizado
+mappings.Map7smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map7sens.label	7 Sensitivity	7 Sensibilidad
+mappings.Map7sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Map8on.label	8 On	8 Activo
+mappings.Map8on.help	Mapping 8 is used while on.	La conexión 8 se usa mientras está activa.
+mappings.Map8signal.label	8 Movement	8 Movimiento
+mappings.Map8signal.help	The movement signal that drives this mapping. Pick from the menu or type a signal name.	El movimiento que controla esta conexión. Elígelo del menú o escribe el nombre de una señal.
+mappings.Map8target.label	8 Visual	8 Visual
+mappings.Map8target.help	The visual value it changes. Choosing one sets From and To to its usual range.	El valor visual que cambia. Al elegirlo, Desde y Hasta toman su rango habitual.
+mappings.Map8from.label	8 From	8 Desde
+mappings.Map8from.help	Visual value when the movement is at its lowest.	Valor visual cuando el movimiento está en su mínimo.
+mappings.Map8to.label	8 To	8 Hasta
+mappings.Map8to.help	Visual value when the movement is at its highest.	Valor visual cuando el movimiento está en su máximo.
+mappings.Map8smooth.label	8 Smoothing	8 Suavizado
+mappings.Map8smooth.help	Seconds the visual takes to follow the movement. 0: instant.	Segundos que tarda lo visual en seguir el movimiento. 0: inmediato.
+mappings.Map8sens.label	8 Sensitivity	8 Sensibilidad
+mappings.Map8sens.help	How much movement reaches To: 1 = the full movement, 2 = half of it.	Cuánto movimiento hace falta para llegar a Hasta: 1 = todo el movimiento, 2 = la mitad.
+mappings.Copyfrom.label	Copy From	Copiar de
+mappings.Copyfrom.help	Preset to copy from.	Preset del que copiar.
+mappings.Copyto.label	Copy To	Copiar a
+mappings.Copyto.help	Preset to copy into. Its mappings are replaced.	Preset al que copiar. Sus conexiones se reemplazan.
+mappings.Copy.label	Copy Preset	Copiar preset
+mappings.Copy.help	Copy every mapping of Copy From into Copy To.	Copia todas las conexiones de Copiar de en Copiar a.
+mappings.Clear.label	Clear Current Preset	Vaciar preset actual
+mappings.Clear.help	Turn off and empty all 8 mappings of the current preset.	Apaga y vacía las 8 conexiones del preset actual.
+mappings.Refresh.label	Refresh Menus	Actualizar menús
+mappings.Refresh.help	Update the Movement menus with signals that appeared since (e.g. a new OSC address).	Actualiza los menús de Movimiento con señales nuevas (p. ej. una dirección OSC nueva).
+inputs.Posesource.label	Source	Fuente
+inputs.Posesource.help	Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Camera (MediaPipe): track a dancer with the webcam chosen below. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.	Apagado: el seguimiento corporal está detenido (MediaPipe no corre) y las señales pose valen 0. Cámara (MediaPipe): sigue a un bailarín con la cámara web elegida abajo. Bailarín de prueba: un bailarín inventado que camina y mueve los brazos, para probar sin cámara.
+inputs.Posesource.menu	Off|Camera (MediaPipe)|Test Dancer	Apagado|Cámara (MediaPipe)|Bailarín de prueba
+inputs.Posecamera.label	Webcam	Cámara web
+inputs.Posecamera.help	Which webcam MediaPipe uses. Close other apps using it, and set the Camera page Source to Off if it uses the same webcam.	Qué cámara web usa MediaPipe. Cierra otras apps que la usen, y pon la Fuente de la página Camera en Off si usa la misma cámara.
+inputs.Poseflipx.label	Flip Left/Right	Invertir izq./der.
+inputs.Poseflipx.help	Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.	Apagado: pose_x vale 0 a la izquierda de la imagen de MediaPipe y 1 a la derecha. Activo: al revés. Úsalo para que pose_x coincida con el escenario visto por el público.
+inputs.Posesmooth.label	Smoothing (s)	Suavizado (s)
+inputs.Posesmooth.help	Time in seconds that pose signals take to follow the dancer. Raise it if values jitter, lower it if they feel late. 0: no smoothing.	Segundos que tardan las señales pose en seguir al bailarín. Súbelo si tiemblan, bájalo si llegan tarde. 0: sin suavizado.
+inputs.Posesensitivity.label	Energy Sensitivity	Sensibilidad de energía
+inputs.Posesensitivity.help	Multiplies pose_energy. Raise it if pose_energy stays small during big movement.	Multiplica pose_energy. Súbelo si pose_energy se queda pequeño con movimientos grandes.
+inputs.Posehold.label	Hold When Lost (s)	Mantener al perderlo (s)
+inputs.Posehold.help	When MediaPipe loses the dancer for less than this many seconds, the pose signals keep their last values; after that they drop to 0.	Si MediaPipe pierde al bailarín menos de estos segundos, las señales pose mantienen su último valor; después bajan a 0.
+inputs.Posezones.label	Stage Zones	Zonas del escenario
+inputs.Posezones.help	How many equal zones pose_x is split into, left to right (1-5). pose_zone says which one the dancer is in (1 = left), and pose_zone1 ... pose_zone5 are 1 in that zone. Shown on pose_monitor.	En cuántas zonas iguales se divide pose_x, de izquierda a derecha (1-5). pose_zone dice en cuál está el bailarín (1 = izquierda) y pose_zone1 ... pose_zone5 valen 1 en esa zona. Se ven en pose_monitor.
+inputs.Posezonemargin.label	Zone Margin	Margen de zona
+inputs.Posezonemargin.help	How far past a zone border (fraction of the picture width) the dancer must go before the zone changes. Stops flicker when standing on a border. 0: change exactly at the border.	Cuánto debe pasar el bailarín el borde de una zona (fracción del ancho de la imagen) antes de que cambie la zona. Evita parpadeos al estar sobre un borde. 0: cambia justo en el borde.
+pose.title	BODY TRACKING	SEGUIMIENTO CORPORAL
+pose.seen	DANCER SEEN	BAILARÍN VISIBLE
+pose.none	NO DANCER	SIN BAILARÍN
+pose.off	TRACKING OFF	SEGUIMIENTO APAGADO
+pose.source.camera	CAMERA	CÁMARA
+pose.source.test	TEST DANCER	BAILARÍN DE PRUEBA
+pose.source.off	OFF	APAGADO
+pose.zone	ZONE	ZONA
+pose.x	Position	Posición
+pose.hand_l	Left hand	Mano izq.
+pose.hand_r	Right hand	Mano der.
+pose.spread	Arms spread	Apertura
+pose.energy	Energy	Energía
+pose.nocamera	Pose page: set Source to Camera (MediaPipe)	Página Pose: pon Fuente en Cámara (MediaPipe)

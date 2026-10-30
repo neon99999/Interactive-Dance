@@ -172,6 +172,27 @@ custom_pars:
     clampMin: true
     normMax: 2.0
     help: When MediaPipe loses the dancer for less than this many seconds, the pose signals keep their last values; after that they drop to 0.
+  - name: Posezones
+    style: Int
+    label: Stage Zones
+    startSection: true
+    default: 3
+    min: 1.0
+    max: 5.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 5.0
+    help: How many equal zones pose_x is split into, left to right (1-5). pose_zone says which one the dancer is in (1 = left), and pose_zone1 ... pose_zone5 are 1 in that zone. Shown on pose_monitor.
+  - name: Posezonemargin
+    style: Float
+    label: Zone Margin
+    default: 0.05
+    max: 0.2
+    clampMin: true
+    clampMax: true
+    normMax: 0.2
+    help: 'How far past a zone border (fraction of the picture width) the dancer must go before the zone changes. Stops flicker when standing on a border. 0: change exactly at the border.'
 parameters:
   parentshortcut: Inputs
   opshortcut: Inputs

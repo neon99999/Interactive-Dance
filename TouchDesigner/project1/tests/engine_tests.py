@@ -5,8 +5,11 @@ Each step runs a few frames after the previous one so the engine and the
 renders have cooked. Results land in tests/results (suite, check, PASS/FAIL).
 Assignment tables, the transport's audio and MIDI files, the inputs'
 settings (Serial, OSC, Simulated, Camera, Pose) and the visuals' layer and
-master settings are backed up and restored around the tests. The tests run
-on the test media in media/test, starting from default layer settings.
+master settings, the mapping page (presets, Preset, Follow MIDI) and the
+language are backed up and restored around the tests; the mapping page is
+emptied while they run, so its rows do not override the values tested. The
+tests run on the test media in media/test, starting from default layer
+settings.
 """
 
 STEP_FRAMES = 3
@@ -29,6 +32,7 @@ _queue = []
 _backup = {}
 _inputsBackup = {}
 _visualsBackup = []
+_mappingsBackup = {}
 
 
 def Run():
@@ -43,7 +47,7 @@ def Run():
 def _extraSteps():
 	"""Hook for later suites (render, inputs). Returns a list of steps."""
 	steps = []
-	for name in ('render_tests', 'input_tests'):
+	for name in ('render_tests', 'input_tests', 'mapping_tests'):
 		extra = me.parent().op(name)
 		if extra is not None:
 			steps += extra.module.Steps(_check)
@@ -186,6 +190,32 @@ def _backupTables():
 		par.val = path
 	_backupInputs()
 	_backupVisuals()
+	_backupMappings()
+
+
+def _backupMappings():
+	"""Save the mapping page and the language, then empty every preset."""
+	mappings = op.Mappings
+	_mappingsBackup['presets'] = [[c.val for c in row] for row in mappings.op('presets').rows()]
+	_mappingsBackup['pars'] = {name: mappings.par[name].eval() for name in ('Preset', 'Followmidi')}
+	_mappingsBackup['language'] = op.Lang.par['Language'].eval()
+	logic = mappings.op('mapping_logic').module
+	mappings.ext.Mappings._writePresets({p: logic.emptySlots() for p in logic.PRESETS})
+	mappings.LoadPreset()
+
+
+def _restoreMappings():
+	mappings = op.Mappings
+	table = mappings.op('presets')
+	table.clear()
+	for row in _mappingsBackup.get('presets', []):
+		table.appendRow(row)
+	pars = _mappingsBackup.get('pars', {})
+	for name, value in pars.items():
+		mappings.par[name] = value
+	mappings.LoadPreset(pars.get('Preset'))
+	op.Lang.par['Language'] = _mappingsBackup.get('language', 'en')
+	_mappingsBackup.clear()
 
 
 def _visualsComps():
@@ -240,6 +270,7 @@ def _finish():
 	_restoreInputs()
 	_restoreVisuals()
 	op.Transport.par.Reset.pulse()
+	_restoreMappings()
 	results = op('results')
 	fails = sum(1 for r in range(1, results.numRows) if results[r, 2].val != 'PASS')
 	_check('summary', '%d checks' % (results.numRows - 1), fails == 0, '%d failed' % fails)

@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 5
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/tests
@@ -44,3 +44,8 @@ operators:
   parameters:
     file: project1/tests/render_tests.py
   position: [0, -400]
+- name: mapping_tests
+  type: textDAT
+  parameters:
+    file: project1/tests/mapping_tests.py
+  position: [0, -1200]
