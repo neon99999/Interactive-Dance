@@ -15,6 +15,7 @@ Granted (may do unattended):
 - Start long-running background processes (test servers, recorders), and stop them when done.
 - Web lookups for documentation.
 - Read the shared TD knowledge folder and submit lessons to its inbox with its submit script (see "Shared TD knowledge" below; granted 2026-10-29). No direct edits to its topic files, and no git pull, commit or push there without asking.
+- Update this project's status file, `C:\Users\mwadd\Documents\Claude\global-knowledge\status\dance-workshop.json`, as the work moves on, without asking (granted 2026-10-29). Only this file; other projects' status files and the global `preferences.md`/`lessons.md` still need asking. Deadlines: workshops in Cali, Nov 17-21, and Medellin, Dec 9-12 (2026).
 - In the Dance Workshop TD project (granted 2026-10-26): anything needed to build and test the current task (create, edit, delete and rewire operators; save the `.toe`; reopen it) without checking in. Never touch the other TD project (TouchClaude_01) if it is open.
 
 Ask each time:
