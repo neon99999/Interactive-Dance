@@ -144,7 +144,7 @@ Interactive Dance wearable v0.7
 [imu] I2C devices: 0x6A
 [imu] LSM6DS3TR-C ready at 0x6A: 208 Hz, +-8 g, +-2000 dps
 [button] pin 1, pull-up; hold 1.5 s to switch wrist/ankle
-[battery] 3920 mV, about 64% (ADC pin 0, divider x2.0)
+[battery] 3920 mV, about 64% (ADC pin 0, divider x3.0)
 [espnow] broadcasting on channel 1, protocol v3, MAC ...
 boot complete
 [motion] gyro calibrated, bias 0.41 -0.28 0.12 dps
@@ -232,7 +232,7 @@ To check on the hardware:
 
 ### Battery
 
-Every wearable needs a divider, because the XIAO has none built in and 4.2 V straight into A0 would exceed its 3.3 V limit. Two equal 100k resistors from BAT+ to GND, with the middle point on A0 (optionally 100 nF from A0 to GND). Never connect BAT+ straight to A0.
+Every wearable needs a divider, because the XIAO has none built in and 4.2 V straight into A0 would exceed its 3.3 V limit. Use 200k from switched BAT+ to A0 and 100k from A0 to GND, which gives the ratio of 3.0 in `BATTERY_DIVIDER_RATIO` (a full 4.2 V cell puts 1.4 V on A0). Because it is on the switched side, the divider draws nothing while the wearable is off. Never connect BAT+ straight to A0.
 
 1. Flash receiver v0.4 and wearable v0.9; boards can be flashed in any order.
 2. Run on the battery with USB unplugged, and measure the battery with a multimeter. On USB the reading follows the charger, not the cell.
@@ -242,7 +242,7 @@ The display shows the percentage at the end of the wearable's lower line: cream,
 
 ## Decisions to revisit
 
-- **Pins:** I2C on D4/D5 (the board's default I2C pins), button D1, motor D2, battery A0. The XIAO ESP32-C6 has no on-board battery voltage divider, so the battery needs an external one into A0.
+- **Pins:** I2C on D4/D5 (the board's default I2C pins), button D1, motor D2, battery A0. The XIAO ESP32-C6 has no on-board battery voltage divider, so the battery needs an external one into A0 (200k and 100k, ratio 3.0).
 - **Antenna:** the board support code (`initVariant`) turns on the RF switch (GPIO3 LOW) and selects the on-board antenna (GPIO14 LOW) at boot, so the firmware leaves those pins alone. For an external antenna, set GPIO14 HIGH after boot. Check ESP-NOW range on the real costume.
 - **Receiver board:** an ESP8266 for now. Moving to an ESP32 later means a `radio_esp32.cpp` and a new `[env]`; the protocol, the wearable and TouchDesigner stay as they are.
 - **Wearable id:** set at build time (one build environment per id). Flash storage or the MAC address may be easier with many wearables.

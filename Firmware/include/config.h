@@ -1,7 +1,7 @@
 // Build-time settings for the wearable firmware.
 //
-// PIN ASSIGNMENTS: the IMU (D4/D5), button (D1) and motor (D2) pins are
-// confirmed on the hardware. The battery pin is still provisional.
+// PIN ASSIGNMENTS: the IMU (D4/D5), button (D1), motor (D2) and battery (A0)
+// pins are confirmed on the hardware.
 
 #pragma once
 
@@ -29,7 +29,7 @@ constexpr int PIN_I2C_SDA = 22;      // D4, default I2C SDA, to the LSM6DS3TR-C
 constexpr int PIN_I2C_SCL = 23;      // D5, default I2C SCL
 constexpr int PIN_BUTTON = 1;        // D1, pushbutton to GND (internal pull-up)
 constexpr int PIN_HAPTIC = 2;        // D2, base of the NPN transistor driving the motor
-constexpr int PIN_BATTERY_ADC = 0;   // A0/D0, LiPo through an external voltage divider
+constexpr int PIN_BATTERY_ADC = 0;   // A0/D0, switched BAT+ through an external voltage divider
 
 // LSM6DS3TR-C I2C address: 0x6A, or 0x6B when its SDO/SA0 pin is high
 // (the Adafruit breakout defaults to 0x6A).
@@ -109,8 +109,9 @@ constexpr uint32_t BUTTON_DEBOUNCE_MS = 30;
 constexpr uint32_t BUTTON_LONG_PRESS_MS = 1500;
 constexpr uint32_t HAPTIC_BUZZ_MS = 150;  // one buzz, and the gap between buzzes
 
-// Battery voltage = ADC pin voltage * this ratio (2.0 for two equal resistors).
-constexpr float BATTERY_DIVIDER_RATIO = 2.0f;
+// Battery voltage = ADC pin voltage * this ratio: 200k from switched BAT+ to
+// A0 and 100k from A0 to GND give 3.0.
+constexpr float BATTERY_DIVIDER_RATIO = 3.0f;
 constexpr uint32_t BATTERY_READ_MS = 250;
 constexpr float BATTERY_SMOOTHING = 0.1f;  // each read moves the value this far: settles in a few seconds
 // Outside this range it cannot be a LiPo: the reading counts as missing.

@@ -74,7 +74,7 @@ Reported by the user on the Project Hub checklist:
 
 ## Battery reading (2026-10-30, not yet on hardware)
 
-- **Hardware:** one battery is wired and powers its wearable. The user is adding a divider (two 100k, BAT+ to GND, middle to A0) to all three.
+- **Hardware:** one battery is wired and powers its wearable. The divider on all three is 200k from switched BAT+ to A0 and 100k from A0 to GND, ratio 3.0, on D0/A0 (GPIO0).
 - **Wearable v0.9:** reads A0, smooths it, works out a rough percentage and sends a Battery packet every 5 s. Protocol stays v3, so boards can be flashed in any order. Each changed file compiles with no warnings using the C6 toolchain directly; it has not been linked, because PlatformIO on MINI-PC refuses the platform. Build it on LAPTOP.
 - **Receiver v0.4:** compiles with no warnings. Shows the percentage on the display, in place of roll, and prints `w1_batt` and `w1_battv`, which reach TouchDesigner as `serial_w1_batt` and `serial_w1_battv`. No TouchDesigner change was needed; the parser test covers the new line.
 
