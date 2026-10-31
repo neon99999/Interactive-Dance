@@ -176,6 +176,7 @@ Wearables on firmware v0.7 or later also send a small set of dancer signals, wor
 | `serial_w1_still` | 0 or 1 | 1 after half a second of holding still (a freeze). |
 | `serial_w1_btn` | 0 or 1 | 1 while the wearable's button is held. |
 | `serial_w1_mode` | 1 or 2 | Worn on the wrist (1) or the ankle (2); each mode has its own hit and movement thresholds. |
+| `serial_w1_batt` | 0 to 100, -1 | Rough battery percentage, every 5 s (-1 = no reading). For checking the wearables; `serial_w1_battv` is the same in volts. |
 
 Directions are on the body: the wearable is worn chip side out, USB connector towards the hand or the toes. Holding the button for 1.5 s switches between wrist and ankle mode (the motor buzzes once or twice). The wearable measures its gyro drift at power-up, so **keep it still for a second after switching it on** (the receiver's display shows `cal` until it has). When a wearable is lost, `act`, `hit`, `still` and `btn` drop to 0, so nothing stays switched on; the other values keep their last reading. The thresholds are starting values until they are tuned on recordings and on a body (see `Firmware/README.md`).
 

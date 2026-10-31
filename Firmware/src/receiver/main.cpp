@@ -7,7 +7,9 @@
 //   w1_btn=0 w1_mode=1
 // which inputs > Serial reads as serial_w1_ax ... serial_w1_mode. Wearables
 // on fw v0.4-v0.5 (protocol v2) send no motion processing, so their lines
-// stop after w1_gz. When a wearable appears or goes quiet it also prints
+// stop after w1_gz. Every few seconds a wearable on fw v0.9 or later adds a
+// line w1_batt=65 w1_battv=3.920 (percent and volts; -1 and 0 without a
+// reading). When a wearable appears or goes quiet it also prints
 // w1_live=1 or w1_live=0; going quiet also sets act, hit, still and btn to 0,
 // so nothing is left switched on. Log lines start with [ so TouchDesigner
 // ignores them. The display shows the same state.
@@ -83,6 +85,15 @@ void printMotion(uint8_t id, const rx::Wearable& w) {
   Serial.write(line, p - line);
 }
 
+void printBattery(uint8_t id, const rx::Wearable& w) {
+  char line[48];
+  char* p = line;
+  p += sprintf(p, "w%u_batt=%d ", id, w.batteryMillivolts ? w.batteryPercent : -1);
+  p = appendValue(p, id, "battv", w.batteryMillivolts, 3);
+  p[-1] = '\n';  // replaces the last trailing space
+  Serial.write(line, p - line);
+}
+
 void setLive(uint8_t id, rx::Wearable& w, bool live) {
   if (w.live == live) return;
   w.live = live;
@@ -131,6 +142,14 @@ bool readPacket(const radio::RawPacket& raw, dance::PacketType type, uint8_t ver
     Serial.printf("[rx] wearable %u says hello: fw v%u.%u, protocol v%u, MAC %02X:%02X:%02X:%02X:%02X:%02X\n", id,
                   hello.firmwareMajor, hello.firmwareMinor, version, raw.mac[0], raw.mac[1], raw.mac[2], raw.mac[3],
                   raw.mac[4], raw.mac[5]);
+    return true;
+  }
+  if (type == dance::PacketType::Battery && raw.length == sizeof(dance::BatteryPacket)) {
+    dance::BatteryPacket battery;
+    memcpy(&battery, raw.data, sizeof(battery));
+    w.batteryMillivolts = battery.millivolts;
+    w.batteryPercent = battery.percent;
+    w.hasBattery = true;
     return true;
   }
   if (type != dance::PacketType::Motion) return false;
@@ -183,6 +202,7 @@ void handlePacket(const radio::RawPacket& raw, uint32_t now) {
   }
   // Printed before any bookkeeping: this line is what TouchDesigner waits for.
   if (type == dance::PacketType::Motion) printMotion(id, w);
+  if (type == dance::PacketType::Battery) printBattery(id, w);
 
   checkSender(id, w, raw.mac, now);
   w.protocolVersion = header.version;
@@ -226,6 +246,7 @@ void logHeartbeat(uint32_t now) {
     Serial.printf(", w%u %s %u/s lost %lu hits %u%s", i + 1, w.live ? "live" : "LOST", w.ratePerSecond,
                   static_cast<unsigned long>(w.lost), w.hits,
                   w.duplicateSeen && now - w.duplicateMs < rx::DUPLICATE_SHOW_MS ? " DUPLICATE ID" : "");
+    if (w.batteryMillivolts) Serial.printf(" batt %u%%", w.batteryPercent);
   }
   Serial.println();
 }

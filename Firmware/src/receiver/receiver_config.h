@@ -9,7 +9,7 @@ namespace rx {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance receiver";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 3;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 4;
 
 // Faster than the wearable's 115200: each wearable on fw v0.7 sends about
 // 18 KB/s of text (104 lines a second), so three use about 60% of 921600 baud
@@ -22,6 +22,9 @@ constexpr uint32_t LOST_AFTER_MS = 1000;  // no packet for this long = wearable 
 // Two devices sending with the same id (flashed with the same build): shown
 // as DUP on the display for this long after the last mixed-up packet.
 constexpr uint32_t DUPLICATE_SHOW_MS = 3000;
+// The battery percentage on the display turns amber, then orange-red, at or below these.
+constexpr uint8_t BATTERY_LOW_PERCENT = 20;
+constexpr uint8_t BATTERY_CRITICAL_PERCENT = 10;
 constexpr uint32_t HEARTBEAT_LOG_MS = 5000;
 
 // --- 1.8" ST7735 TFT on hardware SPI (SCL -> D5, SDA -> D7). ---

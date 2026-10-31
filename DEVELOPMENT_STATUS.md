@@ -72,6 +72,12 @@ Reported by the user on the Project Hub checklist:
 - **Wearable 1 on v0.8:** flashed; gyro calibrated, the display row shows the version and mode, and the rate is about 104 a second. All six hit directions are correct. Activity, hit, still, ankle mode, the button and the motor all behave.
 - **Still to do:** flash wearables 2 and 3, run all three together (frame rate, `wearable_monitor`), measure the battery divider and make the tuning recordings.
 
+## Battery reading (2026-10-30, not yet on hardware)
+
+- **Hardware:** one battery is wired and powers its wearable. The user is adding a divider (two 100k, BAT+ to GND, middle to A0) to all three.
+- **Wearable v0.9:** reads A0, smooths it, works out a rough percentage and sends a Battery packet every 5 s. Protocol stays v3, so boards can be flashed in any order. Each changed file compiles with no warnings using the C6 toolchain directly; it has not been linked, because PlatformIO on MINI-PC refuses the platform. Build it on LAPTOP.
+- **Receiver v0.4:** compiles with no warnings. Shows the percentage on the display, in place of roll, and prints `w1_batt` and `w1_battv`, which reach TouchDesigner as `serial_w1_batt` and `serial_w1_battv`. No TouchDesigner change was needed; the parser test covers the new line.
+
 ## Cali venue (2026-10-30, from the user)
 
 - **Projection:** on the walls, with 3 projectors (2 from the venue, 1 borrowed).
@@ -151,9 +157,9 @@ The user ran manual tests 11-14 on LAPTOP with the webcam and reported that all 
 5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
-8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
-9. Flash receiver v0.3 and wearables v0.8 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
-10. With receiver v0.3 and a v0.8 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
+8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (`Firmware/README.md`, Battery).
+9. Flash receiver v0.4 and wearables v0.9 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
+10. With receiver v0.4 and a v0.9 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
 11. ~~On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.~~ (done 2026-10-29, LAPTOP).
 12. ~~On LAPTOP with the webcam, open `pose_monitor` (right-click > View...): check our skeleton sits on MediaPipe's drawing, walk through the zones and watch the strip and `pose_zone` change without flicker on a border, and try **Stage Zones** 2-5 and **Flip Left/Right**.~~ (done 2026-10-29, LAPTOP).
 13. ~~On `mappings`, try the starter presets A-D with the Test Dancer and then a real dancer; add a MIDI row `set mapping.preset 2` and check the switch lands at its note.~~ (done 2026-10-29, LAPTOP).

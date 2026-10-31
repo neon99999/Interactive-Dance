@@ -6,6 +6,7 @@
 #include <esp_wifi.h>
 #include <math.h>
 
+#include "battery.h"
 #include "button.h"
 #include "config.h"
 #include "imu.h"
@@ -25,6 +26,7 @@ uint32_t sent = 0;
 uint32_t failed = 0;
 uint32_t lastSentSample = 0;
 uint32_t lastHelloMs = 0;
+uint32_t lastBatteryMs = 0;
 
 int16_t toFixed(float value, float perUnit) {
   const float units = roundf(value / perUnit);
@@ -44,6 +46,13 @@ void sendHello() {
                             dance::FIRMWARE_VERSION_MAJOR, dance::FIRMWARE_VERSION_MINOR};
   send(&packet, sizeof(packet));
   lastHelloMs = millis();
+}
+
+void sendBattery() {
+  dance::BatteryPacket packet{dance::makeHeader(dance::PacketType::Battery, dance::WEARABLE_ID, sequence++),
+                              battery::millivolts(), battery::percent()};
+  send(&packet, sizeof(packet));
+  lastBatteryMs = millis();
 }
 
 void sendMotion(const motion::State& m) {
@@ -96,12 +105,14 @@ bool begin() {
   Serial.printf("[espnow] broadcasting on channel %u, protocol v%u, MAC %s\n", dance::ESPNOW_CHANNEL,
                 dance::PROTOCOL_VERSION, WiFi.macAddress().c_str());
   sendHello();
+  sendBattery();
   return true;
 }
 
 void update() {
   if (!ready || !imu::isReady()) return;
   if (millis() - lastHelloMs >= dance::ESPNOW_HELLO_EVERY_MS) sendHello();
+  if (millis() - lastBatteryMs >= dance::ESPNOW_BATTERY_EVERY_MS) sendBattery();
   const motion::State& m = motion::state();
   if (m.samples - lastSentSample < dance::ESPNOW_SEND_EVERY_SAMPLES) return;
   lastSentSample = m.samples;

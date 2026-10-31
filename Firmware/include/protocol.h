@@ -11,13 +11,16 @@
 //     same on either receiver. Copy a received packet into a local struct
 //     (memcpy) before reading it; the radio buffer may be unaligned.
 //
-// Defined so far: Hello and Motion. Button, battery and haptic packets come
+// Defined so far: Hello, Motion and Battery. Button and haptic packets come
 // with the features that need them.
 //
 // History: v2 Motion carried the raw IMU reading only (MotionPacketV2, kept so
 // a receiver still reads wearables on fw v0.4-v0.5). v3 adds the wearable's
 // motion processing: tilt, activity, hit with direction, still, the button
-// and the wearing mode, all on the body axes (config.h).
+// and the wearing mode, all on the body axes (config.h). Battery is a new
+// packet type inside v3, not a layout change: a receiver that does not know it
+// counts it as a bad packet and carries on, so boards can be flashed in any
+// order.
 
 #pragma once
 
@@ -41,7 +44,9 @@ constexpr uint8_t ESPNOW_CHANNEL = 1;
 enum class PacketType : uint8_t {
   Hello = 1,   // wearable -> receiver: "I am here", sent at boot
   Motion = 2,  // wearable -> receiver: one IMU reading
-  // Reserved for later: Button = 3, Battery = 4, Haptic = 5
+  // Reserved for later: Button = 3
+  Battery = 4,  // wearable -> receiver: battery level, every few seconds
+  // Reserved for later: Haptic = 5
 };
 
 #pragma pack(push, 1)
@@ -100,6 +105,12 @@ struct MotionPacket {
   uint8_t mode;           // Mode
 };
 
+struct BatteryPacket {
+  PacketHeader header;
+  uint16_t millivolts;  // smoothed battery voltage; 0 = no reading (divider not wired)
+  uint8_t percent;      // rough charge, 0..100
+};
+
 #pragma pack(pop)
 
 static_assert(sizeof(PacketHeader) == 6, "PacketHeader layout changed: bump PROTOCOL_VERSION");
@@ -107,6 +118,7 @@ static_assert(sizeof(HelloPacket) == 8, "HelloPacket layout changed: bump PROTOC
 static_assert(sizeof(MotionPacketV2) == 18, "MotionPacketV2 is a fixed old layout");
 static_assert(sizeof(MotionPacket) == 28, "MotionPacket layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(MotionPacket) <= ESPNOW_MAX_PAYLOAD, "packet too large for ESP-NOW");
+static_assert(sizeof(BatteryPacket) == 9, "BatteryPacket layout changed: bump PROTOCOL_VERSION");
 
 inline PacketHeader makeHeader(PacketType type, uint8_t wearableId, uint16_t sequence) {
   return PacketHeader{PROTOCOL_MAGIC, PROTOCOL_VERSION, static_cast<uint8_t>(type), wearableId, sequence};

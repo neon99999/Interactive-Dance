@@ -1,7 +1,6 @@
 // Wearable firmware entry point: boot, identify, start each module, then run
-// the modules' update loops. The IMU, motion processing, wearing mode,
-// button, motor and ESP-NOW link are implemented; the battery is a
-// placeholder for now (see README.md).
+// the modules' update loops: the IMU, motion processing, wearing mode, button,
+// motor, battery and ESP-NOW link (see README.md).
 //
 // Keys typed in a USB serial monitor:
 //   w / a  wrist / ankle mode
@@ -89,6 +88,11 @@ void logHeartbeat(uint32_t now) {
                   m.hits);
   } else {
     Serial.print("not found");
+  }
+  if (battery::hasReading()) {
+    Serial.printf(", battery %u mV %u%%", battery::millivolts(), battery::percent());
+  } else {
+    Serial.print(", battery no reading");
   }
   if (espnow_link::isReady()) {
     Serial.printf(", espnow sent %lu failed %lu\n", static_cast<unsigned long>(espnow_link::sentCount()),

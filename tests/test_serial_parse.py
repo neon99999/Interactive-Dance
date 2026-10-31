@@ -67,6 +67,9 @@ class ParseLine(unittest.TestCase):
 		self.assertEqual(len(values), 14)
 		self.assertEqual((values['serial_w2_pitch'], values['serial_w2_act'], values['serial_w2_hitdir'],
 			values['serial_w2_mode']), (-12.5, 0.031, 3.0, 2.0))
+		self.assertEqual(sp.parseLine('w1_batt=65 w1_battv=3.920'),
+			({'serial_w1_batt': 65.0, 'serial_w1_battv': 3.92}, []))
+		self.assertEqual(sp.parseLine('w1_batt=-1 w1_battv=0.000')[0], {'serial_w1_batt': -1.0, 'serial_w1_battv': 0.0})
 		self.assertEqual(sp.parseLine('w3_live=0 w3_act=0 w3_hit=0 w3_still=0 w3_btn=0')[0],
 			{'serial_w3_live': 0.0, 'serial_w3_act': 0.0, 'serial_w3_hit': 0.0, 'serial_w3_still': 0.0,
 			'serial_w3_btn': 0.0})

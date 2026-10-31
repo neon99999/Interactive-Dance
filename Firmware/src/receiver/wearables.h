@@ -38,6 +38,10 @@ struct Wearable {
   bool button = false;
   bool gyroCalibrated = false;
   uint8_t mode = 0;                // dance::Mode, 0 = unknown
+  // Battery, wearable fw v0.9 and later:
+  bool hasBattery = false;         // a Battery packet arrived
+  uint16_t batteryMillivolts = 0;  // 0 = the wearable has no reading
+  uint8_t batteryPercent = 0;
 };
 
 // Index 0 is wearable id 1.

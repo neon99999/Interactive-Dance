@@ -34,8 +34,8 @@ static_assert(ROW_TOP + rx::DISPLAY_SLOTS * ROW_HEIGHT <= HEIGHT, "wearable rows
 
 // Project Hub theme (global-knowledge/design/hub-theme.css) in RGB565.
 constexpr uint16_t ACCENT = 0xFEA0;   // --accent #ffd400 yellow: LIVE, title, activity
-constexpr uint16_t ACCENT_2 = 0xFCE0; // --accent-2 #ff9d00 amber: hit, cal, DUP
-constexpr uint16_t BAD = 0xFAC3;      // --bad #ff5a1f orange-red: LOST
+constexpr uint16_t ACCENT_2 = 0xFCE0; // --accent-2 #ff9d00 amber: hit, cal, DUP, battery low
+constexpr uint16_t BAD = 0xFAC3;      // --bad #ff5a1f orange-red: LOST, battery critical
 constexpr uint16_t TEXT = 0xFF96;     // --text #fff3b0 cream
 constexpr uint16_t MUTED = 0xB50B;    // --muted #b3a35c: waiting, tilt
 constexpr uint16_t LINE = 0x6AC0;     // --line #6b5a00: bar centre lines
@@ -161,6 +161,12 @@ const char* directionName(uint8_t direction) {
   return "HIT";
 }
 
+uint16_t batteryColour(const rx::Wearable& w) {
+  if (!w.batteryMillivolts) return MUTED;
+  if (w.batteryPercent <= rx::BATTERY_CRITICAL_PERCENT) return BAD;
+  return w.batteryPercent <= rx::BATTERY_LOW_PERCENT ? ACCENT_2 : TEXT;
+}
+
 void drawTitle(uint32_t now) {
   // Wearables beyond the rows on screen still reach TouchDesigner; count them.
   uint8_t others = 0;
@@ -209,8 +215,9 @@ void drawRow(uint8_t slot, uint32_t now) {
     drawBar(x, y + 10 + BAR_HEIGHT + 2, w.seen ? gyro[axis] : 0, GYRO_FULL_SCALE, AXIS_COLOURS[axis]);
   }
 
-  // Activity bar, then the markers (hit direction or cal, S still, B button)
-  // and the tilt: "fwd S B p-12 r  34".
+  // Activity bar, then the markers (hit direction or cal, S still, B button),
+  // the pitch and the battery: "fwd S B p-12  100%". Roll gave way to the
+  // battery; it is still in TouchDesigner.
   const int16_t detailY = y + 10 + 2 * (BAR_HEIGHT + 2);
   drawLevel(2, detailY + 1, w.hasMotion ? w.activity : 0, w.hit ? ACCENT_2 : ACCENT);
   startText(detailCanvas, ST77XX_BLACK);
@@ -228,9 +235,14 @@ void drawRow(uint8_t slot, uint32_t now) {
     }
     printText(detailCanvas, TEXT, w.still ? " S" : "  ");
     printText(detailCanvas, TEXT, w.button ? " B" : "  ");
-    char tilt[24];
-    snprintf(tilt, sizeof(tilt), " p%3d r%4d", w.pitch / 10, w.roll / 10);
+    char tilt[16];
+    snprintf(tilt, sizeof(tilt), " p%3d", w.pitch / 10);
     printText(detailCanvas, MUTED, tilt);
+    if (w.hasBattery) {
+      char level[16] = "    --";
+      if (w.batteryMillivolts) snprintf(level, sizeof(level), "  %3u%%", w.batteryPercent);
+      printText(detailCanvas, batteryColour(w), level);
+    }
   }
   sendText(detailCanvas, DETAIL_X, detailY);
 }

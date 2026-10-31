@@ -6,9 +6,9 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 - **Verified on hardware (LAPTOP, 2026-10-28):** wearable v0.5 and receiver v0.1 with one wearable. The wearable reads the IMU and sends 50 readings a second by ESP-NOW. The receiver (an ESP8266 NodeMCU) forwards them to TouchDesigner over USB and shows status on a small display.
 - **Verified on hardware (LAPTOP, 2026-10-29):** wearable v0.7 over USB on a breadboard: the button on D1 (`btn`, and a 1.5 s hold switches wrist/ankle), the vibration motor on D2 through an NPN transistor (2 buzzes for ankle, 1 for wrist, from the button and from `a`/`w`), and the readings lying flat (gyro calibrated, `still=1`, pitch and roll about -1 deg).
 - **Verified on hardware (LAPTOP, 2026-10-30):** receiver v0.3 and wearable 1 on v0.8, checks 1-5 and the button and motor below, all six hit directions correct.
-- **Not yet run on boards:** wearables 2 and 3 on v0.8, and all three together. Hits and the thresholds are untested until the recordings are in.
-- **Compiled:** wearable v0.8 and receiver v0.3. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
-- The battery module is still a placeholder.
+- **Not yet run on boards:** wearable v0.9 and receiver v0.4 (battery reading), wearables 2 and 3, and all three together. Hits and the thresholds are untested until the recordings are in.
+- **Compiled:** receiver v0.4. Wearable v0.9 compiles file by file with no warnings, but has not been linked yet (see the table below). The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
+- **Battery:** the wearable reads the LiPo through a divider and reports a rough percentage. It needs the divider below on every wearable.
 
 ## Hardware (per wearable)
 
@@ -54,7 +54,7 @@ Firmware/
       button.*          debounced button; a long press switches the mode
       haptic.*          vibration motor: off at boot, short buzzes
       espnow_link.*     ESP-NOW broadcast of Hello and Motion packets
-      battery.*         battery voltage (placeholder)
+      battery.*         battery voltage and rough percentage
     receiver/
       main.cpp          packets in, serial lines out, wearable tracking, duplicate ids, heartbeat
       receiver_config.h version, serial speed, display pins, variant and refresh
@@ -144,7 +144,7 @@ Interactive Dance wearable v0.7
 [imu] I2C devices: 0x6A
 [imu] LSM6DS3TR-C ready at 0x6A: 208 Hz, +-8 g, +-2000 dps
 [button] pin 1, pull-up; hold 1.5 s to switch wrist/ankle
-[battery] placeholder: ADC pin 0, divider x2.0, not read
+[battery] 3920 mV, about 64% (ADC pin 0, divider x2.0)
 [espnow] broadcasting on channel 1, protocol v3, MAC ...
 boot complete
 [motion] gyro calibrated, bias 0.41 -0.28 0.12 dps
@@ -165,9 +165,10 @@ The receiver listens on ESP-NOW channel 1 and prints one line per Motion packet,
 
 ```
 w1_ax=0.012 w1_ay=-0.021 w1_az=1.003 w1_gx=0.0 w1_gy=0.1 w1_gz=-0.1 w1_pitch=-0.7 w1_roll=-1.2 w1_act=0.004 w1_hit=0 w1_hitdir=0 w1_still=1 w1_btn=0 w1_mode=1
+w1_batt=64 w1_battv=3.920
 ```
 
-Wearables on v0.4-v0.5 send no motion processing, so their lines stop after `w1_gz`. In TouchDesigner (**inputs > Serial**: Read Serial on, the receiver's port, **Baud Rate 921600**) these become `serial_w1_ax` ... `serial_w1_mode`. When a wearable appears or stays silent for a second the receiver prints `w1_live=1`, or `w1_live=0` with `act`, `hit`, `still` and `btn` set to 0, so nothing is left switched on. Log lines (`[rx] ...`, `[heartbeat] ...` every 5 s with packet rate, losses and hits per wearable) start with `[`.
+Wearables on v0.4-v0.5 send no motion processing, so their lines stop after `w1_gz`. In TouchDesigner (**inputs > Serial**: Read Serial on, the receiver's port, **Baud Rate 921600**) these become `serial_w1_ax` ... `serial_w1_mode`. When a wearable appears or stays silent for a second the receiver prints `w1_live=1`, or `w1_live=0` with `act`, `hit`, `still` and `btn` set to 0, so nothing is left switched on. From wearable v0.9 the battery line arrives every 5 s as `serial_w1_batt` (percent) and `serial_w1_battv` (volts); without a reading they are -1 and 0. Log lines (`[rx] ...`, `[heartbeat] ...` every 5 s with packet rate, losses, hits and battery per wearable) start with `[`.
 
 If two wearables send with the same id (flashed from the same build), the receiver logs both MAC addresses and the display shows `DUP` in yellow on that row. Flash one of them with another id.
 
@@ -179,7 +180,7 @@ The display uses the Project Hub's yellow and black theme (`global-knowledge/des
 W1 v0.8 wrist LIVE 104 x0       firmware version, mode, LIVE / LOST / DUP, packets a second, lost in the last second
 [accel x][accel y][accel z]     bars: x orange-red, y yellow, z cream
 [gyro x ][gyro y ][gyro z ]
-[activity] fwd S B p -12 r  34  activity (amber during a hit), hit direction (or cal), S still, B button, tilt
+[activity] fwd S B p-12  100%   activity (amber during a hit), hit direction (or cal), S still, B button, pitch, battery
 ```
 
 Row colours: yellow LIVE, orange-red LOST, amber DUP. An old wearable shows `old fw: no tilt`. The yellow title bar shows the receiver version (`RX v0.3`), the channel, `+N` when wearables with ids above 3 are live (they still reach TouchDesigner), and the uptime. The display is redrawn every 100 ms, one piece per loop pass (the title or one row, a few milliseconds each), so serial output is never held back for long.
@@ -190,6 +191,7 @@ Row colours: yellow LIVE, orange-red LOST, amber DUP. An old wearable shows `old
 
 - `Hello`: sent at boot with the firmware version, and every 2 s from wearable v0.8.
 - `Motion` v3: 28 bytes, all on the body axes. Header; accel in thousandths of a g; gyro (drift removed) in tenths of a degree per second; pitch and roll in tenths of a degree; activity 0 to 1000; flags (hit, still, button, gyro calibrated); hit direction; hit counter; mode.
+- `Battery`: 9 bytes, every 5 s from wearable v0.9. Header; smoothed millivolts (0 = no reading); percent. It is a new packet type inside protocol v3, so older boards keep working: receiver v0.3 only counts it as a bad packet.
 - `Motion` v2: 18 bytes, the raw values only (wearable v0.4-v0.5).
 
 The wearables broadcast, so the receiver needs no addresses. All devices use `ESPNOW_CHANNEL` (1) in `protocol.h`; change it everywhere at once to dodge a busy Wi-Fi channel.
@@ -211,7 +213,8 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 | Detector design (one hit per punch, direction, still, tilt, modes) | `tools/motion_model.py`, tested on made-up movements (`tests/test_motion_model.py`); the C++ itself has no automated test |
 | Thresholds | Starting values, **not tuned**: needs recordings, then a body |
 | Button, motor | Code written; parts **not wired yet** |
-| Battery | Placeholder |
+| Wearable v0.9: battery reading, Battery packet | Each changed file compiles with no warnings using the C6 toolchain directly (MINI-PC, 2026-10-30), but it is **not linked or run**: PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP |
+| Receiver v0.4: battery on the display and to TouchDesigner | Compiles with no warnings (MINI-PC, 2026-10-30): RAM 38.6%, flash 27.5%; **not run on a board** |
 | Body axes in `config.h` | Assumed; **check with the hand test** |
 
 To check on the hardware:
@@ -225,7 +228,17 @@ To check on the hardware:
 7. **TouchDesigner load:** with all three running, check the frame rate stays where it was. If it drops, set `ESPNOW_SEND_EVERY_SAMPLES` to 4.
 8. **Recordings** for tuning (above).
 9. Once wired: the button (hold 1.5 s to switch mode, `B` while held) and the motor (one or two buzzes; never on at power-up).
-10. Measure the battery divider and set `BATTERY_DIVIDER_RATIO`.
+10. **Battery:** see below.
+
+### Battery
+
+Every wearable needs a divider, because the XIAO has none built in and 4.2 V straight into A0 would exceed its 3.3 V limit. Two equal 100k resistors from BAT+ to GND, with the middle point on A0 (optionally 100 nF from A0 to GND). Never connect BAT+ straight to A0.
+
+1. Flash receiver v0.4 and wearable v0.9; boards can be flashed in any order.
+2. Run on the battery with USB unplugged, and measure the battery with a multimeter. On USB the reading follows the charger, not the cell.
+3. Compare with `battery ... mV` in the heartbeat or `serial_w1_battv`. If they differ by more than about 50 mV, change `BATTERY_DIVIDER_RATIO` to (ratio x measured / shown).
+
+The display shows the percentage at the end of the wearable's lower line: cream, amber at 20% or below, orange-red at 10% or below, `--` without a reading. It settles a few seconds after power-up. The percentage is rough (a typical LiPo curve): it dips while the motor runs and differs from cell to cell, so use it as a guide and take the real run time from the battery life test. An unwired A0 floats and can show a made-up value now and then.
 
 ## Decisions to revisit
 

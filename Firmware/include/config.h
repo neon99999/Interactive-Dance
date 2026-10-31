@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 8;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 9;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
@@ -49,6 +49,7 @@ constexpr uint8_t ESPNOW_SEND_EVERY_SAMPLES = 2;
 // Repeat the Hello (firmware version) this often, so a receiver started after
 // the wearable still learns and shows the version.
 constexpr uint32_t ESPNOW_HELLO_EVERY_MS = 2000;
+constexpr uint32_t ESPNOW_BATTERY_EVERY_MS = 5000;  // a Battery packet this often
 
 // --- Body axes. ---
 // Wearing standard: chip side facing out, USB connector towards the hand
@@ -110,5 +111,10 @@ constexpr uint32_t HAPTIC_BUZZ_MS = 150;  // one buzz, and the gap between buzze
 
 // Battery voltage = ADC pin voltage * this ratio (2.0 for two equal resistors).
 constexpr float BATTERY_DIVIDER_RATIO = 2.0f;
+constexpr uint32_t BATTERY_READ_MS = 250;
+constexpr float BATTERY_SMOOTHING = 0.1f;  // each read moves the value this far: settles in a few seconds
+// Outside this range it cannot be a LiPo: the reading counts as missing.
+constexpr uint16_t BATTERY_MIN_MILLIVOLTS = 2500;
+constexpr uint16_t BATTERY_MAX_MILLIVOLTS = 4500;
 
 }  // namespace dance
