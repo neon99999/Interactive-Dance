@@ -42,7 +42,9 @@ uint8_t percentFromMillivolts(uint16_t value) {
 }  // namespace
 
 bool begin() {
-  smoothed = readBatteryMillivolts();
+  float total = 0.0f;
+  for (uint8_t i = 0; i < dance::BATTERY_START_READS; ++i) total += readBatteryMillivolts();
+  smoothed = total / dance::BATTERY_START_READS;
   lastReadMs = millis();
   if (hasReading()) {
     Serial.printf("[battery] %u mV, about %u%% (ADC pin %d, divider x%.1f)\n", millivolts(), percent(),

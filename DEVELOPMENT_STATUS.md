@@ -70,13 +70,15 @@ Reported by the user on the Project Hub checklist:
 
 - **Receiver v0.3:** flashed; the boot screen shows the yellow logo and `RX v0.3`, and the old v0.5 wearable still shows LIVE.
 - **Wearable 1 on v0.8:** flashed; gyro calibrated, the display row shows the version and mode, and the rate is about 104 a second. All six hit directions are correct. Activity, hit, still, ankle mode, the button and the motor all behave.
-- **Still to do:** flash wearables 2 and 3, run all three together (frame rate, `wearable_monitor`), measure the battery divider and make the tuning recordings.
+- **Still to do:** build and flash wearables 2 and 3, and run all three together (frame rate, `wearable_monitor`).
 
-## Battery reading (2026-10-30, not yet on hardware)
+## Battery reading (2026-10-30)
 
-- **Hardware:** one battery is wired and powers its wearable. The divider on all three is 200k from switched BAT+ to A0 and 100k from A0 to GND, ratio 3.0, on D0/A0 (GPIO0).
-- **Wearable v0.9:** reads A0, smooths it, works out a rough percentage and sends a Battery packet every 5 s. Protocol stays v3, so boards can be flashed in any order. Each changed file compiles with no warnings using the C6 toolchain directly; it has not been linked, because PlatformIO on MINI-PC refuses the platform. Build it on LAPTOP.
-- **Receiver v0.4:** compiles with no warnings. Shows the percentage on the display, in place of roll, and prints `w1_batt` and `w1_battv`, which reach TouchDesigner as `serial_w1_batt` and `serial_w1_battv`. No TouchDesigner change was needed; the parser test covers the new line.
+- **Verified on LAPTOP:** receiver v0.4 and wearable 1 on v0.9 are flashed and the percentage shows on the display. It reads about 0.1 V low (70-76% at 4.07 V on a meter). The user accepted a few percent off, so the ratio stays 3.0. The steadier smoothing (about 10 s to follow a change) came after that check and is not on a board yet.
+- **Next:** the user is moving on to construction. Wearables 2 and 3 are not built yet and wait until one enclosure is finished.
+- **Hardware:** the divider on all three is 200k from switched BAT+ to A0 and 100k from A0 to GND, ratio 3.0, on D0/A0 (GPIO0).
+- **Wearable v0.9:** reads A0, smooths it, works out a rough percentage and sends a Battery packet every 5 s. Protocol stays v3, so boards can be flashed in any order. PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP.
+- **Receiver v0.4:** shows the percentage on the display, in place of roll, and prints `w1_batt` and `w1_battv`, which reach TouchDesigner as `serial_w1_batt` and `serial_w1_battv`. No TouchDesigner change was needed; the parser test covers the new line.
 
 ## Cali venue (2026-10-30, from the user)
 

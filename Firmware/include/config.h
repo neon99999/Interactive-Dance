@@ -113,7 +113,8 @@ constexpr uint32_t HAPTIC_BUZZ_MS = 150;  // one buzz, and the gap between buzze
 // A0 and 100k from A0 to GND give 3.0.
 constexpr float BATTERY_DIVIDER_RATIO = 3.0f;
 constexpr uint32_t BATTERY_READ_MS = 250;
-constexpr float BATTERY_SMOOTHING = 0.1f;  // each read moves the value this far: settles in a few seconds
+constexpr float BATTERY_SMOOTHING = 0.025f;  // each read moves the value this far: takes about 10 s to follow a change
+constexpr uint8_t BATTERY_START_READS = 16;  // averaged at boot, so the slow smoothing starts from a good value
 // Outside this range it cannot be a LiPo: the reading counts as missing.
 constexpr uint16_t BATTERY_MIN_MILLIVOLTS = 2500;
 constexpr uint16_t BATTERY_MAX_MILLIVOLTS = 4500;

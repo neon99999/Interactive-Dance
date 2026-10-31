@@ -6,8 +6,9 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 - **Verified on hardware (LAPTOP, 2026-10-28):** wearable v0.5 and receiver v0.1 with one wearable. The wearable reads the IMU and sends 50 readings a second by ESP-NOW. The receiver (an ESP8266 NodeMCU) forwards them to TouchDesigner over USB and shows status on a small display.
 - **Verified on hardware (LAPTOP, 2026-10-29):** wearable v0.7 over USB on a breadboard: the button on D1 (`btn`, and a 1.5 s hold switches wrist/ankle), the vibration motor on D2 through an NPN transistor (2 buzzes for ankle, 1 for wrist, from the button and from `a`/`w`), and the readings lying flat (gyro calibrated, `still=1`, pitch and roll about -1 deg).
 - **Verified on hardware (LAPTOP, 2026-10-30):** receiver v0.3 and wearable 1 on v0.8, checks 1-5 and the button and motor below, all six hit directions correct.
-- **Not yet run on boards:** wearable v0.9 and receiver v0.4 (battery reading), wearables 2 and 3, and all three together. Hits and the thresholds are untested until the recordings are in.
-- **Compiled:** receiver v0.4. Wearable v0.9 compiles file by file with no warnings, but has not been linked yet (see the table below). The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
+- **Verified on hardware (LAPTOP, 2026-10-30):** receiver v0.4 and wearable 1 on v0.9: the battery percentage shows on the display. Wearable 1 reads about 0.1 V low (70-76% at 4.07 V on a meter); the user accepted that, so the ratio stays 3.0.
+- **Not yet run on boards:** the steadier battery smoothing (made after that check), wearables 2 and 3 (not built yet), and all three together. Hits and the thresholds are untested until the recordings are in.
+- **Compiled:** receiver v0.4 and wearable v0.9. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
 - **Battery:** the wearable reads the LiPo through a divider and reports a rough percentage. It needs the divider below on every wearable.
 
 ## Hardware (per wearable)
@@ -213,8 +214,8 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 | Detector design (one hit per punch, direction, still, tilt, modes) | `tools/motion_model.py`, tested on made-up movements (`tests/test_motion_model.py`); the C++ itself has no automated test |
 | Thresholds | Starting values, **not tuned**: needs recordings, then a body |
 | Button, motor | Code written; parts **not wired yet** |
-| Wearable v0.9: battery reading, Battery packet | Each changed file compiles with no warnings using the C6 toolchain directly (MINI-PC, 2026-10-30), but it is **not linked or run**: PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP |
-| Receiver v0.4: battery on the display and to TouchDesigner | Compiles with no warnings (MINI-PC, 2026-10-30): RAM 38.6%, flash 27.5%; **not run on a board** |
+| Wearable v0.9: battery reading, Battery packet | Flashed on wearable 1 and checked on LAPTOP (2026-10-30): RAM 13.3%, flash 78.7%. PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP. The steadier smoothing added after that compiles file by file with the C6 toolchain; **not linked or run** |
+| Receiver v0.4: battery on the display and to TouchDesigner | Flashed and checked on LAPTOP (2026-10-30). Compiles with no warnings: RAM 38.6%, flash 27.5% |
 | Body axes in `config.h` | Assumed; **check with the hand test** |
 
 To check on the hardware:
@@ -236,9 +237,9 @@ Every wearable needs a divider, because the XIAO has none built in and 4.2 V str
 
 1. Flash receiver v0.4 and wearable v0.9; boards can be flashed in any order.
 2. Run on the battery with USB unplugged, and measure the battery with a multimeter. On USB the reading follows the charger, not the cell.
-3. Compare with `battery ... mV` in the heartbeat or `serial_w1_battv`. If they differ by more than about 50 mV, change `BATTERY_DIVIDER_RATIO` to (ratio x measured / shown).
+3. Compare with `serial_w1_battv`. A few percent off is fine. To correct it, change `BATTERY_DIVIDER_RATIO` to (ratio x measured / shown).
 
-The display shows the percentage at the end of the wearable's lower line: cream, amber at 20% or below, orange-red at 10% or below, `--` without a reading. It settles a few seconds after power-up. The percentage is rough (a typical LiPo curve): it dips while the motor runs and differs from cell to cell, so use it as a guide and take the real run time from the battery life test. An unwired A0 floats and can show a made-up value now and then.
+The display shows the percentage at the end of the wearable's lower line: cream, amber at 20% or below, orange-red at 10% or below, `--` without a reading. It takes about 10 s to follow a change. The percentage is rough (a typical LiPo curve): it dips while the motor runs and differs from cell to cell, so use it as a guide and take the real run time from the battery life test. An unwired A0 floats and can show a made-up value now and then.
 
 ## Decisions to revisit
 
