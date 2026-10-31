@@ -24,6 +24,7 @@ uint16_t sequence = 0;
 uint32_t sent = 0;
 uint32_t failed = 0;
 uint32_t lastSentSample = 0;
+uint32_t lastHelloMs = 0;
 
 int16_t toFixed(float value, float perUnit) {
   const float units = roundf(value / perUnit);
@@ -42,6 +43,7 @@ void sendHello() {
   dance::HelloPacket packet{dance::makeHeader(dance::PacketType::Hello, dance::WEARABLE_ID, sequence++),
                             dance::FIRMWARE_VERSION_MAJOR, dance::FIRMWARE_VERSION_MINOR};
   send(&packet, sizeof(packet));
+  lastHelloMs = millis();
 }
 
 void sendMotion(const motion::State& m) {
@@ -99,6 +101,7 @@ bool begin() {
 
 void update() {
   if (!ready || !imu::isReady()) return;
+  if (millis() - lastHelloMs >= dance::ESPNOW_HELLO_EVERY_MS) sendHello();
   const motion::State& m = motion::state();
   if (m.samples - lastSentSample < dance::ESPNOW_SEND_EVERY_SAMPLES) return;
   lastSentSample = m.samples;

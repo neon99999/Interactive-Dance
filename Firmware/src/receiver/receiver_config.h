@@ -9,7 +9,7 @@ namespace rx {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance receiver";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 2;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 3;
 
 // Faster than the wearable's 115200: each wearable on fw v0.7 sends about
 // 18 KB/s of text (104 lines a second), so three use about 60% of 921600 baud
@@ -35,7 +35,7 @@ constexpr uint32_t TFT_SPI_HZ = 20000000;  // conservative for jumper wires
 // TouchDesigner while it redraws. Every piece is redrawn this often.
 constexpr uint32_t DISPLAY_REFRESH_MS = 100;
 constexpr uint8_t DISPLAY_SLOTS = 3;  // rows for wearables 1..3, always shown
-constexpr uint32_t DISPLAY_TEST_MS = 1500;  // colour test card shown at boot
+constexpr uint32_t DISPLAY_SPLASH_MS = 2000;  // logo and hazard frame shown at boot
 
 // ST7735 module variant, named after the coloured tab on the screen's
 // protective film. If red and blue are swapped, or a line of noise shows at

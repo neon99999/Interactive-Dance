@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 7;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 8;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
@@ -46,6 +46,9 @@ constexpr uint32_t IMU_RETRY_MS = 3000;   // look for a missing sensor again
 // receiver's 921600 baud line. The channel is in protocol.h because the
 // receiver must use the same one.
 constexpr uint8_t ESPNOW_SEND_EVERY_SAMPLES = 2;
+// Repeat the Hello (firmware version) this often, so a receiver started after
+// the wearable still learns and shows the version.
+constexpr uint32_t ESPNOW_HELLO_EVERY_MS = 2000;
 
 // --- Body axes. ---
 // Wearing standard: chip side facing out, USB connector towards the hand

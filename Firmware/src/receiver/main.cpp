@@ -123,8 +123,11 @@ bool readPacket(const radio::RawPacket& raw, dance::PacketType type, uint8_t ver
   if (type == dance::PacketType::Hello && raw.length == sizeof(dance::HelloPacket)) {
     dance::HelloPacket hello;
     memcpy(&hello, raw.data, sizeof(hello));
+    // Wearables from v0.8 repeat their Hello every 2 s: log only a new version.
+    const bool changed = hello.firmwareMajor != w.firmwareMajor || hello.firmwareMinor != w.firmwareMinor;
     w.firmwareMajor = hello.firmwareMajor;
     w.firmwareMinor = hello.firmwareMinor;
+    if (!changed) return true;
     Serial.printf("[rx] wearable %u says hello: fw v%u.%u, protocol v%u, MAC %02X:%02X:%02X:%02X:%02X:%02X\n", id,
                   hello.firmwareMajor, hello.firmwareMinor, version, raw.mac[0], raw.mac[1], raw.mac[2], raw.mac[3],
                   raw.mac[4], raw.mac[5]);

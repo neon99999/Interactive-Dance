@@ -5,8 +5,8 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 **Status:**
 - **Verified on hardware (LAPTOP, 2026-10-28):** wearable v0.5 and receiver v0.1 with one wearable. The wearable reads the IMU and sends 50 readings a second by ESP-NOW. The receiver (an ESP8266 NodeMCU) forwards them to TouchDesigner over USB and shows status on a small display.
 - **Verified on hardware (LAPTOP, 2026-10-29):** wearable v0.7 over USB on a breadboard: the button on D1 (`btn`, and a 1.5 s hold switches wrist/ankle), the vibration motor on D2 through an NPN transistor (2 buzzes for ankle, 1 for wrist, from the button and from `a`/`w`), and the readings lying flat (gyro calibrated, `still=1`, pitch and roll about -1 deg).
-- **Not yet run on boards:** receiver v0.2, and the v0.7 signals over ESP-NOW. Hits and the thresholds are untested until the recordings are in.
-- **Compiled:** wearable v0.7 and receiver v0.2. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
+- **Not yet run on boards:** receiver v0.3, and the v0.7/v0.8 signals over ESP-NOW. Hits and the thresholds are untested until the recordings are in.
+- **Compiled:** wearable v0.8 and receiver v0.3. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
 - The battery module is still a placeholder.
 
 ## Hardware (per wearable)
@@ -86,7 +86,9 @@ The first build downloads the platform and toolchain (about 1 GB). On Windows, r
 
 **Platform:** the official `espressif32` platform supports the XIAO ESP32-C6 only with ESP-IDF. For the Arduino framework this project uses the community [pioarduino](https://github.com/pioarduino/platform-espressif32) platform, pinned to release `55.03.312-1` (Arduino core 3.3.12, ESP-IDF 5.5.5). Change the version deliberately and on every machine at once.
 
-**Updating from v0.5:** flash the receiver first. Receiver v0.2 reads both old (v0.4-v0.5) and new (v0.7) wearables, but receiver v0.1 ignores v0.7 wearables.
+**Updating from v0.5:** flash the receiver first. Receiver v0.2 and later read both old (v0.4-v0.5) and new (v0.7 and later) wearables, but receiver v0.1 ignores v0.7 wearables.
+
+**Versions on the display (receiver v0.3, wearable v0.8):** the receiver shows its own version on the boot screen and in the title bar, and each wearable's version on its row. Wearables from v0.8 repeat their Hello every 2 s, so the version appears even when the receiver is switched on after the wearable; an older wearable shows `v?.?` until it is restarted.
 
 ## The dancer signals (wearable v0.7)
 
@@ -170,22 +172,22 @@ If two wearables send with the same id (flashed from the same build), the receiv
 
 Three wearables at about 104 lines a second use about 60% of the 921600 baud line.
 
-The display first shows a colour test card for 1.5 s: red, green, blue and white stripes left to right, with a yellow frame on all four edges. If red and blue are swapped or an edge shows noise, change `RX_TFT_TAB` in `receiver_config.h`. Then it shows three rows, for wearables 1, 2 and 3, always, even before they appear (`waiting`):
+The display uses the Project Hub's yellow and black theme (`global-knowledge/design/`). It first shows the wasp logo and the receiver version for 2 s, inside a yellow and black hazard frame. This is also the wiring check: the logo must be yellow (cyan means red and blue are swapped) and the frame must show on all four edges; otherwise change `RX_TFT_TAB` in `receiver_config.h`. Then it shows three rows, for wearables 1, 2 and 3, always, even before they appear (`waiting`):
 
 ```
-W1 wrist LIVE 104/s x0          mode, LIVE / LOST / DUP, packets a second, lost in the last second
-[accel x][accel y][accel z]     bars: x red, y green, z blue
+W1 v0.8 wrist LIVE 104 x0       firmware version, mode, LIVE / LOST / DUP, packets a second, lost in the last second
+[accel x][accel y][accel z]     bars: x orange-red, y yellow, z cream
 [gyro x ][gyro y ][gyro z ]
-[activity] fwd S B p -12 r  34  activity (yellow during a hit), hit direction (or cal), S still, B button, tilt
+[activity] fwd S B p -12 r  34  activity (amber during a hit), hit direction (or cal), S still, B button, tilt
 ```
 
-An old wearable shows `old fw: no tilt`. The title shows the channel, `+N` when wearables with ids above 3 are live (they still reach TouchDesigner), and the uptime. The display is redrawn every 100 ms, one piece per loop pass (the title or one row, a few milliseconds each), so serial output is never held back for long.
+Row colours: yellow LIVE, orange-red LOST, amber DUP. An old wearable shows `old fw: no tilt`. The yellow title bar shows the receiver version (`RX v0.3`), the channel, `+N` when wearables with ids above 3 are live (they still reach TouchDesigner), and the uptime. The display is redrawn every 100 ms, one piece per loop pass (the title or one row, a few milliseconds each), so serial output is never held back for long.
 
 ## Protocol
 
 `include/protocol.h` defines the packets. Every packet starts with a 6-byte header: magic `0xDA`, protocol version, packet type, wearable id and a sequence number. A receiver drops packets with an unknown magic or a version outside the range it reads (v2 to v3). Any change to a packet's layout or meaning increments `PROTOCOL_VERSION`, and `static_assert`s on the struct sizes catch accidental layout changes at compile time.
 
-- `Hello`: sent at boot, with the firmware version.
+- `Hello`: sent at boot with the firmware version, and every 2 s from wearable v0.8.
 - `Motion` v3: 28 bytes, all on the body axes. Header; accel in thousandths of a g; gyro (drift removed) in tenths of a degree per second; pitch and roll in tenths of a degree; activity 0 to 1000; flags (hit, still, button, gyro calibrated); hit direction; hit counter; mode.
 - `Motion` v2: 18 bytes, the raw values only (wearable v0.4-v0.5).
 
@@ -201,8 +203,10 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 | Receiver v0.1 on `nodemcuv2`, display | Run on boards (LAPTOP, 2026-10-28): display, LIVE status, bars, TouchDesigner at 921600 |
 | ESP32-C6 to ESP8266 over ESP-NOW | Works (LAPTOP, 2026-10-28) |
 | Wearable v0.7: 208 Hz, +-8 g, dancer signals, modes, recording, about 104 packets a second | Compiles with no warnings (MINI-PC, 2026-10-29): RAM 13.2%, flash 77.7%; **not run on a board** |
+| Wearable v0.8: Hello repeated every 2 s | **Not compiled yet:** PlatformIO Core on MINI-PC (6.2.0.post1) now refuses the pinned pioarduino platform; compile it on LAPTOP |
 | `wearable2`, `wearable3` builds (ids 2 and 3) | Compile; **not run on boards** |
 | Receiver v0.2: protocol v2 and v3, three-row display, duplicate ids, piecewise drawing | Compiles with no warnings (MINI-PC, 2026-10-29): RAM 38.4%, flash 27.4%; **not run on a board** |
+| Receiver v0.3: yellow and black theme, logo on boot, versions on the display | Compiles with no warnings (MINI-PC, 2026-10-30): RAM 38.5%, flash 27.4%; **not run on a board** |
 | Detector design (one hit per punch, direction, still, tilt, modes) | `tools/motion_model.py`, tested on made-up movements (`tests/test_motion_model.py`); the C++ itself has no automated test |
 | Thresholds | Starting values, **not tuned**: needs recordings, then a body |
 | Button, motor | Code written; parts **not wired yet** |
@@ -211,8 +215,8 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 
 To check on the hardware:
 
-1. **Receiver v0.2 with the old wearable:** flash the receiver only. The v0.5 wearable must still show LIVE about 50/s, with `old fw: no tilt`, and TouchDesigner must still move with your mappings.
-2. **Wearable v0.7:** flash wearable 1 and leave it still for a second after power-up. The monitor (115200) shows `[motion] gyro calibrated`, the display row shows `wrist`, `cal` clears, and the rate is about 104/s with `x0`.
+1. **Receiver v0.3 with the old wearable:** flash the receiver only. The v0.5 wearable must still show LIVE about 50/s, with `old fw: no tilt`, and TouchDesigner must still move with your mappings.
+2. **Wearable v0.8:** flash wearable 1 and leave it still for a second after power-up. The monitor (115200) shows `[motion] gyro calibrated`, the display row shows `v0.8` and `wrist`, `cal` clears, and the rate is about 104 with `x0`.
 3. **Body axes:** the hand test above. If a direction is wrong, change the `BODY_*_AXIS` lines and reflash.
 4. **Signals:** shake it: activity rises and falls back within about half a second. Jab it: `fwd` shows and `serial_w1_hit` goes to 1. Put it down: `S` after half a second.
 5. **Mode:** type `a` in the monitor: the row shows `ankle`, and a jab that was a hit in wrist mode needs to be harder.

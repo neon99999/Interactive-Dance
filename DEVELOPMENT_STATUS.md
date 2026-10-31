@@ -135,8 +135,8 @@ The user ran manual tests 11-14 on LAPTOP with the webcam and reported that all 
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
 8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (still placeholders in the firmware).
-9. Flash receiver v0.2 and wearables v0.7 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
-10. With receiver v0.2 and a v0.7 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
+9. Flash receiver v0.3 and wearables v0.8 (ids 1-3) and run the checks under "To check on the hardware" in `Firmware/README.md`.
+10. With receiver v0.3 and a v0.8 wearable, open `wearable_monitor`: move, punch, hold still and press the button, and check each row reacts; switch **Show Wearable** to the wearable's number.
 11. ~~On LAPTOP, install the MediaPipe plugin (README, Body tracking), set Pose **Source** to Camera (MediaPipe), pick the webcam, and check each `pose_*` signal: walk left and right, raise each hand, spread the arms, move fast and stand still. Check that `pose_hand_l` follows your own left hand.~~ (done 2026-10-29, LAPTOP).
 12. ~~On LAPTOP with the webcam, open `pose_monitor` (right-click > View...): check our skeleton sits on MediaPipe's drawing, walk through the zones and watch the strip and `pose_zone` change without flicker on a border, and try **Stage Zones** 2-5 and **Flip Left/Right**.~~ (done 2026-10-29, LAPTOP).
 13. ~~On `mappings`, try the starter presets A-D with the Test Dancer and then a real dancer; add a MIDI row `set mapping.preset 2` and check the switch lands at its note.~~ (done 2026-10-29, LAPTOP).
