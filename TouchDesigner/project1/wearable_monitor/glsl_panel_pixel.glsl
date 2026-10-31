@@ -1,5 +1,5 @@
 // Wearable monitor: one card per wearable, a bar or lamp for every signal.
-// Values come from panel_values through values_tex: texel (0, w * 12 + k), with
+// Values come from panel_values through values_tex: texel (0, w * 13 + k), with
 // k in the SIGNALS order of panel_values_callbacks. Layout numbers come from
 // labels_callbacks, which also places the text in text_left and text_right
 // (inputs 1 and 2, white on transparent; coloured here).
@@ -10,10 +10,11 @@ uniform vec4 uSlots;   // number of cards, then the 0-based wearable in cards 0,
 
 layout(location = 0) out vec4 fragColor;
 
-const int SIGNALS = 12;
-const int LIVE = 0, MODE = 1, ACT = 2, GX = 3, GY = 4, GZ = 5, PITCH = 6, ROLL = 7, HIT = 8, STILL = 10, BTN = 11;
+const int SIGNALS = 13;
+const int LIVE = 0, MODE = 1, ACT = 2, GX = 3, GY = 4, GZ = 5, PITCH = 6, ROLL = 7, HIT = 8, STILL = 10, BTN = 11, BATT = 12;
 const float BAR_H = 14.0;
 const float LAMP_R = 11.0;
+const float BATT_LOW = 20.0, BATT_CRITICAL = 10.0;  // same as the receiver's display
 
 const vec3 BG = vec3(0.035, 0.04, 0.05);
 const vec3 CARD = vec3(0.075, 0.085, 0.10);
@@ -116,7 +117,10 @@ void main() {
     vec3 leftColor = !inHeader ? TEXT : !titleLine ? mix(DIM, TEXT, 0.6) : p.x > x0 + pad + 56.0 ? modeColor : TEXT;
     vec3 rightColor = TEXT;
     if (inHeader) {
-        rightColor = C_LIVE;
+        // Status on the title line; the battery below it, warning colours when low.
+        float batt = value(w, BATT);
+        rightColor = titleLine ? C_LIVE : batt < 0.0 ? mix(DIM, TEXT, 0.6)
+            : batt <= BATT_CRITICAL ? C_GX : batt <= BATT_LOW ? C_HIT : TEXT;
     } else if (r >= 6 && r < 9) {
         int k = r == 6 ? HIT : r == 7 ? STILL : BTN;
         vec3 lampColor = r == 6 ? C_HIT : r == 7 ? C_STILL : C_BTN;

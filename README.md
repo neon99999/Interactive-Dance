@@ -186,6 +186,7 @@ Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Rang
 
 A panel with one card per wearable, so dancers can see what each signal does before it is mapped to anything. Each card shows the mode (WRIST or ANKLE, also as the colour of the top stripe), LIVE or NO SIGNAL, and one row per signal: an **activity** bar, **gyro x/y/z** and **pitch/roll** bars that grow left or right from the middle, and lamps for **hit** (with the hit direction), **still** and **button**. The value is printed at the right of each row.
 
+- The second line of each card's header shows the battery (`batt 64%`, or `batt --` until a reading arrives, every 5 s): orange at 20% or below, red at 10% or below.
 - **Show Wearable** (Wearables page): **All three** side by side, or **Wearable 1/2/3** alone, full width (one wearable per dancer).
 - **Gyro Range**: the rotation speed at the end of the gyro bars (500 degrees per second by default). Pitch runs to ±90° and roll to ±180°.
 - A wearable counts as LIVE while its readings keep changing (they do, slightly, even when it is held still) and the receiver has not reported it lost; after 1 s with no new reading it shows NO SIGNAL and fades.

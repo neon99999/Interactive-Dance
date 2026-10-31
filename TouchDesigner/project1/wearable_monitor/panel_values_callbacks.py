@@ -2,7 +2,8 @@
 
 Reads serial_w1_* .. serial_w3_* (inputs/signals, through the signals Select
 CHOP) and outputs w1_live ... w3_btn in the SIGNALS order below, 0 where a
-signal has not arrived. glsl_panel reads them by index, so keep the order.
+signal has not arrived (batt: -1, as the receiver prints with no reading).
+glsl_panel reads them by index, so keep the order.
 
 live is worked out here rather than taken from the receiver: the receiver
 prints wN_live=1 only when a wearable connects, so a TD started later would
@@ -11,7 +12,7 @@ never see it. A wearable counts as live while its readings keep changing
 wN_live=0.
 """
 
-SIGNALS = ('live', 'mode', 'act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'hitdir', 'still', 'btn')
+SIGNALS = ('live', 'mode', 'act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'hitdir', 'still', 'btn', 'batt')
 WEARABLES = (1, 2, 3)
 CHANGE_SIGNALS = ('ax', 'ay', 'az', 'gx', 'gy', 'gz')
 LOST_AFTER_S = 1.0  # same as the receiver's LOST_AFTER_MS
@@ -41,5 +42,11 @@ def onCook(scriptOp):
 			changed[w] = now
 		live = now - changed.get(w, -1e9) < LOST_AFTER_S and read('live') != 0
 		for s in SIGNALS:
-			value = float(live) if s == 'live' else (read(s) or 0.0)
+			if s == 'live':
+				value = float(live)
+			elif s == 'batt':
+				batt = read(s)
+				value = -1.0 if batt is None else batt
+			else:
+				value = read(s) or 0.0
 			scriptOp.appendChan('w%d_%s' % (w, s))[0] = value

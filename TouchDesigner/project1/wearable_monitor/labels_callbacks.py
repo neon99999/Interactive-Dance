@@ -76,6 +76,8 @@ def onCook(scriptOp):
 		if rightSide:
 			status = 'LIVE' if read('live') > 0.5 else 'NO SIGNAL'
 			scriptOp.appendRow([round(x) - 16, TITLE_Y + TEXT_Y, status])
+			batt = read('batt')
+			scriptOp.appendRow([round(x) - 16, PREFIX_Y + TEXT_Y, 'batt %d%%' % batt if batt >= 0 else 'batt --'])
 		else:
 			mode = MODES.get(int(read('mode')), '')
 			scriptOp.appendRow([round(x), TITLE_Y + TEXT_Y, 'W%d   %s' % (w, mode)])
