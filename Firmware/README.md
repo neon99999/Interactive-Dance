@@ -5,7 +5,8 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 **Status:**
 - **Verified on hardware (LAPTOP, 2026-10-28):** wearable v0.5 and receiver v0.1 with one wearable. The wearable reads the IMU and sends 50 readings a second by ESP-NOW. The receiver (an ESP8266 NodeMCU) forwards them to TouchDesigner over USB and shows status on a small display.
 - **Verified on hardware (LAPTOP, 2026-10-29):** wearable v0.7 over USB on a breadboard: the button on D1 (`btn`, and a 1.5 s hold switches wrist/ankle), the vibration motor on D2 through an NPN transistor (2 buzzes for ankle, 1 for wrist, from the button and from `a`/`w`), and the readings lying flat (gyro calibrated, `still=1`, pitch and roll about -1 deg).
-- **Not yet run on boards:** receiver v0.3, and the v0.7/v0.8 signals over ESP-NOW. Hits and the thresholds are untested until the recordings are in.
+- **Verified on hardware (LAPTOP, 2026-10-30):** receiver v0.3 and wearable 1 on v0.8, checks 1-5 and the button and motor below, all six hit directions correct.
+- **Not yet run on boards:** wearables 2 and 3 on v0.8, and all three together. Hits and the thresholds are untested until the recordings are in.
 - **Compiled:** wearable v0.8 and receiver v0.3. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
 - The battery module is still a placeholder.
 
@@ -203,10 +204,10 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 | Receiver v0.1 on `nodemcuv2`, display | Run on boards (LAPTOP, 2026-10-28): display, LIVE status, bars, TouchDesigner at 921600 |
 | ESP32-C6 to ESP8266 over ESP-NOW | Works (LAPTOP, 2026-10-28) |
 | Wearable v0.7: 208 Hz, +-8 g, dancer signals, modes, recording, about 104 packets a second | Compiles with no warnings (MINI-PC, 2026-10-29): RAM 13.2%, flash 77.7%; **not run on a board** |
-| Wearable v0.8: Hello repeated every 2 s | **Not compiled yet:** PlatformIO Core on MINI-PC (6.2.0.post1) now refuses the pinned pioarduino platform; compile it on LAPTOP |
+| Wearable v0.8: Hello repeated every 2 s | Flashed on wearable 1 and checked on LAPTOP (2026-10-30). PlatformIO Core 6.2.0.post1 on MINI-PC refuses the pinned pioarduino platform, so the wearable does not build there |
 | `wearable2`, `wearable3` builds (ids 2 and 3) | Compile; **not run on boards** |
 | Receiver v0.2: protocol v2 and v3, three-row display, duplicate ids, piecewise drawing | Compiles with no warnings (MINI-PC, 2026-10-29): RAM 38.4%, flash 27.4%; **not run on a board** |
-| Receiver v0.3: yellow and black theme, logo on boot, versions on the display | Compiles with no warnings (MINI-PC, 2026-10-30): RAM 38.5%, flash 27.4%; **not run on a board** |
+| Receiver v0.3: yellow and black theme, logo on boot, versions on the display | Flashed and checked on LAPTOP (2026-10-30). Compiles with no warnings: RAM 38.5%, flash 27.4% |
 | Detector design (one hit per punch, direction, still, tilt, modes) | `tools/motion_model.py`, tested on made-up movements (`tests/test_motion_model.py`); the C++ itself has no automated test |
 | Thresholds | Starting values, **not tuned**: needs recordings, then a body |
 | Button, motor | Code written; parts **not wired yet** |

@@ -64,6 +64,23 @@ The suite backs up and restores the mapping page and the language, and empties t
 
 - **Wearable fw v0.7, button and motor:** on a breadboard over USB, the button on D1 reads `btn=1` while held and a 1.5 s hold switches wrist/ankle (`[mode]` line, `mode` value). The motor on D2 (NPN transistor) buzzes twice for ankle and once for wrist, from the button and from `a`/`w`. Lying flat: gyro calibrated, `still=1`, pitch and roll about -1 deg; activity noise 0.012 (ankle) / 0.020 (wrist), half the still threshold. Hits, ESP-NOW with v0.7 and receiver v0.2 still to test.
 
+## Verified on hardware (2026-10-30, LAPTOP)
+
+Reported by the user on the Project Hub checklist:
+
+- **Receiver v0.3:** flashed; the boot screen shows the yellow logo and `RX v0.3`, and the old v0.5 wearable still shows LIVE.
+- **Wearable 1 on v0.8:** flashed; gyro calibrated, the display row shows the version and mode, and the rate is about 104 a second. All six hit directions are correct. Activity, hit, still, ankle mode, the button and the motor all behave.
+- **Still to do:** flash wearables 2 and 3, run all three together (frame rate, `wearable_monitor`), measure the battery divider and make the tuning recordings.
+
+## Cali venue (2026-10-30, from the user)
+
+- **Projection:** on the walls, with 3 projectors (2 from the venue, 1 borrowed).
+- **Cameras:** 3 of our own Logitech C920 HD webcams; tripods requested from the venue.
+- **Audio:** speakers requested for each computer, plus a proper playback system for the performance.
+- **Room:** stage size is no concern; power near the equipment, the room can be darkened, and internet is available.
+- **Two parts:** class experiments in 3 groups, then a performance. The 3 projectors, webcams and computers with speakers are for the groups; one laptop runs the final show.
+- **Still to get:** photos or a plan of the room.
+
 ## Built, not yet on hardware (2026-10-29, branch `feature/wearable-sensors`)
 
 Details in `Firmware/README.md`. All four firmware builds (`wearable`, `wearable2`, `wearable3`, `receiver`) compile with no warnings in our code.
