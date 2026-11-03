@@ -59,8 +59,6 @@ operators:
     - name: uRows
       valuex: =mod('labels_callbacks').ROW
       valuey: =mod('labels_callbacks').PAD
-      valuez: 1
-      valuew: 1
   position: [1200, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
