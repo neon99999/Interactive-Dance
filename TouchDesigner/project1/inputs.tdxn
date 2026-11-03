@@ -81,7 +81,6 @@ custom_pars:
     style: Toggle
     label: Read Serial
     help: Read lines of text from a serial (USB) device such as an Arduino. Off by default.
-    value: true
   - name: Serialport
     style: StrMenu
     label: Port
