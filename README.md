@@ -160,7 +160,8 @@ A panel next to the other components. While the music plays it shows the number 
 A panel that graphs the raw motion of a wearable (see `Firmware/`; up to three wearables send by radio to a receiver plugged into this computer): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
 
 1. Plug the wearable in by USB and close any other serial monitor (only one program can use the port).
-2. On **inputs > Serial**: **Read Serial** on, **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200).
+2. On **inputs > Serial**: **Read Serial** on, **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200). **Status** shows `Reading COM3`, or `COM3 not found: plug in the receiver`. The port is only opened while it exists, so Read Serial can stay on with the receiver unplugged; reading starts by itself within a second of plugging it in.
+   - **Use Wearable 1 / 2 / 3** (on by default): switch off the wearables a group does not use. Their `serial_wN_...` signals are dropped, so they reach no mapping, and wearable_monitor hides them.
 3. Through the receiver, wearable 1 arrives as the signals `serial_w1_ax` ... `serial_w1_gz` (wearable 2 as `serial_w2_...`, wearable 3 as `serial_w3_...`), about 100 readings a second, plus `serial_w1_live` (1 while connected, 0 when lost). A wearable on USB arrives as `serial_ax` ... `serial_gz`. These names also work in the input assignment table.
 
 Wearables on firmware v0.7 or later also send a small set of dancer signals, worked out on the wearable from every sensor sample (208 a second), so short movements are not missed. For wearable 1:
@@ -187,7 +188,7 @@ Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Rang
 A panel with one card per wearable, so dancers can see what each signal does before it is mapped to anything. Each card shows the mode (WRIST or ANKLE, also as the colour of the top stripe), LIVE or NO SIGNAL, and one row per signal: an **activity** bar, **gyro x/y/z** and **pitch/roll** bars that grow left or right from the middle, and lamps for **hit** (with the hit direction), **still** and **button**. The value is printed at the right of each row.
 
 - The second line of each card's header shows the battery (`batt 64%`, or `batt --` until a reading arrives, every 5 s): orange at 20% or below, red at 10% or below.
-- **Show Wearable** (Wearables page): **All three** side by side, or **Wearable 1/2/3** alone, full width (one wearable per dancer).
+- **Show Wearable** (Wearables page): **Wearables in use** (default) shows the ones switched on with **Use Wearable 1-3** on inputs > Serial, so a group with one wearable sees it full width with every signal live. Or **All three** side by side, or **Wearable 1/2/3** alone.
 - **Gyro Range**: the rotation speed at the end of the gyro bars (500 degrees per second by default). Pitch runs to ±90° and roll to ±180°.
 - A wearable counts as LIVE while its readings keep changing (they do, slightly, even when it is held still) and the receiver has not reported it lost; after 1 s with no new reading it shows NO SIGNAL and fades.
 - Each row is labelled with its signal name, and the card's header shows the prefix (`serial_w1_...`). Put them together for the input assignment table: the `act` row of wearable 1 is `serial_w1_act`. The hit row's value is the latest `hitdir` as a number and a name (`1 fwd`); the mode in the header is `serial_w1_mode` and LIVE is `serial_w1_live`.

@@ -28,8 +28,17 @@ DIRECTIONS = {1: 'fwd', 2: 'back', 3: 'up', 4: 'down', 5: 'left', 6: 'right'}
 
 
 def visibleWearables():
-	"""The wearable numbers shown, left to right, from the Show Wearable parameter."""
+	"""The wearable numbers shown, left to right, from the Show Wearable parameter.
+
+	In use: the wearables switched on with Use Wearable 1-3 (inputs, Serial
+	page), so a group that uses one wearable sees it full width. All three when
+	none is on.
+	"""
 	choice = parent.Wearables.par.Wearable.eval()
+	if choice == 'inuse':
+		inputs = op('../inputs')
+		used = [w for w in (1, 2, 3) if inputs is not None and inputs.par['Wearable%d' % w].eval()]
+		return used or [1, 2, 3]
 	return [1, 2, 3] if choice == 'all' else [int(choice)]
 
 

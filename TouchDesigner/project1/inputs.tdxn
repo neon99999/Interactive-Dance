@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 8
+build: 9
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
@@ -81,6 +81,12 @@ custom_pars:
     style: Toggle
     label: Read Serial
     help: Read lines of text from a serial (USB) device such as an Arduino. Off by default.
+  - name: Serialstatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: 'What Read Serial is doing now. The port only opens while it exists, so turning Read Serial on with the receiver unplugged is safe: plug it in and reading starts by itself within a second.'
+    value: '=(''Off'' if not me.par.Serialenable else (''Reading '' + str(me.par.Serialport).upper() if me.op(''serial_ports'').module.isPresent(me.par.Serialport, absTime.frame) else str(me.par.Serialport).upper() + '' not found: plug in the receiver''))'
   - name: Serialport
     style: StrMenu
     label: Port
@@ -101,6 +107,22 @@ custom_pars:
     style: Str
     label: Value Names
     help: 'Names for lines of plain numbers, in order, e.g. "accel, zone" turns "0.5,1" into serial_accel and serial_zone. Blank: serial_1, serial_2 ... Lines of name=value pairs name themselves.'
+  - name: Wearable1
+    style: Toggle
+    label: Use Wearable 1
+    startSection: true
+    default: true
+    help: 'On: wearable 1''s signals (serial_w1_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
+  - name: Wearable2
+    style: Toggle
+    label: Use Wearable 2
+    default: true
+    help: 'On: wearable 2''s signals (serial_w2_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
+  - name: Wearable3
+    style: Toggle
+    label: Use Wearable 3
+    default: true
+    help: 'On: wearable 3''s signals (serial_w3_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
   Camera:
   - name: Camerasource
     style: Menu
@@ -219,6 +241,9 @@ operators:
   - merge_signals
 - name: camera_in
   type: videodeviceinTOP
+  parameters:
+    active: =parent.Inputs.par.Camerasource == 'camera'
+    device: V1|||\\?\root#media#0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\vidsource0|||0|||0|||NDI Webcam Video 1
   flags:
   - viewer
   position: [0, -2900]
@@ -248,7 +273,7 @@ operators:
 - name: serial_in
   type: serialDAT
   parameters:
-    active: =parent.Inputs.par.Serialenable
+    active: =parent.Inputs.par.Serialenable and op('serial_ports').module.isPresent(parent.Inputs.par.Serialport, absTime.frame)
     port: =parent.Inputs.par.Serialport
     baudrate: =parent.Inputs.par.Serialbaud
     stopbits: '1'
@@ -365,6 +390,17 @@ operators:
   position: [1200, -1600]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
+- name: serial_used
+  type: deleteCHOP
+  parameters:
+    delchannels: true
+    delscope: =' '.join('serial_w%d_*' % w for w in (1, 2, 3) if not parent.Inputs.par['Wearable%d' % w]) or 'none_'
+    autoexportroot: =parent()
+  position: [1600, -1600]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  inputs:
+  - serial_chop
 - name: analyze_left
   type: analyzeTOP
   position: [2800, -2500]
@@ -387,6 +423,11 @@ operators:
   parameters:
     file: project1/inputs/serial_parse.py
   position: [400, -1600]
+- name: serial_ports
+  type: textDAT
+  parameters:
+    file: project1/inputs/serial_ports.py
+  position: [2000, -1600]
 - name: analyze_right
   type: analyzeTOP
   position: [2800, -3300]
@@ -398,7 +439,7 @@ operators:
   inputs:
   - simulated
   - osc_signals
-  - serial_chop
+  - serial_used
   - camera_sensitivity
   - pose_chop
 - name: pose_settings
@@ -492,9 +533,9 @@ annotations:
 - name: annotate3
   mode: annotate
   title: Serial
-  text: Lines from a USB device -> serial_parse -> serial_values -> serial_* signals (Serial page).
+  text: Lines from a USB device -> serial_parse -> serial_values -> serial_used -> serial_* signals (Serial page). serial_in opens the port only while it exists (serial_ports), so a missing receiver never freezes TD. serial_used drops the wearables switched off with Use Wearable 1-3.
   position: [-70, -1790]
-  size: [1400, 450]
+  size: [2270, 450]
   color: [0.45, 0.45, 0.45]
 - name: annotate4
   mode: annotate
