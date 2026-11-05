@@ -97,7 +97,7 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 |---|---|---|
 | **Simulated** | `sim_level` (0-1), `sim_trigger` (held button), `sim_zone` (on/off) | **Animate Level** moves `sim_level` on its own |
 | **OSC** | one per OSC address: `/dancer/level` becomes `dancer/level` | Turn on **Receive OSC**; send to this computer on **OSC Port** (7000) |
-| **Serial** | `serial_<name>` | Turn on **Read Serial**, pick the **Port** and **Baud Rate** |
+| **Serial** | `serial_<name>` | **Read Serial** is on by default; pick the **Port** (once per computer) and **Baud Rate** |
 | **Camera** | `camera_motion`, `camera_left`, `camera_right` | **Source**: Off, Camera or Test Pattern. Raise **Sensitivity** if values stay small |
 | **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, `pose_zone`, `pose_zone1` ... `pose_zone5` | **Source**: Off, Camera (MediaPipe) or Test Dancer. Pick the **Webcam**. Needs the MediaPipe plugin (below) |
 
@@ -160,7 +160,7 @@ A panel next to the other components. While the music plays it shows the number 
 A panel that graphs the raw motion of a wearable (see `Firmware/`; up to three wearables send by radio to a receiver plugged into this computer): acceleration on top (x red, y green, z blue, in g; lying still, one axis reads about 1 g from gravity), rotation speed below (degrees per second), and the current values underneath.
 
 1. Plug the wearable in by USB and close any other serial monitor (only one program can use the port).
-2. On **inputs > Serial**: **Read Serial** on, **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200). **Status** shows `Reading COM3`, or `COM3 not found: plug in the receiver`. The port is only opened while it exists, so Read Serial can stay on with the receiver unplugged; reading starts by itself within a second of plugging it in.
+2. On **inputs > Serial**: **Read Serial** on (the default), **Port** = the receiver's port, **Baud Rate** 921600 (for a wearable plugged in directly by USB: its port, 115200). **Status** shows `Reading COM3`, or `COM3 not found: plug in the receiver`. The port is only opened while it exists, so Read Serial can stay on with the receiver unplugged; reading starts by itself within a second of plugging it in.
    - **Use Wearable 1 / 2 / 3** (on by default): switch off the wearables a group does not use. Their `serial_wN_...` signals are dropped, so they reach no mapping, and wearable_monitor hides them.
 3. Through the receiver, wearable 1 arrives as the signals `serial_w1_ax` ... `serial_w1_gz` (wearable 2 as `serial_w2_...`, wearable 3 as `serial_w3_...`), about 100 readings a second, plus `serial_w1_live` (1 while connected, 0 when lost). A wearable on USB arrives as `serial_ax` ... `serial_gz`. These names also work in the input assignment table.
 
