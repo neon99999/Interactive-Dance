@@ -80,14 +80,13 @@ custom_pars:
   - name: Serialenable
     style: Toggle
     label: Read Serial
-    default: true
-    help: 'Read lines of text from a serial (USB) device such as the wireless receiver. On by default: the port only opens while it exists, so it is safe with nothing plugged in (see Status).'
+    help: 'Read lines of text from a serial (USB) device such as the wireless receiver. Off when the project opens: turn it on once the receiver is plugged in and its Port is picked. Missing and Bluetooth ports are never opened (see Status).'
   - name: Serialstatus
     style: Str
     label: Status
     readOnly: true
-    help: 'What Read Serial is doing now. The port only opens while it exists, so turning Read Serial on with the receiver unplugged is safe: plug it in and reading starts by itself within a second.'
-    value: '=(''Off'' if not me.par.Serialenable else (''Reading '' + str(me.par.Serialport).upper() if me.op(''serial_ports'').module.isPresent(me.par.Serialport, absTime.frame) else str(me.par.Serialport).upper() + '' not found: plug in the receiver''))'
+    help: 'What Read Serial is doing now. A missing port or a Bluetooth port is never opened (either froze TouchDesigner), so a wrong Port is safe: pick the receiver and reading starts within a second.'
+    value: =me.op('serial_ports').module.statusText(me.par.Serialenable, me.par.Serialport, absTime.frame)
   - name: Serialport
     style: StrMenu
     label: Port

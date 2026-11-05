@@ -27,7 +27,7 @@ class IsPresent(unittest.TestCase):
 
 	def test_listed_port_any_case(self):
 		real = spo._readPorts
-		spo._readPorts = lambda: ['COM3']
+		spo._readPorts = lambda: [(r'\Device\Silabser0', 'COM3')]
 		try:
 			self.assertTrue(spo.isPresent('com3'))
 			self.assertTrue(spo.isPresent('COM3'))
@@ -38,7 +38,7 @@ class IsPresent(unittest.TestCase):
 	def test_cached_for_a_second(self):
 		calls = []
 		real = spo._readPorts
-		spo._readPorts = lambda: calls.append(1) or ['COM3']
+		spo._readPorts = lambda: calls.append(1) or [(r'\Device\Silabser0', 'COM3')]
 		try:
 			for _ in range(5):
 				spo.isPresent('com3')
@@ -50,8 +50,22 @@ class IsPresent(unittest.TestCase):
 		self.assertTrue(spo.isPresent('/'))  # an existing path, on any system
 		self.assertFalse(spo.isPresent('/dev/cu.missing-port-987'))
 
-	def test_read_ports_returns_strings(self):
-		self.assertTrue(all(isinstance(p, str) for p in spo._readPorts()))
+	def test_bluetooth_port_not_opened(self):
+		real = spo._readPorts
+		spo._readPorts = lambda: [(r'\Device\BthModem0', 'COM3'), (r'\Device\USBSER000', 'COM5')]
+		try:
+			self.assertEqual(spo.portState('com3'), 'bluetooth')
+			self.assertFalse(spo.isPresent('com3'))
+			self.assertTrue(spo.isPresent('com5'))
+			self.assertIn('Bluetooth', spo.statusText(True, 'com3'))
+			self.assertEqual(spo.statusText(True, 'com5'), 'Reading COM5')
+			self.assertIn('not found', spo.statusText(True, 'com9'))
+			self.assertEqual(spo.statusText(False, 'com5'), 'Off')
+		finally:
+			spo._readPorts = real
+
+	def test_read_ports_returns_pairs(self):
+		self.assertTrue(all(len(p) == 2 for p in spo._readPorts()))
 
 
 if __name__ == '__main__':
