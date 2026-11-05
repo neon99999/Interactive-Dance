@@ -1,17 +1,20 @@
 // Wearable monitor: one card per wearable, a bar or lamp for every signal.
-// Values come from panel_values through values_tex: texel (0, w * 13 + k), with
+// Values come from panel_values through values_tex: texel (0, w * 17 + k), with
 // k in the SIGNALS order of panel_values_callbacks. Layout numbers come from
 // labels_callbacks, which also places the text in text_left and text_right
 // (inputs 1 and 2, white on transparent; coloured here).
 
 uniform vec4 uLayout;  // pad, header height, row height, label width (pixels)
-uniform vec4 uRanges;  // value width (pixels), gyro range (dps), pitch range, roll range (deg)
+uniform vec4 uRanges;  // value width (pixels), gyro range (dps), accel range (g), unused
 uniform vec4 uSlots;   // number of cards, then the 0-based wearable in cards 0, 1, 2
 
 layout(location = 0) out vec4 fragColor;
 
-const int SIGNALS = 13;
-const int LIVE = 0, MODE = 1, ACT = 2, GX = 3, GY = 4, GZ = 5, PITCH = 6, ROLL = 7, HIT = 8, STILL = 10, BTN = 11, BATT = 12;
+const int SIGNALS = 17;
+const int LIVE = 0, MODE = 1, ACT = 2, GX = 3, GY = 4, GZ = 5, PITCH = 6, ROLL = 7, HIT = 8, STILL = 10, BTN = 11, BATT = 12,
+    AX = 13, AY = 14, AZ = 15;
+const int ROWS = 12, BAR_ROWS = 9;  // labels_callbacks SIGNAL_ROWS: 9 bars, then 3 lamps
+const float PITCH_RANGE = 90.0, ROLL_RANGE = 180.0;
 const float BAR_H = 14.0;
 const float LAMP_R = 11.0;
 const float BATT_LOW = 20.0, BATT_CRITICAL = 10.0;  // same as the receiver's display
@@ -72,14 +75,16 @@ void main() {
     int r = int(floor(row));
     float yc = res.y - header - rowH * (float(r) + 0.5);
 
-    if (row >= 0.0 && r < 9) {
+    if (row >= 0.0 && r < ROWS) {
         // Thin divider between rows.
         if (abs(p.y - (yc - rowH * 0.5)) < 0.5 && p.x > x0 + pad && p.x < x1 - pad) col = mix(CARD, TRACK, 0.8);
 
-        if (r < 6) {
-            int k = r == 0 ? ACT : r == 1 ? GX : r == 2 ? GY : r == 3 ? GZ : r == 4 ? PITCH : ROLL;
-            vec3 barColor = r == 0 ? C_ACT : r == 1 ? C_GX : r == 2 ? C_GY : r == 3 ? C_GZ : C_TILT;
-            float range = r == 0 ? 1.0 : r <= 3 ? uRanges.y : r == 4 ? uRanges.z : uRanges.w;
+        if (r < BAR_ROWS) {
+            // act; ax ay az; gx gy gz; pitch roll. x red, y green, z blue, as on the receiver.
+            int k = r == 0 ? ACT : r == 1 ? AX : r == 2 ? AY : r == 3 ? AZ : r == 4 ? GX : r == 5 ? GY : r == 6 ? GZ : r == 7 ? PITCH : ROLL;
+            int axis = (r - 1) % 3;
+            vec3 barColor = r == 0 ? C_ACT : r >= 7 ? C_TILT : axis == 0 ? C_GX : axis == 1 ? C_GY : C_GZ;
+            float range = r == 0 ? 1.0 : r <= 3 ? uRanges.z : r <= 6 ? uRanges.y : r == 7 ? PITCH_RANGE : ROLL_RANGE;
             float v = clamp(value(w, k) / range, r == 0 ? 0.0 : -1.0, 1.0) * live;
             if (abs(p.y - yc) < BAR_H * 0.5 && p.x >= bx0 && p.x < bx1) {
                 col = TRACK;
@@ -90,8 +95,8 @@ void main() {
                 if (r > 0 && abs(p.x - start) < 1.0) col = TICK;
             }
         } else {
-            int k = r == 6 ? HIT : r == 7 ? STILL : BTN;
-            vec3 lampColor = r == 6 ? C_HIT : r == 7 ? C_STILL : C_BTN;
+            int k = r == 9 ? HIT : r == 10 ? STILL : BTN;
+            vec3 lampColor = r == 9 ? C_HIT : r == 10 ? C_STILL : C_BTN;
             float on = (value(w, k) > 0.5 ? 1.0 : 0.0) * live;
             float d = length(p - vec2(bx0 + LAMP_R + 2.0, yc));
             float disc = 1.0 - smoothstep(LAMP_R - 1.0, LAMP_R, d);
@@ -121,9 +126,9 @@ void main() {
         float batt = value(w, BATT);
         rightColor = titleLine ? C_LIVE : batt < 0.0 ? mix(DIM, TEXT, 0.6)
             : batt <= BATT_CRITICAL ? C_GX : batt <= BATT_LOW ? C_HIT : TEXT;
-    } else if (r >= 6 && r < 9) {
-        int k = r == 6 ? HIT : r == 7 ? STILL : BTN;
-        vec3 lampColor = r == 6 ? C_HIT : r == 7 ? C_STILL : C_BTN;
+    } else if (r >= BAR_ROWS && r < ROWS) {
+        int k = r == 9 ? HIT : r == 10 ? STILL : BTN;
+        vec3 lampColor = r == 9 ? C_HIT : r == 10 ? C_STILL : C_BTN;
         rightColor = value(w, k) > 0.5 ? mix(TEXT, lampColor, 0.5) : DIM;
     }
     col = mix(col, mix(DIM, leftColor, live), leftText);

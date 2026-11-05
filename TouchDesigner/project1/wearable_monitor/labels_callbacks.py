@@ -12,7 +12,7 @@ so bars, lamps and text line up.
 WIDTH, HEIGHT = 1280, 720
 PAD = 24        # margin inside each card
 HEADER = 112    # header band at the top of each card
-ROW = 64        # height of one signal row
+ROW = 48        # height of one signal row
 LABEL_W = 104   # label column, left of the bars
 VALUE_W = 104   # value column, right of the bars
 TITLE_Y = HEIGHT - 60
@@ -21,8 +21,10 @@ TEXT_Y = -10    # Text TOP draws a centred line about this much above its y
 PREFIX_Y = HEIGHT - 94  # second header line: the signal name prefix
 
 # Each row is labelled with its signal name, so it can be typed into the input
-# assignment table as prefix + name (e.g. serial_w1_act).
-SIGNAL_ROWS = ('act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'still', 'btn')
+# assignment table as prefix + name (e.g. serial_w1_act). Same order as the
+# receiver's display: activity, acceleration (ax ay az, in g: the axis bars),
+# rotation speed (gx gy gz), then the tilt worked out from them.
+SIGNAL_ROWS = ('act', 'ax', 'ay', 'az', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'still', 'btn')
 MODES = {1: 'WRIST', 2: 'ANKLE'}
 DIRECTIONS = {1: 'fwd', 2: 'back', 3: 'up', 4: 'down', 5: 'left', 6: 'right'}
 
@@ -56,6 +58,8 @@ def valueText(name, read):
 	value = read(name)
 	if name == 'act':
 		return '%.2f' % value
+	if name in ('ax', 'ay', 'az'):
+		return '%+.2f g' % value
 	if name in ('gx', 'gy', 'gz'):
 		return '%+.0f' % value
 	if name in ('pitch', 'roll'):
@@ -86,7 +90,9 @@ def onCook(scriptOp):
 			status = 'LIVE' if read('live') > 0.5 else 'NO SIGNAL'
 			scriptOp.appendRow([round(x) - 16, TITLE_Y + TEXT_Y, status])
 			batt = read('batt')
-			scriptOp.appendRow([round(x) - 16, PREFIX_Y + TEXT_Y, 'batt %d%%' % batt if batt >= 0 else 'batt --'])
+			volts = read('battv')
+			battText = ('batt %d%% %.2fV' % (batt, volts) if volts > 0 else 'batt %d%%' % batt) if batt >= 0 else 'batt --'
+			scriptOp.appendRow([round(x) - 64 if batt >= 0 and volts > 0 else round(x) - 16, PREFIX_Y + TEXT_Y, battText])
 		else:
 			mode = MODES.get(int(read('mode')), '')
 			scriptOp.appendRow([round(x), TITLE_Y + TEXT_Y, 'W%d   %s' % (w, mode)])

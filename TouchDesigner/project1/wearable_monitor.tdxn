@@ -60,6 +60,15 @@ custom_pars:
     normMin: 50.0
     normMax: 2000.0
     help: Rotation speed at the ends of the gyro bars, in degrees per second.
+  - name: Accelrange
+    style: Float
+    label: Accel Range (g)
+    default: 2
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 16.0
+    help: Acceleration at the ends of the ax, ay, az bars, in g. Lying still, the axis pointing up reads about +1 g from gravity.
 parameters:
   w: 1280
   h: 720
@@ -110,8 +119,7 @@ operators:
     - name: uRanges
       valuex: =mod('labels_callbacks').VALUE_W
       valuey: =parent.Wearables.par.Gyrorange
-      valuez: =90
-      valuew: =180
+      valuez: =parent.Wearables.par.Accelrange
     - name: uSlots
       valuex: =mod('labels_callbacks').slots()[0]
       valuey: =mod('labels_callbacks').slots()[1]

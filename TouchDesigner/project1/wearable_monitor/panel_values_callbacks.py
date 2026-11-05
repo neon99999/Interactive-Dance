@@ -12,7 +12,8 @@ never see it. A wearable counts as live while its readings keep changing
 wN_live=0.
 """
 
-SIGNALS = ('live', 'mode', 'act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'hitdir', 'still', 'btn', 'batt')
+SIGNALS = ('live', 'mode', 'act', 'gx', 'gy', 'gz', 'pitch', 'roll', 'hit', 'hitdir', 'still', 'btn', 'batt',
+	'ax', 'ay', 'az', 'battv')
 WEARABLES = (1, 2, 3)
 CHANGE_SIGNALS = ('ax', 'ay', 'az', 'gx', 'gy', 'gz')
 LOST_AFTER_S = 1.0  # same as the receiver's LOST_AFTER_MS

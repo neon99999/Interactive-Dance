@@ -185,11 +185,17 @@ Controls (IMU page): **Window** (seconds shown), **Accel Range** and **Gyro Rang
 
 ### wearable_monitor: see every dancer signal
 
-A panel with one card per wearable, so dancers can see what each signal does before it is mapped to anything. Each card shows the mode (WRIST or ANKLE, also as the colour of the top stripe), LIVE or NO SIGNAL, and one row per signal: an **activity** bar, **gyro x/y/z** and **pitch/roll** bars that grow left or right from the middle, and lamps for **hit** (with the hit direction), **still** and **button**. The value is printed at the right of each row.
+A panel with one card per wearable, so dancers can see what each signal does before it is mapped to anything. Each card shows the mode (WRIST or ANKLE, also as the colour of the top stripe), LIVE or NO SIGNAL, and one row per signal, in the same order as the receiver's display: an **activity** bar, **accel x/y/z** (`ax ay az`, in g, the receiver's top row of bars), **gyro x/y/z** and **pitch/roll** bars that grow left or right from the middle, and lamps for **hit** (with the hit direction), **still** and **button**. The value is printed at the right of each row.
 
-- The second line of each card's header shows the battery (`batt 64%`, or `batt --` until a reading arrives, every 5 s): orange at 20% or below, red at 10% or below.
+- The second line of each card's header shows the battery (`batt 64% 3.92V`, or `batt --` until a reading arrives, every 5 s): orange at 20% or below, red at 10% or below.
 - **Show Wearable** (Wearables page): **Wearables in use** (default) shows the ones switched on with **Use Wearable 1-3** on inputs > Serial, so a group with one wearable sees it full width with every signal live. Or **All three** side by side, or **Wearable 1/2/3** alone.
-- **Gyro Range**: the rotation speed at the end of the gyro bars (500 degrees per second by default). Pitch runs to ±90° and roll to ±180°.
+- **Accel Range** and **Gyro Range**: the values at the ends of the accel bars (2 g by default) and the gyro bars (500 degrees per second). Pitch runs to ±90° and roll to ±180°.
+- **What the rows mean** (the wearable's x axis points along the forearm or foot, towards the hand or toes):
+  - `ax ay az`: acceleration along the wearable's own three axes, in g. Lying still, the axis pointing up reads about +1 g from gravity and the others about 0; movement adds to that. This is where the wearable is pointing, plus how hard it is pushed.
+  - `gx gy gz`: how fast it is turning around each axis, in degrees per second; 0 when not turning.
+  - `pitch`: the hand or toe end raised (+) or lowered (-), -90° (pointing at the floor) to +90° (pointing at the ceiling). Lifting an arm forward raises it.
+  - `roll`: the wearable twisted around the forearm or foot, -180° to 180°; 0 with the top facing up, about ±90° on its side. Turning a palm up or down changes it.
+  - Pitch and roll are worked out on the wearable from the accel (gravity) and gyro rows, so they stay steady while the dancer moves.
 - A wearable counts as LIVE while its readings keep changing (they do, slightly, even when it is held still) and the receiver has not reported it lost; after 1 s with no new reading it shows NO SIGNAL and fades.
 - Each row is labelled with its signal name, and the card's header shows the prefix (`serial_w1_...`). Put them together for the input assignment table: the `act` row of wearable 1 is `serial_w1_act`. The hit row's value is the latest `hitdir` as a number and a name (`1 fwd`); the mode in the header is `serial_w1_mode` and LIVE is `serial_w1_live`.
 - It reads the same `serial_wN_...` signals as the assignment table, so switch on **inputs > Serial** as for imu_monitor.
