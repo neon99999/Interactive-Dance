@@ -1536,7 +1536,7 @@ operators:
   - name: geo
     type: geometryCOMP
     parameters:
-      material: ../sprite_mat
+      material: sprite_mat
     position: [800, 0]
     size: [160, 130]
     color: [0.67, 0.67, 0.67]
@@ -1724,7 +1724,7 @@ operators:
   - name: level_gain
     type: levelTOP
     parameters:
-      brightness1: 2.5
+      brightness1: 0.8
     position: [3200, 0]
     inputs:
     - null_trails
