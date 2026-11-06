@@ -239,20 +239,34 @@ Dancers never type sensor ranges: each movement's range is built in (gyro ±500 
 - **Media File**: a movie or still image, used when Content is media
 - **Text**: used when Content is text
 
-Assignments change these values while the show runs. Layer 4 is on top. The visuals component itself has **Level**, **Blackout** and **Flash** for the whole image, and **Open/Close Output Window**.
+Assignments change these values while the show runs. Layer 4 is on top. The four layers reach the output through the **Shapes** instrument (below), which is **off by default**: turn **visuals/shapes > On** on (or MIDI `show shapes`) to see them. The visuals component itself has **Level**, **Blackout** and **Flash** for the whole image, and **Open/Close Output Window**.
 
 `layer2`-`layer4` are clones of `layer1`: they share its network but keep their own settings. Edit the network inside `layer1` only.
 
 **Resolution** (visuals, Output page) is the size of the final image, 1280 x 720 by default. Every layer (and every instrument) renders at it: set it to the projector's resolution on the show computer, or lower it if the frame rate drops.
 
-#### Instruments (being built)
+#### Instruments
 
-The layers are being joined by **visual instruments** (Particles, Video Feedback). The rule, in one sentence: *any component inside visuals with a custom page named **Instrument** is an instrument.* Then, with nothing else to wire:
+The output is made of **visual instruments**: Particles, Video Feedback and Shapes (the four layers). The rule, in one sentence: *any component inside visuals with a custom page named **Instrument** is an instrument.* Then, with nothing else to wire:
 
 - each number, toggle or menu on its Instrument page (except **Preset**) is a target named `<instrument>.<parameter>`, e.g. `particles.energy`, usable in the MIDI table, the input table and the mapping page's Visual menu;
 - a new slot's **From** / **To** come from that parameter's slider range;
 - a **Visible** toggle makes `show particles` / `hide` / `toggle` work in the MIDI table;
-- the engine publishes the value as the channel `particles_energy` on `engine/live`, which the instrument reads (as the layers do).
+- the engine publishes the value as the channel `particles_energy` on `engine/live`, which the instrument reads (as the layers do);
+- its `out1` is its image, and the compositor puts it in the output (next).
+
+**Compositor:** every instrument has four settings at the top of its Instrument page that place it in the output:
+
+| Setting | What it does |
+|---|---|
+| **On** | In the output or not. An instrument that is off does not run at all, so it costs no frame time |
+| **Opacity** | 0 invisible, 1 full |
+| **Blend** | **Normal**: covers the instruments below it (dark parts too). **Add**: adds its light, so its dark parts let the ones below show through |
+| **Order** | Higher is drawn on top (1-9). Defaults: Video Feedback 1, Particles 2, Shapes 3 |
+
+Defaults: Video Feedback Normal (it fills the frame), Particles and Shapes Add. These are mapping and MIDI targets too (`video.opacity`, `particles.blend`, `shapes.order` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four by Order). After the compositor come the master **Level**, **Blackout** and **Flash**, then the output window as before.
+
+**Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default), Opacity, Blend (Add) and Order (3) only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
 
 **Particles** (`visuals/particles`, Instrument page): luminous particles flowing along a swirling field, on black. Built from POPs (a Particle POP loop with curl noise), rendered as soft glowing dots with trails and a colour palette.
 
@@ -268,7 +282,7 @@ The layers are being joined by **visual instruments** (Particles, Video Feedback
 | **Colour** | Aurora, Ocean, Ember or Moon |
 | **Trails** | 0 none, 1 long streaks |
 
-Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset. Until the compositor (next step) is built, the instruments are not yet in the output window; look at `particles/out1` and `video/out1`.
+Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset.
 
 **Video Feedback** (`visuals/video`): the camera image (or a video file) with echoes that trail, drift, bend and change colour. Off by default.
 

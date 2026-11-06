@@ -219,7 +219,11 @@ def _restoreMappings():
 
 
 def _visualsComps():
-	return [op.Visuals] + [c for c in (op.Visuals.op('layer%d' % i) for i in range(1, 5)) if c is not None]
+	"""Visuals, its layers and its instruments: everything the render tests change."""
+	layers = [c for c in (op.Visuals.op('layer%d' % i) for i in range(1, 5)) if c is not None]
+	instruments = [c for c in op.Visuals.children
+		if c.isCOMP and any(page.name == 'Instrument' for page in c.customPages)]
+	return [op.Visuals] + layers + instruments
 
 
 def _backupVisuals():

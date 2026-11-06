@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 11
+build: 12
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -104,6 +104,14 @@ type_defaults:
   tableDAT:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
   transformPOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -237,7 +245,7 @@ operators:
   flags:
   - display
   - viewer
-  position: [1450, 0]
+  position: [5400, 0]
   inputs:
   - null_out
 - name: video
@@ -250,6 +258,32 @@ operators:
       style: Toggle
       label: 'On'
       help: 'Show the video feedback. MIDI: show / hide / toggle video.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: normal
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 1
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
     - name: Preset
       style: Menu
       default: echo
@@ -481,6 +515,7 @@ operators:
   - name: movie_file
     type: moviefileinTOP
     parameters:
+      file: =app.samplesFolder+'/Map/Banana.tif'
       play: =parent.Instrument.par.Source == 'file'
     position: [0, -400]
   - name: noise_warp
@@ -599,13 +634,7 @@ operators:
     type: textDAT
     parameters:
       file: project1/visuals/video/video_source.py
-      syncfile: true
-      language: python
     position: [0, -1200]
-    size: [130, 90]
-    color: [0.9, 0.3, 0.4]
-    tags:
-    - py
   - name: displace_warp
     type: displaceTOP
     parameters:
@@ -935,6 +964,54 @@ operators:
       $t: layer
   position: [0, 400]
   color: [0.67, 0.67, 0.67]
+- name: shapes
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the four shape layers (layer1 ... layer4, set on their own pages and by MIDI). Off by default. MIDI: show / hide / toggle shapes.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 3
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+  position: [400, -1400]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: out1
+    type: outTOP
+    position: [400, 0]
+    inputs:
+    - sel_layers
+  - name: sel_layers
+    type: selectTOP
+    parameters:
+      top: ../comp_layers
 - name: bg_black
   type: constantTOP
   parameters:
@@ -946,7 +1023,7 @@ operators:
   type: nullTOP
   flags:
   - viewer
-  position: [1050, 0]
+  position: [5000, 0]
   inputs:
   - level_master
 - name: particles
@@ -960,6 +1037,32 @@ operators:
       label: 'On'
       default: true
       help: 'Show the particles. MIDI: show / hide / toggle particles.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 2
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
     - name: Preset
       style: Menu
       default: flowing
@@ -1455,6 +1558,75 @@ operators:
     position: [-70, -1070]
     size: [5070, 1730]
     color: [0.45, 0.45, 0.45]
+- name: sel_slot1
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(1, absTime.frame)
+  position: [1200, -1200]
+- name: sel_slot2
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(2, absTime.frame)
+  position: [1600, -1400]
+- name: sel_slot3
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(3, absTime.frame)
+  position: [2000, -1600]
+- name: sel_slot4
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(4, absTime.frame)
+  position: [2400, -1800]
+- name: comp_slot1
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(1, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2000, -1200]
+  inputs:
+  - level_slot1
+  - bg_black
+- name: comp_slot2
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(2, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2400, -1400]
+  inputs:
+  - level_slot2
+  - comp_slot1
+- name: comp_slot3
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(3, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2800, -1600]
+  inputs:
+  - level_slot3
+  - comp_slot2
+- name: comp_slot4
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(4, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [3200, -1800]
+  inputs:
+  - level_slot4
+  - comp_slot3
+- name: compositor
+  type: textDAT
+  parameters:
+    file: project1/visuals/compositor.py
+  position: [1200, -2200]
 - name: comp_layers
   type: compositeTOP
   parameters:
@@ -1477,15 +1649,43 @@ operators:
     cross: =tdu.clamp(op('master_live')['flash'], 0, 1)
   flags:
   - viewer
-  position: [650, 0]
+  position: [4200, 0]
   inputs:
-  - comp_layers
+  - null_compose
   - flash_white
 - name: flash_white
   type: constantTOP
   flags:
   - viewer
   position: [400, -300]
+- name: level_slot1
+  type: levelTOP
+  parameters:
+    opacity: =op('compositor').module.slotOpacity(1, absTime.frame)
+  position: [1600, -1200]
+  inputs:
+  - sel_slot1
+- name: level_slot2
+  type: levelTOP
+  parameters:
+    opacity: =op('compositor').module.slotOpacity(2, absTime.frame)
+  position: [2000, -1400]
+  inputs:
+  - sel_slot2
+- name: level_slot3
+  type: levelTOP
+  parameters:
+    opacity: =op('compositor').module.slotOpacity(3, absTime.frame)
+  position: [2400, -1600]
+  inputs:
+  - sel_slot3
+- name: level_slot4
+  type: levelTOP
+  parameters:
+    opacity: =op('compositor').module.slotOpacity(4, absTime.frame)
+  position: [2800, -1800]
+  inputs:
+  - sel_slot4
 - name: master_live
   type: nullCHOP
   position: [425, 575]
@@ -1497,9 +1697,14 @@ operators:
     brightness1: =tdu.clamp(op('master_live')['level'], 0, 1) * (1 - tdu.clamp(op('master_live')['blackout'], 0, 1))
   flags:
   - viewer
-  position: [850, 0]
+  position: [4600, 0]
   inputs:
   - cross_flash
+- name: null_compose
+  type: nullTOP
+  position: [4000, -1200]
+  inputs:
+  - switch_compose
 - name: master_select
   type: selectCHOP
   parameters:
@@ -1513,7 +1718,7 @@ operators:
     title: =me
   flags:
   - viewer
-  position: [1025, -175]
+  position: [5000, -200]
   size: [160, 130]
   color: [0.67, 0.67, 0.67]
 - name: output_buttons
@@ -1525,7 +1730,18 @@ operators:
     file: project1/visuals/output_buttons.py
   flags:
   - viewer
-  position: [1250, -175]
+  position: [5400, -200]
+- name: switch_compose
+  type: switchTOP
+  parameters:
+    index: =op('compositor').module.count(absTime.frame)
+  position: [3600, -1200]
+  inputs:
+  - bg_black
+  - comp_slot1
+  - comp_slot2
+  - comp_slot3
+  - comp_slot4
 - name: instrument_presets
   type: parameterexecuteDAT
   parameters:
@@ -1537,14 +1753,21 @@ annotations:
 - name: annotate1
   mode: annotate
   title: Visuals
-  text: 'Four layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
+  text: 'Four shape layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top in comp_layers; the shapes instrument shows that image (off by default). The compositor (below) stacks the visible instruments into null_compose. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
   position: [-70, -371]
-  size: [1731, 1126]
+  size: [5670, 1126]
   color: [0.45, 0.45, 0.45]
 - name: annotate2
   mode: annotate
   title: Instruments
-  text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image. instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
+  text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image; On, Opacity, Blend and Order place it in the compositor. shapes shows the four layers. instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
   position: [-70, -1470]
-  size: [670, 570]
+  size: [700, 570]
+  color: [0.45, 0.45, 0.45]
+- name: annotate3
+  mode: annotate
+  title: Compositor
+  text: 'Stacks the visible instruments (compositor.py). Each instrument''s On, Opacity, Blend (Normal = over, Add) and Order come from engine/live, so MIDI and mappings drive them too. Slot 1 is the bottom: sel_slotN picks the image, level_slotN sets its opacity, comp_slotN puts it over (or adds it to) the slots below; switch_compose takes the last filled slot (black when none). Hidden instruments are in no slot, so they do not cook. null_compose feeds cross_flash.'
+  position: [1130, -2270]
+  size: [3070, 1330]
   color: [0.45, 0.45, 0.45]

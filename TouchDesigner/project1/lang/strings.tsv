@@ -260,6 +260,9 @@ pose.spread	Arms spread	Apertura
 pose.energy	Energy	Energía
 pose.nocamera	Pose page: set Source to Webcam (MediaPipe)	Página Pose: pon Fuente en Cámara web (MediaPipe)
 target.particles.visible	Particles: on	Partículas: encendidas
+target.particles.opacity	Particles: opacity	Partículas: opacidad
+target.particles.blend	Particles: blend	Partículas: mezcla de capas
+target.particles.order	Particles: order	Partículas: orden
 target.particles.energy	Particles: energy	Partículas: energía
 target.particles.spread	Particles: spread	Partículas: dispersión
 target.particles.turbulence	Particles: turbulence	Partículas: turbulencia
@@ -268,6 +271,13 @@ target.particles.colour	Particles: colour	Partículas: color
 target.particles.trails	Particles: trails	Partículas: estelas
 visuals/particles.Visible.label	On	Encendido
 visuals/particles.Visible.help	Show the particles. MIDI: show / hide / toggle particles.	Muestra las partículas. MIDI: show / hide / toggle particles.
+visuals/particles.Opacity.label	Opacity	Opacidad
+visuals/particles.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
+visuals/particles.Blend.label	Blend	Mezcla
+visuals/particles.Blend.menu	Normal|Add	Normal|Sumar
+visuals/particles.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
+visuals/particles.Order.label	Order	Orden
+visuals/particles.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
 visuals/particles.Preset.label	Preset	Preset
 visuals/particles.Preset.menu	Calm|Flowing|Energetic	Calma|Fluido|Enérgico
 visuals/particles.Preset.help	A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.	Un punto de partida: Calma (lento, amplio, estelas largas), Fluido (el normal), Enérgico (rápido, salvaje, estelas cortas). Al elegirlo se ajustan los seis controles de abajo.
@@ -287,6 +297,9 @@ visuals/particles.Colour.help	Colour palette: Aurora (green-violet), Ocean (blue
 visuals/particles.Trails.label	Trails	Estelas
 visuals/particles.Trails.help	How long the particles leave a glowing trail: 0 = none, 1 = long streaks.	Cuánto dura la estela brillante: 0 = nada, 1 = rastros largos.
 target.video.visible	Video feedback: on	Video eco: encendido
+target.video.opacity	Video feedback: opacity	Video eco: opacidad
+target.video.blend	Video feedback: blend	Video eco: mezcla de capas
+target.video.order	Video feedback: order	Video eco: orden
 target.video.echo	Video feedback: what echoes	Video eco: qué deja eco
 target.video.feedback	Video feedback: echo length	Video eco: duración del eco
 target.video.zoom	Video feedback: zoom	Video eco: zoom
@@ -295,6 +308,13 @@ target.video.colour	Video feedback: colour	Video eco: color
 target.video.mix	Video feedback: mix	Video eco: mezcla
 visuals/video.Visible.label	On	Encendido
 visuals/video.Visible.help	Show the video feedback. MIDI: show / hide / toggle video.	Muestra el video con eco. MIDI: show / hide / toggle video.
+visuals/video.Opacity.label	Opacity	Opacidad
+visuals/video.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
+visuals/video.Blend.label	Blend	Mezcla
+visuals/video.Blend.menu	Normal|Add	Normal|Sumar
+visuals/video.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
+visuals/video.Order.label	Order	Orden
+visuals/video.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
 visuals/video.Preset.label	Preset	Preset
 visuals/video.Preset.menu	Clean|Echo|Abstract	Limpio|Eco|Abstracto
 visuals/video.Preset.help	A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.	Un punto de partida: Limpio (la imagen con poco eco), Eco (estelas que se alejan), Abstracto (color que se derrite, el bailarín se disuelve). Al elegirlo se ajustan los cinco controles de abajo.
@@ -322,3 +342,16 @@ visuals/video.Load.label	Load	Cargar
 visuals/video.Load.help	Load the Video File. Nothing is loaded until you press it, so a bad file can never stop the project from opening.	Carga el archivo de video. No se carga nada hasta pulsarlo, así un archivo malo nunca impide abrir el proyecto.
 visuals/video.Status.label	Status	Estado
 visuals/video.Status.help	What the instrument is showing now.	Lo que muestra el instrumento ahora.
+target.shapes.visible	Shapes: on	Formas: encendidas
+target.shapes.opacity	Shapes: opacity	Formas: opacidad
+target.shapes.blend	Shapes: blend	Formas: mezcla de capas
+target.shapes.order	Shapes: order	Formas: orden
+visuals/shapes.Visible.label	On	Encendido
+visuals/shapes.Visible.help	Show the four shape layers (layer1 ... layer4, set on their own pages and by MIDI). Off by default. MIDI: show / hide / toggle shapes.	Muestra las cuatro capas de formas (layer1 ... layer4, ajustadas en sus propias páginas y por MIDI). Apagado por defecto. MIDI: show / hide / toggle shapes.
+visuals/shapes.Opacity.label	Opacity	Opacidad
+visuals/shapes.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
+visuals/shapes.Blend.label	Blend	Mezcla
+visuals/shapes.Blend.menu	Normal|Add	Normal|Sumar
+visuals/shapes.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
+visuals/shapes.Order.label	Order	Orden
+visuals/shapes.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.

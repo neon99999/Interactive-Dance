@@ -56,6 +56,13 @@ def Steps(check):
 				setattr(op.Visuals.par, name, value)
 		return base._do(step, 'master %s' % pars)
 
+	def shapes(**pars):
+		def step():
+			comp = op.Visuals.op('shapes')
+			for name, value in pars.items():
+				setattr(comp.par, name, value)
+		return base._do(step, 'shapes %s' % pars)
+
 	four_rows = [['60', 'layer1', 'show', '', ''], ['60', 'layer2', 'show', '', ''],
 				 ['62', 'layer3', 'show', '', ''], ['64', 'layer4', 'show', '', '']]
 	four = [
@@ -67,7 +74,10 @@ def Steps(check):
 		expect('outside small layer4 only layer3', 760, 360, [0, 0, 1]),
 		master(Level=0.5), expect('master level 0.5 halves output', 320, 360, [0.5, 0, 0]),
 		master(Level=1, Blackout=1), expect('blackout', 960, 360, [0, 0, 0]),
-		master(Blackout=0), base._do(resetLayers, 'reset layers'),
+		master(Blackout=0),
+		shapes(Opacity=0.5), expect('compositor: shapes opacity 0.5 halves it', 320, 360, [0.5, 0, 0]),
+		shapes(Opacity=1, Visible=0), expect('compositor: shapes off leaves black', 320, 360, [0, 0, 0]),
+		base._do(resetLayers, 'reset layers'),
 	]
 
 	def layer1(**pars):
@@ -124,7 +134,13 @@ def Steps(check):
 
 
 def resetLayers():
-	"""Put every layer and the master controls back to their defaults."""
+	"""Put every layer and the master controls back to their defaults, with only the
+	shapes instrument in the compositor (the layer checks read the output pixels)."""
+	for comp in op.Visuals.children:
+		if comp.isCOMP and any(page.name == 'Instrument' for page in comp.customPages):
+			comp.par.Visible = 1 if comp.name == 'shapes' else 0
+			if getattr(comp.par, 'Opacity', None) is not None:
+				comp.par.Opacity = 1
 	for i in range(1, 5):
 		layer = op.Visuals.op('layer%d' % i)
 		if layer is None:

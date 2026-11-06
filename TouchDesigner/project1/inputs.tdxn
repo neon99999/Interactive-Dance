@@ -459,7 +459,7 @@ operators:
 - name: sel_mediapipe
   type: selectTOP
   parameters:
-    top: ./mediapipe/MediaPipe/video
+    top: mediapipe/MediaPipe/video
   position: [-400, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
