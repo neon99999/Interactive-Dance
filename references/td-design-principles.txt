@@ -1,0 +1,105 @@
+TouchDesigner System Design Principles
+(taken from the Dome Workshop toolkit, Nov 2026)
+=====================================================
+
+1. STRUCTURE
+------------
+- One master .toe for everyone. Instructors and students open the same file, and
+  only the content they work on changes.
+- One COMP per job, named for its job: Spec (settings), Renderer, Output, Preview,
+  UI, Lang (labels), Playback. Each can be understood and tested on its own.
+- One source of truth for global settings: a Spec COMP with custom parameters
+  (resolution, frame rate, orientation, language). Every other COMP reads from it
+  through op shortcuts (op.DomeSpec.par.X). Nothing else stores a copy.
+- Fix conventions early and write them down: axes (Y up, front = -Z), units
+  (1 unit = 1 m), and the names of the outputs every module must provide.
+- Keep a working resolution separate from the show resolution. People build at a
+  low resolution that the free licence allows, and the show machine renders at
+  full size from the same settings.
+- Template + clone for user content. The engine lives in a master template, and
+  each user container clones it, so a fix to the master reaches every copy. User
+  work sits outside the cloned part, so a clone refresh never deletes it.
+- Contracts based on names, simple enough to say in one sentence: "Any Geometry
+  COMP named geo... renders; any light named light... lights it." Users never wire
+  anything into the engine.
+- Every user container has a fixed output (out_layer / out_dome). Playback, the
+  preview and the output only use that, so any saved piece plays back in the same
+  way.
+
+2. UI
+-----
+- Users see one parameter panel, not the network. They pick a context with a
+  single "Work On" menu (Explorer / My Scene / Playback), and the panel, the views
+  and the output all follow that choice.
+- Basic and Advanced modes. Basic shows only the few settings needed on day one.
+  A table (table_basic) lists which parameters each context shows in Basic, so
+  you change what is shown by editing data, not code.
+- Few tabs. Five or fewer, so they all fit across the panel. Combine related
+  tools on one tab and separate them with Header parameters (Sky / Field /
+  Particles on one "Layers" tab). Hide internal pages (About) from users.
+- Order parameters by use: the main control first, then the details, and
+  read-only status last.
+- Every parameter has help text that explains what it does and what its values
+  mean. The hover tooltip is the manual.
+- An on/off toggle for each feature ("Show Sky", "Play Movie"), followed by its
+  settings. A user can always switch off anything they don't understand.
+- Presets plus a Reset. Presets give a good starting point ("Galaxy", "Tunnel").
+  Reset / Apply Empty is the way out when someone gets lost. A reset only touches
+  what the user would expect (layer settings), never their own work or file
+  choices.
+- Two views: the real output (domemaster) and an explanatory view (an orbiting
+  third-person scene view with the dome, the viewer figure and the front marker).
+  Show guides only in the explanatory view, never in the output, and give each
+  one its own toggle.
+- Mouse navigation users already know: orbit with drag, zoom with shift-drag (the
+  mouse wheel was unreliable). Show the viewer's position with a figure, not an
+  abstract dot.
+- Bilingual by design. Every visible string (parameter labels, page names,
+  messages) comes from one Lang table keyed par.<Context>.<Name>,
+  page.<Context>.<Page> and text.<key>, with one column per language. A single
+  Apply relabels everything. No label is written into code.
+- Short, plain labels in the user's language. Verbs on buttons ("Save My Scene",
+  "Load Next", "Take").
+
+3. SAFETY AND LIVE USE
+----------------------
+- Ask before destructive actions (a message box with Cancel first), and save a
+  backup copy before replacing anything.
+- Saves need no file dialog: the file name is built from Title_Authors and goes to
+  a known folder. Status shows as a read-only parameter.
+- Two-slot playback, like a broadcast vision mixer: Load Next prepares a piece off
+  air, then Take switches to it with a chosen transition (cut, crossfade, black,
+  iris, sweep). The audience never sees a piece load.
+- Live audio follows what is on screen, so only the active slot or context sounds.
+- Optional heavy features (model import, movies) load on request (a Load pulse),
+  not automatically, so a bad file cannot break opening the project.
+
+4. BUILD AND MAINTENANCE
+------------------------
+- Custom parameters follow get-or-create, and any new parameter is added to the
+  template and to every existing copy.
+- After editing the master template, pulse Enable Cloning on the clones, then
+  check them.
+- Pulses fired on a COMP copied in the same script call may not run; split the
+  copy and the pulse into separate calls.
+- Feed every expression and OP reference from a Null, using relative paths.
+- Externalize COMPs to text (TDXN) and keep them in git, so changes can be diffed
+  and rolled back. A package script builds the student zip from git and leaves out
+  machine-specific folders (.embody, caches, backups).
+- A cold-open test of the package on a second TD instance before handing it out.
+
+5. TESTING
+----------
+- Test what the user does, step by step, written as a checklist the person
+  testing can follow and answer (what broke, what confused you, frame rate).
+- Check each build step: no errors anywhere, capture the output, prove motion with
+  two captures, check frame rate with all features on.
+- Show-ready means it has been run at show resolution on the show machine, for
+  the full run length, with every transition.
+
+6. GUIDES FOR USERS
+-------------------
+- One short task-based guide per tool (start from a preset, save, open, play
+  back), in both languages, side by side in one file.
+- Write the rules as simply as the UI does: what to press, in which order, and
+  what you should see.
