@@ -407,3 +407,30 @@ webcam.nolist	Body tracking: MediaPipe sees no webcam. Close other apps using {0
 webcam.nomatch	Body tracking: MediaPipe cannot find {0}. It lists: {1}	Seguimiento: MediaPipe no encuentra {0}. Ve: {1}
 webcam.seen	Body tracking: {0} working, dancer seen.	Seguimiento: {0} funciona, bailarín visible.
 webcam.none	Body tracking: {0} working, no dancer seen. Step into view; check the light.	Seguimiento: {0} funciona, sin bailarín. Entra en la imagen; revisa la luz.
+control.page.show	Show	Función
+control.page.instruments	Instruments	Instrumentos
+control.page.composition	Composition	Composición
+control.page.movement	Movement	Movimiento
+control.page.inputs	Inputs	Entradas
+control.section.show	Language and Mode	Idioma y modo
+control.section.music	Music	Música
+control.section.output	Output	Salida
+control.section.particles	Particles	Partículas
+control.section.video	Video Feedback	Video eco
+control.section.noise	Noise	Ruido
+control.section.shapes	Shapes (4 Layers)	Formas (4 capas)
+control.section.videosource	Video Source	Fuente de video
+control.section.movement	Mapping Preset	Preset de asignaciones
+control.section.slots14	Mappings 1-4	Asignaciones 1-4
+control.section.slots58	Mappings 5-8	Asignaciones 5-8
+control.section.webcam	Webcam	Cámara web
+control.section.wearables	Wearables	Sensores corporales
+control.section.body	Body Tracking	Seguimiento del cuerpo
+control.section.test	Test Signals	Señales de prueba
+control.section.osc	OSC	OSC
+control.Mode.label	Mode	Modo
+control.Mode.menu	Basic|Advanced	Básico|Avanzado
+control.Mode.help	Basic shows the few controls needed on day one. Advanced shows every setting.	Básico muestra los pocos controles necesarios el primer día. Avanzado muestra todos los ajustes.
+control.Instrument.label	Instrument	Instrumento
+control.Instrument.menu	Particles|Video Feedback|Noise	Partículas|Video eco|Ruido
+control.Instrument.help	Which instrument this tab shows. Each one has its On switch here; mix them on the Composition tab.	Qué instrumento muestra esta pestaña. Cada uno tiene aquí su interruptor; mézclalos en la pestaña Composición.

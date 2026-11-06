@@ -1,0 +1,598 @@
+format: tdxn
+version: '2.2'
+build: 1
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/control
+options:
+  include_dat_content: false
+  include_storage: true
+type: baseCOMP
+custom_pars:
+  Show:
+  - name: Mode
+    style: Menu
+    default: basic
+    menuNames:
+    - basic
+    - advanced
+    menuLabels:
+    - Basic
+    - Advanced
+    help: Basic shows the few controls needed on day one. Advanced shows every setting.
+  - name: Hshowshow
+    style: Header
+    label: Language and Mode
+  - name: Showlanglanguage
+    style: Menu
+    label: Language / Idioma
+    default: en
+    menuSource: me.parent().op('lang').par.Language
+    help: Language of the controls and panels dancers use. / Idioma de los controles y paneles que usan los bailarines.
+    value: ~me.parent().op('lang').par.Language
+  - name: Hshowmusic
+    style: Header
+    label: Music
+  - name: Showtransportplay
+    style: Toggle
+    label: Play
+    help: On plays audio and MIDI together from the current position; off pauses both.
+    value: ~me.parent().op('transport').par.Play
+  - name: Showtransportreset
+    style: Pulse
+    label: Reset
+    help: Return audio and MIDI to 0 seconds. Does not fire any notes.
+  - name: Showtransportposition
+    style: Float
+    label: Position (s)
+    readOnly: true
+    help: Current shared playback position in seconds (read-only).
+    value: ~me.parent().op('transport').par.Position
+  - name: Showtransportaudiofile
+    style: File
+    label: Audio File
+    help: Music file (WAV or MP3) played in sync with the MIDI file.
+    value: ~me.parent().op('transport').par.Audiofile
+  - name: Showtransportmidifile
+    style: File
+    label: MIDI File
+    help: Standard MIDI File (.mid) whose Note On events are read on the same clock as the audio.
+    value: ~me.parent().op('transport').par.Midifile
+  - name: Hshowoutput
+    style: Header
+    label: Output
+  - name: Showvisualsopenwindow
+    style: Pulse
+    label: Open Output Window
+    help: Open the output window (the final image) for the projector or second screen. Set the monitor on output_window if needed.
+  - name: Showvisualsclosewindow
+    style: Pulse
+    label: Close Output Window
+    help: Close the output window.
+  - name: Showvisualslevel
+    style: Float
+    label: Level
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'Overall brightness of the output: 1 = normal, 0 = black. MIDI target master.level (use fade for fade-outs).'
+    value: ~me.parent().op('visuals').par.Level
+  - name: Showvisualsblackout
+    style: Toggle
+    label: Blackout
+    help: On = output is black. MIDI target master.blackout.
+    value: ~me.parent().op('visuals').par.Blackout
+  Instruments:
+  - name: Instrument
+    style: Menu
+    default: particles
+    menuNames:
+    - particles
+    - video
+    - noise
+    menuLabels:
+    - Particles
+    - Video Feedback
+    - Noise
+    help: Which instrument this tab shows. Each one has its On switch here; mix them on the Composition tab.
+  - name: Hinstparticles
+    style: Header
+    label: Particles
+  - name: Instparticlesvisible
+    style: Toggle
+    label: 'On'
+    default: true
+    help: 'Show the particles. MIDI: show / hide / toggle particles.'
+    value: ~me.parent().op('visuals/particles').par.Visible
+  - name: Instparticlespreset
+    style: Menu
+    label: Preset
+    default: flowing
+    menuSource: me.parent().op('visuals/particles').par.Preset
+    help: 'A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.'
+    value: ~me.parent().op('visuals/particles').par.Preset
+  - name: Instparticlesreset
+    style: Pulse
+    label: Reset to Preset
+    help: Put the six settings back to the chosen preset.
+  - name: Instparticlesenergy
+    style: Float
+    label: Energy
+    default: 0.4
+    clampMin: true
+    clampMax: true
+    help: 'How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.'
+    value: ~me.parent().op('visuals/particles').par.Energy
+  - name: Instparticlesspread
+    style: Float
+    label: Spread
+    default: 0.5
+    clampMin: true
+    clampMax: true
+    help: 'How far the particles spread: 0 = a tight cloud in the centre, 1 = the whole screen.'
+    value: ~me.parent().op('visuals/particles').par.Spread
+  - name: Instparticlesturbulence
+    style: Float
+    label: Turbulence
+    default: 0.45
+    clampMin: true
+    clampMax: true
+    help: 'How irregular the motion is: 0 = big smooth swirls, 1 = small, restless eddies.'
+    value: ~me.parent().op('visuals/particles').par.Turbulence
+  - name: Instparticlessize
+    style: Float
+    label: Size
+    default: 0.4
+    clampMin: true
+    clampMax: true
+    help: 'Size of each particle: 0 = fine dust, 1 = large glowing dots.'
+    value: ~me.parent().op('visuals/particles').par.Size
+  - name: Instparticlescolour
+    style: Menu
+    label: Colour
+    default: aurora
+    menuSource: me.parent().op('visuals/particles').par.Colour
+    help: 'Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).'
+    value: ~me.parent().op('visuals/particles').par.Colour
+  - name: Instparticlestrails
+    style: Float
+    label: Trails
+    default: 0.6
+    clampMin: true
+    clampMax: true
+    help: 'How long the particles leave a glowing trail: 0 = none, 1 = long streaks.'
+    value: ~me.parent().op('visuals/particles').par.Trails
+  Composition:
+  - name: Hcompparticles
+    style: Header
+    label: Particles
+  - name: Compparticlesvisible
+    style: Toggle
+    label: 'On'
+    default: true
+    help: 'Show the particles. MIDI: show / hide / toggle particles.'
+    value: ~me.parent().op('visuals/particles').par.Visible
+  - name: Compparticlesopacity
+    style: Float
+    label: Opacity
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    value: ~me.parent().op('visuals/particles').par.Opacity
+  - name: Compparticlesblend
+    style: Menu
+    label: Blend
+    default: add
+    menuSource: me.parent().op('visuals/particles').par.Blend
+    help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    value: ~me.parent().op('visuals/particles').par.Blend
+  - name: Compparticlesorder
+    style: Int
+    label: Order
+    default: 2
+    min: 1.0
+    max: 9.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 9.0
+    help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    value: ~me.parent().op('visuals/particles').par.Order
+  - name: Hcompvideo
+    style: Header
+    label: Video Feedback
+  - name: Compvideovisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the video feedback. MIDI: show / hide / toggle video.'
+    value: ~me.parent().op('visuals/video').par.Visible
+  - name: Compvideoopacity
+    style: Float
+    label: Opacity
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    value: ~me.parent().op('visuals/video').par.Opacity
+  - name: Compvideoblend
+    style: Menu
+    label: Blend
+    default: normal
+    menuSource: me.parent().op('visuals/video').par.Blend
+    help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    value: ~me.parent().op('visuals/video').par.Blend
+  - name: Compvideoorder
+    style: Int
+    label: Order
+    default: 1
+    min: 1.0
+    max: 9.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 9.0
+    help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    value: ~me.parent().op('visuals/video').par.Order
+  - name: Hcompnoise
+    style: Header
+    label: Noise
+  - name: Compnoisevisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
+    value: ~me.parent().op('visuals/noise').par.Visible
+  - name: Compnoiseopacity
+    style: Float
+    label: Opacity
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    value: ~me.parent().op('visuals/noise').par.Opacity
+  - name: Compnoiseblend
+    style: Menu
+    label: Blend
+    default: add
+    menuSource: me.parent().op('visuals/noise').par.Blend
+    help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    value: ~me.parent().op('visuals/noise').par.Blend
+  - name: Compnoiseorder
+    style: Int
+    label: Order
+    default: 1
+    min: 1.0
+    max: 9.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 9.0
+    help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    value: ~me.parent().op('visuals/noise').par.Order
+  - name: Hcompshapes
+    style: Header
+    label: Shapes (4 Layers)
+  - name: Compshapesvisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the four shape layers (layer1 ... layer4, set on their own pages and by MIDI). Off by default. MIDI: show / hide / toggle shapes.'
+    value: ~me.parent().op('visuals/shapes').par.Visible
+  - name: Compshapesopacity
+    style: Float
+    label: Opacity
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    value: ~me.parent().op('visuals/shapes').par.Opacity
+  - name: Compshapesblend
+    style: Menu
+    label: Blend
+    default: add
+    menuSource: me.parent().op('visuals/shapes').par.Blend
+    help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    value: ~me.parent().op('visuals/shapes').par.Blend
+  - name: Compshapesorder
+    style: Int
+    label: Order
+    default: 3
+    min: 1.0
+    max: 9.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 9.0
+    help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    value: ~me.parent().op('visuals/shapes').par.Order
+  Movement:
+  - name: Hmovemovement
+    style: Header
+    label: Mapping Preset
+  - name: Movemappingspreset
+    style: Menu
+    label: Preset
+    default: A
+    menuSource: me.parent().op('mappings').par.Preset
+    help: Which set of 8 mappings is active. Edits are saved into the chosen preset at once.
+    value: ~me.parent().op('mappings').par.Preset
+  - name: Hmoveslots14
+    style: Header
+    label: Mappings 1-4
+  - name: Movemappingsmap1on
+    style: Toggle
+    label: 1 On
+    help: Mapping 1 is used while on.
+    value: ~me.parent().op('mappings').par.Map1on
+  - name: Movemappingsmap1signal
+    style: StrMenu
+    label: 1 Movement
+    menuSource: me.parent().op('mappings').par.Map1signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map1signal
+  - name: Movemappingsmap1target
+    style: StrMenu
+    label: 1 Visual
+    menuSource: me.parent().op('mappings').par.Map1target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map1target
+  - name: Movemappingsmap2on
+    style: Toggle
+    label: 2 On
+    help: Mapping 2 is used while on.
+    value: ~me.parent().op('mappings').par.Map2on
+  - name: Movemappingsmap2signal
+    style: StrMenu
+    label: 2 Movement
+    menuSource: me.parent().op('mappings').par.Map2signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map2signal
+  - name: Movemappingsmap2target
+    style: StrMenu
+    label: 2 Visual
+    menuSource: me.parent().op('mappings').par.Map2target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map2target
+  - name: Movemappingsmap3on
+    style: Toggle
+    label: 3 On
+    help: Mapping 3 is used while on.
+    value: ~me.parent().op('mappings').par.Map3on
+  - name: Movemappingsmap3signal
+    style: StrMenu
+    label: 3 Movement
+    menuSource: me.parent().op('mappings').par.Map3signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map3signal
+  - name: Movemappingsmap3target
+    style: StrMenu
+    label: 3 Visual
+    menuSource: me.parent().op('mappings').par.Map3target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map3target
+  - name: Movemappingsmap4on
+    style: Toggle
+    label: 4 On
+    help: Mapping 4 is used while on.
+    value: ~me.parent().op('mappings').par.Map4on
+  - name: Movemappingsmap4signal
+    style: StrMenu
+    label: 4 Movement
+    menuSource: me.parent().op('mappings').par.Map4signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map4signal
+  - name: Movemappingsmap4target
+    style: StrMenu
+    label: 4 Visual
+    menuSource: me.parent().op('mappings').par.Map4target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map4target
+  - name: Hmoveslots58
+    style: Header
+    label: Mappings 5-8
+  - name: Movemappingsmap5on
+    style: Toggle
+    label: 5 On
+    help: Mapping 5 is used while on.
+    value: ~me.parent().op('mappings').par.Map5on
+  - name: Movemappingsmap5signal
+    style: StrMenu
+    label: 5 Movement
+    menuSource: me.parent().op('mappings').par.Map5signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map5signal
+  - name: Movemappingsmap5target
+    style: StrMenu
+    label: 5 Visual
+    menuSource: me.parent().op('mappings').par.Map5target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map5target
+  - name: Movemappingsmap6on
+    style: Toggle
+    label: 6 On
+    help: Mapping 6 is used while on.
+    value: ~me.parent().op('mappings').par.Map6on
+  - name: Movemappingsmap6signal
+    style: StrMenu
+    label: 6 Movement
+    menuSource: me.parent().op('mappings').par.Map6signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map6signal
+  - name: Movemappingsmap6target
+    style: StrMenu
+    label: 6 Visual
+    menuSource: me.parent().op('mappings').par.Map6target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map6target
+  - name: Movemappingsmap7on
+    style: Toggle
+    label: 7 On
+    help: Mapping 7 is used while on.
+    value: ~me.parent().op('mappings').par.Map7on
+  - name: Movemappingsmap7signal
+    style: StrMenu
+    label: 7 Movement
+    menuSource: me.parent().op('mappings').par.Map7signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map7signal
+  - name: Movemappingsmap7target
+    style: StrMenu
+    label: 7 Visual
+    menuSource: me.parent().op('mappings').par.Map7target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map7target
+  - name: Movemappingsmap8on
+    style: Toggle
+    label: 8 On
+    help: Mapping 8 is used while on.
+    value: ~me.parent().op('mappings').par.Map8on
+  - name: Movemappingsmap8signal
+    style: StrMenu
+    label: 8 Movement
+    menuSource: me.parent().op('mappings').par.Map8signal
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: ~me.parent().op('mappings').par.Map8signal
+  - name: Movemappingsmap8target
+    style: StrMenu
+    label: 8 Visual
+    menuSource: me.parent().op('mappings').par.Map8target
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: ~me.parent().op('mappings').par.Map8target
+  Inputs:
+  - name: Hinpuwebcam
+    style: Header
+    label: Webcam
+  - name: Inpuinputswebcamuse
+    style: Menu
+    label: Use
+    default: 'off'
+    menuSource: me.parent().op('inputs').par.Webcamuse
+    help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
+    value: ~me.parent().op('inputs').par.Webcamuse
+  - name: Inpuinputscameradevice
+    style: StrMenu
+    label: Webcam
+    menuSource: me.parent().op('inputs').par.Cameradevice
+    help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
+    value: ~me.parent().op('inputs').par.Cameradevice
+  - name: Inpuinputswebcamstatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
+    value: ~me.parent().op('inputs').par.Webcamstatus
+  - name: Hinpuwearables
+    style: Header
+    label: Wearables
+  - name: Inpuinputsserialenable
+    style: Toggle
+    label: Read Serial
+    help: 'Read lines of text from a serial (USB) device such as the wireless receiver. Off when the project opens: turn it on once the receiver is plugged in and its Port is picked. Missing and Bluetooth ports are never opened (see Status).'
+    value: ~me.parent().op('inputs').par.Serialenable
+  - name: Inpuinputsserialport
+    style: StrMenu
+    label: Port
+    menuSource: me.parent().op('inputs').par.Serialport
+    help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
+    value: ~me.parent().op('inputs').par.Serialport
+  - name: Inpuinputsserialstatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: 'What Read Serial is doing now. A missing port or a Bluetooth port is never opened (either froze TouchDesigner), so a wrong Port is safe: pick the receiver and reading starts within a second.'
+    value: ~me.parent().op('inputs').par.Serialstatus
+  - name: Inpuinputswearable1
+    style: Toggle
+    label: Use Wearable 1
+    default: true
+    help: 'On: wearable 1''s signals (serial_w1_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
+    value: ~me.parent().op('inputs').par.Wearable1
+  - name: Inpuinputswearable2
+    style: Toggle
+    label: Use Wearable 2
+    default: true
+    help: 'On: wearable 2''s signals (serial_w2_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
+    value: ~me.parent().op('inputs').par.Wearable2
+  - name: Inpuinputswearable3
+    style: Toggle
+    label: Use Wearable 3
+    default: true
+    help: 'On: wearable 3''s signals (serial_w3_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
+    value: ~me.parent().op('inputs').par.Wearable3
+  - name: Hinpubody
+    style: Header
+    label: Body Tracking
+  - name: Inpuinputsposezones
+    style: Int
+    label: Stage Zones
+    default: 3
+    min: 1.0
+    max: 5.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 5.0
+    help: How many equal zones pose_x is split into, left to right (1-5). pose_zone says which one the dancer is in (1 = left), and pose_zone1 ... pose_zone5 are 1 in that zone. Shown on pose_monitor.
+    value: ~me.parent().op('inputs').par.Posezones
+parameters:
+  parentshortcut: Control
+  opshortcut: Control
+sequences:
+  ext:
+  - object: op('./ControlExt').module.ControlExt(me)
+    name: Control
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+storage:
+  _pageNames:
+    show: Show
+    instruments: Instruments
+    composition: Composition
+    movement: Movement
+    inputs: Inputs
+operators:
+- name: layout
+  type: tableDAT
+  parameters:
+    file: project1/control/layout.tsv
+    syncfile: true
+    rows: 145
+    cols: 6
+  position: [0, -200]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: ControlExt
+  type: textDAT
+  parameters:
+    file: project1/control/ControlExt.py
+    syncfile: true
+    language: python
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: control_pulses
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: Mode Instrument Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Instparticlesreset
+    builtin: false
+    file: project1/control/control_pulses.py
+    syncfile: true
+  position: [0, -400]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Control panel
+  text: layout lists every control (tab, section, component, parameter, Basic, instrument). Edit it, then op.Control.Rebuild(). ControlExt binds each control to its parameter; control_pulses rebuilds on Mode / Instrument and forwards pulses.
+  position: [-70, -470]
+  size: [270, 730]
+  color: [0.45, 0.45, 0.45]
