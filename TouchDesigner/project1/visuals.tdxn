@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 9
+build: 11
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -28,7 +28,30 @@ type_defaults:
       resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  crossTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  feedbackTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  fitTOP:
+    parameters:
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   levelTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  moviefileinTOP:
+    parameters:
+      index: =me.time.frame
+      timecodeop: =tdu.Timecode()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  noiseTOP:
+    parameters:
+      outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   nullCHOP:
@@ -58,6 +81,13 @@ type_defaults:
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  rectangleTOP:
+    parameters:
+      outputresolution: custom
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   selectCHOP:
     parameters:
       autoexportroot: =parent()
@@ -65,17 +95,19 @@ type_defaults:
       renameto: '*'
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  selectTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   switchTOP:
-    parameters:
-      outputresolution: custom
-      resolutionh: =parent.Visuals.par.Resolution2
-      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   tableDAT:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   transformPOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  transformTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -208,6 +240,304 @@ operators:
   position: [1450, 0]
   inputs:
   - null_out
+- name: video
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the video feedback. MIDI: show / hide / toggle video.'
+    - name: Preset
+      style: Menu
+      default: echo
+      menuNames:
+      - clean
+      - echo
+      - abstract
+      menuLabels:
+      - Clean
+      - Echo
+      - Abstract
+      help: 'A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the five settings back to the chosen preset.
+    - name: Feedback
+      style: Float
+      startSection: true
+      default: 0.7
+      clampMin: true
+      clampMax: true
+      help: 'How long the image echoes: 0 = no echo, 1 = very long trails.'
+    - name: Zoom
+      style: Float
+      default: 0.1
+      min: -1.0
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: 'Which way the echoes move: above 0 they grow outward, below 0 they shrink inward, 0 = they stay in place.'
+    - name: Distortion
+      style: Float
+      default: 0.1
+      clampMin: true
+      clampMax: true
+      help: 'How much the echoes ripple and bend: 0 = straight, 1 = melting.'
+    - name: Colour
+      style: Float
+      default: 0.1
+      clampMin: true
+      clampMax: true
+      help: 'Colour treatment: 0 = natural colour, 1 = echoes shift through the rainbow and glow.'
+    - name: Mix
+      style: Float
+      default: 0.75
+      clampMin: true
+      clampMax: true
+      help: Balance between the plain video (0) and the echoes (1).
+    Source:
+    - name: Source
+      style: Menu
+      default: webcam
+      menuNames:
+      - webcam
+      - file
+      - test
+      menuLabels:
+      - Webcam
+      - Video File
+      - Test Pattern
+      help: 'Webcam: the camera image (from body tracking when it is on, otherwise from inputs > Camera). Video File: the file below. Test Pattern: a moving shape, to try the effect without a camera.'
+    - name: Videofile
+      style: File
+      label: Video File
+      help: A movie or image to use when Source is Video File. Press Load after choosing it.
+    - name: Load
+      style: Pulse
+      help: Load the Video File. Nothing is loaded until you press it, so a bad file can never stop the project from opening.
+    - name: Status
+      style: Str
+      readOnly: true
+      help: What the instrument is showing now.
+      value: =me.op('video_source').module.statusText(absTime.frame)
+  position: [0, -1400]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [4400, 0]
+    inputs:
+    - cross_mix
+  - name: null_fb
+    type: nullTOP
+    position: [3600, -200]
+    inputs:
+    - cross_loop
+  - name: presets
+    type: tableDAT
+    position: [800, -1200]
+    dat_content:
+    - - par
+      - clean
+      - echo
+      - abstract
+    - - Feedback
+      - '0.35'
+      - '0.7'
+      - '0.95'
+    - - Zoom
+      - '0'
+      - '0.1'
+      - '0.4'
+    - - Distortion
+      - '0'
+      - '0.1'
+      - '0.6'
+    - - Colour
+      - '0'
+      - '0.1'
+      - '0.6'
+    - - Mix
+      - '0.3'
+      - '0.75'
+      - '1'
+    dat_content_format: table
+  - name: sel_pose
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('mediapipe/MediaPipe/video')
+  - name: test_bar
+    type: rectangleTOP
+    parameters:
+      sizex: 0.04
+      sizeunit: fraction
+      rotate: =(absTime.seconds * 40) % 360
+      fillcolorr: 0.5
+      fillcolorg: 0.7
+    position: [-400, -800]
+  - name: cross_mix
+    type: crossTOP
+    parameters:
+      cross: =op('live')['mix']
+    position: [4000, 0]
+    inputs:
+    - null_source
+    - null_fb
+  - name: cross_loop
+    type: crossTOP
+    parameters:
+      cross: =math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['feedback'] ** 2 * 3.0))
+    position: [3200, -200]
+    inputs:
+    - null_source
+    - hsv_colour
+  - name: fit_source
+    type: fitTOP
+    parameters:
+      fit: fill
+      format: rgba16float
+    position: [800, -200]
+    inputs:
+    - switch_source
+  - name: hsv_colour
+    type: hsvadjustTOP
+    parameters:
+      hueoffset: =op('live')['colour'] * 120 * min(absTime.stepSeconds, 0.1)
+      saturationmult: =(1 + op('live')['colour'] * 0.6) ** min(absTime.stepSeconds, 0.1)
+    position: [2800, -400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - displace_warp
+  - name: movie_file
+    type: moviefileinTOP
+    parameters:
+      play: =parent.Instrument.par.Source == 'file'
+    position: [0, -400]
+  - name: noise_warp
+    type: noiseTOP
+    parameters:
+      period: 0.6
+      mono: false
+      tz: =(absTime.seconds * 0.2) % 1000
+      resolutionw: =parent.Visuals.par.Resolution1 / 4
+      resolutionh: =parent.Visuals.par.Resolution2 / 4
+    position: [2000, -700]
+  - name: sel_camera
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('camera_in')
+    position: [0, -200]
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+    position: [0, 400]
+  - name: load_button
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: Load
+      valuechange: false
+      file: project1/visuals/video/load_button.py
+    position: [400, -1200]
+  - name: null_source
+    type: nullTOP
+    position: [1200, -200]
+    inputs:
+    - fit_source
+  - name: test_circle
+    type: circleTOP
+    parameters:
+      radiusx: 0.12
+      radiusy: 0.12
+      centerx: =0.3 * math.sin(absTime.seconds * 0.7)
+      centery: =0.2 * math.sin(absTime.seconds * 1.1)
+      fillcolorg: 0.8
+      fillcolorb: 0.6
+      bgcolorr: 0.03
+      bgcolorg: 0.03
+      bgcolorb: 0.03
+      bgalpha: 1
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [-400, -600]
+  - name: test_pattern
+    type: compositeTOP
+    parameters:
+      operand: over
+    position: [0, -700]
+    inputs:
+    - test_bar
+    - test_circle
+  - name: video_source
+    type: textDAT
+    parameters:
+      file: project1/visuals/video/video_source.py
+      syncfile: true
+      language: python
+    position: [0, -1200]
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  - name: displace_warp
+    type: displaceTOP
+    parameters:
+      displaceweightx: =op('live')['distortion'] * 0.4 * min(absTime.stepSeconds, 0.1)
+      displaceweighty: =op('live')['distortion'] * 0.4 * min(absTime.stepSeconds, 0.1)
+      offsetweight: =1 - me.par.uvweight.eval()
+      extend: zero
+    position: [2400, -400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - transform_zoom
+    - noise_warp
+  - name: feedback_loop
+    type: feedbackTOP
+    parameters:
+      top: null_fb
+    position: [1600, -400]
+    inputs:
+    - null_source
+  - name: switch_source
+    type: switchTOP
+    parameters:
+      index: =op('video_source').module.sourceIndex(absTime.frame)
+    position: [400, -200]
+    inputs:
+    - sel_pose
+    - sel_camera
+    - movie_file
+    - test_pattern
+  - name: transform_zoom
+    type: transformTOP
+    parameters:
+      rotate: =op('live')['distortion'] * 12 * min(absTime.stepSeconds, 0.1)
+      sx: =(1 + op('live')['zoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+      sy: =(1 + op('live')['zoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+    position: [2000, -400]
+    inputs:
+    - feedback_loop
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Video Feedback
+    text: 'switch_source picks the image (video_source.sourceIndex): MediaPipe''s webcam image (sel_pose) while body tracking is on, else inputs/camera_in (sel_camera), the loaded file (movie_file, loaded only by the Load button), or the test pattern. fit_source -> null_source. Loop: feedback_loop -> transform_zoom (Zoom, Distortion turn) -> displace_warp by noise_warp (Distortion) -> hsv_colour (Colour) -> cross_loop with the new frame (Feedback, time-based decay) -> null_fb. cross_mix: plain video vs echoes (Mix) -> out1. All rates use absTime.stepSeconds, so the look is the same at any frame rate.'
+    position: [-470, -1270]
+    size: [5070, 1930]
+    color: [0.45, 0.45, 0.45]
 - name: layer1
   type: baseCOMP
   parameters:
@@ -246,27 +576,18 @@ operators:
     - tint_color
   - name: fit_media
     type: fitTOP
-    parameters:
-      resolutionw: =parent.Visuals.par.Resolution1
-      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -1200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - media_file
   - name: media_file
     type: moviefileinTOP
     parameters:
       file: =parent.Layer.par.Mediafile.eval()
-      index: =me.time.frame
-      timecodeop: =tdu.Timecode()
       hwdecode: false
       outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
     position: [-400, -1200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
   - name: tint_color
     type: constantTOP
     parameters:
@@ -317,12 +638,7 @@ operators:
       sizex: 320
       sizey: 320
       sizeunit: pixels
-      outputresolution: custom
-      resolutionw: =parent.Visuals.par.Resolution1
-      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
   - name: text_display
     type: textTOP
     parameters:
@@ -357,6 +673,9 @@ operators:
     type: switchTOP
     parameters:
       index: =int(round(op('live')['effect']))
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [1600, -200]
     inputs:
     - switch_content
@@ -369,12 +688,9 @@ operators:
       period: 1.5
       harmon: 3
       tz: =(absTime.seconds * 0.15) % 1000
-      outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -600]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
   - name: texture_rings
     type: rampTOP
     parameters:
@@ -408,6 +724,9 @@ operators:
     type: switchTOP
     parameters:
       index: =int(round(op('live')['content']))
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [400, -200]
     inputs:
     - shape_circle
@@ -429,8 +748,6 @@ operators:
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
     position: [2400, -200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - comp_tint
   - name: texture_rings_keys
@@ -838,7 +1155,7 @@ operators:
   - name: level_decay
     type: levelTOP
     parameters:
-      brightness1: =op('live')['trails'] * 0.97
+      brightness1: =0 if op('live')['trails'] <= 0 else math.exp(-min(absTime.stepSeconds, 0.1) / (0.02 + op('live')['trails'] ** 2 * 1.5))
     position: [2000, -200]
     inputs:
     - feedback_trails
@@ -992,8 +1309,6 @@ operators:
     parameters:
       top: null_trails
     position: [1600, -200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - render
   - name: start_particles
@@ -1039,8 +1354,6 @@ operators:
   flags:
   - viewer
   position: [650, 0]
-  size: [130, 90]
-  color: [0.67, 0.67, 0.67]
   inputs:
   - comp_layers
   - flash_white
@@ -1108,6 +1421,6 @@ annotations:
   mode: annotate
   title: Instruments
   text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image. instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
-  position: [-70, -1270]
-  size: [670, 370]
+  position: [-70, -1470]
+  size: [670, 570]
   color: [0.45, 0.45, 0.45]

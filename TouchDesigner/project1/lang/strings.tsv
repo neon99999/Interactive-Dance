@@ -281,3 +281,35 @@ visuals/particles.Colour.menu	Aurora|Ocean|Ember|Moon	Aurora|Océano|Brasa|Luna
 visuals/particles.Colour.help	Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).	Paleta de color: Aurora (verde-violeta), Océano (azul-cian), Brasa (rojo-dorado), Luna (blanco-plata).
 visuals/particles.Trails.label	Trails	Estelas
 visuals/particles.Trails.help	How long the particles leave a glowing trail: 0 = none, 1 = long streaks.	Cuánto dura la estela brillante: 0 = nada, 1 = rastros largos.
+target.video.visible	Video feedback: on	Video eco: encendido
+target.video.feedback	Video feedback: echo length	Video eco: duración del eco
+target.video.zoom	Video feedback: zoom	Video eco: zoom
+target.video.distortion	Video feedback: distortion	Video eco: distorsión
+target.video.colour	Video feedback: colour	Video eco: color
+target.video.mix	Video feedback: mix	Video eco: mezcla
+visuals/video.Visible.label	On	Encendido
+visuals/video.Visible.help	Show the video feedback. MIDI: show / hide / toggle video.	Muestra el video con eco. MIDI: show / hide / toggle video.
+visuals/video.Preset.label	Preset	Preset
+visuals/video.Preset.menu	Clean|Echo|Abstract	Limpio|Eco|Abstracto
+visuals/video.Preset.help	A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.	Un punto de partida: Limpio (la imagen con poco eco), Eco (estelas que se alejan), Abstracto (color que se derrite, el bailarín se disuelve). Al elegirlo se ajustan los cinco controles de abajo.
+visuals/video.Reset.label	Reset to Preset	Volver al preset
+visuals/video.Reset.help	Put the five settings back to the chosen preset.	Devuelve los cinco controles al preset elegido.
+visuals/video.Feedback.label	Feedback	Eco
+visuals/video.Feedback.help	How long the image echoes: 0 = no echo, 1 = very long trails.	Cuánto dura el eco de la imagen: 0 = sin eco, 1 = estelas muy largas.
+visuals/video.Zoom.label	Zoom	Zoom
+visuals/video.Zoom.help	Which way the echoes move: above 0 they grow outward, below 0 they shrink inward, 0 = they stay in place.	Hacia dónde se mueven los ecos: mayor que 0 crecen hacia afuera, menor que 0 se encogen hacia adentro, 0 = se quedan en su lugar.
+visuals/video.Distortion.label	Distortion	Distorsión
+visuals/video.Distortion.help	How much the echoes ripple and bend: 0 = straight, 1 = melting.	Cuánto se ondulan y doblan los ecos: 0 = rectos, 1 = derretidos.
+visuals/video.Colour.label	Colour	Color
+visuals/video.Colour.help	Colour treatment: 0 = natural colour, 1 = echoes shift through the rainbow and glow.	Tratamiento de color: 0 = color natural, 1 = los ecos recorren el arcoíris y brillan.
+visuals/video.Mix.label	Mix	Mezcla
+visuals/video.Mix.help	Balance between the plain video (0) and the echoes (1).	Equilibrio entre el video limpio (0) y los ecos (1).
+visuals/video.Source.label	Source	Fuente
+visuals/video.Source.menu	Webcam|Video File|Test Pattern	Cámara web|Archivo de video|Patrón de prueba
+visuals/video.Source.help	Webcam: the camera image (from body tracking when it is on, otherwise from inputs > Camera). Video File: the file below. Test Pattern: a moving shape, to try the effect without a camera.	Cámara web: la imagen de la cámara (del seguimiento del cuerpo si está activo, si no de inputs > Camera). Archivo de video: el archivo de abajo. Patrón de prueba: una forma en movimiento, para probar el efecto sin cámara.
+visuals/video.Videofile.label	Video File	Archivo de video
+visuals/video.Videofile.help	A movie or image to use when Source is Video File. Press Load after choosing it.	Una película o imagen para usar cuando la Fuente es Archivo de video. Pulsa Cargar después de elegirlo.
+visuals/video.Load.label	Load	Cargar
+visuals/video.Load.help	Load the Video File. Nothing is loaded until you press it, so a bad file can never stop the project from opening.	Carga el archivo de video. No se carga nada hasta pulsarlo, así un archivo malo nunca impide abrir el proyecto.
+visuals/video.Status.label	Status	Estado
+visuals/video.Status.help	What the instrument is showing now.	Lo que muestra el instrumento ahora.
