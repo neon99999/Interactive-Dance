@@ -163,7 +163,9 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 
 **Stage zones:** **Stage Zones** (1-5, default 3) splits the picture into equal zones from left to right. `pose_zone` is the zone the dancer is in (1 = left, 0 = nobody seen), and `pose_zone1` ... `pose_zone5` are 1 in their zone and 0 elsewhere, ready for a layer's `visible`. **Zone Margin** (0.05 = 5 % of the picture width) is how far past a border the dancer must go before the zone changes, so standing on a border does not flicker. The zones follow `pose_x`, so **Flip Left/Right** flips them too.
 
-**Body Mask** (default on) also asks MediaPipe for the dancer's outline, which the Video Feedback instrument's **Echo: Dancer** uses. Switch it off if body tracking needs the frame time.
+**Body Mask** (default off) also asks MediaPipe for the dancer's outline, which the Video Feedback instrument's **Echo: Dancer** uses. Turn it on only when you use Echo: Dancer: measured on MINI-PC with a C920 and a moving dancer, it cut MediaPipe's body updates from about 14 to 9 a second, with gaps of up to 2 s (off: under 1 s).
+
+If MediaPipe stops sending results (its browser stalls), the pose signals drop to 0 after 1 s instead of freezing on the last pose, and Status says so after 3 s: set **Use** to Off and back to Body Tracking.
 
 ### pose_monitor: see the body tracking
 
@@ -326,7 +328,7 @@ Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on
 
 - **Webcam** never opens a camera itself, so it cannot fight body tracking for the C920: with **inputs > Webcam > Use** on Body Tracking it uses MediaPipe's (clean) image, on Movement Only the camera_in picture. With Use Off or Test it shows the test pattern and Status says what to turn on.
 - **Video File** loads only when you press **Load**, and only if the file exists (Status shows `File not found` otherwise), so a missing file never stops the project opening. Paths can be relative to the TouchDesigner folder, e.g. `../media/clip.mp4`.
-- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Webcam > Use: Body Tracking** with **Body Mask** (Pose page) on (default on; it costs some frame time while body tracking runs), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
+- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Webcam > Use: Body Tracking** with **Body Mask** (Pose page) on (default off, because it slows body tracking), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
 - Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
 - Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
 

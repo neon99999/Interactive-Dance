@@ -254,6 +254,9 @@ def _restoreInputs():
 	for name, mode, val, expr in _inputsBackup.get('pars', []):
 		par = inputs.par[name]
 		par.val, par.expr, par.mode = val, expr, mode
+	# The two sources always follow the Webcam page Use (a backup taken mid-change could disagree).
+	sources = inputs.op('pose_settings').module.USE_SOURCES.get(inputs.par.Webcamuse.eval(), ('off', 'off'))
+	inputs.par.Camerasource, inputs.par.Posesource = sources
 	inputs.op('osc_in').par.localaddress = _inputsBackup.get('oscaddress', '')
 	table = inputs.op('serial_values')
 	table.clear()

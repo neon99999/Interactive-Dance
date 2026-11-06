@@ -12,6 +12,13 @@ drawn on pose_monitor).
 # project reopens (deliberately not op.storage, which TDXN would save).
 _tracker = None
 LastPoints = None
+# MediaPipe's pose DAT keeps its last result when MediaPipe stalls, so a frozen
+# browser looked like a dancer standing still. Results older than STALE_SECONDS
+# count as no dancer; ResultAge is shown in the Webcam Status.
+STALE_SECONDS = 1.0
+_lastText = None
+_lastResultAt = None
+ResultAge = 0.0
 
 
 def onSetupParameters(scriptOp):
@@ -23,7 +30,7 @@ def onPulse(par):
 
 
 def onCook(scriptOp):
-	global _tracker, LastPoints
+	global _tracker, LastPoints, _lastText, _lastResultAt, ResultAge
 	signals = op('pose_signals').module
 	settings = parent.Inputs.par
 	source = settings.Posesource.eval()
@@ -33,7 +40,12 @@ def onCook(scriptOp):
 	_matchMediapipeCooking(source == 'camera')
 	if source == 'camera':
 		results = op('mediapipe/MediaPipe/pose')
-		points = signals.parsePose(results.text) if results is not None else None
+		text = results.text if results is not None else None
+		if text != _lastText or _lastResultAt is None:
+			_lastText, _lastResultAt = text, now
+		ResultAge = now - _lastResultAt
+		fresh = text is not None and ResultAge <= STALE_SECONDS
+		points = signals.parsePose(text) if fresh else None
 	elif source == 'test':
 		points = signals.testPose(now)
 	else:

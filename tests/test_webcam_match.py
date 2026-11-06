@@ -68,6 +68,11 @@ class WebcamStatus(unittest.TestCase):
 		self.assertEqual(self.key('body', names=self.LIST, seen=True, seconds=1), 'webcam.seen')
 		self.assertEqual(self.key('body', names=self.LIST), 'webcam.none')
 
+	def test_body_stalled(self):
+		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 60, True, 5.0), ('webcam.stalled', (self.C920, 5)))
+		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 60, True, 0.5)[0], 'webcam.seen')
+		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 3, False, 5.0)[0], 'webcam.starting')
+
 
 if __name__ == '__main__':
 	unittest.main()

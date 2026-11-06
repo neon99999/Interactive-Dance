@@ -21,6 +21,8 @@ parameters:
   repocomp: =me
   top: ./null_out
   parentshortcut: PoseMonitor
+flags:
+- viewer
 color: [0.3, 0.5, 0.9]
 tags:
 - tdxn

@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 11
+build: 12
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
@@ -193,8 +193,7 @@ custom_pars:
   - name: Posemask
     style: Toggle
     label: Body Mask
-    default: true
-    help: 'On: MediaPipe also finds the dancer''s outline (a body mask), used by the Video Feedback instrument''s Echo: Dancer. Costs some extra frame time while body tracking runs. Off: no mask; Echo: Auto uses Movement.'
+    help: 'Off (default): body tracking only, steadiest tracking. On: MediaPipe also finds the dancer''s outline (a body mask) for the Video Feedback instrument''s Echo: Dancer. It roughly halves how often MediaPipe updates the body (measured: 14 to 9 times a second, with gaps up to 2 s), so turn it on only when you use Echo: Dancer.'
   - name: Posesmooth
     style: Float
     label: Smoothing (s)
@@ -266,7 +265,8 @@ operators:
   type: videodeviceinTOP
   parameters:
     active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera'
-    device: V1|||\\?\root#media#0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\vidsource0|||0|||0|||NDI Webcam Video 1
+    device: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||HD Pro Webcam C920
+    signalformat: f640x480p-30.00hz
   flags:
   - viewer
   position: [0, -2900]

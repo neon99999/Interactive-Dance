@@ -88,12 +88,16 @@ def webcamNames(plugin):
 		return []
 
 
-def statusKey(use, label, names, cameraError, secondsOn, dancerSeen):
+STALLED_SECONDS = 3   # no new MediaPipe result for this long: say so
+
+
+def statusKey(use, label, names, cameraError, secondsOn, dancerSeen, resultAge=0.0):
 	"""The Status line as (language key, values to fill in). Pure, so it is unit tested.
 
 	use: Webcamuse; label: the chosen webcam's name ('' if none); names: the
 	webcams MediaPipe's browser lists; cameraError: camera_in's error text;
-	secondsOn: seconds since Use switched to Body tracking; dancerSeen: pose_present."""
+	secondsOn: seconds since Use switched to Body tracking; dancerSeen: pose_present;
+	resultAge: seconds since MediaPipe sent its last new result."""
 	if use == 'off':
 		return 'webcam.off', ()
 	if use == 'test':
@@ -109,6 +113,8 @@ def statusKey(use, label, names, cameraError, secondsOn, dancerSeen):
 		return ('webcam.starting', (label,)) if starting else ('webcam.nolist', (label,))
 	if matchName(label, names) is None:
 		return ('webcam.starting', (label,)) if starting else ('webcam.nomatch', (label, ', '.join(names)))
+	if not starting and resultAge > STALLED_SECONDS:
+		return 'webcam.stalled', (label, int(resultAge))
 	if dancerSeen:
 		return 'webcam.seen', (label,)
 	return ('webcam.starting', (label,)) if starting else ('webcam.none', (label,))
@@ -129,7 +135,9 @@ def statusText():
 	pose = op('pose_chop')
 	present = pose['pose_present'] if pose is not None else None
 	seen = present is not None and float(present.eval()) > 0.5
-	key, values = statusKey(use, label, names, cameraError, absTime.seconds - _bodySince, seen)
+	chop = op('pose_chop_callbacks')
+	age = getattr(chop.module, 'ResultAge', 0.0) if chop is not None and use == 'body' else 0.0
+	key, values = statusKey(use, label, names, cameraError, absTime.seconds - _bodySince, seen, age)
 	lang = getattr(op, 'Lang', None)
 	text = lang.T(key) if lang is not None else key
 	return text.format(*values)
@@ -146,5 +154,6 @@ def applyWebcam():
 	plugin = op('mediapipe/MediaPipe')
 	if plugin is not None:
 		name = matchName(deviceLabel(device), webcamNames(plugin))
-		if name is not None and plugin.par.Webcam.eval() != name:
+		# .val, not .eval(): eval raises while the stored name is not in the new menu.
+		if name is not None and plugin.par.Webcam.val != name:
 			plugin.par.Webcam = name
