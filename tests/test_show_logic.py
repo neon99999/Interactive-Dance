@@ -237,5 +237,39 @@ class Monitor(unittest.TestCase):
 		self.assertEqual(sl.recentNotes([], 3.0, 1.5), [])
 
 
+class Instruments(unittest.TestCase):
+
+	SPECS = [('particles', [('Visible', 'Toggle', 0, 1), ('Preset', 'Menu', 0, 2),
+							('Energy', 'Float', 0, 1), ('Size', 'Float', 0.5, 4),
+							('Colour', 'Menu', 0, 3), ('Label', 'Str', 0, 1)])]
+
+	def test_targets_from_the_instrument_page(self):
+		targets = sl.instrumentTargets(self.SPECS)
+		self.assertEqual(list(targets), ['particles.visible', 'particles.energy', 'particles.size', 'particles.colour'])
+		self.assertEqual(targets['particles.size'], (0.5, 4.0))
+		self.assertEqual(targets['particles.colour'], (0.0, 3.0))
+
+	def test_reserved_and_layer_names_left_out(self):
+		pars = [('Energy', 'Float', 0, 1)]
+		self.assertEqual(sl.instrumentTargets([('master', pars), ('layer5', pars), ('my inst', pars)]), {})
+
+	def test_targets_are_usable_by_midi_and_inputs(self):
+		known = sl.knownParams(4, sl.instrumentTargets(self.SPECS))
+		a, errors = sl.parseAssignments(table(['60', 'particles', 'show', '', ''],
+											  ['62', 'particles.energy', 'set', '0.8', '']), known)
+		self.assertEqual(errors, [])
+		self.assertEqual([x.param for x in a], ['particles.visible', 'particles.energy'])
+		rows = [['signal', 'target', 'in_min', 'in_max', 'out_min', 'out_max', 'smoothing'],
+				['serial_w1_gx', 'particles.size', '-500', '500', '0.5', '4', '']]
+		inputs, errors = sl.parseInputAssignments(rows, known)
+		self.assertEqual(errors, [])
+		state = sl.InputMapper().apply(inputs, {'serial_w1_gx': 500.0}, {'particles.size': 1.0}, 0.0)
+		self.assertEqual(state['particles.size'], 4.0)
+
+	def test_without_a_mapping_the_manual_value_stays(self):
+		state = sl.InputMapper().apply([], {'serial_w1_gx': 500.0}, {'particles.size': 1.5}, 0.0)
+		self.assertEqual(state['particles.size'], 1.5)
+
+
 if __name__ == '__main__':
 	unittest.main()

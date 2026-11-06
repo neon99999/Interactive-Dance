@@ -239,6 +239,22 @@ Assignments change these values while the show runs. Layer 4 is on top. The visu
 
 `layer2`-`layer4` are clones of `layer1`: they share its network but keep their own settings. Edit the network inside `layer1` only.
 
+**Resolution** (visuals, Output page) is the size of the final image, 1280 x 720 by default. Every layer (and every instrument) renders at it: set it to the projector's resolution on the show computer, or lower it if the frame rate drops.
+
+#### Instruments (being built)
+
+The layers are being joined by **visual instruments** (Particles, Video Feedback). The rule, in one sentence: *any component inside visuals with a custom page named **Instrument** is an instrument.* Then, with nothing else to wire:
+
+- each number, toggle or menu on its Instrument page (except **Preset**) is a target named `<instrument>.<parameter>`, e.g. `particles.energy`, usable in the MIDI table, the input table and the mapping page's Visual menu;
+- a new slot's **From** / **To** come from that parameter's slider range;
+- a **Visible** toggle makes `show particles` / `hide` / `toggle` work in the MIDI table;
+- the engine publishes the value as the channel `particles_energy` on `engine/live`, which the instrument reads (as the layers do).
+
+**Who sets a value** (layers and instruments alike), lowest to highest: the parameter itself (your manual setting), then MIDI events up to the song position, then the input table, then the mapping page. A mapping only takes over while it is **On** and its movement signal exists; switch it off and the manual setting (or MIDI) is back. Two things to know:
+
+- once a MIDI event has set or faded a value, the parameter has no effect on it for the rest of the song, until you seek before that event or Reset;
+- a wearable switched off with **Use Wearable** removes its signals, so its mappings hand back control; body tracking switched off keeps its signals at 0, so a mapping on it holds its From value.
+
 ## Testing
 
 The automatic tests run inside TouchDesigner, take under a minute and leave your tables and settings as they were. Open the Textport (**Alt+T**) and run:

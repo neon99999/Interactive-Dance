@@ -99,7 +99,7 @@ class MappingsExt:
 		# arrive one by one, and the first one saves them all.
 		for i, (current, old) in enumerate(zip(self._currentSlots(), stored), start=1):
 			if current['target'] != old['target']:
-				low, high = self._logic().targetRange(current['target'])
+				low, high = self._logic().targetRange(current['target'], self._targetRanges())
 				self._slotPar(i, 'from').val = low
 				self._slotPar(i, 'to').val = high
 		if self._currentSlots() != stored:
@@ -174,12 +174,14 @@ class MappingsExt:
 		self._writePresets(presets)
 
 	def _knownTargets(self) -> list:
+		"""Every engine target: layers, master, controls and the instruments' settings."""
 		engine = getattr(op, 'Engine', None)
-		logic = engine.op('show_logic') if engine else None
-		if logic is None:
-			return []
-		layers = getattr(engine.op('engine').module, 'NUM_LAYERS', 4)
-		return logic.module.knownParams(layers)
+		return engine.op('engine').module.knownTargets() if engine else []
+
+	def _targetRanges(self) -> dict:
+		"""The instruments' targets with their slider ranges, for a new slot's From / To."""
+		engine = getattr(op, 'Engine', None)
+		return engine.op('engine').module.targetRanges() if engine else {}
 
 	def _liveSignals(self) -> list:
 		inputs = getattr(op, 'Inputs', None)

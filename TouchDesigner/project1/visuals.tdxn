@@ -17,8 +17,8 @@ type_defaults:
     parameters:
       outputresolution: custom
       radiusunit: pixels
-      resolutionh: 720
-      resolutionw: 1280
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
@@ -27,8 +27,8 @@ type_defaults:
   constantTOP:
     parameters:
       outputresolution: custom
-      resolutionh: 720
-      resolutionw: 1280
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
@@ -54,8 +54,8 @@ type_defaults:
   switchTOP:
     parameters:
       outputresolution: custom
-      resolutionh: 720
-      resolutionw: 1280
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -161,6 +161,16 @@ custom_pars:
     style: Pulse
     label: Close Output Window
     help: Close the output window.
+  - name: Resolution
+    style: Int
+    size: 2
+    startSection: true
+    default: [1280, 720]
+    min: 64.0
+    clampMin: true
+    normMin: 64.0
+    normMax: 3840.0
+    help: Size of the final image in pixels (width, height). Every layer and instrument renders at this size. Set it to the projector resolution on the show computer; lower it if the frame rate drops.
 parameters:
   parentshortcut: Visuals
   opshortcut: Visuals
@@ -196,8 +206,8 @@ operators:
     type: outTOP
     parameters:
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [3200, -200]
     inputs:
     - level_opacity
@@ -205,8 +215,8 @@ operators:
     type: compositeTOP
     parameters:
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [2000, -200]
     inputs:
     - switch_effect
@@ -214,8 +224,8 @@ operators:
   - name: fit_media
     type: fitTOP
     parameters:
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -1200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -229,8 +239,8 @@ operators:
       timecodeop: =tdu.Timecode()
       hwdecode: false
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [-400, -1200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -284,8 +294,8 @@ operators:
       sizey: 320
       sizeunit: pixels
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -297,8 +307,8 @@ operators:
       fontsizex: 160
       fontsizexunit: pixels
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -314,8 +324,8 @@ operators:
     parameters:
       opacity: =tdu.clamp(op('live')['opacity'] * op('live')['visible'], 0, 1)
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [2800, -200]
     inputs:
     - transform_layer
@@ -336,8 +346,8 @@ operators:
       harmon: 3
       tz: =(absTime.seconds * 0.15) % 1000
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -600]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -349,8 +359,8 @@ operators:
       phase: =(absTime.seconds * 0.3) % 1
       period: 0.15
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -800]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -392,8 +402,8 @@ operators:
       sx: =op('live')['scale']
       sy: =op('live')['scale']
       outputresolution: custom
-      resolutionw: 1280
-      resolutionh: 720
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [2400, -200]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -477,8 +487,8 @@ operators:
   parameters:
     operand: over
     outputresolution: custom
-    resolutionw: 1280
-    resolutionh: 720
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
   flags:
   - viewer
   position: [400, 0]

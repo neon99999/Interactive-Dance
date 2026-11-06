@@ -35,10 +35,44 @@ def defaultBase(num_layers=4):
 	return base
 
 
-def knownParams(num_layers=4):
-	"""Every assignable parameter name, e.g. 'layer1.opacity', 'master.flash'."""
+def knownParams(num_layers=4, extra=()):
+	"""Every assignable parameter name, e.g. 'layer1.opacity', 'master.flash', then extra (instrument targets)."""
 	names = ['layer%d.%s' % (i, p) for i in range(1, num_layers + 1) for p in LAYER_PARAMS]
-	return names + ['master.%s' % p for p in MASTER_PARAMS] + list(CONTROL_DEFAULTS)
+	return names + ['master.%s' % p for p in MASTER_PARAMS] + list(CONTROL_DEFAULTS) + list(extra)
+
+
+# ---------------------------------------------------------------- instruments
+# The instrument contract: any COMP inside visuals with a custom page named
+# 'Instrument' is an instrument. Its number, toggle and menu parameters on that
+# page are its settings: each one is a target '<instrument>.<parameter>' (lower
+# case, e.g. particles.energy) for MIDI and the mapping page, and the engine
+# publishes its value as the channel <instrument>_<parameter>. A 'Visible'
+# toggle makes MIDI show / hide / toggle work on the bare name ('particles').
+
+INSTRUMENT_PAGE = 'Instrument'
+INSTRUMENT_STYLES = ('Float', 'Int', 'Toggle', 'Menu')
+INSTRUMENT_SKIP = ('Preset',)  # applying a preset sets the other parameters; never a target
+RESERVED_NAMES = ('master', 'mapping', 'clock')
+
+
+def instrumentTargets(instruments):
+	"""Targets of the instruments -> {target: (low, high)}, in page order.
+
+	instruments: [(instrument name, [(parameter name, style, low, high), ...])],
+	low / high being the slider range (a menu: 0 to its last index). Parameters
+	of another style, skipped ones and instruments with a reserved or layer
+	name are left out.
+	"""
+	targets = {}
+	for name, pars in instruments:
+		name = str(name).lower()
+		if name in RESERVED_NAMES or name.startswith('layer') or not name.isidentifier():
+			continue
+		for par_name, style, low, high in pars:
+			if style not in INSTRUMENT_STYLES or par_name in INSTRUMENT_SKIP:
+				continue
+			targets['%s.%s' % (name, par_name.lower())] = (float(low), float(high))
+	return targets
 
 
 class Assignment:

@@ -49,6 +49,8 @@ class Catalogues(unittest.TestCase):
 		self.assertEqual(ml.targetRange('layer1.x'), (-1.0, 1.0))
 		self.assertEqual(ml.targetRange('master.flash'), (0.0, 1.0))
 		self.assertEqual(ml.targetRange('layer1.glow'), (0.0, 1.0))
+		self.assertEqual(ml.targetRange('particles.size', {'particles.size': (0.5, 4.0)}), (0.5, 4.0))
+		self.assertEqual(ml.targetRange('layer1.x', {'particles.size': (0.5, 4.0)}), (-1.0, 1.0))
 
 	def test_sensitivity_narrows_the_input_range(self):
 		self.assertEqual(ml.inputRange('pose_hand_l', 1), (0.0, 1.0))

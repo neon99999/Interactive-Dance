@@ -65,8 +65,14 @@ def signalRange(name):
 	return (0.0, 1.0)
 
 
-def targetRange(target):
-	"""(from, to) that covers a target's useful values, e.g. layer1.rotate -> (0, 360)."""
+def targetRange(target, ranges=None):
+	"""(from, to) that covers a target's useful values, e.g. layer1.rotate -> (0, 360).
+
+	ranges: {target: (low, high)} given by the instruments (their slider
+	ranges); those win over the layer table.
+	"""
+	if ranges and target in ranges:
+		return tuple(ranges[target])
 	return TARGET_RANGES.get(target.split('.')[-1], (0.0, 1.0))
 
 

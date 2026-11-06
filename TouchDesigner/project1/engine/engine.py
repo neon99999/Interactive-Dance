@@ -6,6 +6,10 @@
            the input_assignments table, then the mapping page's rows
            (mappings/assignments), which win for the same target
 
+Targets: the 4 layers, master, mapping.preset, and every instrument's settings
+(any COMP in visuals with an 'Instrument' page, see show_logic). Instruments
+are found again every frame, so a new one is a target at once.
+
 The MIDI part is a pure function of the playback position, so pausing repeats
 nothing and seeking or Reset restores the right state. Inputs keep working
 while the music is paused.
@@ -29,9 +33,12 @@ _last_seconds = None
 def onFrameStart(frame):
 	global _mapper, _last_seconds
 	sl = mod.show_logic
-	_refreshMidi(sl)
-	_refreshInputs(sl)
-	state = sl.evaluate(_midi['events'], _base(sl), _transportSeconds())
+	found = instruments()
+	ranges = _ranges(sl, found)
+	known = sl.knownParams(NUM_LAYERS, ranges)
+	_refreshMidi(sl, known)
+	_refreshInputs(sl, known)
+	state = sl.evaluate(_midi['events'], _base(sl, found, ranges), _transportSeconds())
 	if _mapper is None:
 		_mapper = sl.InputMapper()
 	now = absTime.seconds
@@ -40,6 +47,49 @@ def onFrameStart(frame):
 	state = _mapper.apply(_inputs['assignments'], _signals(), state, dt)
 	state['clock.seconds'] = _transportSeconds()
 	_publish(state)
+
+
+def instruments():
+	"""[(COMP, [Par])]: every instrument in visuals and its target parameters, in page order."""
+	visuals = getattr(op, 'Visuals', None)
+	sl = op.Engine.op('show_logic').module
+	if visuals is None:
+		return []
+	found = []
+	for comp in visuals.children:
+		if not comp.isCOMP:
+			continue
+		page = next((p for p in comp.customPages if p.name == sl.INSTRUMENT_PAGE), None)
+		if page is not None:
+			found.append((comp, [p for p in page.pars
+				if p.style in sl.INSTRUMENT_STYLES and p.name not in sl.INSTRUMENT_SKIP]))
+	return found
+
+
+def targetRanges():
+	"""{instrument target: (low, high)}, e.g. 'particles.energy': (0, 1). Read by the mapping page."""
+	return _ranges(op.Engine.op('show_logic').module, instruments())
+
+
+def knownTargets():
+	"""Every target name (layers, master, controls, instruments). Read by the mapping page."""
+	sl = op.Engine.op('show_logic').module
+	return sl.knownParams(NUM_LAYERS, targetRanges())
+
+
+def _ranges(sl, found):
+	specs = []
+	for comp, pars in found:
+		specs.append((comp.name, [(p.name, p.style) + _sliderRange(p) for p in pars]))
+	return sl.instrumentTargets(specs)
+
+
+def _sliderRange(par):
+	if par.isMenu:
+		return (0.0, float(max(0, len(par.menuNames) - 1)))
+	if par.isToggle:
+		return (0.0, 1.0)
+	return (float(par.normMin), float(par.normMax))
 
 
 def _transportSeconds():
@@ -69,27 +119,27 @@ def noteOns():
 	return notes, key
 
 
-def _refreshMidi(sl):
+def _refreshMidi(sl, known):
 	table = op('midi_assignments')
 	notes, notes_key = noteOns()
-	key = (table.text, notes_key)
+	key = (table.text, notes_key, tuple(known))
 	if key == _midi['key']:
 		return
-	assignments, errors = sl.parseAssignments([[c.val for c in row] for row in table.rows()])
+	assignments, errors = sl.parseAssignments([[c.val for c in row] for row in table.rows()], known)
 	_midi.update(key=key, events=sl.buildEvents(notes, assignments), errors=errors)
 	_writeErrors()
 
 
-def _refreshInputs(sl):
+def _refreshInputs(sl, known):
 	table = op('input_assignments')
 	mappings = getattr(op, 'Mappings', None)
 	mapped = mappings.op('assignments') if mappings else None
-	key = (table.text, mapped.text if mapped is not None else '')
+	key = (table.text, mapped.text if mapped is not None else '', tuple(known))
 	if key == _inputs['key']:
 		return
-	assignments, errors = sl.parseInputAssignments([[c.val for c in row] for row in table.rows()])
+	assignments, errors = sl.parseInputAssignments([[c.val for c in row] for row in table.rows()], known)
 	if mapped is not None:
-		more, more_errors = sl.parseInputAssignments([[c.val for c in row] for row in mapped.rows()])
+		more, more_errors = sl.parseInputAssignments([[c.val for c in row] for row in mapped.rows()], known)
 		for a in more:
 			a.row += MAPPING_ROW_OFFSET
 		assignments += more
@@ -107,8 +157,11 @@ def _writeErrors():
 		out.appendRow(['input_assignments', e])
 
 
-def _base(sl):
-	"""Starting values read from the layer and master parameters."""
+def _base(sl, found=None, ranges=None):
+	"""Starting values read from the layer, master and instrument parameters (the manual settings)."""
+	if found is None:
+		found = instruments()
+		ranges = _ranges(sl, found)
 	base = sl.defaultBase(NUM_LAYERS)
 	visuals = getattr(op, 'Visuals', None)
 	if visuals is None:
@@ -120,6 +173,11 @@ def _base(sl):
 				_read(base, 'layer%d.%s' % (i, name), layer.par[par_name])
 	for name, par_name in MASTER_PARS.items():
 		_read(base, 'master.' + name, visuals.par[par_name])
+	for comp, pars in found:
+		for par in pars:
+			key = '%s.%s' % (comp.name.lower(), par.name.lower())
+			if key in ranges:
+				_read(base, key, par)
 	return base
 
 
