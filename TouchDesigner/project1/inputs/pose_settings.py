@@ -24,10 +24,22 @@ USE_SOURCES = {
 	'body': ('camera', 'camera'),
 	'test': ('test', 'test'),
 }
-STARTING_SECONDS = 15   # MediaPipe's browser takes a few seconds to list and open the webcam
+STARTING_SECONDS = 20   # measured 11-18 s for MediaPipe to start (or restart) and send its first result
 
 # Runtime state (reset when this text changes): when Use last switched to Body tracking.
 _bodySince = None
+# camera_in's Active expression reads WebcamFree: False while MediaPipe's
+# browser is still letting go of the webcam, so camera_in does not try (and
+# fail) to open it too early. Video Device In does not retry by itself.
+try:
+	WebcamFree = tdu.Dependency(True)
+except NameError:   # outside TouchDesigner (unit tests)
+	class _Value:
+		val = True
+	WebcamFree = _Value()
+RELEASE_MS = 1500     # time for MediaPipe's browser to let go of the webcam
+START_MS = 2500       # time for camera_in to let go before MediaPipe opens it (1 s was not always enough)
+_pending = {'start': False}
 
 
 def onValueChange(par, prev):
@@ -40,9 +52,7 @@ def onValueChange(par, prev):
 		settings.Camerasource = camera
 		settings.Posesource = pose
 	elif par.name == 'Posesource':
-		mediapipe = op('mediapipe')
-		if mediapipe is not None:
-			mediapipe.allowCooking = par.eval() == 'camera'
+		setMediapipeRunning(par.eval() == 'camera')
 		applyWebcam()
 	elif par.name == 'Posemask':
 		plugin = op('mediapipe/MediaPipe')
@@ -52,6 +62,72 @@ def onValueChange(par, prev):
 		if parent.Inputs.par.Webcamuse.eval() == 'body':
 			_bodySince = absTime.seconds
 		applyWebcam()
+
+
+def setMediapipeRunning(on):
+	"""Start or stop MediaPipe, including its web browser.
+
+	Stopping only the COMP's cooking left the browser page open, still
+	holding the webcam: Movement Only then could not open it ('Failed to
+	start video', and TouchDesigner stalled while camera_in retried). So the
+	browser is switched off first and the COMP stops cooking a little later,
+	once the page has closed and released the webcam. The other way round,
+	the browser starts a moment after camera_in has let go."""
+	mediapipe = op('mediapipe')
+	browser = op('mediapipe/MediaPipe/webBrowser1')
+	if mediapipe is None:
+		return
+	if on:
+		mediapipe.allowCooking = True
+		if browser is not None and not browser.par.Active.eval() and not _pending['start']:
+			# camera_in has just been switched off: give it a moment to let go of the
+			# webcam, or MediaPipe fails to start it and reloads itself (seconds lost).
+			_pending['start'] = True
+			run('args[0].startBrowser()', me.module, delayMilliSeconds=START_MS)
+	else:
+		if browser is not None and browser.par.Active.eval():
+			browser.par.Active = False
+			WebcamFree.val = False
+		run('args[0].releasedWebcam()', me.module, delayMilliSeconds=RELEASE_MS)
+
+
+def startBrowser():
+	"""Switch MediaPipe's browser on, if body tracking is still wanted."""
+	_pending['start'] = False
+	browser = op('mediapipe/MediaPipe/webBrowser1')
+	if browser is not None and parent.Inputs.par.Posesource.eval() == 'camera':
+		browser.par.Active = True
+
+
+def releasedWebcam(retries=3):
+	"""After the browser closed: stop MediaPipe cooking and let camera_in open the
+	webcam; if camera_in still cannot open it, try again a little later."""
+	inputs = parent.Inputs
+	mediapipe = op('mediapipe')
+	if inputs.par.Posesource.eval() == 'camera':
+		WebcamFree.val = True
+		return
+	if mediapipe is not None:
+		mediapipe.allowCooking = False
+	camera = op('camera_in')
+	if not WebcamFree.val:
+		WebcamFree.val = True
+	elif retries > 0 and camera is not None and inputs.par.Camerasource.eval() == 'camera' and camera.errors():
+		WebcamFree.val = False   # switches camera_in off; the next call switches it on again
+	else:
+		return
+	if retries > 0:
+		run('args[0].releasedWebcam(args[1])', me.module, retries - 1, delayMilliSeconds=RELEASE_MS)
+
+
+def mediapipeRunningMatches(on):
+	"""True when MediaPipe's cooking and browser already match on (cheap, for every frame)."""
+	mediapipe = op('mediapipe')
+	browser = op('mediapipe/MediaPipe/webBrowser1')
+	if mediapipe is None:
+		return True
+	browserOn = bool(browser.par.Active.eval()) if browser is not None else on
+	return browserOn == on and (mediapipe.allowCooking == on or not on and not browserOn)
 
 
 def deviceLabel(device):
@@ -91,13 +167,14 @@ def webcamNames(plugin):
 STALLED_SECONDS = 3   # no new MediaPipe result for this long: say so
 
 
-def statusKey(use, label, names, cameraError, secondsOn, dancerSeen, resultAge=0.0):
+def statusKey(use, label, names, cameraError, secondsOn, dancerSeen, resultAge=0.0, mediapipeError=''):
 	"""The Status line as (language key, values to fill in). Pure, so it is unit tested.
 
 	use: Webcamuse; label: the chosen webcam's name ('' if none); names: the
 	webcams MediaPipe's browser lists; cameraError: camera_in's error text;
 	secondsOn: seconds since Use switched to Body tracking; dancerSeen: pose_present;
-	resultAge: seconds since MediaPipe sent its last new result."""
+	resultAge: seconds since MediaPipe sent its last new result; mediapipeError:
+	the plugin's error text ('Webcam failed to start...' when the webcam is busy)."""
 	if use == 'off':
 		return 'webcam.off', ()
 	if use == 'test':
@@ -109,6 +186,8 @@ def statusKey(use, label, names, cameraError, secondsOn, dancerSeen, resultAge=0
 			return 'webcam.camerror', (label,)
 		return 'webcam.movement', (label,)
 	starting = secondsOn < STARTING_SECONDS
+	if 'webcam failed' in mediapipeError.lower():
+		return 'webcam.mpbusy', (label,)
 	if not names:
 		return ('webcam.starting', (label,)) if starting else ('webcam.nolist', (label,))
 	if matchName(label, names) is None:
@@ -137,7 +216,8 @@ def statusText():
 	seen = present is not None and float(present.eval()) > 0.5
 	chop = op('pose_chop_callbacks')
 	age = getattr(chop.module, 'ResultAge', 0.0) if chop is not None and use == 'body' else 0.0
-	key, values = statusKey(use, label, names, cameraError, absTime.seconds - _bodySince, seen, age)
+	mpError = plugin.errors() if plugin is not None and use == 'body' else ''
+	key, values = statusKey(use, label, names, cameraError, absTime.seconds - _bodySince, seen, age, mpError)
 	lang = getattr(op, 'Lang', None)
 	text = lang.T(key) if lang is not None else key
 	return text.format(*values)

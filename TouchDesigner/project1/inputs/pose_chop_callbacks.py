@@ -13,8 +13,9 @@ drawn on pose_monitor).
 _tracker = None
 LastPoints = None
 # MediaPipe's pose DAT keeps its last result when MediaPipe stalls, so a frozen
-# browser looked like a dancer standing still. Results older than STALE_SECONDS
-# count as no dancer; ResultAge is shown in the Webcam Status.
+# browser looked like a dancer standing still. A body result unchanged for
+# longer than STALE_SECONDS counts as no dancer; ResultAge is shown in the
+# Webcam Status. (A stall while nobody is in view reads as 'no dancer seen'.)
 STALE_SECONDS = 1.0
 _lastText = None
 _lastResultAt = None
@@ -41,11 +42,14 @@ def onCook(scriptOp):
 	if source == 'camera':
 		results = op('mediapipe/MediaPipe/pose')
 		text = results.text if results is not None else None
-		if text != _lastText or _lastResultAt is None:
+		points = signals.parsePose(text) if text is not None else None
+		if text != _lastText or _lastResultAt is None or not points:
+			# A new result, or an empty one: MediaPipe repeats the same empty
+			# text while nobody is in view, which is not a stall.
 			_lastText, _lastResultAt = text, now
 		ResultAge = now - _lastResultAt
-		fresh = text is not None and ResultAge <= STALE_SECONDS
-		points = signals.parsePose(text) if fresh else None
+		if ResultAge > STALE_SECONDS:
+			points = None
 	elif source == 'test':
 		points = signals.testPose(now)
 	else:
@@ -64,13 +68,13 @@ def onCook(scriptOp):
 
 
 def _matchMediapipeCooking(wanted):
-	"""MediaPipe cooks only while Source is Camera. pose_settings switches it on a change;
+	"""MediaPipe (and its browser) runs only while Source is Camera. pose_settings switches it on a change;
 	this also covers a project opened with Source already on Camera. It also
 	keeps MediaPipe's segmentation matching the Body Mask toggle, its overlay
 	drawing off (a clean picture for the visuals) and its webcam on the Device."""
-	mediapipe = op('mediapipe')
-	if mediapipe is not None and mediapipe.allowCooking != wanted:
-		run('args[0].allowCooking = args[1]', mediapipe, wanted, delayFrames=1)
+	settings = op('pose_settings').module
+	if not settings.mediapipeRunningMatches(wanted):
+		run('args[0].setMediapipeRunning(args[1])', settings, wanted, delayFrames=1)
 	plugin = op('mediapipe/MediaPipe')
 	mask = bool(parent.Inputs.par.Posemask.eval())
 	if wanted and plugin is not None and plugin.par.Detectsegments.eval() != mask:

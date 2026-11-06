@@ -124,7 +124,7 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 | **Body Tracking** | MediaPipe | yes, measured from MediaPipe's picture | yes |
 | **Test (No Webcam)** | nothing | test pattern | test dancer |
 
-**Status** (read-only, also shown over the picture on pose_monitor) says what is happening and what to do: no webcam chosen; the webcam does not open (another app holds it); MediaPipe starting (up to about 15 s); MediaPipe sees no webcam or cannot find yours (it lists what it sees); working, dancer seen or not. If Pose shows nothing, read Status first. The greyed **Motion From** (Webcam page) and **Tracking** (Pose page) show what Use set. The Video Feedback instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
+**Status** (read-only, also shown over the picture on pose_monitor) says what is happening and what to do: no webcam chosen; the webcam does not open (another app holds it); MediaPipe starting (up to about 20 s); MediaPipe sees no webcam or cannot find yours (it lists what it sees); working, dancer seen or not. If Pose shows nothing, read Status first. The greyed **Motion From** (Webcam page) and **Tracking** (Pose page) show what Use set. The Video Feedback instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
 
 Serial devices should print one line per reading, in either of these forms:
 
@@ -164,6 +164,8 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 **Stage zones:** **Stage Zones** (1-5, default 3) splits the picture into equal zones from left to right. `pose_zone` is the zone the dancer is in (1 = left, 0 = nobody seen), and `pose_zone1` ... `pose_zone5` are 1 in their zone and 0 elsewhere, ready for a layer's `visible`. **Zone Margin** (0.05 = 5 % of the picture width) is how far past a border the dancer must go before the zone changes, so standing on a border does not flicker. The zones follow `pose_x`, so **Flip Left/Right** flips them too.
 
 **Body Mask** (default off) also asks MediaPipe for the dancer's outline, which the Video Feedback instrument's **Echo: Dancer** uses. Turn it on only when you use Echo: Dancer: measured on MINI-PC with a C920 and a moving dancer, it cut MediaPipe's body updates from about 14 to 9 a second, with gaps of up to 2 s (off: under 1 s).
+
+**Switching Use:** body tracking takes about 11-18 s to start every time (MediaPipe's browser starts and loads its model; Status says "starting"). When you leave Body Tracking, the browser is closed so it lets go of the webcam, and Movement Only opens it about 1.5 s later; going back, MediaPipe waits 2.5 s for the movement camera to let go. (Before this, Movement Only after Body Tracking failed with "Failed to start video" and TouchDesigner stuttered.)
 
 If MediaPipe stops sending results (its browser stalls), the pose signals drop to 0 after 1 s instead of freezing on the last pose, and Status says so after 3 s: set **Use** to Off and back to Body Tracking.
 

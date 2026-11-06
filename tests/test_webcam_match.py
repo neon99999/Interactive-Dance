@@ -72,6 +72,8 @@ class WebcamStatus(unittest.TestCase):
 		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 60, True, 5.0), ('webcam.stalled', (self.C920, 5)))
 		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 60, True, 0.5)[0], 'webcam.seen')
 		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 3, False, 5.0)[0], 'webcam.starting')
+		busy = 'Webcam failed to start. Is it being used somewhere else? Component reloading'
+		self.assertEqual(ps.statusKey('body', self.C920, self.LIST, '', 3, False, 0.0, busy)[0], 'webcam.mpbusy')
 
 
 if __name__ == '__main__':

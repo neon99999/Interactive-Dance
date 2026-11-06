@@ -435,3 +435,4 @@ control.Instrument.label	Instrument	Instrumento
 control.Instrument.menu	Particles|Video Feedback|Noise	Partículas|Video eco|Ruido
 control.Instrument.help	Which instrument this tab shows. Each one has its On switch here; mix them on the Composition tab.	Qué instrumento muestra esta pestaña. Cada uno tiene aquí su interruptor; mézclalos en la pestaña Composición.
 webcam.stalled	Body tracking: MediaPipe stopped sending results ({1} s). Set Use to Off and back to Body Tracking.	Seguimiento: MediaPipe dejó de enviar resultados ({1} s). Pon Uso en Apagado y otra vez en Seguimiento del cuerpo.
+webcam.mpbusy	Body tracking: MediaPipe cannot open {0} (another app uses it?). It retries by itself; close other apps that use the webcam.	Seguimiento: MediaPipe no puede abrir {0} (¿otra app la usa?). Reintenta solo; cierra otras apps que usen la cámara.

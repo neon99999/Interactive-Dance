@@ -264,7 +264,7 @@ operators:
 - name: camera_in
   type: videodeviceinTOP
   parameters:
-    active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera'
+    active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera' and op('pose_settings').module.WebcamFree.val
     device: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||HD Pro Webcam C920
     signalformat: f640x480p-30.00hz
   flags:
