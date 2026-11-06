@@ -223,13 +223,13 @@ mappings.Clear.label	Clear Current Preset	Vaciar preset actual
 mappings.Clear.help	Turn off and empty all 8 mappings of the current preset.	Apaga y vacía las 8 conexiones del preset actual.
 mappings.Refresh.label	Refresh Menus	Actualizar menús
 mappings.Refresh.help	Update the Movement menus with signals that appeared since (e.g. a new OSC address).	Actualiza los menús de Movimiento con señales nuevas (p. ej. una dirección OSC nueva).
-inputs.Camerasource.label	Source	Fuente
+inputs.Camerasource.label	Motion From (Set by Use)	Movimiento de (lo fija Uso)
 inputs.Camerasource.menu	Off|Webcam|Test Pattern	Apagado|Cámara web|Patrón de prueba
-inputs.Camerasource.help	Off: no camera motion, all camera signals 0. Webcam: measure movement in the webcam chosen below (when body tracking is on, from MediaPipe's picture of the same webcam). Test Pattern: a moving dot, to try camera mappings without a camera.	Apagado: sin movimiento de cámara, todas las señales camera en 0. Cámara web: mide el movimiento en la cámara web elegida abajo (con el seguimiento del cuerpo activo, en la imagen de MediaPipe de la misma cámara). Patrón de prueba: un punto en movimiento, para probar asignaciones de cámara sin cámara.
+inputs.Camerasource.help	Read only, set by Use above. Where the camera motion signals come from: Off (all camera signals 0), Webcam (the webcam above; with Body Tracking, measured from MediaPipe's picture) or Test Pattern (a moving dot).	Solo lectura, lo fija Uso arriba. De dónde vienen las señales de movimiento de cámara: Apagado (todas en 0), Cámara web (la cámara de arriba; con Seguimiento del cuerpo, medido en la imagen de MediaPipe) o Patrón de prueba (un punto en movimiento).
 inputs.Cameradevice.label	Webcam	Cámara web
-inputs.Cameradevice.help	The one webcam the project uses, for camera motion, body tracking (Pose page) and the Video Feedback instrument. Close other apps that use it.	La única cámara web que usa el proyecto: para el movimiento de cámara, el seguimiento del cuerpo (página Pose) y el instrumento Video eco. Cierra otras apps que la usen.
-inputs.Posesource.label	Source	Fuente
-inputs.Posesource.help	Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): track a dancer in the webcam chosen on the Camera page; MediaPipe then holds the webcam, and camera motion is measured from its picture. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.	Apagado: seguimiento del cuerpo detenido (MediaPipe no corre), todas las señales pose en 0. Cámara web (MediaPipe): sigue a un bailarín en la cámara web elegida en la página Camera; MediaPipe usa entonces la cámara, y el movimiento de cámara se mide en su imagen. Bailarín de prueba: un bailarín inventado que camina y saluda, para probar asignaciones de pose sin cámara.
+inputs.Cameradevice.help	The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.	La única cámara web que usa el proyecto: para el movimiento de cámara, el seguimiento del cuerpo y el instrumento Video eco. Cierra otras apps que la usen.
+inputs.Posesource.label	Tracking (Set by Webcam > Use)	Seguimiento (lo fija Webcam > Uso)
+inputs.Posesource.help	Read only, set by Use on the Webcam page. Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): MediaPipe tracks a dancer in the webcam. Test Dancer: a made-up dancer that walks and waves.	Solo lectura, lo fija Uso en la página Webcam. Apagado: seguimiento detenido (MediaPipe no corre), señales pose en 0. Cámara web (MediaPipe): MediaPipe sigue a un bailarín en la cámara web. Bailarín de prueba: un bailarín inventado que camina y saluda.
 inputs.Posesource.menu	Off|Webcam (MediaPipe)|Test Dancer	Apagado|Cámara web (MediaPipe)|Bailarín de prueba
 inputs.Poseflipx.label	Flip Left/Right	Invertir izq./der.
 inputs.Poseflipx.help	Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.	Apagado: pose_x vale 0 a la izquierda de la imagen de MediaPipe y 1 a la derecha. Activo: al revés. Úsalo para que pose_x coincida con el escenario visto por el público.
@@ -258,7 +258,7 @@ pose.hand_l	Left hand	Mano izq.
 pose.hand_r	Right hand	Mano der.
 pose.spread	Arms spread	Apertura
 pose.energy	Energy	Energía
-pose.nocamera	Pose page: set Source to Webcam (MediaPipe)	Página Pose: pon Fuente en Cámara web (MediaPipe)
+pose.nocamera	Webcam page: set Use to Body Tracking	Página Webcam: pon Uso en Seguimiento del cuerpo
 target.particles.visible	Particles: on	Partículas: encendidas
 target.particles.opacity	Particles: opacity	Partículas: opacidad
 target.particles.blend	Particles: blend	Partículas: mezcla de capas
@@ -392,3 +392,18 @@ visuals/noise.Feedback.help	How long the pattern leaves trails as it drifts outw
 visuals/noise.Colour.label	Colour	Color
 visuals/noise.Colour.menu	Smoke|Lava|Ocean|Neon	Humo|Lava|Océano|Neón
 visuals/noise.Colour.help	Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).	Paleta de color: Humo (gris-blanco), Lava (rojo-dorado), Océano (azul-cian), Neón (violeta-cian-rosa).
+inputs.Webcamuse.label	Use	Uso
+inputs.Webcamuse.menu	Off|Movement Only|Body Tracking|Test (No Webcam)	Apagado|Solo movimiento|Seguimiento del cuerpo|Prueba (sin cámara)
+inputs.Webcamuse.help	What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.	Para qué sirve la cámara web. Apagado: nada la abre, señales camera y pose en 0. Solo movimiento: señales de movimiento de cámara (ligero, sin MediaPipe). Seguimiento del cuerpo: MediaPipe sigue al bailarín (señales pose, máscara del cuerpo) y también funcionan las señales de movimiento de cámara. Prueba: un patrón en movimiento y un bailarín inventado, sin cámara web. Lee Estado abajo para ver si funciona.
+inputs.Webcamstatus.label	Status	Estado
+inputs.Webcamstatus.help	Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.	Solo lectura: qué hace la cámara web ahora, y qué hacer si no funciona. La misma línea aparece en pose_monitor.
+webcam.off	Off: the webcam is not used.	Apagado: la cámara web no se usa.
+webcam.test	Test: test pattern and test dancer, no webcam needed.	Prueba: patrón y bailarín de prueba, sin cámara web.
+webcam.nodevice	No webcam chosen: pick one in Webcam above.	Ninguna cámara elegida: elige una en Cámara web arriba.
+webcam.movement	Movement only: {0} is open.	Solo movimiento: {0} está abierta.
+webcam.camerror	{0} does not open: close other apps that use it (Zoom, browser, camera app).	{0} no se abre: cierra otras apps que la usen (Zoom, navegador, app de cámara).
+webcam.starting	Body tracking: starting MediaPipe on {0}...	Seguimiento: iniciando MediaPipe en {0}...
+webcam.nolist	Body tracking: MediaPipe sees no webcam. Close other apps using {0}, then set Use to Off and back.	Seguimiento: MediaPipe no ve ninguna cámara. Cierra otras apps que usen {0}, luego pon Uso en Apagado y otra vez.
+webcam.nomatch	Body tracking: MediaPipe cannot find {0}. It lists: {1}	Seguimiento: MediaPipe no encuentra {0}. Ve: {1}
+webcam.seen	Body tracking: {0} working, dancer seen.	Seguimiento: {0} funciona, bailarín visible.
+webcam.none	Body tracking: {0} working, no dancer seen. Step into view; check the light.	Seguimiento: {0} funciona, sin bailarín. Entra en la imagen; revisa la luz.

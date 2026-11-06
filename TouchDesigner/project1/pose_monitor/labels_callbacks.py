@@ -58,5 +58,9 @@ def onCook(scriptOp):
 		block = zones - z if flip else z - 1
 		cx = (block + 0.5) * PICTURE_W / zones
 		scriptOp.appendRow([round(cx) - 7, STRIP_H // 2 + TEXT_Y, str(z)])
-	if source != 'camera':
-		scriptOp.appendRow([PAD, HEIGHT - 40 + TEXT_Y, T('pose.nocamera')])
+	# The Webcam page Status line, over the picture: what the webcam is doing and what to do.
+	settingsDat = op.Inputs.op('pose_settings')
+	status = settingsDat.module.statusText() if settingsDat is not None else ''
+	scriptOp.appendRow([PAD, HEIGHT - 40 + TEXT_Y, status])
+	if source == 'off':
+		scriptOp.appendRow([PAD, HEIGHT - 75 + TEXT_Y, T('pose.nocamera')])

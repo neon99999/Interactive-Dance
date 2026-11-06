@@ -1,9 +1,9 @@
 """Video source: the image the Video Feedback instrument uses, and its Status line.
 
 Source menu (Source page):
-- Webcam: MediaPipe's camera image while body tracking (inputs > Pose) is on,
-  because MediaPipe holds the webcam then; otherwise inputs > Camera's webcam
-  when that is on. With neither on there is no camera image, so the test
+- Webcam: MediaPipe's camera image with inputs > Webcam > Use on Body
+  Tracking, because MediaPipe holds the webcam then; camera_in's picture on
+  Movement Only. With neither on there is no camera image, so the test
   pattern shows and Status says how to turn one on. The instrument never
   opens a camera itself, so it cannot fight body tracking for the webcam.
 - Video File: loaded only when Load is pressed (load()), and only if the file
@@ -12,7 +12,7 @@ Source menu (Source page):
 
 Echo menu (Instrument page): what leaves the trails.
 - Dancer: only the dancer repeats. Uses MediaPipe's body mask, so it needs
-  body tracking on (inputs > Pose Source: Camera, Body Mask on) and the
+  body tracking on (inputs > Webcam > Use: Body Tracking, Body Mask on) and the
   Webcam source coming from body tracking (the mask fits that picture only).
 - Movement: only what moves repeats (this frame compared with the last one).
 - Whole Picture: classic video feedback, the whole image fed back into itself.
@@ -81,8 +81,8 @@ def _sourceText():
 		if index == POSE:
 			return 'Webcam (from body tracking)'
 		if index == CAMERA:
-			return 'Webcam (from inputs > Camera)'
-		return 'No webcam on: showing the test pattern. Turn on inputs > Pose (Webcam) or inputs > Camera (Webcam).'
+			return 'Webcam (movement only, from inputs > Webcam)'
+		return 'No webcam on: showing the test pattern. Set inputs > Webcam > Use to Body Tracking or Movement Only.'
 	if choice == 'file':
 		missing = comp.fetch('load_error', '', search=False)
 		if missing:

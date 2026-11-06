@@ -123,10 +123,43 @@ custom_pars:
     label: Use Wearable 3
     default: true
     help: 'On: wearable 3''s signals (serial_w3_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
-  Camera:
+  Webcam:
+  - name: Cameradevice
+    style: StrMenu
+    label: Webcam
+    menuSource: op('./camera_in').par.device
+    help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
+  - name: Webcamuse
+    style: Menu
+    label: Use
+    default: 'off'
+    menuNames:
+    - 'off'
+    - movement
+    - body
+    - test
+    menuLabels:
+    - 'Off'
+    - Movement Only
+    - Body Tracking
+    - Test (No Webcam)
+    help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
+  - name: Webcamstatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
+    value: =me.op('pose_settings').module.statusText()
+  - name: Camerasensitivity
+    style: Float
+    label: Sensitivity
+    default: 10
+    clampMin: true
+    normMax: 50.0
+    help: Multiplies the amount of movement seen. Raise it if camera_motion stays small; signals are clamped to 0-1 by the input assignment ranges.
   - name: Camerasource
     style: Menu
-    label: Source
+    label: Motion From (Set by Use)
     default: 'off'
     menuNames:
     - 'off'
@@ -136,23 +169,12 @@ custom_pars:
     - 'Off'
     - Webcam
     - Test Pattern
-    help: 'Off: no camera motion, all camera signals 0. Webcam: measure movement in the webcam chosen below (when body tracking is on, from MediaPipe''s picture of the same webcam). Test Pattern: a moving dot, to try camera mappings without a camera.'
-  - name: Cameradevice
-    style: StrMenu
-    label: Webcam
-    menuSource: op('./camera_in').par.device
-    help: The one webcam the project uses, for camera motion, body tracking (Pose page) and the Video Feedback instrument. Close other apps that use it.
-  - name: Camerasensitivity
-    style: Float
-    label: Sensitivity
-    default: 10
-    clampMin: true
-    normMax: 50.0
-    help: Multiplies the amount of movement seen. Raise it if camera_motion stays small; signals are clamped to 0-1 by the input assignment ranges.
+    readOnly: true
+    help: 'Read only, set by Use above. Where the camera motion signals come from: Off (all camera signals 0), Webcam (the webcam above; with Body Tracking, measured from MediaPipe''s picture) or Test Pattern (a moving dot).'
   Pose:
   - name: Posesource
     style: Menu
-    label: Source
+    label: Tracking (Set by Webcam > Use)
     default: 'off'
     menuNames:
     - 'off'
@@ -162,7 +184,8 @@ custom_pars:
     - 'Off'
     - Webcam (MediaPipe)
     - Test Dancer
-    help: 'Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): track a dancer in the webcam chosen on the Camera page; MediaPipe then holds the webcam, and camera motion is measured from its picture. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.'
+    readOnly: true
+    help: 'Read only, set by Use on the Webcam page. Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): MediaPipe tracks a dancer in the webcam. Test Dancer: a made-up dancer that walks and waves.'
   - name: Poseflipx
     style: Toggle
     label: Flip Left/Right
@@ -447,7 +470,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Posesource Posemask Cameradevice
+    pars: Webcamuse Posesource Posemask Cameradevice
     builtin: false
     file: project1/inputs/pose_settings.py
     syncfile: true

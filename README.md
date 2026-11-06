@@ -98,10 +98,19 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 | **Simulated** | `sim_level` (0-1), `sim_trigger` (held button), `sim_zone` (on/off) | **Animate Level** moves `sim_level` on its own |
 | **OSC** | one per OSC address: `/dancer/level` becomes `dancer/level` | Turn on **Receive OSC**; send to this computer on **OSC Port** (7000) |
 | **Serial** | `serial_<name>` | Turn on **Read Serial** (off when the project opens), pick the **Port** and **Baud Rate** |
-| **Camera** | `camera_motion`, `camera_left`, `camera_right` | **Source**: Off, Webcam or Test Pattern. **Webcam**: the one webcam the whole project uses. Raise **Sensitivity** if values stay small |
-| **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, `pose_zone`, `pose_zone1` ... `pose_zone5` | **Source**: Off, Webcam (MediaPipe) or Test Dancer. Uses the Camera page **Webcam**. Needs the MediaPipe plugin (below) |
+| **Webcam** | `camera_motion`, `camera_left`, `camera_right` | **Webcam**, **Use** and a read-only **Status** (below). Raise **Sensitivity** if the camera values stay small |
+| **Pose** | `pose_present`, `pose_x`, `pose_hand_l`, `pose_hand_r`, `pose_spread`, `pose_energy`, `pose_zone`, `pose_zone1` ... `pose_zone5` | Body tracking settings. Turned on by Webcam page **Use: Body Tracking**. Needs the MediaPipe plugin (below) |
 
-**One webcam:** pick it once, on the Camera page (**Webcam**). The Camera page **Source** turns the light movement signals on; the Pose page **Source** turns body tracking on. Both can be on together: while body tracking runs, MediaPipe holds the webcam and the camera signals are measured from its picture. The Video Feedback instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
+**One webcam, one switch.** On the **Webcam** page pick the **Webcam** once, then choose what it is for with **Use**:
+
+| Use | Who opens the webcam | Camera signals | Pose signals and body mask |
+|---|---|---|---|
+| **Off** | nothing | 0 | 0 |
+| **Movement Only** | camera_in (light) | yes | 0 (MediaPipe stopped) |
+| **Body Tracking** | MediaPipe | yes, measured from MediaPipe's picture | yes |
+| **Test (No Webcam)** | nothing | test pattern | test dancer |
+
+**Status** (read-only, also shown over the picture on pose_monitor) says what is happening and what to do: no webcam chosen; the webcam does not open (another app holds it); MediaPipe starting (up to about 15 s); MediaPipe sees no webcam or cannot find yours (it lists what it sees); working, dancer seen or not. If Pose shows nothing, read Status first. The greyed **Motion From** (Webcam page) and **Tracking** (Pose page) show what Use set. The Video Feedback instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
 
 Serial devices should print one line per reading, in either of these forms:
 
@@ -124,7 +133,7 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 2. Copy the `.tox` files from its `release/toxes/` folder into `TouchDesigner/toxes/` in this repository (create the folder). Git ignores it.
 3. Open (or reopen) the project. `inputs/mediapipe` loads `toxes/MediaPipe.tox` itself.
 
-**Use:** on **inputs**, Pose page, set **Source** to **Webcam (MediaPipe)** (the webcam is the one picked on the Camera page). MediaPipe only runs while Source is Webcam (MediaPipe), because it costs frame time. **Test Dancer** is a made-up dancer that walks and waves its arms, to try pose mappings without a camera.
+**Use:** on **inputs**, Webcam page, pick the **Webcam** and set **Use** to **Body Tracking**, then watch **Status**. MediaPipe only runs with Use on Body Tracking, because it costs frame time. **Test (No Webcam)** adds a made-up dancer that walks and waves its arms, to try pose mappings without a camera.
 
 | Signal | 0 | 1 |
 |---|---|---|
@@ -146,7 +155,8 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 
 A panel next to wearable_monitor. The camera picture (from MediaPipe) fills the left, with the stage zones drawn over it: zone borders in amber, the margin either side as a shaded band, the dancer's position as a green line and the body as a teal skeleton. Below the picture, one block per zone lights up while the dancer is in it. On the right: BODY TRACKING, the source, DANCER SEEN or NO DANCER, bars for position, left and right hand, arms spread and energy, and the current zone.
 
-- The picture only shows with **Source** = Webcam (MediaPipe); with the Test Dancer the skeleton is drawn on a plain background.
+- The top-left line is the Webcam page **Status**: read it when the picture or the skeleton is missing.
+- The picture only shows with **Use: Body Tracking**; with **Test** the skeleton is drawn on a plain background.
 - The skeleton is drawn from the same landmarks the pose signals use, so it shows exactly what is being measured. (MediaPipe's own overlay is switched off so it never reaches the visuals.)
 - To see it bigger, right-click it and choose **View...**.
 
@@ -300,9 +310,9 @@ Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on
 
 **Source** page: **Source** Webcam / Video File / Test Pattern, **Video File** + **Load**, and a read-only **Status**.
 
-- **Webcam** never opens a camera itself, so it cannot fight body tracking for the C920: while **inputs > Pose** is on Webcam it uses MediaPipe's (clean) image, otherwise the **inputs > Camera** webcam. With neither on it shows the test pattern and Status says what to turn on.
+- **Webcam** never opens a camera itself, so it cannot fight body tracking for the C920: with **inputs > Webcam > Use** on Body Tracking it uses MediaPipe's (clean) image, on Movement Only the camera_in picture. With Use Off or Test it shows the test pattern and Status says what to turn on.
 - **Video File** loads only when you press **Load**, and only if the file exists (Status shows `File not found` otherwise), so a missing file never stops the project opening. Paths can be relative to the TouchDesigner folder, e.g. `../media/clip.mp4`.
-- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Pose** on Webcam with **Body Mask** on (default on; it costs some frame time while body tracking runs), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
+- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Webcam > Use: Body Tracking** with **Body Mask** (Pose page) on (default on; it costs some frame time while body tracking runs), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
 - Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
 - Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
 

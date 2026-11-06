@@ -78,6 +78,7 @@ def Steps(check):
 		for name in ('Simlevel', 'Simtrigger', 'Simzone', 'Simanimate', 'Oscenable', 'Serialenable'):
 			inputs.par[name].val = 0
 		inputs.par.Serialnames = ''
+		inputs.par.Webcamuse = 'off'
 		inputs.par.Camerasource = 'off'
 		inputs.par.Posesource = 'off'
 		inputs.op('osc_in').par.localaddress = ''
@@ -116,6 +117,22 @@ def Steps(check):
 		errs = op.Inputs.errors(recurse=True) + op.Engine.op('engine').scriptErrors()
 		check(s, 'adapters: no errors without devices', not errs, errs)
 
+	def use(value):
+		return base._do(lambda: setattr(op.Inputs.par, 'Webcamuse', value), 'Webcam Use = %s' % value)
+
+	def sources_are(camera, pose):
+		def step():
+			got = (op.Inputs.par.Camerasource.eval(), op.Inputs.par.Posesource.eval())
+			check(s, 'Webcam Use -> camera %s, pose %s' % (camera, pose), got == (camera, pose), 'got %s' % (got,))
+		return step
+
+	def status_is(key):
+		def step():
+			got = op.Inputs.par.Webcamstatus.eval()
+			want = op.Lang.T(key)
+			check(s, 'Webcam Status: %s' % key, got == want, got)
+		return step
+
 	wait = base._do(lambda: None, 'wait')
 	send = base._do(osc_send, 'osc send')  # UDP: send a few times, as a real sender would
 	return [
@@ -137,15 +154,15 @@ def Steps(check):
 		serial_line('accel=0.5'), base._expect(s, 'serial name=value', {'layer4_scale': 2}),
 		serial_line('0.25 0.5', 'accel'), base._expect(s, 'serial plain numbers + names', {'layer4_scale': 1.5, 'layer4_x': 0.5}),
 		serial_line('hello'), base._expect(s, 'serial bad line keeps values', {'layer4_scale': 1.5}),
-		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'test'), 'camera test'), wait, wait,
+		use('test'), wait, wait, base._do(sources_are('test', 'test'), 'Use test sets both sources'),
 		base._do(camera_moving, 'camera moving'),
-		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'off'), 'camera off'), wait,
-		base._expect(s, 'camera off -> motion 0', {'layer4_rotate': 0}),
-		base._do(lambda: setattr(op.Inputs.par, 'Posesource', 'test'), 'pose test'), wait, wait,
 		base._do(pose_seen, 'pose seen'),
-		base._do(lambda: setattr(op.Inputs.par, 'Posesource', 'off'), 'pose off'), wait,
-		base._expect(s, 'pose off -> pose signals 0', {'layer3_x': 0, 'layer3_y': 0}),
-		base._do(lambda: setattr(op.Inputs.par, 'Camerasource', 'camera'), 'camera, none attached'), wait, wait,
+		use('off'), wait, base._do(sources_are('off', 'off'), 'Use off sets both sources'),
+		base._expect(s, 'webcam off -> motion and pose signals 0', {'layer4_rotate': 0, 'layer3_x': 0, 'layer3_y': 0}),
+		base._do(status_is('webcam.off'), 'status off'),
+		base._do(lambda: setattr(op.Inputs.par, 'Cameradevice', ''), 'no webcam chosen'),
+		use('movement'), wait, wait, base._do(sources_are('camera', 'off'), 'Use movement: camera only, no MediaPipe'),
+		base._do(status_is('webcam.nodevice'), 'status no webcam'),
 		base._do(no_errors, 'no errors'),
 		base._do(reset, 'all inputs off'), wait,
 		base._expect(s, 'inputs off -> base values', {'layer4_opacity': 1, 'layer4_scale': 1, 'layer4_x': 0, 'layer4_rotate': 0}),
