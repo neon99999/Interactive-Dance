@@ -82,7 +82,7 @@ def _sourceText():
 			return 'Webcam (from body tracking)'
 		if index == CAMERA:
 			return 'Webcam (from inputs > Camera)'
-		return 'No webcam on: showing the test pattern. Turn on inputs > Pose (Camera) or inputs > Camera.'
+		return 'No webcam on: showing the test pattern. Turn on inputs > Pose (Webcam) or inputs > Camera (Webcam).'
 	if choice == 'file':
 		missing = comp.fetch('load_error', '', search=False)
 		if missing:

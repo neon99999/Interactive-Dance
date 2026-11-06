@@ -54,7 +54,8 @@ def onCook(scriptOp):
 def _matchMediapipeCooking(wanted):
 	"""MediaPipe cooks only while Source is Camera. pose_settings switches it on a change;
 	this also covers a project opened with Source already on Camera. It also
-	keeps MediaPipe's segmentation matching the Body Mask toggle."""
+	keeps MediaPipe's segmentation matching the Body Mask toggle, its overlay
+	drawing off (a clean picture for the visuals) and its webcam on the Device."""
 	mediapipe = op('mediapipe')
 	if mediapipe is not None and mediapipe.allowCooking != wanted:
 		run('args[0].allowCooking = args[1]', mediapipe, wanted, delayFrames=1)
@@ -62,3 +63,9 @@ def _matchMediapipeCooking(wanted):
 	mask = bool(parent.Inputs.par.Posemask.eval())
 	if wanted and plugin is not None and plugin.par.Detectsegments.eval() != mask:
 		run('args[0].par.Detectsegments = args[1]', plugin, mask, delayFrames=1)
+	if wanted and plugin is not None:
+		if plugin.par.Showoverlays.eval():
+			run('args[0].par.Showoverlays = False', plugin, delayFrames=1)
+		if absTime.frame % 60 == 0:
+			# The browser lists its webcams only once MediaPipe runs: match the Device again.
+			op('pose_settings').module.applyWebcam()

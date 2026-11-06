@@ -223,11 +223,14 @@ mappings.Clear.label	Clear Current Preset	Vaciar preset actual
 mappings.Clear.help	Turn off and empty all 8 mappings of the current preset.	Apaga y vacía las 8 conexiones del preset actual.
 mappings.Refresh.label	Refresh Menus	Actualizar menús
 mappings.Refresh.help	Update the Movement menus with signals that appeared since (e.g. a new OSC address).	Actualiza los menús de Movimiento con señales nuevas (p. ej. una dirección OSC nueva).
+inputs.Camerasource.label	Source	Fuente
+inputs.Camerasource.menu	Off|Webcam|Test Pattern	Apagado|Cámara web|Patrón de prueba
+inputs.Camerasource.help	Off: no camera motion, all camera signals 0. Webcam: measure movement in the webcam chosen below (when body tracking is on, from MediaPipe's picture of the same webcam). Test Pattern: a moving dot, to try camera mappings without a camera.	Apagado: sin movimiento de cámara, todas las señales camera en 0. Cámara web: mide el movimiento en la cámara web elegida abajo (con el seguimiento del cuerpo activo, en la imagen de MediaPipe de la misma cámara). Patrón de prueba: un punto en movimiento, para probar asignaciones de cámara sin cámara.
+inputs.Cameradevice.label	Webcam	Cámara web
+inputs.Cameradevice.help	The one webcam the project uses, for camera motion, body tracking (Pose page) and the Video Feedback instrument. Close other apps that use it.	La única cámara web que usa el proyecto: para el movimiento de cámara, el seguimiento del cuerpo (página Pose) y el instrumento Video eco. Cierra otras apps que la usen.
 inputs.Posesource.label	Source	Fuente
-inputs.Posesource.help	Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Camera (MediaPipe): track a dancer with the webcam chosen below. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.	Apagado: el seguimiento corporal está detenido (MediaPipe no corre) y las señales pose valen 0. Cámara (MediaPipe): sigue a un bailarín con la cámara web elegida abajo. Bailarín de prueba: un bailarín inventado que camina y mueve los brazos, para probar sin cámara.
-inputs.Posesource.menu	Off|Camera (MediaPipe)|Test Dancer	Apagado|Cámara (MediaPipe)|Bailarín de prueba
-inputs.Posecamera.label	Webcam	Cámara web
-inputs.Posecamera.help	Which webcam MediaPipe uses. Close other apps using it, and set the Camera page Source to Off if it uses the same webcam.	Qué cámara web usa MediaPipe. Cierra otras apps que la usen, y pon la Fuente de la página Camera en Off si usa la misma cámara.
+inputs.Posesource.help	Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): track a dancer in the webcam chosen on the Camera page; MediaPipe then holds the webcam, and camera motion is measured from its picture. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.	Apagado: seguimiento del cuerpo detenido (MediaPipe no corre), todas las señales pose en 0. Cámara web (MediaPipe): sigue a un bailarín en la cámara web elegida en la página Camera; MediaPipe usa entonces la cámara, y el movimiento de cámara se mide en su imagen. Bailarín de prueba: un bailarín inventado que camina y saluda, para probar asignaciones de pose sin cámara.
+inputs.Posesource.menu	Off|Webcam (MediaPipe)|Test Dancer	Apagado|Cámara web (MediaPipe)|Bailarín de prueba
 inputs.Poseflipx.label	Flip Left/Right	Invertir izq./der.
 inputs.Poseflipx.help	Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.	Apagado: pose_x vale 0 a la izquierda de la imagen de MediaPipe y 1 a la derecha. Activo: al revés. Úsalo para que pose_x coincida con el escenario visto por el público.
 inputs.Posemask.label	Body Mask	Máscara del cuerpo
@@ -255,7 +258,7 @@ pose.hand_l	Left hand	Mano izq.
 pose.hand_r	Right hand	Mano der.
 pose.spread	Arms spread	Apertura
 pose.energy	Energy	Energía
-pose.nocamera	Pose page: set Source to Camera (MediaPipe)	Página Pose: pon Fuente en Cámara (MediaPipe)
+pose.nocamera	Pose page: set Source to Webcam (MediaPipe)	Página Pose: pon Fuente en Cámara web (MediaPipe)
 target.particles.visible	Particles: on	Partículas: encendidas
 target.particles.energy	Particles: energy	Partículas: energía
 target.particles.spread	Particles: spread	Partículas: dispersión

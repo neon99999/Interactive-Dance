@@ -134,14 +134,14 @@ custom_pars:
     - test
     menuLabels:
     - 'Off'
-    - Camera
+    - Webcam
     - Test Pattern
-    help: 'Off: no camera, all camera signals 0. Camera: a webcam. Test Pattern: a moving dot, to try camera mappings without a camera.'
+    help: 'Off: no camera motion, all camera signals 0. Webcam: measure movement in the webcam chosen below (when body tracking is on, from MediaPipe''s picture of the same webcam). Test Pattern: a moving dot, to try camera mappings without a camera.'
   - name: Cameradevice
     style: StrMenu
-    label: Device
+    label: Webcam
     menuSource: op('./camera_in').par.device
-    help: Which camera to use. The menu lists the cameras TouchDesigner can see.
+    help: The one webcam the project uses, for camera motion, body tracking (Pose page) and the Video Feedback instrument. Close other apps that use it.
   - name: Camerasensitivity
     style: Float
     label: Sensitivity
@@ -160,14 +160,9 @@ custom_pars:
     - test
     menuLabels:
     - 'Off'
-    - Camera (MediaPipe)
+    - Webcam (MediaPipe)
     - Test Dancer
-    help: 'Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Camera (MediaPipe): track a dancer with the webcam chosen below. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.'
-  - name: Posecamera
-    style: StrMenu
-    label: Webcam
-    menuSource: op('./mediapipe/MediaPipe').par.Webcam
-    help: Which webcam MediaPipe uses. Close other apps using it, and set the Camera page Source to Off if it uses the same webcam.
+    help: 'Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): track a dancer in the webcam chosen on the Camera page; MediaPipe then holds the webcam, and camera motion is measured from its picture. Test Dancer: a made-up dancer that walks and waves, to try pose mappings without a camera.'
   - name: Poseflipx
     style: Toggle
     label: Flip Left/Right
@@ -247,7 +242,7 @@ operators:
 - name: camera_in
   type: videodeviceinTOP
   parameters:
-    active: =parent.Inputs.par.Camerasource == 'camera'
+    active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera'
     device: V1|||\\?\root#media#0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\vidsource0|||0|||0|||NDI Webcam Video 1
   flags:
   - viewer
@@ -452,7 +447,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Posesource Posemask
+    pars: Posesource Posemask Cameradevice
     builtin: false
     file: project1/inputs/pose_settings.py
     syncfile: true
@@ -461,6 +456,13 @@ operators:
   color: [0.9, 0.3, 0.4]
   tags:
   - py
+- name: sel_mediapipe
+  type: selectTOP
+  parameters:
+    top: ./mediapipe/MediaPipe/video
+  position: [-400, -3300]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
 - name: serial_values
   type: tableDAT
   position: [800, -1600]
@@ -471,7 +473,7 @@ operators:
 - name: switch_camera
   type: switchTOP
   parameters:
-    index: =parent.Inputs.par.Camerasource.menuIndex
+    index: '={''off'': 0, ''camera'': 3 if parent.Inputs.par.Posesource == ''camera'' else 1, ''test'': 2}[parent.Inputs.par.Camerasource.eval()]'
   position: [400, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -479,6 +481,7 @@ operators:
   - camera_off
   - camera_in
   - camera_test
+  - sel_mediapipe
 - name: analyze_motion
   type: analyzeTOP
   position: [2800, -2900]
@@ -545,9 +548,9 @@ annotations:
 - name: annotate4
   mode: annotate
   title: Camera motion
-  text: 'Frame difference of a small grey camera image: camera_motion (whole frame), camera_left, camera_right (halves). Camera page: source, device, sensitivity.'
-  position: [-70, -3370]
-  size: [4270, 1130]
+  text: 'Frame difference of a small grey camera image: camera_motion (whole frame), camera_left, camera_right (halves). switch_camera: Off, camera_in (the Camera page webcam), the test dot, or sel_mediapipe (MediaPipe''s picture of the same webcam while body tracking holds it; camera_in is then inactive). Camera page: source, webcam, sensitivity. pose_settings points camera_in and MediaPipe at the Webcam.'
+  position: [-470, -3370]
+  size: [4670, 1130]
   color: [0.45, 0.45, 0.45]
 - name: annotate5
   mode: annotate
@@ -559,7 +562,7 @@ annotations:
 - name: annotate6
   mode: annotate
   title: Body tracking (MediaPipe)
-  text: mediapipe/MediaPipe loads toxes/MediaPipe.tox (not in git; download per machine) and runs only while Pose page Source is Camera (pose_settings). pose_chop -> pose_present, pose_x, pose_hand_l, pose_hand_r, pose_spread, pose_energy (pose_signals).
+  text: mediapipe/MediaPipe loads toxes/MediaPipe.tox (not in git; download per machine) and runs only while Pose page Source is Webcam (pose_settings), using the Camera page Webcam; its overlay drawing is kept off (clean picture). pose_chop -> pose_present, pose_x, pose_hand_l, pose_hand_r, pose_spread, pose_energy (pose_signals).
   position: [-70, -4670]
   size: [670, 770]
   color: [0.45, 0.45, 0.45]
