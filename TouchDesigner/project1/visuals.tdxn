@@ -31,6 +31,11 @@ type_defaults:
   crossTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  displaceTOP:
+    parameters:
+      offsetweight: =1 - me.par.uvweight.eval()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   feedbackTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -38,6 +43,9 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  lookupTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   monochromeTOP:
@@ -91,11 +99,14 @@ type_defaults:
   selectCHOP:
     parameters:
       autoexportroot: =parent()
-      chops: =op.Engine.op('live')
-      renameto: '*'
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   selectTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  speedCHOP:
+    parameters:
+      autoexportroot: =parent()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   switchTOP:
@@ -248,6 +259,385 @@ operators:
   position: [5400, 0]
   inputs:
   - null_out
+- name: noise
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 1
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Preset
+      style: Menu
+      default: smoke
+      menuNames:
+      - smoke
+      - lava
+      - storm
+      menuLabels:
+      - Smoke
+      - Lava
+      - Storm
+      help: 'A starting look: Smoke (slow grey clouds), Lava (warm, slowly twisting), Storm (fast, detailed, neon). Choosing one sets the six settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the six settings back to the chosen preset.
+    - name: Scale
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'Size of the pattern: 0 = fine grain, 1 = big slow shapes.'
+    - name: Speed
+      style: Float
+      default: 0.2
+      clampMin: true
+      clampMax: true
+      help: 'How fast the pattern changes: 0 = almost still, 1 = boiling.'
+    - name: Detail
+      style: Float
+      default: 0.5
+      clampMin: true
+      clampMax: true
+      help: 'How much fine detail sits on the big shapes: 0 = soft and smooth, 1 = rough and grainy.'
+    - name: Warp
+      style: Float
+      default: 0.3
+      clampMin: true
+      clampMax: true
+      help: 'How much the pattern twists and folds into itself: 0 = plain noise, 1 = marbled swirls.'
+    - name: Feedback
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'How long the pattern leaves trails as it drifts outward: 0 = none, 1 = long smears.'
+    - name: Colour
+      style: Menu
+      default: smoke
+      menuNames:
+      - smoke
+      - lava
+      - ocean
+      - neon
+      menuLabels:
+      - Smoke
+      - Lava
+      - Ocean
+      - Neon
+      help: 'Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).'
+  position: [0, -1600]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [4800, 0]
+    inputs:
+    - lookup_colour
+  - name: null_fb
+    type: nullTOP
+    position: [3600, 0]
+    inputs:
+    - cross_loop
+  - name: presets
+    type: tableDAT
+    position: [0, -800]
+    dat_content:
+    - - par
+      - smoke
+      - lava
+      - storm
+    - - Scale
+      - '0.6'
+      - '0.4'
+      - '0.25'
+    - - Speed
+      - '0.2'
+      - '0.35'
+      - '0.8'
+    - - Detail
+      - '0.5'
+      - '0.3'
+      - '0.8'
+    - - Warp
+      - '0.3'
+      - '0.7'
+      - '0.9'
+    - - Feedback
+      - '0.6'
+      - '0.75'
+      - '0.4'
+    - - Colour
+      - smoke
+      - lava
+      - neon
+    dat_content_format: table
+  - name: math_rate
+    type: mathCHOP
+    parameters:
+      gain: 0.6
+      postoff: 0.02
+      autoexportroot: =parent()
+    position: [1200, 400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - sel_speed
+  - name: sel_speed
+    type: selectCHOP
+    parameters:
+      channames: speed
+    position: [800, 400]
+    inputs:
+    - live
+  - name: cross_loop
+    type: crossTOP
+    parameters:
+      cross: =0 if op('live')['feedback'] <= 0 else math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['feedback'] ** 2 * 2.0))
+    position: [3200, 0]
+    inputs:
+    - displace_warp
+    - transform_flow
+  - name: noise_base
+    type: noiseTOP
+    parameters:
+      period: =0.15 + op('live')['scale'] * 1.6
+      harmon: =1 + int(round(op('live')['detail'] * 4))
+      rough: =0.3 + op('live')['detail'] * 0.4
+      tz: =op('speed_phase')['speed']
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [1600, 0]
+  - name: noise_warp
+    type: noiseTOP
+    parameters:
+      period: 1.2
+      harmon: 1
+      mono: false
+      tz: =op('speed_phase')['speed'] * 0.6 + 17
+      resolutionw: =parent.Visuals.par.Resolution1 / 8
+      resolutionh: =parent.Visuals.par.Resolution2 / 8
+    position: [1600, -400]
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [0, 400]
+  - name: speed_phase
+    type: speedCHOP
+    position: [1600, 400]
+    inputs:
+    - math_rate
+  - name: palette_lava
+    type: tableDAT
+    position: [3600, -800]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.35'
+      - '0.45'
+      - '0.05'
+      - '0.02'
+      - '1'
+    - - '0.7'
+      - '0.95'
+      - '0.4'
+      - '0.05'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.9'
+      - '0.5'
+      - '1'
+    dat_content_format: table
+  - name: palette_neon
+    type: tableDAT
+    position: [3600, -1200]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.3'
+      - '0.35'
+      - '0'
+      - '0.5'
+      - '1'
+    - - '0.65'
+      - '0'
+      - '0.7'
+      - '0.9'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.4'
+      - '0.9'
+      - '1'
+    dat_content_format: table
+  - name: ramp_palette
+    type: rampTOP
+    parameters:
+      dat: ='palette_' + parent.Instrument.par.Colour.menuNames[int(round(op('live')['colour']))]
+      resolutionh: 1
+    position: [4000, -400]
+  - name: displace_warp
+    type: displaceTOP
+    parameters:
+      displaceweightx: =op('live')['warp'] * 0.35
+      displaceweighty: =op('live')['warp'] * 0.35
+      extend: mirror
+    position: [2000, 0]
+    inputs:
+    - noise_base
+    - noise_warp
+  - name: feedback_loop
+    type: feedbackTOP
+    parameters:
+      top: null_fb
+    position: [2400, -200]
+    inputs:
+    - displace_warp
+  - name: lookup_colour
+    type: lookupTOP
+    parameters:
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [4400, 0]
+    inputs:
+    - level_contrast
+    - ramp_palette
+  - name: palette_ocean
+    type: tableDAT
+    position: [3600, -1000]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.4'
+      - '0'
+      - '0.15'
+      - '0.35'
+      - '1'
+    - - '0.75'
+      - '0.1'
+      - '0.55'
+      - '0.7'
+      - '1'
+    - - '1'
+      - '0.8'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: palette_smoke
+    type: tableDAT
+    position: [3600, -600]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.5'
+      - '0.25'
+      - '0.27'
+      - '0.3'
+      - '1'
+    - - '1'
+      - '0.9'
+      - '0.92'
+      - '0.95'
+      - '1'
+    dat_content_format: table
+  - name: level_contrast
+    type: levelTOP
+    parameters:
+      contrast: 1.6
+    position: [4000, 0]
+    inputs:
+    - null_fb
+  - name: transform_flow
+    type: transformTOP
+    parameters:
+      rotate: =op('live')['warp'] * 6 * min(absTime.stepSeconds, 0.1)
+      sx: =(1 + 0.12) ** min(absTime.stepSeconds, 0.1)
+      sy: =(1 + 0.12) ** min(absTime.stepSeconds, 0.1)
+      extend: mirror
+    position: [2800, -200]
+    inputs:
+    - feedback_loop
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Noise
+    text: 'live: this instrument''s engine values. Speed is integrated (math_rate -> speed_phase) so a changing Speed never makes the pattern jump. noise_base (Scale = period, Detail = harmonics and roughness, half resolution) is twisted by the slow noise_warp in displace_warp (Warp). Loop: feedback_loop -> transform_flow (slow outward drift, Warp turn) -> cross_loop with the new frame (Feedback, time-based decay) -> null_fb. level_contrast -> lookup_colour through ramp_palette (palette_* tables, Colour menu) at full resolution -> out1. presets: one row per setting, one column per preset.'
+    position: [-70, -1270]
+    size: [5070, 1930]
+    color: [0.45, 0.45, 0.45]
 - name: video
   type: baseCOMP
   parameters:
@@ -551,8 +941,10 @@ operators:
   - name: live_select
     type: selectCHOP
     parameters:
+      chops: =op.Engine.op('live')
       channames: =parent.Instrument.name + '_*'
       renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
     position: [0, 400]
   - name: load_button
     type: parameterexecuteDAT
@@ -640,10 +1032,7 @@ operators:
     parameters:
       displaceweightx: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
       displaceweighty: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
-      offsetweight: =1 - me.par.uvweight.eval()
     position: [2400, -400]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - transform_zoom
     - noise_warp
@@ -758,8 +1147,10 @@ operators:
   - name: live_select
     type: selectCHOP
     parameters:
+      chops: =op.Engine.op('live')
       channames: =parent.Layer.name + '_*'
       renamefrom: =parent.Layer.name + '_*'
+      renameto: '*'
     position: [0, 400]
   - name: effect_black
     type: constantTOP
@@ -1351,11 +1742,7 @@ operators:
     color: [0.67, 0.67, 0.67]
   - name: noise_time
     type: speedCHOP
-    parameters:
-      autoexportroot: =parent()
     position: [400, 200]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - noise_rate
   - name: sprite_mat
@@ -1389,8 +1776,10 @@ operators:
   - name: live_select
     type: selectCHOP
     parameters:
+      chops: =op.Engine.op('live')
       channames: =parent.Instrument.name + '_*'
       renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
     position: [0, 400]
   - name: null_trails
     type: nullTOP
@@ -1436,8 +1825,6 @@ operators:
   - name: lookup_colour
     type: lookupTOP
     position: [3600, 0]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - level_gain
     - ramp_palette
@@ -1708,8 +2095,10 @@ operators:
 - name: master_select
   type: selectCHOP
   parameters:
+    chops: =op.Engine.op('live')
     channames: master_*
     renamefrom: master_*
+    renameto: '*'
   position: [25, 575]
 - name: output_window
   type: windowCOMP
@@ -1760,9 +2149,9 @@ annotations:
 - name: annotate2
   mode: annotate
   title: Instruments
-  text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image; On, Opacity, Blend and Order place it in the compositor. shapes shows the four layers. instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
-  position: [-70, -1470]
-  size: [700, 570]
+  text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image; On, Opacity, Blend and Order place it in the compositor. particles, video (feedback), noise (patterns), shapes (the four layers). instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
+  position: [-70, -1670]
+  size: [700, 770]
   color: [0.45, 0.45, 0.45]
 - name: annotate3
   mode: annotate

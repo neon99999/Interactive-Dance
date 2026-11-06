@@ -355,3 +355,40 @@ visuals/shapes.Blend.menu	Normal|Add	Normal|Sumar
 visuals/shapes.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
 visuals/shapes.Order.label	Order	Orden
 visuals/shapes.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
+target.noise.visible	Noise: on	Ruido: encendido
+target.noise.opacity	Noise: opacity	Ruido: opacidad
+target.noise.blend	Noise: blend	Ruido: mezcla de capas
+target.noise.order	Noise: order	Ruido: orden
+target.noise.scale	Noise: scale	Ruido: escala
+target.noise.speed	Noise: speed	Ruido: velocidad
+target.noise.detail	Noise: detail	Ruido: detalle
+target.noise.warp	Noise: warp	Ruido: torsión
+target.noise.feedback	Noise: trails	Ruido: estelas
+target.noise.colour	Noise: colour	Ruido: color
+visuals/noise.Visible.label	On	Encendido
+visuals/noise.Visible.help	Show the noise patterns. MIDI: show / hide / toggle noise.	Muestra los patrones de ruido. MIDI: show / hide / toggle noise.
+visuals/noise.Opacity.label	Opacity	Opacidad
+visuals/noise.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
+visuals/noise.Blend.label	Blend	Mezcla
+visuals/noise.Blend.menu	Normal|Add	Normal|Sumar
+visuals/noise.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
+visuals/noise.Order.label	Order	Orden
+visuals/noise.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
+visuals/noise.Preset.label	Preset	Preset
+visuals/noise.Preset.menu	Smoke|Lava|Storm	Humo|Lava|Tormenta
+visuals/noise.Preset.help	A starting look: Smoke (slow grey clouds), Lava (warm, slowly twisting), Storm (fast, detailed, neon). Choosing one sets the six settings below.	Un punto de partida: Humo (nubes grises lentas), Lava (cálida, se retuerce despacio), Tormenta (rápida, detallada, neón). Elegir uno ajusta los seis controles de abajo.
+visuals/noise.Reset.label	Reset to Preset	Volver al preset
+visuals/noise.Reset.help	Put the six settings back to the chosen preset.	Devuelve los seis controles al preset elegido.
+visuals/noise.Scale.label	Scale	Escala
+visuals/noise.Scale.help	Size of the pattern: 0 = fine grain, 1 = big slow shapes.	Tamaño del patrón: 0 = grano fino, 1 = formas grandes y lentas.
+visuals/noise.Speed.label	Speed	Velocidad
+visuals/noise.Speed.help	How fast the pattern changes: 0 = almost still, 1 = boiling.	Qué tan rápido cambia el patrón: 0 = casi quieto, 1 = hirviendo.
+visuals/noise.Detail.label	Detail	Detalle
+visuals/noise.Detail.help	How much fine detail sits on the big shapes: 0 = soft and smooth, 1 = rough and grainy.	Cuánto detalle fino hay sobre las formas grandes: 0 = suave, 1 = áspero y granulado.
+visuals/noise.Warp.label	Warp	Torsión
+visuals/noise.Warp.help	How much the pattern twists and folds into itself: 0 = plain noise, 1 = marbled swirls.	Cuánto se retuerce y pliega el patrón sobre sí mismo: 0 = ruido simple, 1 = remolinos de mármol.
+visuals/noise.Feedback.label	Feedback	Estelas
+visuals/noise.Feedback.help	How long the pattern leaves trails as it drifts outward: 0 = none, 1 = long smears.	Cuánto deja estelas el patrón al moverse hacia afuera: 0 = nada, 1 = manchas largas.
+visuals/noise.Colour.label	Colour	Color
+visuals/noise.Colour.menu	Smoke|Lava|Ocean|Neon	Humo|Lava|Océano|Neón
+visuals/noise.Colour.help	Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).	Paleta de color: Humo (gris-blanco), Lava (rojo-dorado), Océano (azul-cian), Neón (violeta-cian-rosa).

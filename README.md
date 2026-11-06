@@ -306,6 +306,21 @@ Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on
 - Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
 - Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
 
+**Noise** (`visuals/noise`): moving noise patterns only (no camera): clouds, marble, lava, folded and smeared by feedback. Off by default; Blend Add, Order 1 (at the bottom).
+
+| Setting | What it does |
+|---|---|
+| **Preset** | Smoke (default), Lava or Storm: sets the six settings below |
+| **Reset to Preset** | Put the six settings back to the chosen preset |
+| **Scale** | 0 fine grain, 1 big slow shapes |
+| **Speed** | 0 almost still, 1 boiling. Changing it never makes the pattern jump |
+| **Detail** | 0 soft and smooth, 1 rough and grainy |
+| **Warp** | 0 plain noise, 1 marbled swirls folding into themselves |
+| **Feedback** | 0 no trails, 1 long smears drifting outward |
+| **Colour** | Smoke, Lava, Ocean or Neon |
+
+Mapping targets: Noise: scale, speed, detail, warp, trails, colour (`noise.scale` ...), plus on, opacity, blend, order. Presets are in `noise/presets`, palettes in `noise/palette_*` (pos, r, g, b, a). It costs about 2 ms per frame on MINI-PC.
+
 **Who sets a value** (layers and instruments alike), lowest to highest: the parameter itself (your manual setting), then MIDI events up to the song position, then the input table, then the mapping page. A mapping only takes over while it is **On** and its movement signal exists; switch it off and the manual setting (or MIDI) is back. Two things to know:
 
 - once a MIDI event has set or faded a value, the parameter has no effect on it for the rest of the song, until you seek before that event or Reset;
@@ -319,7 +334,7 @@ The automatic tests run inside TouchDesigner, take under a minute and leave your
 op('/project1/tests/engine_tests').module.Run()
 ```
 
-Results appear in `project1/tests/results` (79 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines, the camera test pattern, the pose Test Dancer, the mapping page, MIDI preset switching and the language switch.
+Results appear in `project1/tests/results` (106 checks): MIDI actions, conflicts, pause, seek, reset, real playback, invalid rows, rendered pixels for every content type and effect, four layers, simulated inputs, OSC, serial lines, the camera test pattern, the pose Test Dancer, the mapping page, MIDI preset switching, the language switch, and the visual instruments (MIDI set, show, hide and fade on instrument settings, mappings driving them and handing back to the sliders, presets and Reset, and the compositor order and opacity).
 
 The plain-Python unit tests (show logic, serial parser, motion model, pose signals and the mapping page) need no TouchDesigner:
 
