@@ -250,6 +250,22 @@ The layers are being joined by **visual instruments** (Particles, Video Feedback
 - a **Visible** toggle makes `show particles` / `hide` / `toggle` work in the MIDI table;
 - the engine publishes the value as the channel `particles_energy` on `engine/live`, which the instrument reads (as the layers do).
 
+**Particles** (`visuals/particles`, Instrument page): luminous particles flowing along a swirling field, on black. Built from POPs (a Particle POP loop with curl noise), rendered as soft glowing dots with trails and a colour palette.
+
+| Setting | What it does |
+|---|---|
+| **On** | Show the particles |
+| **Preset** | Calm, Flowing (default) or Energetic: sets the six settings below |
+| **Reset to Preset** | Put the six settings back to the chosen preset |
+| **Energy** | 0 almost still, 1 wild bursts |
+| **Spread** | 0 a tight cloud in the centre, 1 the whole screen |
+| **Turbulence** | 0 big smooth swirls, 1 small restless eddies |
+| **Size** | 0 fine dust, 1 large glowing dots |
+| **Colour** | Aurora, Ocean, Ember or Moon |
+| **Trails** | 0 none, 1 long streaks |
+
+Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset. Until the compositor (next step) is built, the particles are not yet in the output window; look at `particles/out1`.
+
 **Who sets a value** (layers and instruments alike), lowest to highest: the parameter itself (your manual setting), then MIDI events up to the song position, then the input table, then the mapping page. A mapping only takes over while it is **On** and its movement signal exists; switch it off and the manual setting (or MIDI) is back. Two things to know:
 
 - once a MIDI event has set or faded a value, the parameter has no effect on it for the rest of the song, until you seek before that event or Reset;

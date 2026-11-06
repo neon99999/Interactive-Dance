@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 6
+build: 9
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -9,16 +9,13 @@ options:
   include_storage: true
 type_defaults:
   baseCOMP:
-    parameters:
-      parentshortcut: Layer
     size: [160, 130]
+  blurTOP:
+    size: [130, 90]
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
       outputresolution: custom
-      radiusunit: pixels
-      resolutionh: =parent.Visuals.par.Resolution2
-      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
@@ -39,9 +36,26 @@ type_defaults:
       autoexportroot: =parent()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+  nullTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
   outTOP:
     parameters:
       label: =me.name
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  parameterexecuteDAT:
+    parameters:
+      builtin: false
+      fromop: =parent()
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  rampTOP:
+    parameters:
+      outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   selectCHOP:
@@ -56,6 +70,12 @@ type_defaults:
       outputresolution: custom
       resolutionh: =parent.Visuals.par.Resolution2
       resolutionw: =parent.Visuals.par.Resolution1
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  tableDAT:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  transformPOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -190,12 +210,15 @@ operators:
   - null_out
 - name: layer1
   type: baseCOMP
+  parameters:
+    parentshortcut: Layer
   custom_pars:
     Layer:
       $t: layer
       Visible: true
       Text: DANCE
   position: [0, -200]
+  color: [0.67, 0.67, 0.67]
   children:
   - name: live
     type: nullCHOP
@@ -256,8 +279,6 @@ operators:
     parameters:
       size: 48
     position: [800, 0]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     inputs:
     - switch_content
   - name: live_select
@@ -287,6 +308,9 @@ operators:
     parameters:
       radiusx: 180
       radiusy: 180
+      radiusunit: pixels
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
   - name: shape_square
     type: rectangleTOP
     parameters:
@@ -358,12 +382,9 @@ operators:
       type: circular
       phase: =(absTime.seconds * 0.3) % 1
       period: 0.15
-      outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -800]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
   - name: effect_flatten
     type: compositeTOP
     parameters:
@@ -377,8 +398,11 @@ operators:
     parameters:
       radiusx: 200
       radiusy: 200
+      radiusunit: pixels
       rotate: 90
       ispolygon: true
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -400]
   - name: switch_content
     type: switchTOP
@@ -415,8 +439,6 @@ operators:
     - viewer
     - -showDocked
     position: [0, -920]
-    size: [130, 90]
-    color: [0.67, 0.67, 0.67]
     dock: texture_rings
     dat_content:
     - - pos
@@ -446,26 +468,32 @@ operators:
 - name: layer2
   type: baseCOMP
   parameters:
+    parentshortcut: Layer
     clone: layer1
   custom_pars:
     Layer:
       $t: layer
+  color: [0.67, 0.67, 0.67]
 - name: layer3
   type: baseCOMP
   parameters:
+    parentshortcut: Layer
     clone: layer1
   custom_pars:
     Layer:
       $t: layer
   position: [0, 200]
+  color: [0.67, 0.67, 0.67]
 - name: layer4
   type: baseCOMP
   parameters:
+    parentshortcut: Layer
     clone: layer1
   custom_pars:
     Layer:
       $t: layer
   position: [0, 400]
+  color: [0.67, 0.67, 0.67]
 - name: bg_black
   type: constantTOP
   parameters:
@@ -478,10 +506,516 @@ operators:
   flags:
   - viewer
   position: [1050, 0]
-  size: [130, 90]
-  color: [0.67, 0.67, 0.67]
   inputs:
   - level_master
+- name: particles
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      default: true
+      help: 'Show the particles. MIDI: show / hide / toggle particles.'
+    - name: Preset
+      style: Menu
+      default: flowing
+      menuNames:
+      - calm
+      - flowing
+      - energetic
+      menuLabels:
+      - Calm
+      - Flowing
+      - Energetic
+      help: 'A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the six settings back to the chosen preset.
+    - name: Energy
+      style: Float
+      startSection: true
+      default: 0.4
+      clampMin: true
+      clampMax: true
+      help: 'How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.'
+    - name: Spread
+      style: Float
+      default: 0.5
+      clampMin: true
+      clampMax: true
+      help: 'How far the particles spread: 0 = a tight cloud in the centre, 1 = the whole screen.'
+    - name: Turbulence
+      style: Float
+      default: 0.45
+      clampMin: true
+      clampMax: true
+      help: 'How irregular the motion is: 0 = big smooth swirls, 1 = small, restless eddies.'
+    - name: Size
+      style: Float
+      default: 0.4
+      clampMin: true
+      clampMax: true
+      help: 'Size of each particle: 0 = fine dust, 1 = large glowing dots.'
+    - name: Colour
+      style: Menu
+      default: aurora
+      menuNames:
+      - aurora
+      - ocean
+      - ember
+      - moon
+      menuLabels:
+      - Aurora
+      - Ocean
+      - Ember
+      - Moon
+      help: 'Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).'
+    - name: Trails
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'How long the particles leave a glowing trail: 0 = none, 1 = long streaks.'
+  position: [0, -1200]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: cam
+    type: cameraCOMP
+    position: [800, -500]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: file1
+      type: fileinPOP
+      parameters:
+        file: =app.samplesFolder + '/Geo/defcam.tog'
+      flags:
+      - display
+      - viewer
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+  - name: geo
+    type: geometryCOMP
+    parameters:
+      material: ../sprite_mat
+    position: [800, 0]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: flatten
+      type: transformPOP
+      parameters:
+        sz: 0
+      position: [2400, 0]
+      inputs:
+      - force_center
+    - name: null_loop
+      type: nullPOP
+      flags:
+      - display
+      - render
+      position: [2800, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - flatten
+    - name: force_curl
+      type: noisePOP
+      parameters:
+        period: =4.0 - parent.Instrument.op('live')['turbulence'] * 3.2
+        amp0: =0.15 + parent.Instrument.op('live')['energy'] * 1.6
+        t4d: =parent.Instrument.op('noise_time')[0]
+        curl2d: true
+        curl2doutputattrscope: PartVel
+        combineop: none
+        combineentity: curl3d
+        combineattrscope: PartForce
+      position: [1600, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - particle_sim
+    - name: emit_points
+      type: pointgeneratorPOP
+      parameters:
+        numpoints: 4000
+        radiusz: 0
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+    - name: force_center
+      type: forceradialPOP
+      parameters:
+        falloff: none
+        radialstrength: =-(0.2 + (1 - parent.Instrument.op('live')['spread']) * 1.5)
+      position: [2000, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - force_curl
+    - name: particle_sim
+      type: particlePOP
+      parameters:
+        targetpop: null_loop
+        maxparticles: 12000
+        birthrate: 2000
+        life: 6
+        lifevariance: 0.4
+        damping: 0.5
+        speed: =0.5 + parent.Instrument.op('live')['energy'] * 1.5
+        attrs: PointScale
+      position: [1200, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - scale_spread
+    - name: random_scale
+      type: randomPOP
+      parameters:
+        amp0: 0.5
+        offset0: 0.75
+        combineop: set
+        outputattrscope: PointScale
+      position: [400, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - emit_points
+    - name: scale_spread
+      type: transformPOP
+      parameters:
+        sx: =0.3 + parent.Instrument.op('live')['spread'] * 1.7
+        sy: =0.3 + parent.Instrument.op('live')['spread'] * 1.7
+      position: [800, 0]
+      inputs:
+      - random_scale
+    annotations:
+    - name: annotate1
+      mode: annotate
+      title: Particle loop
+      text: emit_points (a disc, radius from Spread) with a random PointScale -> particle_sim (targetpop null_loop) -> force_curl writes 2D curl noise into PartVel -> force_center pulls towards the middle -> flatten keeps them on the screen plane -> null_loop (render flag).
+      position: [-70, -70]
+      size: [2640, 330]
+      color: [0.45, 0.45, 0.45]
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    flags:
+    - viewer
+    position: [4800, 0]
+    inputs:
+    - comp_glow
+  - name: render
+    type: renderTOP
+    parameters:
+      camera: cam
+      geometry: geo
+      lights: ''
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+      format: rgba16float
+    position: [1200, 0]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: presets
+    type: tableDAT
+    position: [0, -600]
+    dat_content:
+    - - par
+      - calm
+      - flowing
+      - energetic
+    - - Energy
+      - '0.15'
+      - '0.4'
+      - '0.9'
+    - - Spread
+      - '0.75'
+      - '0.5'
+      - '0.35'
+    - - Turbulence
+      - '0.2'
+      - '0.45'
+      - '0.8'
+    - - Size
+      - '0.45'
+      - '0.4'
+      - '0.3'
+    - - Colour
+      - ocean
+      - aurora
+      - ember
+    - - Trails
+      - '0.85'
+      - '0.6'
+      - '0.3'
+    dat_content_format: table
+  - name: soft_dot
+    type: circleTOP
+    parameters:
+      radiusx: 0.5
+      radiusy: 0.5
+      radiusunit: fraction
+      softness: 0.6
+      resolutionw: 64
+      resolutionh: 64
+    position: [400, -300]
+  - name: blur_glow
+    type: blurTOP
+    parameters:
+      size: 16
+      outputresolution: half
+    position: [4000, -200]
+    inputs:
+    - lookup_colour
+  - name: comp_glow
+    type: compositeTOP
+    parameters:
+      operand: add
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [4400, 0]
+    inputs:
+    - lookup_colour
+    - blur_glow
+  - name: level_gain
+    type: levelTOP
+    parameters:
+      brightness1: 2.5
+    position: [3200, 0]
+    inputs:
+    - null_trails
+  - name: noise_rate
+    type: constantCHOP
+    parameters:
+      rate: =me.time.rate
+      autoexportroot: =parent()
+    sequences:
+      const:
+      - name: rate
+        value: =0.03 + parent.Instrument.op('live')['energy'] * 0.5
+    position: [0, 200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: noise_time
+    type: speedCHOP
+    parameters:
+      autoexportroot: =parent()
+    position: [400, 200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - noise_rate
+  - name: sprite_mat
+    type: pointspriteMAT
+    parameters:
+      colormap: soft_dot
+      pointsize: =(2 + parent.Instrument.op('live')['size'] * 18) * parent.Visuals.par.Resolution2 / 720
+      skelrootpath: =parent()
+      blending: true
+      destblend: one
+      depthtest: false
+      depthwriting: false
+    position: [800, -300]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: comp_trails
+    type: compositeTOP
+    parameters:
+      operand: maximum
+    position: [2400, 0]
+    inputs:
+    - render
+    - level_decay
+  - name: level_decay
+    type: levelTOP
+    parameters:
+      brightness1: =op('live')['trails'] * 0.97
+    position: [2000, -200]
+    inputs:
+    - feedback_trails
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+    position: [0, 400]
+  - name: null_trails
+    type: nullTOP
+    position: [2800, 0]
+    inputs:
+    - comp_trails
+  - name: palette_moon
+    type: tableDAT
+    position: [2800, -1000]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.12'
+      - '0.13'
+      - '0.16'
+      - '1'
+    - - '0.6'
+      - '0.55'
+      - '0.58'
+      - '0.65'
+      - '1'
+    - - '1'
+      - '1'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: ramp_palette
+    type: rampTOP
+    parameters:
+      dat: ='palette_' + parent.Instrument.par.Colour.menuNames[int(round(op('live')['colour']))]
+      resolutionh: 1
+    position: [3200, -400]
+  - name: lookup_colour
+    type: lookupTOP
+    position: [3600, 0]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - level_gain
+    - ramp_palette
+  - name: palette_ember
+    type: tableDAT
+    position: [2800, -800]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.4'
+      - '0.05'
+      - '0.02'
+      - '1'
+    - - '0.6'
+      - '0.95'
+      - '0.45'
+      - '0.1'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.95'
+      - '0.75'
+      - '1'
+    dat_content_format: table
+  - name: palette_ocean
+    type: tableDAT
+    position: [2800, -600]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.02'
+      - '0.12'
+      - '0.4'
+      - '1'
+    - - '0.6'
+      - '0.1'
+      - '0.55'
+      - '0.8'
+      - '1'
+    - - '1'
+      - '0.85'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: palette_aurora
+    type: tableDAT
+    position: [2800, -400]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.05'
+      - '0.35'
+      - '0.3'
+      - '1'
+    - - '0.6'
+      - '0.35'
+      - '0.2'
+      - '0.75'
+      - '1'
+    - - '1'
+      - '0.9'
+      - '0.95'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: feedback_trails
+    type: feedbackTOP
+    parameters:
+      top: null_trails
+    position: [1600, -200]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - render
+  - name: start_particles
+    type: executeDAT
+    parameters:
+      fromop: =parent()
+      start: true
+      file: project1/visuals/particles/start_particles.py
+      syncfile: true
+    position: [0, -800]
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Particles
+    text: 'live: this instrument''s values from the engine (particles_*). geo: emit_points -> particle_sim -> force_curl (2D curl noise sets the velocity: Energy = speed, Turbulence = swirl size) -> force_center (pull, Spread) -> flatten -> null_loop (fed back to particle_sim). Rendered as soft point sprites (Size), then trails (feedback, Trails), level_gain, palette lookup (Colour, palette_* tables), glow -> out1. presets: Calm / Flowing / Energetic values (applied by visuals/instrument_presets). start_particles initializes and starts the simulation on project open.'
+    position: [-70, -1070]
+    size: [5070, 1730]
+    color: [0.45, 0.45, 0.45]
 - name: comp_layers
   type: compositeTOP
   parameters:
@@ -548,20 +1082,20 @@ operators:
 - name: output_buttons
   type: parameterexecuteDAT
   parameters:
-    fromop: =parent()
     op: ..
     pars: '*'
     valuechange: false
-    builtin: false
     file: project1/visuals/output_buttons.py
-    syncfile: true
   flags:
   - viewer
   position: [1250, -175]
-  size: [130, 90]
-  color: [0.9, 0.3, 0.4]
-  tags:
-  - py
+- name: instrument_presets
+  type: parameterexecuteDAT
+  parameters:
+    op: '*'
+    pars: Preset Reset
+    file: project1/visuals/instrument_presets.py
+  position: [400, -1200]
 annotations:
 - name: annotate1
   mode: annotate
@@ -569,4 +1103,11 @@ annotations:
   text: 'Four layers (clones of layer1, so they share its network; each has its own settings) are composited over black with layer 4 on top. Then master Flash (cross to white) and Level / Blackout. null_out is the final image; output_window shows it full screen (Window COMP: Open as Separate Window).'
   position: [-70, -371]
   size: [1731, 1126]
+  color: [0.45, 0.45, 0.45]
+- name: annotate2
+  mode: annotate
+  title: Instruments
+  text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image. instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
+  position: [-70, -1270]
+  size: [670, 370]
   color: [0.45, 0.45, 0.45]

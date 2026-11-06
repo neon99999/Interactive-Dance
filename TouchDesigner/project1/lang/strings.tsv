@@ -254,3 +254,30 @@ pose.hand_r	Right hand	Mano der.
 pose.spread	Arms spread	Apertura
 pose.energy	Energy	Energía
 pose.nocamera	Pose page: set Source to Camera (MediaPipe)	Página Pose: pon Fuente en Cámara (MediaPipe)
+target.particles.visible	Particles: on	Partículas: encendidas
+target.particles.energy	Particles: energy	Partículas: energía
+target.particles.spread	Particles: spread	Partículas: dispersión
+target.particles.turbulence	Particles: turbulence	Partículas: turbulencia
+target.particles.size	Particles: size	Partículas: tamaño
+target.particles.colour	Particles: colour	Partículas: color
+target.particles.trails	Particles: trails	Partículas: estelas
+visuals/particles.Visible.label	On	Encendido
+visuals/particles.Visible.help	Show the particles. MIDI: show / hide / toggle particles.	Muestra las partículas. MIDI: show / hide / toggle particles.
+visuals/particles.Preset.label	Preset	Preset
+visuals/particles.Preset.menu	Calm|Flowing|Energetic	Calma|Fluido|Enérgico
+visuals/particles.Preset.help	A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.	Un punto de partida: Calma (lento, amplio, estelas largas), Fluido (el normal), Enérgico (rápido, salvaje, estelas cortas). Al elegirlo se ajustan los seis controles de abajo.
+visuals/particles.Reset.label	Reset to Preset	Volver al preset
+visuals/particles.Reset.help	Put the six settings back to the chosen preset.	Devuelve los seis controles al preset elegido.
+visuals/particles.Energy.label	Energy	Energía
+visuals/particles.Energy.help	How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.	Cuánto y qué tan rápido se mueven las partículas: 0 = casi quietas, 1 = explosiones salvajes. Va bien con actividad, energía o golpes.
+visuals/particles.Spread.label	Spread	Dispersión
+visuals/particles.Spread.help	How far the particles spread: 0 = a tight cloud in the centre, 1 = the whole screen.	Hasta dónde se extienden: 0 = una nube pequeña en el centro, 1 = toda la pantalla.
+visuals/particles.Turbulence.label	Turbulence	Turbulencia
+visuals/particles.Turbulence.help	How irregular the motion is: 0 = big smooth swirls, 1 = small, restless eddies.	Qué tan irregular es el movimiento: 0 = remolinos grandes y suaves, 1 = remolinos pequeños e inquietos.
+visuals/particles.Size.label	Size	Tamaño
+visuals/particles.Size.help	Size of each particle: 0 = fine dust, 1 = large glowing dots.	Tamaño de cada partícula: 0 = polvo fino, 1 = puntos grandes y brillantes.
+visuals/particles.Colour.label	Colour	Color
+visuals/particles.Colour.menu	Aurora|Ocean|Ember|Moon	Aurora|Océano|Brasa|Luna
+visuals/particles.Colour.help	Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).	Paleta de color: Aurora (verde-violeta), Océano (azul-cian), Brasa (rojo-dorado), Luna (blanco-plata).
+visuals/particles.Trails.label	Trails	Estelas
+visuals/particles.Trails.help	How long the particles leave a glowing trail: 0 = none, 1 = long streaks.	Cuánto dura la estela brillante: 0 = nada, 1 = rastros largos.

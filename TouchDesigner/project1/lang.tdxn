@@ -48,7 +48,7 @@ operators:
   parameters:
     file: project1/lang/strings.tsv
     syncfile: true
-    rows: 256
+    rows: 283
     cols: 3
   position: [400, 0]
   size: [130, 90]
