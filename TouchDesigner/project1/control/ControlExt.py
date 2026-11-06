@@ -7,9 +7,10 @@ parameter stays the one source of truth, and MIDI, presets and mappings work
 exactly as before.
 
 What the panel shows is data, not code: the layout table lists each control
-(tab, section, component, parameter, shown in Basic, instrument). Rebuild()
+(tab, section, component, parameter, shown in Basic). Rebuild()
 recreates the generated parameters from it whenever Mode (Basic / Advanced),
-Instrument or Language changes. Labels, help and menus come from the bound
+Language changes. Each instrument has its own section on the Instruments
+tab (switching one by menu rebuilt the panel and froze it for a second). Labels, help and menus come from the bound
 parameter, so they follow the Language switch; tab and section names come
 from the lang table (control.page.<id>, control.section.<id>).
 Pulses (Reset, Load, Open Output Window) are forwarded by control_pulses.
@@ -18,8 +19,8 @@ Pulses (Reset, Load, Open Output Window) are forwarded by control_pulses.
 from typing import Optional
 
 PAGES = ('show', 'instruments', 'composition', 'movement', 'inputs')
-OWN = ('Mode', 'Instrument')          # the panel's own settings, never rebuilt
-OWN_PAGE = {'Mode': 'show', 'Instrument': 'instruments'}
+OWN = ('Mode',)                       # the panel's own setting, never rebuilt
+OWN_PAGE = {'Mode': 'show'}
 KEEP_PAGES = ('About',)                # Embody's build info, kept last
 
 
@@ -36,7 +37,7 @@ class ControlExt:
 		pass
 
 	def Rebuild(self) -> int:
-		"""Recreate the panel's generated controls for the current Mode, Instrument and Language. Returns how many."""
+		"""Recreate the panel's generated controls for the current Mode and Language. Returns how many."""
 		comp = self.ownerComp
 		for par in list(comp.customPars):
 			if par.name not in OWN and par.page.name not in KEEP_PAGES:
@@ -52,13 +53,10 @@ class ControlExt:
 		comp.store('_pageNames', {k: p.name for k, p in pages.items()})
 		self._ensureOwn(pages)
 		basicOnly = comp.par.Mode.eval() == 'basic'
-		instrument = comp.par.Instrument.eval()
 		built = 0
 		section = {}
 		for row in self.rows():
 			if basicOnly and not row['basic']:
-				continue
-			if row['instrument'] and row['instrument'] != instrument:
 				continue
 			source = self.sourcePar(row)
 			if source is None:
@@ -91,7 +89,7 @@ class ControlExt:
 			out.append({
 				'page': table[r, 'page'].val, 'section': table[r, 'section'].val,
 				'comp': table[r, 'comp'].val, 'par': table[r, 'par'].val,
-				'basic': table[r, 'basic'].val == '1', 'instrument': table[r, 'instrument'].val,
+				'basic': table[r, 'basic'].val == '1',
 			})
 		return out
 
@@ -108,7 +106,7 @@ class ControlExt:
 		return None
 
 	def onOwnChange(self, par: Par, prev) -> None:
-		"""Mode or Instrument changed: rebuild next frame (not inside the callback that destroys pars)."""
+		"""Mode changed: rebuild next frame (not inside the callback that destroys pars)."""
 		run('args[0].Rebuild()', self.ownerComp, delayFrames=1)
 
 	def _appendLike(self, page, name: str, source: Par, row: dict) -> Par:
@@ -146,7 +144,7 @@ class ControlExt:
 		return par
 
 	def _ensureOwn(self, pages: dict) -> None:
-		"""Get-or-create Mode (Show tab) and Instrument (Instruments tab)."""
+		"""Get-or-create Mode (Show tab)."""
 		comp = self.ownerComp
 		if getattr(comp.par, 'Mode', None) is None:
 			mode = pages['show'].appendMenu('Mode', label='Mode')[0]
@@ -154,13 +152,6 @@ class ControlExt:
 			mode.default = 'basic'
 			mode.val = 'basic'
 			mode.help = 'Basic shows the few controls needed on day one. Advanced shows every setting.'
-		if getattr(comp.par, 'Instrument', None) is None:
-			inst = pages['instruments'].appendMenu('Instrument', label='Instrument')[0]
-			inst.menuNames = ['particles', 'video', 'noise']
-			inst.menuLabels = ['Particles', 'Video Feedback', 'Noise']
-			inst.default = 'particles'
-			inst.val = 'particles'
-			inst.help = 'Which instrument this tab shows. Each one also has its On switch here; mix them on the Composition tab.'
 
 	def _storedPageName(self, key: str) -> str:
 		return (self.ownerComp.fetch('_pageNames', {}, storeDefault=False) or {}).get(key, '')

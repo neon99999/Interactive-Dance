@@ -1,145 +1,145 @@
-page	section	comp	par	basic	instrument
-show	show	lang	Language	1	
-show	music	transport	Play	1	
-show	music	transport	Reset	1	
-show	music	transport	Position	1	
-show	music	transport	Audiofile	1	
-show	music	transport	Midifile	1	
-show	music	transport	Length	0	
-show	music	transport	Seekto	0	
-show	music	transport	Seek	0	
-show	output	visuals	Openwindow	1	
-show	output	visuals	Closewindow	1	
-show	output	visuals	Level	1	
-show	output	visuals	Blackout	1	
-show	output	visuals	Flash	0	
-instruments	particles	visuals/particles	Visible	1	particles
-instruments	particles	visuals/particles	Preset	1	particles
-instruments	particles	visuals/particles	Reset	1	particles
-instruments	particles	visuals/particles	Energy	1	particles
-instruments	particles	visuals/particles	Spread	1	particles
-instruments	particles	visuals/particles	Turbulence	1	particles
-instruments	particles	visuals/particles	Size	1	particles
-instruments	particles	visuals/particles	Colour	1	particles
-instruments	particles	visuals/particles	Trails	1	particles
-instruments	video	visuals/video	Visible	1	video
-instruments	video	visuals/video	Preset	1	video
-instruments	video	visuals/video	Reset	1	video
-instruments	video	visuals/video	Echo	1	video
-instruments	video	visuals/video	Feedback	1	video
-instruments	video	visuals/video	Zoom	1	video
-instruments	video	visuals/video	Distortion	1	video
-instruments	video	visuals/video	Colour	1	video
-instruments	video	visuals/video	Mix	1	video
-instruments	noise	visuals/noise	Visible	1	noise
-instruments	noise	visuals/noise	Preset	1	noise
-instruments	noise	visuals/noise	Reset	1	noise
-instruments	noise	visuals/noise	Scale	1	noise
-instruments	noise	visuals/noise	Speed	1	noise
-instruments	noise	visuals/noise	Detail	1	noise
-instruments	noise	visuals/noise	Warp	1	noise
-instruments	noise	visuals/noise	Feedback	1	noise
-instruments	noise	visuals/noise	Colour	1	noise
-instruments	videosource	visuals/video	Source	1	video
-instruments	videosource	visuals/video	Status	1	video
-instruments	videosource	visuals/video	Videofile	0	video
-instruments	videosource	visuals/video	Load	0	video
-composition	particles	visuals/particles	Visible	1	
-composition	particles	visuals/particles	Opacity	1	
-composition	particles	visuals/particles	Blend	1	
-composition	particles	visuals/particles	Order	1	
-composition	video	visuals/video	Visible	1	
-composition	video	visuals/video	Opacity	1	
-composition	video	visuals/video	Blend	1	
-composition	video	visuals/video	Order	1	
-composition	noise	visuals/noise	Visible	1	
-composition	noise	visuals/noise	Opacity	1	
-composition	noise	visuals/noise	Blend	1	
-composition	noise	visuals/noise	Order	1	
-composition	shapes	visuals/shapes	Visible	1	
-composition	shapes	visuals/shapes	Opacity	1	
-composition	shapes	visuals/shapes	Blend	1	
-composition	shapes	visuals/shapes	Order	1	
-movement	movement	mappings	Preset	1	
-movement	movement	mappings	Followmidi	0	
-movement	slots14	mappings	Map1on	1	
-movement	slots14	mappings	Map1signal	1	
-movement	slots14	mappings	Map1target	1	
-movement	slots14	mappings	Map1from	0	
-movement	slots14	mappings	Map1to	0	
-movement	slots14	mappings	Map1smooth	0	
-movement	slots14	mappings	Map1sens	0	
-movement	slots14	mappings	Map2on	1	
-movement	slots14	mappings	Map2signal	1	
-movement	slots14	mappings	Map2target	1	
-movement	slots14	mappings	Map2from	0	
-movement	slots14	mappings	Map2to	0	
-movement	slots14	mappings	Map2smooth	0	
-movement	slots14	mappings	Map2sens	0	
-movement	slots14	mappings	Map3on	1	
-movement	slots14	mappings	Map3signal	1	
-movement	slots14	mappings	Map3target	1	
-movement	slots14	mappings	Map3from	0	
-movement	slots14	mappings	Map3to	0	
-movement	slots14	mappings	Map3smooth	0	
-movement	slots14	mappings	Map3sens	0	
-movement	slots14	mappings	Map4on	1	
-movement	slots14	mappings	Map4signal	1	
-movement	slots14	mappings	Map4target	1	
-movement	slots14	mappings	Map4from	0	
-movement	slots14	mappings	Map4to	0	
-movement	slots14	mappings	Map4smooth	0	
-movement	slots14	mappings	Map4sens	0	
-movement	slots58	mappings	Map5on	1	
-movement	slots58	mappings	Map5signal	1	
-movement	slots58	mappings	Map5target	1	
-movement	slots58	mappings	Map5from	0	
-movement	slots58	mappings	Map5to	0	
-movement	slots58	mappings	Map5smooth	0	
-movement	slots58	mappings	Map5sens	0	
-movement	slots58	mappings	Map6on	1	
-movement	slots58	mappings	Map6signal	1	
-movement	slots58	mappings	Map6target	1	
-movement	slots58	mappings	Map6from	0	
-movement	slots58	mappings	Map6to	0	
-movement	slots58	mappings	Map6smooth	0	
-movement	slots58	mappings	Map6sens	0	
-movement	slots58	mappings	Map7on	1	
-movement	slots58	mappings	Map7signal	1	
-movement	slots58	mappings	Map7target	1	
-movement	slots58	mappings	Map7from	0	
-movement	slots58	mappings	Map7to	0	
-movement	slots58	mappings	Map7smooth	0	
-movement	slots58	mappings	Map7sens	0	
-movement	slots58	mappings	Map8on	1	
-movement	slots58	mappings	Map8signal	1	
-movement	slots58	mappings	Map8target	1	
-movement	slots58	mappings	Map8from	0	
-movement	slots58	mappings	Map8to	0	
-movement	slots58	mappings	Map8smooth	0	
-movement	slots58	mappings	Map8sens	0	
-inputs	webcam	inputs	Webcamuse	1	
-inputs	webcam	inputs	Cameradevice	1	
-inputs	webcam	inputs	Webcamstatus	1	
-inputs	webcam	inputs	Camerasensitivity	0	
-inputs	wearables	inputs	Serialenable	1	
-inputs	wearables	inputs	Serialport	1	
-inputs	wearables	inputs	Serialstatus	1	
-inputs	wearables	inputs	Wearable1	1	
-inputs	wearables	inputs	Wearable2	1	
-inputs	wearables	inputs	Wearable3	1	
-inputs	wearables	inputs	Serialbaud	0	
-inputs	wearables	inputs	Serialnames	0	
-inputs	body	inputs	Posezones	1	
-inputs	body	inputs	Poseflipx	0	
-inputs	body	inputs	Posemask	0	
-inputs	body	inputs	Posesmooth	0	
-inputs	body	inputs	Posesensitivity	0	
-inputs	body	inputs	Posehold	0	
-inputs	body	inputs	Posezonemargin	0	
-inputs	test	inputs	Simlevel	0	
-inputs	test	inputs	Simtrigger	0	
-inputs	test	inputs	Simzone	0	
-inputs	test	inputs	Simanimate	0	
-inputs	osc	inputs	Oscenable	0	
-inputs	osc	inputs	Oscport	0	
+page	section	comp	par	basic
+show	show	lang	Language	1
+show	music	transport	Play	1
+show	music	transport	Reset	1
+show	music	transport	Position	1
+show	music	transport	Audiofile	1
+show	music	transport	Midifile	1
+show	music	transport	Length	0
+show	music	transport	Seekto	0
+show	music	transport	Seek	0
+show	output	visuals	Openwindow	1
+show	output	visuals	Closewindow	1
+show	output	visuals	Level	1
+show	output	visuals	Blackout	1
+show	output	visuals	Flash	0
+instruments	particles	visuals/particles	Visible	1
+instruments	particles	visuals/particles	Preset	1
+instruments	particles	visuals/particles	Reset	1
+instruments	particles	visuals/particles	Energy	1
+instruments	particles	visuals/particles	Spread	1
+instruments	particles	visuals/particles	Turbulence	1
+instruments	particles	visuals/particles	Size	1
+instruments	particles	visuals/particles	Colour	1
+instruments	particles	visuals/particles	Trails	1
+instruments	video	visuals/video	Visible	1
+instruments	video	visuals/video	Preset	1
+instruments	video	visuals/video	Reset	1
+instruments	video	visuals/video	Echo	1
+instruments	video	visuals/video	Feedback	1
+instruments	video	visuals/video	Zoom	1
+instruments	video	visuals/video	Distortion	1
+instruments	video	visuals/video	Colour	1
+instruments	video	visuals/video	Mix	1
+instruments	videosource	visuals/video	Source	1
+instruments	videosource	visuals/video	Status	1
+instruments	videosource	visuals/video	Videofile	0
+instruments	videosource	visuals/video	Load	0
+instruments	noise	visuals/noise	Visible	1
+instruments	noise	visuals/noise	Preset	1
+instruments	noise	visuals/noise	Reset	1
+instruments	noise	visuals/noise	Scale	1
+instruments	noise	visuals/noise	Speed	1
+instruments	noise	visuals/noise	Detail	1
+instruments	noise	visuals/noise	Warp	1
+instruments	noise	visuals/noise	Feedback	1
+instruments	noise	visuals/noise	Colour	1
+composition	particles	visuals/particles	Visible	1
+composition	particles	visuals/particles	Opacity	1
+composition	particles	visuals/particles	Blend	1
+composition	particles	visuals/particles	Order	1
+composition	video	visuals/video	Visible	1
+composition	video	visuals/video	Opacity	1
+composition	video	visuals/video	Blend	1
+composition	video	visuals/video	Order	1
+composition	noise	visuals/noise	Visible	1
+composition	noise	visuals/noise	Opacity	1
+composition	noise	visuals/noise	Blend	1
+composition	noise	visuals/noise	Order	1
+composition	shapes	visuals/shapes	Visible	1
+composition	shapes	visuals/shapes	Opacity	1
+composition	shapes	visuals/shapes	Blend	1
+composition	shapes	visuals/shapes	Order	1
+movement	movement	mappings	Preset	1
+movement	movement	mappings	Followmidi	0
+movement	slots14	mappings	Map1on	1
+movement	slots14	mappings	Map1signal	1
+movement	slots14	mappings	Map1target	1
+movement	slots14	mappings	Map1from	0
+movement	slots14	mappings	Map1to	0
+movement	slots14	mappings	Map1smooth	0
+movement	slots14	mappings	Map1sens	0
+movement	slots14	mappings	Map2on	1
+movement	slots14	mappings	Map2signal	1
+movement	slots14	mappings	Map2target	1
+movement	slots14	mappings	Map2from	0
+movement	slots14	mappings	Map2to	0
+movement	slots14	mappings	Map2smooth	0
+movement	slots14	mappings	Map2sens	0
+movement	slots14	mappings	Map3on	1
+movement	slots14	mappings	Map3signal	1
+movement	slots14	mappings	Map3target	1
+movement	slots14	mappings	Map3from	0
+movement	slots14	mappings	Map3to	0
+movement	slots14	mappings	Map3smooth	0
+movement	slots14	mappings	Map3sens	0
+movement	slots14	mappings	Map4on	1
+movement	slots14	mappings	Map4signal	1
+movement	slots14	mappings	Map4target	1
+movement	slots14	mappings	Map4from	0
+movement	slots14	mappings	Map4to	0
+movement	slots14	mappings	Map4smooth	0
+movement	slots14	mappings	Map4sens	0
+movement	slots58	mappings	Map5on	1
+movement	slots58	mappings	Map5signal	1
+movement	slots58	mappings	Map5target	1
+movement	slots58	mappings	Map5from	0
+movement	slots58	mappings	Map5to	0
+movement	slots58	mappings	Map5smooth	0
+movement	slots58	mappings	Map5sens	0
+movement	slots58	mappings	Map6on	1
+movement	slots58	mappings	Map6signal	1
+movement	slots58	mappings	Map6target	1
+movement	slots58	mappings	Map6from	0
+movement	slots58	mappings	Map6to	0
+movement	slots58	mappings	Map6smooth	0
+movement	slots58	mappings	Map6sens	0
+movement	slots58	mappings	Map7on	1
+movement	slots58	mappings	Map7signal	1
+movement	slots58	mappings	Map7target	1
+movement	slots58	mappings	Map7from	0
+movement	slots58	mappings	Map7to	0
+movement	slots58	mappings	Map7smooth	0
+movement	slots58	mappings	Map7sens	0
+movement	slots58	mappings	Map8on	1
+movement	slots58	mappings	Map8signal	1
+movement	slots58	mappings	Map8target	1
+movement	slots58	mappings	Map8from	0
+movement	slots58	mappings	Map8to	0
+movement	slots58	mappings	Map8smooth	0
+movement	slots58	mappings	Map8sens	0
+inputs	webcam	inputs	Webcamuse	1
+inputs	webcam	inputs	Cameradevice	1
+inputs	webcam	inputs	Webcamstatus	1
+inputs	webcam	inputs	Camerasensitivity	0
+inputs	wearables	inputs	Serialenable	1
+inputs	wearables	inputs	Serialport	1
+inputs	wearables	inputs	Serialstatus	1
+inputs	wearables	inputs	Wearable1	1
+inputs	wearables	inputs	Wearable2	1
+inputs	wearables	inputs	Wearable3	1
+inputs	wearables	inputs	Serialbaud	0
+inputs	wearables	inputs	Serialnames	0
+inputs	body	inputs	Posezones	1
+inputs	body	inputs	Poseflipx	0
+inputs	body	inputs	Posemask	0
+inputs	body	inputs	Posesmooth	0
+inputs	body	inputs	Posesensitivity	0
+inputs	body	inputs	Posehold	0
+inputs	body	inputs	Posezonemargin	0
+inputs	test	inputs	Simlevel	0
+inputs	test	inputs	Simtrigger	0
+inputs	test	inputs	Simzone	0
+inputs	test	inputs	Simanimate	0
+inputs	osc	inputs	Oscenable	0
+inputs	osc	inputs	Oscport	0

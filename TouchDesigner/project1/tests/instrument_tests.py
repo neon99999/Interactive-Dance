@@ -137,13 +137,12 @@ def Steps(check):
 		compositor_has('compositor: noise off again', ['particles']),
 	]
 
-	def panel(mode, instrument):
+	def panel(mode):
 		def step():
 			control = op.Control
 			control.par.Mode = mode
-			control.par.Instrument = instrument
 			control.Rebuild()
-		return base._do(step, 'panel %s %s' % (mode, instrument))
+		return base._do(step, 'panel %s' % mode)
 
 	def panel_pages():
 		control = op.Control
@@ -164,12 +163,14 @@ def Steps(check):
 		particles.par.Energy = 0.33
 		back = float(control.par.Instparticlesenergy.eval())
 		check(s, 'panel slider <-> instrument parameter (both ways)', abs(forward - 0.66) < 1e-4 and abs(back - 0.33) < 1e-4, '%.2f, %.2f' % (forward, back))
+		labels = [p.label for p in control.customPages[1].pars if p.style == 'Header']
+		check(s, 'panel: every instrument has its own section', len(labels) >= 3, ', '.join(labels))
 		control.par.Compnoisevisible = 1
 		check(s, 'panel Composition On -> noise Visible', int(inst('noise').par.Visible.eval()) == 1, '')
 		control.par.Compnoisevisible = 0
 
 	panel_steps = [
-		panel('basic', 'particles'), wait, base._do(panel_pages, 'panel pages'),
+		panel('basic'), wait, base._do(panel_pages, 'panel pages'),
 		base._do(panel_binds, 'panel binds'), wait,
 		setp('particles', 'Preset', 'calm'), wait, setp('particles', 'Energy', 0.9), wait,
 		base._do(lambda: op.Control.par.Instparticlesreset.pulse(), 'panel Reset pulse'), wait, wait,

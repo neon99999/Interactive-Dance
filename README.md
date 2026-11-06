@@ -38,12 +38,12 @@ Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()`
 | Tab | What is on it |
 |---|---|
 | **Show** | Mode (Basic / Advanced), Language, the music (Play, Reset, files, position) and the output window (open, close, Level, Blackout) |
-| **Instruments** | Pick an **Instrument** (Particles, Video Feedback, Noise); then its On switch, Preset, Reset to Preset and sliders (Video Feedback also its source and Status) |
+| **Instruments** | One section per instrument (Particles, Video Feedback, Noise): its On switch, Preset, Reset to Preset and sliders; Video Feedback also its source and Status |
 | **Composition** | Every instrument's On, Opacity, Blend and Order: what is in the picture and how it is stacked |
 | **Movement** | The mapping preset and the 8 movement -> visual mappings (Basic: On, Movement, Visual; Advanced adds From, To, Smoothing, Sensitivity) |
 | **Inputs** | Webcam (Use, Webcam, Status), Wearables (Read Serial, Port, Status, Use Wearable 1-3), Stage Zones; Advanced adds body-tracking details, test signals and OSC |
 
-**Basic** shows what a dancer needs on day one; **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, shown in Basic, instrument): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch.
+**Basic** shows what a dancer needs on day one; **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, shown in Basic): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Mode or Language rebuilds the panel, which takes a moment.
 
 ## The four components
 

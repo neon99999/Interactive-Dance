@@ -83,18 +83,6 @@ custom_pars:
     help: On = output is black. MIDI target master.blackout.
     value: ~me.parent().op('visuals').par.Blackout
   Instruments:
-  - name: Instrument
-    style: Menu
-    default: particles
-    menuNames:
-    - particles
-    - video
-    - noise
-    menuLabels:
-    - Particles
-    - Video Feedback
-    - Noise
-    help: Which instrument this tab shows. Each one has its On switch here; mix them on the Composition tab.
   - name: Hinstparticles
     style: Header
     label: Particles
@@ -162,6 +150,156 @@ custom_pars:
     clampMax: true
     help: 'How long the particles leave a glowing trail: 0 = none, 1 = long streaks.'
     value: ~me.parent().op('visuals/particles').par.Trails
+  - name: Hinstvideo
+    style: Header
+    label: Video Feedback
+  - name: Instvideovisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the video feedback. MIDI: show / hide / toggle video.'
+    value: ~me.parent().op('visuals/video').par.Visible
+  - name: Instvideopreset
+    style: Menu
+    label: Preset
+    default: echo
+    menuSource: me.parent().op('visuals/video').par.Preset
+    help: 'A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.'
+    value: ~me.parent().op('visuals/video').par.Preset
+  - name: Instvideoreset
+    style: Pulse
+    label: Reset to Preset
+    help: Put the five settings back to the chosen preset.
+  - name: Instvideoecho
+    style: Menu
+    label: Echo
+    default: auto
+    menuSource: me.parent().op('visuals/video').par.Echo
+    help: 'What leaves the trails. Dancer: only the dancer repeats (needs body tracking with Body Mask on, and Source: Webcam). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole image fed back into itself. Auto: Dancer when available, otherwise Movement.'
+    value: ~me.parent().op('visuals/video').par.Echo
+  - name: Instvideofeedback
+    style: Float
+    label: Feedback
+    default: 0.7
+    clampMin: true
+    clampMax: true
+    help: 'How long the image echoes: 0 = no echo, 1 = very long trails.'
+    value: ~me.parent().op('visuals/video').par.Feedback
+  - name: Instvideozoom
+    style: Float
+    label: Zoom
+    default: 0.1
+    min: -1.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    help: 'Which way the echoes move: above 0 they grow outward, below 0 they shrink inward, 0 = they stay in place.'
+    value: ~me.parent().op('visuals/video').par.Zoom
+  - name: Instvideodistortion
+    style: Float
+    label: Distortion
+    default: 0.1
+    clampMin: true
+    clampMax: true
+    help: 'How much the echoes ripple and bend: 0 = straight, 1 = melting.'
+    value: ~me.parent().op('visuals/video').par.Distortion
+  - name: Instvideocolour
+    style: Float
+    label: Colour
+    default: 0.1
+    clampMin: true
+    clampMax: true
+    help: 'Colour treatment: 0 = natural colour, 1 = echoes shift through the rainbow and glow.'
+    value: ~me.parent().op('visuals/video').par.Colour
+  - name: Instvideomix
+    style: Float
+    label: Mix
+    default: 0.75
+    clampMin: true
+    clampMax: true
+    help: Balance between the plain video (0) and the echoes (1).
+    value: ~me.parent().op('visuals/video').par.Mix
+  - name: Hinstvideosource
+    style: Header
+    label: Video Source
+  - name: Instvideosource
+    style: Menu
+    label: Source
+    default: webcam
+    menuSource: me.parent().op('visuals/video').par.Source
+    help: 'Webcam: the camera image (from body tracking when it is on, otherwise from inputs > Camera). Video File: the file below. Test Pattern: a moving shape, to try the effect without a camera.'
+    value: ~me.parent().op('visuals/video').par.Source
+  - name: Instvideostatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: What the instrument is showing now.
+    value: ~me.parent().op('visuals/video').par.Status
+  - name: Hinstnoise
+    style: Header
+    label: Noise
+  - name: Instnoisevisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
+    value: ~me.parent().op('visuals/noise').par.Visible
+  - name: Instnoisepreset
+    style: Menu
+    label: Preset
+    default: smoke
+    menuSource: me.parent().op('visuals/noise').par.Preset
+    help: 'A starting look: Smoke (slow grey clouds), Lava (warm, slowly twisting), Storm (fast, detailed, neon). Choosing one sets the six settings below.'
+    value: ~me.parent().op('visuals/noise').par.Preset
+  - name: Instnoisereset
+    style: Pulse
+    label: Reset to Preset
+    help: Put the six settings back to the chosen preset.
+  - name: Instnoisescale
+    style: Float
+    label: Scale
+    default: 0.6
+    clampMin: true
+    clampMax: true
+    help: 'Size of the pattern: 0 = fine grain, 1 = big slow shapes.'
+    value: ~me.parent().op('visuals/noise').par.Scale
+  - name: Instnoisespeed
+    style: Float
+    label: Speed
+    default: 0.2
+    clampMin: true
+    clampMax: true
+    help: 'How fast the pattern changes: 0 = almost still, 1 = boiling.'
+    value: ~me.parent().op('visuals/noise').par.Speed
+  - name: Instnoisedetail
+    style: Float
+    label: Detail
+    default: 0.5
+    clampMin: true
+    clampMax: true
+    help: 'How much fine detail sits on the big shapes: 0 = soft and smooth, 1 = rough and grainy.'
+    value: ~me.parent().op('visuals/noise').par.Detail
+  - name: Instnoisewarp
+    style: Float
+    label: Warp
+    default: 0.3
+    clampMin: true
+    clampMax: true
+    help: 'How much the pattern twists and folds into itself: 0 = plain noise, 1 = marbled swirls.'
+    value: ~me.parent().op('visuals/noise').par.Warp
+  - name: Instnoisefeedback
+    style: Float
+    label: Feedback
+    default: 0.6
+    clampMin: true
+    clampMax: true
+    help: 'How long the pattern leaves trails as it drifts outward: 0 = none, 1 = long smears.'
+    value: ~me.parent().op('visuals/noise').par.Feedback
+  - name: Instnoisecolour
+    style: Menu
+    label: Colour
+    default: smoke
+    menuSource: me.parent().op('visuals/noise').par.Colour
+    help: 'Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).'
+    value: ~me.parent().op('visuals/noise').par.Colour
   Composition:
   - name: Hcompparticles
     style: Header
@@ -558,7 +696,7 @@ operators:
     file: project1/control/layout.tsv
     syncfile: true
     rows: 145
-    cols: 6
+    cols: 5
   position: [0, -200]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
@@ -579,7 +717,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Mode Instrument Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Instparticlesreset
+    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Instparticlesreset Instvideoreset Instnoisereset
     builtin: false
     file: project1/control/control_pulses.py
     syncfile: true
