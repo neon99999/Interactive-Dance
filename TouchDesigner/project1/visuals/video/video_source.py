@@ -9,11 +9,22 @@ Source menu (Source page):
 - Video File: loaded only when Load is pressed (load()), and only if the file
   exists, so a missing file can never stop the project from opening.
 - Test Pattern: a moving shape, to try the effect with no camera.
+
+Echo menu (Instrument page): what leaves the trails.
+- Dancer: only the dancer repeats. Uses MediaPipe's body mask, so it needs
+  body tracking on (inputs > Pose Source: Camera, Body Mask on) and the
+  Webcam source coming from body tracking (the mask fits that picture only).
+- Movement: only what moves repeats (this frame compared with the last one).
+- Whole Picture: classic video feedback, the whole image fed back into itself.
+- Auto: Dancer when it is available, otherwise Movement.
 """
 
 import os
 
 POSE, CAMERA, FILE, TEST = 0, 1, 2, 3
+# Echo results: index for switch_loop (WHOLE) and switch_mask (DANCER, MOVEMENT).
+DANCER, MOVEMENT, WHOLE = 0, 1, 2
+ECHO_MENU = ('auto', 'dancer', 'movement', 'whole')
 
 
 def _inputs():
@@ -36,8 +47,33 @@ def sourceIndex(frame=0):
 	return TEST
 
 
+def hasBodyMask():
+	"""True when MediaPipe's body mask matches the picture in use."""
+	inputs = _inputs()
+	return (sourceIndex() == POSE and inputs is not None
+		and bool(inputs.par.Posemask.eval())
+		and inputs.op('mediapipe/MediaPipe/segmentation') is not None)
+
+
+def echoMode(frame=0):
+	"""DANCER, MOVEMENT or WHOLE for the Echo menu value now in use (mapped or manual)."""
+	channel = op('live')['echo']
+	index = int(round(channel.eval())) if channel is not None else 0
+	choice = ECHO_MENU[max(0, min(index, len(ECHO_MENU) - 1))]
+	if choice == 'whole':
+		return WHOLE
+	if choice in ('auto', 'dancer') and hasBodyMask():
+		return DANCER
+	return MOVEMENT
+
+
 def statusText(frame=0):
-	"""The Source page's Status line."""
+	"""The Source page's Status line: the picture in use, then what echoes."""
+	echo = {DANCER: 'Echo: dancer', MOVEMENT: 'Echo: movement', WHOLE: 'Echo: whole picture'}[echoMode()]
+	return _sourceText().rstrip('.') + '. ' + echo
+
+
+def _sourceText():
 	comp = parent.Instrument
 	choice = comp.par.Source.eval()
 	index = sourceIndex()

@@ -230,6 +230,8 @@ inputs.Posecamera.label	Webcam	Cámara web
 inputs.Posecamera.help	Which webcam MediaPipe uses. Close other apps using it, and set the Camera page Source to Off if it uses the same webcam.	Qué cámara web usa MediaPipe. Cierra otras apps que la usen, y pon la Fuente de la página Camera en Off si usa la misma cámara.
 inputs.Poseflipx.label	Flip Left/Right	Invertir izq./der.
 inputs.Poseflipx.help	Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.	Apagado: pose_x vale 0 a la izquierda de la imagen de MediaPipe y 1 a la derecha. Activo: al revés. Úsalo para que pose_x coincida con el escenario visto por el público.
+inputs.Posemask.label	Body Mask	Máscara del cuerpo
+inputs.Posemask.help	On: MediaPipe also finds the dancer's outline (a body mask), used by the Video Feedback instrument's Echo: Dancer. Costs some extra frame time while body tracking runs. Off: no mask; Echo: Auto uses Movement.	Encendido: MediaPipe también encuentra la silueta del bailarín (una máscara del cuerpo), que usa el Eco: Bailarín del instrumento Video eco. Cuesta algo más de tiempo por cuadro mientras corre el seguimiento del cuerpo. Apagado: sin máscara; Eco: Auto usa Movimiento.
 inputs.Posesmooth.label	Smoothing (s)	Suavizado (s)
 inputs.Posesmooth.help	Time in seconds that pose signals take to follow the dancer. Raise it if values jitter, lower it if they feel late. 0: no smoothing.	Segundos que tardan las señales pose en seguir al bailarín. Súbelo si tiemblan, bájalo si llegan tarde. 0: sin suavizado.
 inputs.Posesensitivity.label	Energy Sensitivity	Sensibilidad de energía
@@ -282,6 +284,7 @@ visuals/particles.Colour.help	Colour palette: Aurora (green-violet), Ocean (blue
 visuals/particles.Trails.label	Trails	Estelas
 visuals/particles.Trails.help	How long the particles leave a glowing trail: 0 = none, 1 = long streaks.	Cuánto dura la estela brillante: 0 = nada, 1 = rastros largos.
 target.video.visible	Video feedback: on	Video eco: encendido
+target.video.echo	Video feedback: what echoes	Video eco: qué deja eco
 target.video.feedback	Video feedback: echo length	Video eco: duración del eco
 target.video.zoom	Video feedback: zoom	Video eco: zoom
 target.video.distortion	Video feedback: distortion	Video eco: distorsión
@@ -294,6 +297,9 @@ visuals/video.Preset.menu	Clean|Echo|Abstract	Limpio|Eco|Abstracto
 visuals/video.Preset.help	A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.	Un punto de partida: Limpio (la imagen con poco eco), Eco (estelas que se alejan), Abstracto (color que se derrite, el bailarín se disuelve). Al elegirlo se ajustan los cinco controles de abajo.
 visuals/video.Reset.label	Reset to Preset	Volver al preset
 visuals/video.Reset.help	Put the five settings back to the chosen preset.	Devuelve los cinco controles al preset elegido.
+visuals/video.Echo.label	Echo	Origen del eco
+visuals/video.Echo.menu	Auto|Dancer|Movement|Whole Picture	Auto|Bailarín|Movimiento|Imagen completa
+visuals/video.Echo.help	What leaves the trails. Dancer: only the dancer repeats (needs body tracking with Body Mask on, and Source: Webcam). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole image fed back into itself. Auto: Dancer when available, otherwise Movement.	Qué deja las estelas. Bailarín: solo se repite el bailarín (necesita el seguimiento del cuerpo con Máscara del cuerpo encendida, y Fuente: Cámara web). Movimiento: solo se repite lo que se mueve. Imagen completa: el video eco clásico, toda la imagen realimentada en sí misma. Auto: Bailarín cuando está disponible; si no, Movimiento.
 visuals/video.Feedback.label	Feedback	Eco
 visuals/video.Feedback.help	How long the image echoes: 0 = no echo, 1 = very long trails.	Cuánto dura el eco de la imagen: 0 = sin eco, 1 = estelas muy largas.
 visuals/video.Zoom.label	Zoom	Zoom

@@ -138,6 +138,8 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 
 **Stage zones:** **Stage Zones** (1-5, default 3) splits the picture into equal zones from left to right. `pose_zone` is the zone the dancer is in (1 = left, 0 = nobody seen), and `pose_zone1` ... `pose_zone5` are 1 in their zone and 0 elsewhere, ready for a layer's `visible`. **Zone Margin** (0.05 = 5 % of the picture width) is how far past a border the dancer must go before the zone changes, so standing on a border does not flicker. The zones follow `pose_x`, so **Flip Left/Right** flips them too.
 
+**Body Mask** (default on) also asks MediaPipe for the dancer's outline, which the Video Feedback instrument's **Echo: Dancer** uses. Switch it off if body tracking needs the frame time.
+
 ### pose_monitor: see the body tracking
 
 A panel next to wearable_monitor. The camera picture (from MediaPipe) fills the left, with the stage zones drawn over it: zone borders in amber, the margin either side as a shaded band, the dancer's position as a green line and the body as a teal skeleton. Below the picture, one block per zone lights up while the dancer is in it. On the right: BODY TRACKING, the source, DANCER SEEN or NO DANCER, bars for position, left and right hand, arms spread and energy, and the current zone.
@@ -266,24 +268,26 @@ The layers are being joined by **visual instruments** (Particles, Video Feedback
 
 Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset. Until the compositor (next step) is built, the instruments are not yet in the output window; look at `particles/out1` and `video/out1`.
 
-**Video Feedback** (`visuals/video`): the camera image (or a video file) with echoes that trail, drift, ripple and change colour. Off by default.
+**Video Feedback** (`visuals/video`): the camera image (or a video file) with echoes that trail, drift, bend and change colour. Off by default.
 
 | Setting | What it does |
 |---|---|
 | **On** | Show the video feedback |
 | **Preset** | Clean, Echo (default) or Abstract: sets the five settings below |
 | **Reset to Preset** | Put the five settings back to the chosen preset |
+| **Echo** | What leaves the trails: **Dancer** (only the dancer repeats, on a dark background), **Movement** (only what moves repeats), **Whole Picture** (classic video feedback: the whole image fed back into itself), **Auto** (default: Dancer when available, otherwise Movement). Not set by presets |
 | **Feedback** | How long the echoes last: 0 none, 1 very long |
 | **Zoom** | Above 0 the echoes grow outward, below 0 they shrink inward |
-| **Distortion** | 0 straight, 1 melting ripples |
-| **Colour** | 0 natural colour, 1 echoes shift through the rainbow |
+| **Distortion** | 0 straight, 1 slow, melting bends |
+| **Colour** | 0 natural colour, 1 each echo shifts further through the rainbow |
 | **Mix** | 0 the plain video, 1 only the echoes |
 
 **Source** page: **Source** Webcam / Video File / Test Pattern, **Video File** + **Load**, and a read-only **Status**.
 
 - **Webcam** never opens a camera itself, so it cannot fight body tracking for the C920: while **inputs > Pose** is on Camera it uses MediaPipe's image, otherwise the **inputs > Camera** webcam. With neither on it shows the test pattern and Status says what to turn on.
 - **Video File** loads only when you press **Load**, and only if the file exists (Status shows `File not found` otherwise), so a missing file never stops the project opening. Paths can be relative to the TouchDesigner folder, e.g. `../media/clip.mp4`.
-- Mapping targets: Video feedback: echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
+- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Pose** on Camera with **Body Mask** on (default on; it costs some frame time while body tracking runs), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
+- Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
 - Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
 
 **Who sets a value** (layers and instruments alike), lowest to highest: the parameter itself (your manual setting), then MIDI events up to the song position, then the input table, then the mapping page. A mapping only takes over while it is **On** and its movement signal exists; switch it off and the manual setting (or MIDI) is back. Two things to know:

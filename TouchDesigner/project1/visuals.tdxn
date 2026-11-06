@@ -35,12 +35,12 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   fitTOP:
-    parameters:
-      resolutionh: =parent.Visuals.par.Resolution2
-      resolutionw: =parent.Visuals.par.Resolution1
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  monochromeTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   moviefileinTOP:
@@ -266,6 +266,20 @@ operators:
       style: Pulse
       label: Reset to Preset
       help: Put the five settings back to the chosen preset.
+    - name: Echo
+      style: Menu
+      default: auto
+      menuNames:
+      - auto
+      - dancer
+      - movement
+      - whole
+      menuLabels:
+      - Auto
+      - Dancer
+      - Movement
+      - Whole Picture
+      help: 'What leaves the trails. Dancer: only the dancer repeats (needs body tracking with Body Mask on, and Source: Webcam). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole image fed back into itself. Auto: Dancer when available, otherwise Movement.'
     - name: Feedback
       style: Float
       startSection: true
@@ -334,14 +348,14 @@ operators:
     - live_select
   - name: out1
     type: outTOP
-    position: [4400, 0]
+    position: [6000, 0]
     inputs:
     - cross_mix
   - name: null_fb
     type: nullTOP
-    position: [3600, -200]
+    position: [5200, -200]
     inputs:
-    - cross_loop
+    - switch_loop
   - name: presets
     type: tableDAT
     position: [800, -1200]
@@ -371,6 +385,28 @@ operators:
       - '0.75'
       - '1'
     dat_content_format: table
+  - name: fit_mask
+    type: fitTOP
+    parameters:
+      fit: fill
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [2000, -1000]
+    inputs:
+    - sel_mask
+  - name: max_loop
+    type: compositeTOP
+    parameters:
+      operand: maximum
+    position: [4400, -400]
+    inputs:
+    - layer_masked
+    - level_fade
+  - name: sel_mask
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('mediapipe/MediaPipe/segmentation')
+    position: [1600, -1000]
   - name: sel_pose
     type: selectTOP
     parameters:
@@ -388,10 +424,17 @@ operators:
     type: crossTOP
     parameters:
       cross: =op('live')['mix']
-    position: [4000, 0]
+    position: [5600, 0]
     inputs:
     - null_source
     - null_fb
+  - name: mono_mask
+    type: monochromeTOP
+    parameters:
+      rgb: rgbmax
+    position: [2400, -1000]
+    inputs:
+    - fit_mask
   - name: cross_loop
     type: crossTOP
     parameters:
@@ -404,6 +447,8 @@ operators:
     type: fitTOP
     parameters:
       fit: fill
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
       format: rgba16float
     position: [800, -200]
     inputs:
@@ -418,6 +463,21 @@ operators:
     color: [0.67, 0.67, 0.67]
     inputs:
     - displace_warp
+  - name: level_fade
+    type: levelTOP
+    parameters:
+      brightness1: =math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['feedback'] ** 2 * 3.0))
+    position: [3200, -400]
+    inputs:
+    - hsv_colour
+  - name: level_mask
+    type: levelTOP
+    parameters:
+      inlow: 0.02
+      inhigh: 0.15
+    position: [2800, -1000]
+    inputs:
+    - mono_mask
   - name: movie_file
     type: moviefileinTOP
     parameters:
@@ -426,17 +486,33 @@ operators:
   - name: noise_warp
     type: noiseTOP
     parameters:
-      period: 0.6
+      period: 2.5
+      harmon: 1
       mono: false
-      tz: =(absTime.seconds * 0.2) % 1000
-      resolutionw: =parent.Visuals.par.Resolution1 / 4
-      resolutionh: =parent.Visuals.par.Resolution2 / 4
+      tz: =(absTime.seconds * 0.05) % 1000
+      resolutionw: =parent.Visuals.par.Resolution1 / 8
+      resolutionh: =parent.Visuals.par.Resolution2 / 8
     position: [2000, -700]
   - name: sel_camera
     type: selectTOP
     parameters:
       top: =op.Inputs.op('camera_in')
     position: [0, -200]
+  - name: blur_motion
+    type: blurTOP
+    parameters:
+      size: 6
+    position: [3200, -1200]
+    inputs:
+    - level_motion
+  - name: diff_motion
+    type: compositeTOP
+    parameters:
+      operand: difference
+    position: [2000, -1200]
+    inputs:
+    - null_source
+    - feedback_prev
   - name: live_select
     type: selectCHOP
     parameters:
@@ -451,11 +527,36 @@ operators:
       valuechange: false
       file: project1/visuals/video/load_button.py
     position: [400, -1200]
+  - name: mono_motion
+    type: monochromeTOP
+    parameters:
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [2400, -1200]
+    inputs:
+    - diff_motion
   - name: null_source
     type: nullTOP
     position: [1200, -200]
     inputs:
     - fit_source
+  - name: switch_loop
+    type: switchTOP
+    parameters:
+      index: =int(me.parent().op('video_source').module.echoMode(absTime.frame) == 2)
+    position: [4800, -200]
+    inputs:
+    - max_loop
+    - cross_loop
+  - name: switch_mask
+    type: switchTOP
+    parameters:
+      index: =min(me.parent().op('video_source').module.echoMode(absTime.frame), 1)
+    position: [3600, -1000]
+    inputs:
+    - level_mask
+    - blur_motion
   - name: test_circle
     type: circleTOP
     parameters:
@@ -472,6 +573,20 @@ operators:
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
     position: [-400, -600]
+  - name: layer_masked
+    type: compositeTOP
+    position: [4000, -800]
+    inputs:
+    - null_source
+    - switch_mask
+  - name: level_motion
+    type: levelTOP
+    parameters:
+      inlow: 0.04
+      inhigh: 0.2
+    position: [2800, -1200]
+    inputs:
+    - mono_motion
   - name: test_pattern
     type: compositeTOP
     parameters:
@@ -494,10 +609,9 @@ operators:
   - name: displace_warp
     type: displaceTOP
     parameters:
-      displaceweightx: =op('live')['distortion'] * 0.4 * min(absTime.stepSeconds, 0.1)
-      displaceweighty: =op('live')['distortion'] * 0.4 * min(absTime.stepSeconds, 0.1)
+      displaceweightx: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
+      displaceweighty: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
       offsetweight: =1 - me.par.uvweight.eval()
-      extend: zero
     position: [2400, -400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -509,6 +623,13 @@ operators:
     parameters:
       top: null_fb
     position: [1600, -400]
+    inputs:
+    - null_source
+  - name: feedback_prev
+    type: feedbackTOP
+    parameters:
+      top: null_source
+    position: [1600, -1200]
     inputs:
     - null_source
   - name: switch_source
@@ -534,9 +655,9 @@ operators:
   - name: annotate1
     mode: annotate
     title: Video Feedback
-    text: 'switch_source picks the image (video_source.sourceIndex): MediaPipe''s webcam image (sel_pose) while body tracking is on, else inputs/camera_in (sel_camera), the loaded file (movie_file, loaded only by the Load button), or the test pattern. fit_source -> null_source. Loop: feedback_loop -> transform_zoom (Zoom, Distortion turn) -> displace_warp by noise_warp (Distortion) -> hsv_colour (Colour) -> cross_loop with the new frame (Feedback, time-based decay) -> null_fb. cross_mix: plain video vs echoes (Mix) -> out1. All rates use absTime.stepSeconds, so the look is the same at any frame rate.'
+    text: 'switch_source picks the image (video_source.sourceIndex): MediaPipe''s webcam image (sel_pose) while body tracking is on, else inputs/camera_in (sel_camera), the loaded file (movie_file, loaded only by the Load button), or the test pattern. fit_source -> null_source. Echo (video_source.echoMode) picks what leaves trails. Dancer: MediaPipe''s body mask (sel_mask -> level_mask). Movement: this frame minus the last (feedback_prev -> diff_motion -> blur_motion). switch_mask -> layer_masked = source x mask. Loop: feedback_loop -> transform_zoom (Zoom, Distortion turn) -> displace_warp by a slow, large noise_warp (Distortion) -> hsv_colour (Colour, hue shift per echo). Dancer/Movement: level_fade (Feedback decay) then max_loop keeps the brighter of the new layer and the fading echoes. Whole Picture: cross_loop blends the new frame into the echoes (classic video feedback). switch_loop -> null_fb. cross_mix: plain video vs echoes (Mix) -> out1. All rates use absTime.stepSeconds, so the look is the same at any frame rate.'
     position: [-470, -1270]
-    size: [5070, 1930]
+    size: [6670, 1930]
     color: [0.45, 0.45, 0.45]
 - name: layer1
   type: baseCOMP
@@ -576,6 +697,9 @@ operators:
     - tint_color
   - name: fit_media
     type: fitTOP
+    parameters:
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
     position: [0, -1200]
     inputs:
     - media_file

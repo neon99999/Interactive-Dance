@@ -172,6 +172,11 @@ custom_pars:
     style: Toggle
     label: Flip Left/Right
     help: 'Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.'
+  - name: Posemask
+    style: Toggle
+    label: Body Mask
+    default: true
+    help: 'On: MediaPipe also finds the dancer''s outline (a body mask), used by the Video Feedback instrument''s Echo: Dancer. Costs some extra frame time while body tracking runs. Off: no mask; Echo: Auto uses Movement.'
   - name: Posesmooth
     style: Float
     label: Smoothing (s)
@@ -447,7 +452,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Posesource
+    pars: Posesource Posemask
     builtin: false
     file: project1/inputs/pose_settings.py
     syncfile: true
