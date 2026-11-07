@@ -1,8 +1,8 @@
 # Development status
 
-Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensors`, not yet merged into `main`.
+Last updated 2026-11-06. All current work is on branch `feature/wearable-sensors`, not yet merged into `main`.
 
-**Latest working project:** `TouchDesigner/DanceWorkshop.toe`, at git commit `f8df998` or later on `main`. It was saved, reopened and retested: all 63 checks pass. All commits are pushed to GitHub.
+**Latest working project:** `TouchDesigner/DanceWorkshop.toe` at commit `6f1d1a4` on `feature/wearable-sensors` (pushed). The in-TD suite passed 116 of 116 on MINI-PC on 2026-11-06.
 
 ## Milestones
 
@@ -20,10 +20,16 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 | 9 | MIDI note monitor (`midi_monitor`) | see git log | Done. Tested with the user's own MIDI file: seek, and notes appearing and clearing during playback |
 | 10 | Body tracking with MediaPipe (inputs, Pose page) | `5d007ba` | Built 2026-10-29. Confirmed by the user on LAPTOP with a webcam (2026-10-29) |
 | 11 | Stage zones, `pose_monitor`, mapping page with presets, MIDI preset switching, English/Spanish (`lang`) | `fa157fa` | Built 2026-10-29 (overnight, MINI-PC). Confirmed by the user on LAPTOP with a webcam (2026-10-29); Spanish texts still need a native speaker's review |
+| 12 | Visual instruments A-C: instrument contract, Resolution, Particles, Video Feedback | `783a528`, `7445d44`, `8cb69c6`, `25e9d93` | Done. Seen by the user on Studio-PC at 60 fps. Particles "fine for now"; Video Feedback reads only partly as feedback, needs work |
+| 13 | Visual instruments D-E: compositor, Shapes, Noise, instrument tests | `54ca45b`, `6175a0d` | Done, tested in TD. Noise "needs work" (user) |
+| 14 | One webcam for camera motion, body tracking and video | `13c681f` | Done |
+| 15 | Webcam page: one Use menu (Off / Movement only / Body tracking / Test) and a plain-words Status line | `32f98e3` | Done, tested in TD; waiting on the user's Studio-PC check |
+| 16 | Stage F, first version: control panel (`control`), five tabs, Basic/Advanced, one section per instrument | `b9e023e`, `f39c8e0` | Done, tested in TD; waiting on the user's feedback |
+| 17 | Reliable body tracking: Body Mask off by default, stalled MediaPipe detected, webcam hand-over, Status band on pose_monitor | `d4c277f`, `a03ccae`, `6f1d1a4` | Done, measured live on MINI-PC with a C920 |
 
 ## Tests
 
-**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()`. Results go to `tests/results`; the last run (2026-10-29, MINI-PC, with the mapping checks) passed **79 of 79**.
+**In TouchDesigner:** run `op('/project1/tests/engine_tests').module.Run()` (about 4 minutes). Results go to `tests/results`; the last run (2026-11-06, MINI-PC) passed **116 of 116**, including the instrument, compositor, Webcam page and control panel checks. The per-group list below dates from 2026-10-29 (79 checks).
 
 - **engine (12):** each action; a chord with simultaneous events; a conflict where the later row wins; pause; forward and backward seek; seek into a trigger window; reset; repeated playback.
 - **playback (2):** during real playback, the live values equal a fresh evaluation at the clock time (30 samples); the clock advances.
@@ -41,7 +47,7 @@ Last updated 2026-10-29. The wearable work is on branch `feature/wearable-sensor
 
 The suite backs up and restores the mapping page and the language, and empties the mapping presets while it runs (their rows would override the values under test).
 
-**Plain Python:** `python -m unittest discover -s tests`: **81 of 81** pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model, 20 body tracking including stage zones, 11 mapping page). 2000 notes evaluate in under 1 ms.
+**Plain Python:** `python -m unittest discover -s tests`: **103 of 103** pass (2026-11-06; adds webcam matching and Status, and serial ports). The breakdown from 2026-10-29: 81 of 81 pass (27 show logic, 10 serial parser including the receiver's v0.2 line format, 13 motion model, 20 body tracking including stage zones, 11 mapping page). 2000 notes evaluate in under 1 ms.
 
 **Save/reopen:** TouchDesigner was relaunched on the saved project; there were no errors, pages, tables and annotations were intact, and all 63 checks passed.
 
@@ -119,7 +125,8 @@ The user ran manual tests 11-14 on LAPTOP with the webcam and reported that all 
 ## Not verified (needs a person or hardware)
 
 - **Movies:** Content "media" was tested with a still image. A movie plays on its own clock, not synced to the music, seek or pause.
-- **Real webcam:** none on this machine, which runs over remote desktop. The camera chain was tested with the moving test pattern.
+- **Real webcam:** tested on MINI-PC with a C920 on 2026-11-06. Body Mask off: about 14 MediaPipe results a second, the dancer seen 98% of the time, longest gap 0.7 s. Body Mask on: 9 a second, 92%, gaps up to 2 s. Switching from Movement only to Body tracking takes 11-18 s before the first result; back to Movement only about 1.5 s.
+- **Spanish texts:** written by Claude; need a native speaker's read.
 - **OSC from another device:** only tested from this computer to itself (127.0.0.1). Another device may also need the Windows firewall to allow TouchDesigner, and the user decides that.
 - **macOS:** untested. Nothing Windows-specific was used. The camera driver and serial port names differ, and both are picked from menus.
 - **Frame rate:** 40-55 fps on this machine. The project's own cook time is near zero, so the limit is the machine and setup (a second TouchDesigner instance, remote desktop). Check on the show computer.
@@ -157,7 +164,7 @@ The user ran manual tests 11-14 on LAPTOP with the webcam and reported that all 
 2. Put a movie in `layer1` (Content media, Media File) and check playback and performance.
 3. Send OSC from a phone or another computer to port 7000, e.g. `/dancer/level 0.5`, with **Receive OSC** on.
 4. ~~Connect a serial device~~ (wearable IMU, done 2026-10-28, over USB and wirelessly through the receiver, including driving a visual through the input table).
-5. Plug in a webcam, set Camera **Source** to Camera, wave left and right, and watch `camera_left` / `camera_right`.
+5. ~~Plug in a webcam and check the camera signals~~ (done 2026-11-06, MINI-PC, C920, through the Webcam page).
 6. Open the project on a Mac and run the tests.
 7. Press the Assignments buttons on `engine` and the Output buttons on `visuals`.
 8. On the wearable, confirm the pins and test the button, vibration motor and battery reading (`Firmware/README.md`, Battery).
