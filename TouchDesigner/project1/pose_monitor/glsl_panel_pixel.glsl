@@ -124,6 +124,9 @@ void main() {
             }
         }
     }
+    // Dark band behind the Status line at the top of the camera picture, so the
+    // text stays readable over a bright picture or the drawn body.
+    if (source == 1 && p.x < picture.x && p.y > res.y - 60.0) col = mix(col, BG, 0.75);
     // Divider lines.
     if (abs(p.x - panelX) < 1.0 || (p.x < picture.x && abs(p.y - stripH) < 1.0)) col = TICK;
 
