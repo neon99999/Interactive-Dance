@@ -11,7 +11,7 @@
 //     same on either receiver. Copy a received packet into a local struct
 //     (memcpy) before reading it; the radio buffer may be unaligned.
 //
-// Defined so far: Hello, Motion and Battery. Button and haptic packets come
+// Defined so far: Hello, Motion, Battery and BatteryStatus. Button and haptic packets come
 // with the features that need them.
 //
 // History: v2 Motion carried the raw IMU reading only (MotionPacketV2, kept so
@@ -20,7 +20,7 @@
 // and the wearing mode, all on the body axes (config.h). Battery is a new
 // packet type inside v3, not a layout change: a receiver that does not know it
 // counts it as a bad packet and carries on, so boards can be flashed in any
-// order.
+// order. BatteryStatus (wearable fw v0.10) is another new type, added the same way.
 
 #pragma once
 
@@ -47,6 +47,7 @@ enum class PacketType : uint8_t {
   // Reserved for later: Button = 3
   Battery = 4,  // wearable -> receiver: battery level, every few seconds
   // Reserved for later: Haptic = 5
+  BatteryStatus = 6,  // wearable -> receiver: battery protection state, every few seconds and on a change
 };
 
 #pragma pack(push, 1)
@@ -111,6 +112,23 @@ struct BatteryPacket {
   uint8_t percent;      // rough charge, 0..100
 };
 
+// Battery protection state (wearable fw v0.10, power.cpp).
+enum class BatteryState : uint8_t {
+  NoReading = 0,     // no valid voltage: protection cannot act, the cell's own circuit is all there is
+  Ok = 1,
+  Low = 2,           // at or below BATTERY_LOW_MILLIVOLTS: still running, charge soon
+  ShuttingDown = 3,  // critical: the wearable is switching itself off (deep sleep)
+};
+constexpr uint8_t BATTERY_FLAG_USB = 0x01;        // a USB computer is connected: no shutdown, reading follows the charger
+constexpr uint8_t BATTERY_FLAG_SIMULATED = 0x02;  // test mode: the voltage is simulated (USB key b)
+
+struct BatteryStatusPacket {
+  PacketHeader header;
+  uint8_t state;        // BatteryState
+  uint8_t flags;        // BATTERY_FLAG_*
+  uint16_t millivolts;  // the smoothed voltage the state was judged on; 0 = no reading
+};
+
 #pragma pack(pop)
 
 static_assert(sizeof(PacketHeader) == 6, "PacketHeader layout changed: bump PROTOCOL_VERSION");
@@ -119,6 +137,7 @@ static_assert(sizeof(MotionPacketV2) == 18, "MotionPacketV2 is a fixed old layou
 static_assert(sizeof(MotionPacket) == 28, "MotionPacket layout changed: bump PROTOCOL_VERSION");
 static_assert(sizeof(MotionPacket) <= ESPNOW_MAX_PAYLOAD, "packet too large for ESP-NOW");
 static_assert(sizeof(BatteryPacket) == 9, "BatteryPacket layout changed: bump PROTOCOL_VERSION");
+static_assert(sizeof(BatteryStatusPacket) == 10, "BatteryStatusPacket layout changed: bump PROTOCOL_VERSION");
 
 inline PacketHeader makeHeader(PacketType type, uint8_t wearableId, uint16_t sequence) {
   return PacketHeader{PROTOCOL_MAGIC, PROTOCOL_VERSION, static_cast<uint8_t>(type), wearableId, sequence};

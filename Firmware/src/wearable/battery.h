@@ -5,6 +5,10 @@
 // nothing is wired to the pin. An unwired pin floats, so it can still land in
 // the valid range now and then: wire the divider before trusting the number.
 // On USB the pin reads the charger, not the cell.
+//
+// Test mode: simulate(mV) replaces the ADC with a fixed voltage that goes
+// through the same smoothing, so the protection rules (power.cpp) can be
+// tried without draining a cell. simulate(0) goes back to the real pin.
 #pragma once
 
 #include <stdint.h>
@@ -16,4 +20,7 @@ void update();
 bool hasReading();
 uint16_t millivolts();  // smoothed; 0 without a reading
 uint8_t percent();      // rough, from the resting voltage; 0 without a reading
+
+void simulate(uint16_t millivolts);  // 0 = real readings again
+bool isSimulated();
 }  // namespace battery

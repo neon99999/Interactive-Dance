@@ -12,6 +12,7 @@
 #include "imu.h"
 #include "mode.h"
 #include "motion.h"
+#include "power.h"
 #include "protocol.h"
 
 namespace espnow_link {
@@ -52,6 +53,7 @@ void sendBattery() {
   dance::BatteryPacket packet{dance::makeHeader(dance::PacketType::Battery, dance::WEARABLE_ID, sequence++),
                               battery::millivolts(), battery::percent()};
   send(&packet, sizeof(packet));
+  sendBatteryStatus();
   lastBatteryMs = millis();
 }
 
@@ -117,6 +119,22 @@ void update() {
   if (m.samples - lastSentSample < dance::ESPNOW_SEND_EVERY_SAMPLES) return;
   lastSentSample = m.samples;
   sendMotion(m);
+}
+
+void sendBatteryStatus() {
+  if (!ready) return;
+  uint8_t flags = 0;
+  if (power::usbComputer()) flags |= dance::BATTERY_FLAG_USB;
+  if (battery::isSimulated()) flags |= dance::BATTERY_FLAG_SIMULATED;
+  dance::BatteryStatusPacket packet{dance::makeHeader(dance::PacketType::BatteryStatus, dance::WEARABLE_ID, sequence++),
+                                    static_cast<uint8_t>(power::state()), flags, battery::millivolts()};
+  send(&packet, sizeof(packet));
+}
+
+void end() {
+  if (ready) esp_now_deinit();
+  ready = false;
+  WiFi.mode(WIFI_OFF);
 }
 
 bool isReady() { return ready; }

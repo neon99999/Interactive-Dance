@@ -151,6 +151,17 @@ bool update() {
   return fresh;
 }
 
+void powerDown() {
+  if (isReady()) {
+    // ODR 0 on both = power-down. Written even if the bus is unhappy: nothing to lose.
+    writeRegister(REG_CTRL1_XL, 0x00);
+    writeRegister(REG_CTRL2_G, 0x00);
+    Serial.printf("[imu] powered down at 0x%02X\n", sensorAddress);
+  }
+  sensorAddress = 0;
+  Wire.end();  // release SDA/SCL so the pins do not pull against the breakout's pull-ups
+}
+
 bool isReady() { return sensorAddress != 0; }
 
 uint8_t address() { return sensorAddress; }

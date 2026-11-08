@@ -1,11 +1,14 @@
 // Wearable firmware entry point: boot, identify, start each module, then run
 // the modules' update loops: the IMU, motion processing, wearing mode, button,
-// motor, battery and ESP-NOW link (see README.md).
+// motor, battery, battery protection and ESP-NOW link (see README.md). The
+// battery is checked before the IMU and radio start (power.h).
 //
 // Keys typed in a USB serial monitor:
 //   w / a  wrist / ankle mode
 //   r      start or stop recording: every sample as a #rec line (below)
 //   m      a numbered #mark line in the recording, e.g. before each move
+//   b<mV>  then Enter: TEST, simulate a battery voltage (b3400); b0 = real again
+//   x      TEST, run the start check again on the current (simulated) voltage
 //   other  print the identity again
 
 #include <Arduino.h>
@@ -18,6 +21,7 @@
 #include "imu.h"
 #include "mode.h"
 #include "motion.h"
+#include "power.h"
 #include "protocol.h"
 
 namespace {
@@ -26,6 +30,8 @@ uint32_t lastHeartbeatMs = 0;
 uint32_t lastLogMs = 0;
 bool recording = false;
 uint16_t markCount = 0;
+bool typingVoltage = false;  // after 'b', until Enter
+uint32_t typedVoltage = 0;
 
 void waitForSerial() {
   const uint32_t start = millis();
@@ -42,7 +48,7 @@ void logIdentity() {
                 mode::settings().name);
   Serial.printf("  chip %s rev %d, %lu MHz, efuse MAC %012llX\n", ESP.getChipModel(), ESP.getChipRevision(),
                 static_cast<unsigned long>(ESP.getCpuFreqMHz()), chipId);
-  Serial.println("  keys: w wrist, a ankle, r record on/off, m mark");
+  Serial.println("  keys: w wrist, a ankle, r record on/off, m mark; test: b<mV> Enter, x start check");
 }
 
 // Recording: lines start with # so TouchDesigner ignores them. Each #rec line
@@ -64,7 +70,23 @@ void setRecording(bool on) {
 void handleKeys() {
   while (Serial.available()) {
     const int key = Serial.read();
-    if (key == 'w') {
+    if (typingVoltage) {
+      if (key >= '0' && key <= '9') {
+        typedVoltage = typedVoltage * 10 + (key - '0');
+        if (typedVoltage > 65535) typedVoltage = 65535;
+      } else if (key == '\r' || key == '\n') {
+        typingVoltage = false;
+        battery::simulate(static_cast<uint16_t>(typedVoltage));
+      } else {
+        typingVoltage = false;
+        Serial.println("[battery] type b, the millivolts, then Enter (b3400); b0 for real readings");
+      }
+    } else if (key == 'b') {
+      typingVoltage = true;
+      typedVoltage = 0;
+    } else if (key == 'x') {
+      power::checkAtBoot();
+    } else if (key == 'w') {
       mode::set(dance::Mode::Wrist);
     } else if (key == 'a') {
       mode::set(dance::Mode::Ankle);
@@ -90,10 +112,13 @@ void logHeartbeat(uint32_t now) {
     Serial.print("not found");
   }
   if (battery::hasReading()) {
-    Serial.printf(", battery %u mV %u%%", battery::millivolts(), battery::percent());
+    Serial.printf(", battery %u mV %u%% %s", battery::millivolts(), battery::percent(),
+                  power::stateName(power::state()));
   } else {
     Serial.print(", battery no reading");
   }
+  if (battery::isSimulated()) Serial.print(" (SIMULATED)");
+  if (power::usbComputer()) Serial.print(", usb computer");
   if (espnow_link::isReady()) {
     Serial.printf(", espnow sent %lu failed %lu\n", static_cast<unsigned long>(espnow_link::sentCount()),
                   static_cast<unsigned long>(espnow_link::failedCount()));
@@ -140,9 +165,11 @@ void setup() {
   mode::begin();
   logIdentity();
 
+  // The battery first: on a flat cell nothing else starts (power.h).
+  battery::begin();
+  power::checkAtBoot();
   imu::begin();
   button::begin();
-  battery::begin();
   espnow_link::begin();
   Serial.println("boot complete");
 }
@@ -160,6 +187,7 @@ void loop() {
   }
   button::update();
   battery::update();
+  power::update();
   haptic::update();
   handleKeys();
 

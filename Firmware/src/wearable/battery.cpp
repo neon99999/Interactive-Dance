@@ -21,8 +21,10 @@ constexpr size_t CURVE_POINTS = sizeof(CURVE) / sizeof(CURVE[0]);
 
 float smoothed = 0.0f;  // millivolts at the battery
 uint32_t lastReadMs = 0;
+uint16_t simulatedMillivolts = 0;  // test mode; 0 = off
 
 float readBatteryMillivolts() {
+  if (simulatedMillivolts) return simulatedMillivolts;
   return analogReadMilliVolts(dance::PIN_BATTERY_ADC) * dance::BATTERY_DIVIDER_RATIO;
 }
 
@@ -68,5 +70,16 @@ bool hasReading() { return smoothed >= dance::BATTERY_MIN_MILLIVOLTS && smoothed
 uint16_t millivolts() { return hasReading() ? static_cast<uint16_t>(smoothed) : 0; }
 
 uint8_t percent() { return hasReading() ? percentFromMillivolts(millivolts()) : 0; }
+
+void simulate(uint16_t value) {
+  simulatedMillivolts = value;
+  if (value) {
+    Serial.printf("[battery] TEST: simulating %u mV (smoothed, so it takes about 10 s to follow); b0 to stop\n", value);
+  } else {
+    Serial.println("[battery] TEST off: real readings again");
+  }
+}
+
+bool isSimulated() { return simulatedMillivolts != 0; }
 
 }  // namespace battery

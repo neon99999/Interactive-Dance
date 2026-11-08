@@ -161,7 +161,17 @@ const char* directionName(uint8_t direction) {
   return "HIT";
 }
 
+bool batteryOff(const rx::Wearable& w) {
+  return w.hasBatteryStatus && w.batteryState == static_cast<uint8_t>(dance::BatteryState::ShuttingDown);
+}
+
+bool batteryLow(const rx::Wearable& w) {
+  return w.hasBatteryStatus && w.batteryState == static_cast<uint8_t>(dance::BatteryState::Low);
+}
+
 uint16_t batteryColour(const rx::Wearable& w) {
+  if (batteryOff(w)) return BAD;
+  if (batteryLow(w)) return ACCENT_2;  // the wearable's own warning, whatever the percentage says
   if (!w.batteryMillivolts) return MUTED;
   if (w.batteryPercent <= rx::BATTERY_CRITICAL_PERCENT) return BAD;
   return w.batteryPercent <= rx::BATTERY_LOW_PERCENT ? ACCENT_2 : TEXT;
@@ -199,8 +209,10 @@ void drawRow(uint8_t slot, uint32_t now) {
     if (w.firmwareMajor || w.firmwareMinor) {
       snprintf(version, sizeof(version), "v%u.%u", w.firmwareMajor, w.firmwareMinor);
     }
+    // BATT: it switched itself off on a flat battery (wearable fw v0.10).
+    const bool off = !w.live && batteryOff(w);
     snprintf(line, sizeof(line), "W%u %s %-5s %-4s %3u x%u", id, version, modeName(w.mode),
-             duplicate ? "DUP" : w.live ? "LIVE" : "LOST", w.ratePerSecond, w.lostPerSecond);
+             duplicate ? "DUP" : w.live ? "LIVE" : off ? "BATT" : "LOST", w.ratePerSecond, w.lostPerSecond);
     colour = duplicate ? ACCENT_2 : w.live ? ACCENT : BAD;
   }
   startText(lineCanvas, ST77XX_BLACK);
@@ -240,7 +252,13 @@ void drawRow(uint8_t slot, uint32_t now) {
     printText(detailCanvas, MUTED, tilt);
     if (w.hasBattery) {
       char level[16] = "    --";
-      if (w.batteryMillivolts) snprintf(level, sizeof(level), "  %3u%%", w.batteryPercent);
+      if (batteryOff(w)) {
+        snprintf(level, sizeof(level), "   OFF");
+      } else if (batteryLow(w)) {
+        snprintf(level, sizeof(level), "  LOW!");
+      } else if (w.batteryMillivolts) {
+        snprintf(level, sizeof(level), "  %3u%%", w.batteryPercent);
+      }
       printText(detailCanvas, batteryColour(w), level);
     }
   }

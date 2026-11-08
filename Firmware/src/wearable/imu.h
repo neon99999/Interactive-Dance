@@ -19,6 +19,7 @@ struct Reading {
 
 bool begin();
 bool update();  // true when a new sample was read
+void powerDown();  // sensor to power-down mode (a few microamps), before deep sleep; begin() wakes it
 
 bool isReady();
 uint8_t address();        // I2C address in use, 0 when not found

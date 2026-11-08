@@ -11,7 +11,7 @@ namespace dance {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance wearable";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 9;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 10;
 
 constexpr uint32_t SERIAL_BAUD = 115200;
 constexpr uint32_t SERIAL_WAIT_MS = 2000;     // wait this long for a USB serial monitor at boot
@@ -118,5 +118,22 @@ constexpr uint8_t BATTERY_START_READS = 16;  // averaged at boot, so the slow sm
 // Outside this range it cannot be a LiPo: the reading counts as missing.
 constexpr uint16_t BATTERY_MIN_MILLIVOLTS = 2500;
 constexpr uint16_t BATTERY_MAX_MILLIVOLTS = 4500;
+
+// --- Battery protection (power.cpp), on the smoothed voltage above. ---
+// STARTING VALUES: check them against the real cells and load. This firmware
+// protection only adds to the cell's own protection circuit; it does not
+// replace it.
+constexpr uint16_t BATTERY_LOW_MILLIVOLTS = 3500;        // at or below: low-battery warning, keeps running
+constexpr uint16_t BATTERY_LOW_CLEAR_MILLIVOLTS = 3550;  // the warning clears above this (no flicker at the edge)
+constexpr uint16_t BATTERY_CRITICAL_MILLIVOLTS = 3300;   // at or below for BATTERY_CRITICAL_MS: shut down
+constexpr uint32_t BATTERY_CRITICAL_MS = 10000;          // so a brief dip (the motor, a radio burst) is ignored
+// Needed to start on the battery, so a wearable that shut down does not run
+// again until it has been charged. A USB computer connection overrides it
+// (see power.h).
+constexpr uint16_t BATTERY_START_MILLIVOLTS = 3600;
+constexpr uint32_t POWER_CHECK_MS = 1000;      // how often the rules look at the smoothed voltage
+constexpr uint32_t USB_DETECT_MS = 1500;       // at boot, how long to look for a USB computer before refusing to start
+constexpr uint8_t POWER_NOTICE_REPEATS = 3;    // the final "shutting down" packet is broadcast this many times
+constexpr uint32_t POWER_NOTICE_GAP_MS = 30;
 
 }  // namespace dance

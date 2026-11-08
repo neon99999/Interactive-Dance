@@ -86,6 +86,7 @@ Reported by the user on the Project Hub checklist:
 - **Hardware:** the divider on all three is 200k from switched BAT+ to A0 and 100k from A0 to GND, ratio 3.0, on D0/A0 (GPIO0).
 - **Wearable v0.9:** reads A0, smooths it, works out a rough percentage and sends a Battery packet every 5 s. Protocol stays v3, so boards can be flashed in any order. PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP.
 - **Receiver v0.4:** shows the percentage on the display, in place of roll, and prints `w1_batt` and `w1_battv`, which reach TouchDesigner as `serial_w1_batt` and `serial_w1_battv`. No TouchDesigner change was needed; the parser test covers the new line.
+- **Battery protection, wearable v0.10 and receiver v0.5 (2026-11-07, MINI-PC):** warning at 3.50 V, shutdown into deep sleep (no wake-up) after 10 s at or below 3.30 V, no start below 3.60 V; a USB computer connection exempts it. New `BatteryStatus` packet inside protocol v3 and a new TouchDesigner value `serial_w1_battstate`. Receiver builds with PlatformIO; the wearable compiles and links with a stand-in script (PlatformIO Core on MINI-PC refuses the platform). The rules are checked on a Python copy (`tests/test_power_model.py`, 18 tests); plain-Python suite 121 of 121. **Not run on a board yet**: desk test in `Firmware/README.md` (Battery protection).
 
 ## Cali venue (2026-10-30, from the user)
 

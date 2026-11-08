@@ -9,7 +9,7 @@ namespace rx {
 
 constexpr const char* FIRMWARE_NAME = "Interactive Dance receiver";
 constexpr uint8_t FIRMWARE_VERSION_MAJOR = 0;
-constexpr uint8_t FIRMWARE_VERSION_MINOR = 4;
+constexpr uint8_t FIRMWARE_VERSION_MINOR = 5;
 
 // Faster than the wearable's 115200: each wearable on fw v0.7 sends about
 // 18 KB/s of text (104 lines a second), so three use about 60% of 921600 baud

@@ -10,6 +10,7 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 - **Not yet run on boards:** the steadier battery smoothing (made after that check), wearables 2 and 3 (not built yet), and all three together. Hits and the thresholds are untested until the recordings are in.
 - **Compiled:** receiver v0.4 and wearable v0.9. The wearable works out a small set of dancer signals (activity, tilt, hit with direction, still, button) in wrist or ankle mode, records raw data for tuning, and sends about 100 packets a second. The receiver handles three wearables at once, on the display too.
 - **Battery:** the wearable reads the LiPo through a divider and reports a rough percentage. It needs the divider below on every wearable.
+- **Battery protection (wearable v0.10, receiver v0.5, 2026-11-07, MINI-PC):** a low-battery warning at 3.50 V, a shutdown into deep sleep after 10 s at or below 3.30 V, and no start below 3.60 V (see Battery protection below). Both build with no warnings (the wearable with a stand-in build script, see the status table) and the rules pass their model tests; **not yet run on a board**.
 
 ## Hardware (per wearable)
 
@@ -55,7 +56,8 @@ Firmware/
       button.*          debounced button; a long press switches the mode
       haptic.*          vibration motor: off at boot, short buzzes
       espnow_link.*     ESP-NOW broadcast of Hello and Motion packets
-      battery.*         battery voltage and rough percentage
+      battery.*         battery voltage and rough percentage; test mode simulates a voltage
+      power.*           battery protection: warning, shutdown, start check (deep sleep)
     receiver/
       main.cpp          packets in, serial lines out, wearable tracking, duplicate ids, heartbeat
       receiver_config.h version, serial speed, display pins, variant and refresh
@@ -65,6 +67,7 @@ Firmware/
       display.*         ST7735 status screen
   tools/
     motion_model.py     Python copy of motion.cpp, for tuning on recordings
+    power_model.py      Python copy of the battery protection rules, for tests
 ```
 
 Each module has `begin()` and `update()`; `main.cpp` calls them, so a module is filled in without touching the others. `build_src_filter` keeps the wearable and receiver sources apart in one project.
@@ -193,6 +196,7 @@ Row colours: yellow LIVE, orange-red LOST, amber DUP. An old wearable shows `old
 - `Hello`: sent at boot with the firmware version, and every 2 s from wearable v0.8.
 - `Motion` v3: 28 bytes, all on the body axes. Header; accel in thousandths of a g; gyro (drift removed) in tenths of a degree per second; pitch and roll in tenths of a degree; activity 0 to 1000; flags (hit, still, button, gyro calibrated); hit direction; hit counter; mode.
 - `Battery`: 9 bytes, every 5 s from wearable v0.9. Header; smoothed millivolts (0 = no reading); percent. It is a new packet type inside protocol v3, so older boards keep working: receiver v0.3 only counts it as a bad packet.
+- `BatteryStatus`: 10 bytes, from wearable v0.10, with every Battery packet, at once when the state changes, and three times just before a shutdown. Header; state (0 no reading, 1 ok, 2 low, 3 shutting down); flags (USB computer connected, simulated); smoothed millivolts. Also a new type inside v3: receiver v0.4 counts it as a bad packet and carries on.
 - `Motion` v2: 18 bytes, the raw values only (wearable v0.4-v0.5).
 
 The wearables broadcast, so the receiver needs no addresses. All devices use `ESPNOW_CHANNEL` (1) in `protocol.h`; change it everywhere at once to dodge a busy Wi-Fi channel.
@@ -216,6 +220,7 @@ The wearables broadcast, so the receiver needs no addresses. All devices use `ES
 | Button, motor | Code written; parts **not wired yet** |
 | Wearable v0.9: battery reading, Battery packet | Flashed on wearable 1 and checked on LAPTOP (2026-10-30): RAM 13.3%, flash 78.7%. PlatformIO on MINI-PC refuses the platform, so build it on LAPTOP. The steadier smoothing added after that compiles file by file with the C6 toolchain; **not linked or run** |
 | Receiver v0.4: battery on the display and to TouchDesigner | Flashed and checked on LAPTOP (2026-10-30). Compiles with no warnings: RAM 38.6%, flash 27.5% |
+| Wearable v0.10, receiver v0.5: battery protection | Built on MINI-PC 2026-11-07. Receiver: PlatformIO, no warnings, RAM 38.8%, flash 27.6%. Wearable ids 1-3: compiled with `-Wall -Wextra` (no warnings) and linked by a stand-in script, because PlatformIO Core here refuses the platform; the PlatformIO build on LAPTOP is still the reference. Rules checked by `tests/test_power_model.py` (18 tests) on a Python copy. **Not run on a board** |
 | Body axes in `config.h` | Assumed; **check with the hand test** |
 
 To check on the hardware:
@@ -240,6 +245,42 @@ Every wearable needs a divider, because the XIAO has none built in and 4.2 V str
 3. Compare with `serial_w1_battv`. A few percent off is fine. To correct it, change `BATTERY_DIVIDER_RATIO` to (ratio x measured / shown).
 
 The display shows the percentage at the end of the wearable's lower line: cream, amber at 20% or below, orange-red at 10% or below, `--` without a reading. It takes about 10 s to follow a change. The percentage is rough (a typical LiPo curve): it dips while the motor runs and differs from cell to cell, so use it as a guide and take the real run time from the battery life test. An unwired A0 floats and can show a made-up value now and then.
+
+### Battery protection
+
+**Firmware protection only adds to the cell's own protection circuit; it never replaces it.** Every cell must have its own undervoltage protection, deep sleep does not disconnect the battery, and a swollen cell must never be used again.
+
+From wearable v0.10 (`src/wearable/power.*`, thresholds in `config.h`; starting values to check against the real cells and load):
+
+| Smoothed battery voltage | What happens |
+|---|---|
+| above 3.50 V | normal |
+| 3.50 V or below | **warning**: keeps running; the receiver shows `LOW!` in amber in place of the percentage, logs it, and sends `w1_battstate=2` to TouchDesigner. Clears above 3.55 V |
+| 3.30 V or below for 10 s | **shutdown**: a last BatteryStatus packet (sent three times), then the IMU to power-down, the motor off with its pin held low, the radio off, and deep sleep with **no wake-up source**. The receiver shows `BATT` in the row and `OFF` for the battery, and `w1_battstate=3` |
+| below 3.60 V at start | **does not start**: checked before the IMU and the radio start; straight into deep sleep |
+
+The voltage is the smoothed one (about 10 s to follow a change), read every 250 ms and judged every second, so a motor buzz or a radio burst does not count. It works with or without the receiver. Without a reading (divider not wired, a value outside 2.5-4.5 V) nothing shuts down: the state says `no reading`, and only the cell's own protection is left.
+
+**Starting again:** charge, then press the XIAO's RESET button (or switch off and on with USB unplugged). It starts once the cell is at 3.60 V or more. Nothing wakes it by itself: no timer.
+
+**USB:** the XIAO ESP32-C6 has no pin that sees USB power, so the firmware can only tell when a **computer** is connected (the USB Serial/JTAG sees the computer's frames; a power bank or wall charger sends none, as the ESP-IDF documentation says). With a computer connected nothing shuts down: the board runs from USB and the reading follows the charger. A wearable that started below 3.60 V on a computer must charge to 3.60 V before it may run on the battery alone; unplugged sooner, it shuts down after 10 s. On a wall charger the normal rules apply, which should be safe: the XIAO's charger chip is separate from the processor, so charging should carry on in deep sleep (to check: the charge LED stays on). The divider and the cell are on the switched side: with the power switch off the cell neither powers the board nor charges, and on USB there is then no reading.
+
+**Flashing a wearable that has shut down:** connect it to the computer and press RESET. It sees the computer and stays awake, so it can be flashed. If not, hold BOOT while pressing RESET for the download mode.
+
+**Desk test** (no need to drain a cell). On USB with the monitor at 115200 and the receiver on: `b`, the millivolts, then Enter simulates a voltage through the same smoothing (USB does not count while simulating); `b0` Enter returns to the real reading; `x` runs the start check again.
+
+1. `b3450` Enter: within about 30 s (the smoothing starts from the charger's 4.1-4.2 V) the heartbeat says `LOW`, the receiver shows `LOW!`, TouchDesigner gets `serial_w1_battstate` = 2. `b3800` Enter: back to ok.
+2. Brief dip: `b2900` Enter, then within 3 s `b3800` Enter: no "shutting down" line.
+3. No reading: `b1000` Enter: the heartbeat says `battery no reading` and nothing shuts down. Then `b0` Enter.
+4. Shutdown: `b3250` Enter: after about 30 s `[power] ... shutting down in 10 s unless it recovers`, then the shutdown 10 s later. The receiver shows `BATT` / `OFF` and no more packets arrive; the USB port disappears. Press RESET: it starts again (on USB it reads the charger).
+5. Start check: `b3550` Enter, wait about 30 s until the heartbeat shows under 3600 mV, then `x`: it does not start. Press RESET.
+6. Optional: on the battery with a meter in series, measure the current in deep sleep (expected tens of microamps; not measured yet).
+
+**Hardware limits:**
+- **Sleep is not off.** In deep sleep the board, the IMU (powered down) and the divider (300k across the cell, about 12-14 uA) still draw a little, so the few percent left below 3.3 V last weeks, not months. Switch the wearable off after use and never store it switched on; the cell's own protection is the last line.
+- **Reading accuracy:** wearable 1 reads about 0.1 V low, so it warns and shuts down a little early (the safe side). Calibrate `BATTERY_DIVIDER_RATIO` per wearable for exact thresholds.
+- **Voltage under load:** the thresholds are judged while the radio and IMU run, so the cell at rest is a little higher than the reading.
+- **Wall chargers are not detected** (above): a low wearable on one sleeps while it charges, and needs RESET afterwards.
 
 ## Decisions to revisit
 

@@ -9,10 +9,11 @@
 // on fw v0.4-v0.5 (protocol v2) send no motion processing, so their lines
 // stop after w1_gz. Every few seconds a wearable on fw v0.9 or later adds a
 // line w1_batt=65 w1_battv=3.920 (percent and volts; -1 and 0 without a
-// reading). When a wearable appears or goes quiet it also prints
-// w1_live=1 or w1_live=0; going quiet also sets act, hit, still and btn to 0,
-// so nothing is left switched on. Log lines start with [ so TouchDesigner
-// ignores them. The display shows the same state.
+// reading). From fw v0.10 the battery protection state follows as
+// w1_battstate=1 (0 no reading, 1 ok, 2 low, 3 shutting down). When a
+// wearable appears or goes quiet it also prints w1_live=1 or w1_live=0;
+// going quiet also sets act, hit, still and btn to 0, so nothing is left
+// switched on. Log lines start with [ so TouchDesigner ignores them. The display shows the same state.
 //
 // Latency first: every loop pass forwards all waiting packets before the
 // display draws one small piece, so a redraw never holds a line back for
@@ -94,6 +95,13 @@ void printBattery(uint8_t id, const rx::Wearable& w) {
   Serial.write(line, p - line);
 }
 
+void printBatteryStatus(uint8_t id, const rx::Wearable& w) {
+  Serial.printf("w%u_battstate=%u\n", id, w.batteryState);
+  if (w.batteryState == static_cast<uint8_t>(dance::BatteryState::ShuttingDown)) {
+    Serial.printf("[rx] wearable %u: battery critical, it is switching itself off; charge it, then press RESET\n", id);
+  }
+}
+
 void setLive(uint8_t id, rx::Wearable& w, bool live) {
   if (w.live == live) return;
   w.live = live;
@@ -152,6 +160,23 @@ bool readPacket(const radio::RawPacket& raw, dance::PacketType type, uint8_t ver
     w.hasBattery = true;
     return true;
   }
+  if (type == dance::PacketType::BatteryStatus && raw.length == sizeof(dance::BatteryStatusPacket)) {
+    dance::BatteryStatusPacket status;
+    memcpy(&status, raw.data, sizeof(status));
+    const bool repeat = w.hasBatteryStatus && w.batteryState == status.state;
+    w.batteryState = status.state;
+    w.batteryFlags = status.flags;
+    w.hasBatteryStatus = true;
+    // The shutdown notice comes several times: report it once.
+    if (repeat && status.state == static_cast<uint8_t>(dance::BatteryState::ShuttingDown)) return true;
+    if (!repeat) {
+      Serial.printf("[rx] wearable %u battery %s%s%s\n", id,
+                    status.state == 1 ? "ok" : status.state == 2 ? "LOW" : status.state == 3 ? "CRITICAL" : "no reading",
+                    status.flags & dance::BATTERY_FLAG_USB ? ", on USB" : "",
+                    status.flags & dance::BATTERY_FLAG_SIMULATED ? ", SIMULATED" : "");
+    }
+    return true;
+  }
   if (type != dance::PacketType::Motion) return false;
   if (version == 2 && raw.length == sizeof(dance::MotionPacketV2)) {
     dance::MotionPacketV2 motion;
@@ -203,6 +228,7 @@ void handlePacket(const radio::RawPacket& raw, uint32_t now) {
   // Printed before any bookkeeping: this line is what TouchDesigner waits for.
   if (type == dance::PacketType::Motion) printMotion(id, w);
   if (type == dance::PacketType::Battery) printBattery(id, w);
+  if (type == dance::PacketType::BatteryStatus) printBatteryStatus(id, w);
 
   checkSender(id, w, raw.mac, now);
   w.protocolVersion = header.version;
@@ -247,6 +273,7 @@ void logHeartbeat(uint32_t now) {
                   static_cast<unsigned long>(w.lost), w.hits,
                   w.duplicateSeen && now - w.duplicateMs < rx::DUPLICATE_SHOW_MS ? " DUPLICATE ID" : "");
     if (w.batteryMillivolts) Serial.printf(" batt %u%%", w.batteryPercent);
+    if (w.hasBatteryStatus && w.batteryState >= 2) Serial.print(w.batteryState == 2 ? " LOW" : " OFF (battery)");
   }
   Serial.println();
 }

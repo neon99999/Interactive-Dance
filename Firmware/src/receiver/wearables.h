@@ -42,6 +42,10 @@ struct Wearable {
   bool hasBattery = false;         // a Battery packet arrived
   uint16_t batteryMillivolts = 0;  // 0 = the wearable has no reading
   uint8_t batteryPercent = 0;
+  // Battery protection, wearable fw v0.10 and later:
+  bool hasBatteryStatus = false;   // a BatteryStatus packet arrived
+  uint8_t batteryState = 0;        // dance::BatteryState
+  uint8_t batteryFlags = 0;        // dance::BATTERY_FLAG_*
 };
 
 // Index 0 is wearable id 1.
