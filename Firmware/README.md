@@ -17,7 +17,7 @@ Firmware for the wireless wearable motion sensors used with the Interactive Danc
 - Seeed Studio XIAO ESP32-C6
 - Adafruit LSM6DS3TR-C IMU (I2C)
 - Pushbutton
-- Vibration motor, switched by an NPN transistor
+- ~~Vibration motor, switched by an NPN transistor~~ removed from the wearables (2026-11-07, from the user). The firmware still drives D2 low and its buzzes now do nothing, so a mode switch has no buzz to confirm it: check the mode on the receiver display.
 - LiPo battery, voltage read through a divider
 - ESP-NOW to the receiver
 
