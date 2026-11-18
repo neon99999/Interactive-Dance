@@ -24,12 +24,23 @@ What it does:
 
 1. Clone or download this repository.
 2. Open `TouchDesigner/DanceWorkshop.toe` in TouchDesigner.
-3. Go into `project1` (double-click it). The **Dance toolkit - start here** box holds four components. Click one and press **P** to see its controls; press **I** to go inside.
+3. Go into `project1` (double-click it). Open the **stage** (below) for one screen with everything, or use the components in the **Dance toolkit - start here** box. Click one and press **P** to see its controls; press **I** to go inside.
 4. On **transport**, turn **Play** on. The test track plays (a click every second, tones at 5, 10, 15 and 20 s) and the demo assignments show a circle at 5 s, double its size at 10 s, hide it at 15 s and flash the screen at 20 s.
 5. To check a MIDI file against your music, watch **midi_monitor** next to the components: each note number flashes up as it plays. To check a wearable motion sensor, watch **imu_monitor** (raw motion graphs) or **wearable_monitor** (every dancer signal).
 6. On **visuals**, press **Open Output Window** (Output page) to show the result full screen.
 
 The final image is `visuals/null_out`. It is also shown as the background of the `visuals` network.
+
+## The stage (the main screen)
+
+Click **stage** in `project1`, press **P** and pulse **Open Stage Window** on its Stage page (or run `op.Stage.Open()`). The window fills the screen; put it on the laptop screen and the output window on the projector.
+
+- **Big view** (top left): the output. Click a tile to see that instrument or monitor big; click **Output** to go back.
+- **Tiles**: Output, the four instruments (Noise, Video Feedback, Shapes, Particles) and the three monitors (Body Tracking, Wearables, MIDI Notes). Each instrument tile has its **On** switch. A hidden instrument's tile stays dark, so it does not cost frame rate, until you click it.
+- **Controls** (right): the control panel's five tabs, the same as below.
+- **Bottom bar**: Play, Reset, the time, three tests, Open / Close Output Window and English / Español.
+
+The tests change a few settings and put them back when you switch them off: **Test Track** plays `media/test` with the demo cues (a circle at 5 s, bigger at 10 s, gone at 15 s, a flash at 20 s), **Test Pattern** shows the Video Feedback instrument with its test pattern, and **Test Dancer** sets inputs **Use** to Test (a made-up dancer, no webcam needed).
 
 ## The control panel (one panel for everything)
 

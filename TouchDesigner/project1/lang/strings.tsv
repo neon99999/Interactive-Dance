@@ -433,3 +433,24 @@ control.Mode.menu	Basic|Advanced	Básico|Avanzado
 control.Mode.help	Basic shows the few controls needed on day one. Advanced shows every setting.	Básico muestra los pocos controles necesarios el primer día. Avanzado muestra todos los ajustes.
 webcam.stalled	Body tracking: MediaPipe stopped sending results ({1} s). Set Use to Off and back to Body Tracking.	Seguimiento: MediaPipe dejó de enviar resultados ({1} s). Pon Uso en Apagado y otra vez en Seguimiento del cuerpo.
 webcam.mpbusy	Body tracking: MediaPipe cannot open {0} (another app uses it?). It retries by itself; close other apps that use the webcam.	Seguimiento: MediaPipe no puede abrir {0} (¿otra app la usa?). Reintenta solo; cierra otras apps que usen la cámara.
+stage.output	Output	Salida
+stage.noise	Noise	Ruido
+stage.video	Video Feedback	Video eco
+stage.shapes	Shapes	Formas
+stage.particles	Particles	Partículas
+stage.pose	Body Tracking	Seguimiento del cuerpo
+stage.wearable	Wearables	Sensores corporales
+stage.midi	MIDI Notes	Notas MIDI
+stage.on	On	Sí
+stage.off	Off	No
+stage.hidden	hidden, click to preview	oculto, clic para ver
+stage.showing	Showing: {0}	Mostrando: {0}
+stage.back	click Output to go back	clic en Salida para volver
+stage.play	Play	Reproducir
+stage.reset	Reset	Reiniciar
+stage.testtrack	Test Track	Pista de prueba
+stage.testpattern	Test Pattern	Patrón de prueba
+stage.testdancer	Test Dancer	Bailarín de prueba
+stage.openoutput	Open Output Window	Abrir ventana de salida
+stage.closeoutput	Close Output Window	Cerrar ventana de salida
+stage.language	English / Español	English / Español
