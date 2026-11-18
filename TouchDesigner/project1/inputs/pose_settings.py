@@ -100,6 +100,17 @@ def startBrowser():
 	if browser is not None and parent.Inputs.par.Posesource.eval() == 'camera':
 		pointBrowserAtServer()
 		browser.par.Active = True
+		# Switching the browser back on resumes the old page, whose webcam stream
+		# was stopped: it never sent results again and a newly chosen webcam
+		# timed out (LAPTOP, 2026-11-17). Reload it, as when the project opens.
+		run('args[0].reloadBrowser()', me.module, delayFrames=10)
+
+
+def reloadBrowser():
+	"""Load MediaPipe's page again from its address (a fresh start of the webcam)."""
+	render = op('mediapipe/MediaPipe/webBrowser1/webrender1')
+	if render is not None and parent.Inputs.par.Posesource.eval() == 'camera':
+		render.par.reloadsrc.pulse()
 
 
 def addressWithPort(address, port):
@@ -234,6 +245,9 @@ def statusText():
 	label = deviceLabel(settings.Cameradevice.eval())
 	plugin = op('mediapipe/MediaPipe')
 	names = webcamNames(plugin) if use == 'body' else []
+	if not label and names and plugin.par.Webcam.val in names:
+		# No webcam chosen here: MediaPipe still opens the one it last used, so name that.
+		label = plugin.par.Webcam.val
 	camera = op('camera_in')
 	cameraError = camera.errors() if camera is not None and use == 'movement' else ''
 	if _bodySince is None:

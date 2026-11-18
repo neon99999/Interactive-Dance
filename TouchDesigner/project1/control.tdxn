@@ -607,7 +607,7 @@ custom_pars:
     help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
     value: ~me.parent().op('inputs').par.Webcamuse
   - name: Inpuinputscameradevice
-    style: StrMenu
+    style: Menu
     label: Webcam
     menuSource: me.parent().op('inputs').par.Cameradevice
     help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
