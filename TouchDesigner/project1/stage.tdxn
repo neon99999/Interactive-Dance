@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 2
+build: 3
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/stage
@@ -313,7 +313,7 @@ operators:
     op: =op.Control
     pagenames: true
     builtin: false
-    pagescope: Show Instruments Composition Movement Inputs
+    parscope: '* ^Build ^Date ^Touchbuild'
     x: 1152
     y: 72
     w: 768

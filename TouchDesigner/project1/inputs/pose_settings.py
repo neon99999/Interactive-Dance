@@ -18,6 +18,8 @@ drawing is always kept off, so its picture stays clean for the visuals;
 pose_monitor draws the tracked body instead.
 """
 
+import re
+
 USE_SOURCES = {
 	'off': ('off', 'off'),
 	'movement': ('camera', 'off'),
@@ -96,7 +98,32 @@ def startBrowser():
 	_pending['start'] = False
 	browser = op('mediapipe/MediaPipe/webBrowser1')
 	if browser is not None and parent.Inputs.par.Posesource.eval() == 'camera':
+		pointBrowserAtServer()
 		browser.par.Active = True
+
+
+def addressWithPort(address, port):
+	"""The browser address with its localhost port replaced by port (pure, unit tested)."""
+	return re.sub(r'(//localhost:)\d+', lambda m: m.group(1) + str(port), address, count=1)
+
+
+def pointBrowserAtServer():
+	"""Make MediaPipe's browser page use the port its web server has now.
+
+	The plugin picks a new free port each time the project opens, but rebuilds
+	the browser address only when one of its settings changes. While body
+	tracking is off it does not cook, so the address could keep the old port:
+	the page then failed to load and body tracking stayed on 'starting' or
+	'sees no webcam' after switching it off and on again (2026-11-17)."""
+	plugin = op('mediapipe/MediaPipe')
+	browser = op('mediapipe/MediaPipe/webBrowser1')
+	if plugin is None or browser is None:
+		return
+	port = int(plugin.par.Mediapipeport.eval())
+	address = browser.par.Address.eval()
+	fixed = addressWithPort(address, port)
+	if fixed != address:
+		browser.par.Address = fixed
 
 
 def releasedWebcam(retries=3):
