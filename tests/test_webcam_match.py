@@ -31,6 +31,20 @@ class WebcamMatch(unittest.TestCase):
 		self.assertEqual(ps.addressWithPort(old, 57378), 'http://localhost:57378?Webcam=HD+Pro+Webcam+C920&Resolutionw=1280.0')
 		self.assertEqual(ps.addressWithPort('http://localhost:57378/?a=1', 57378), 'http://localhost:57378/?a=1')
 
+	def test_browser_address_webcam(self):
+		old = 'http://localhost:49633?Webcam=OBS+Virtual+Camera&Resolutionw=1280.0'
+		self.assertEqual(ps.addressWithPort(old, 5, "HD Pro Webcam C920 (046d:082d)"),
+			'http://localhost:5?Webcam=HD+Pro+Webcam+C920+%28046d%3A082d%29&Resolutionw=1280.0')
+		self.assertEqual(ps.addressWithPort('http://localhost:1?a=1', 2, 'Cam'), 'http://localhost:2?a=1&Webcam=Cam')
+		self.assertEqual(ps.addressWithPort(old, 49633, None), old)
+
+	def test_pick_webcam(self):
+		names = ['v1', 'v2', 'v3']
+		self.assertEqual(ps.pickWebcam(names, ['OBS Virtual Camera', 'Integrated Camera', 'HD Pro Webcam C920']), 'v3')
+		self.assertEqual(ps.pickWebcam(names, ['NDI Webcam Video 1', 'Integrated Camera', 'Camo']), 'v2')
+		self.assertIsNone(ps.pickWebcam(names, ['OBS Virtual Camera', 'NDI Webcam', 'mmhmm']))
+		self.assertIsNone(ps.pickWebcam([], []))
+
 	def test_no_match(self):
 		self.assertIsNone(ps.matchName('Logitech BRIO', ['OBS Virtual Camera']))
 		self.assertIsNone(ps.matchName('', ['OBS Virtual Camera']))

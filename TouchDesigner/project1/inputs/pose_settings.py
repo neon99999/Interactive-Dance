@@ -19,6 +19,7 @@ pose_monitor draws the tracked body instead.
 """
 
 import re
+import urllib.parse
 
 USE_SOURCES = {
 	'off': ('off', 'off'),
@@ -51,6 +52,8 @@ def onValueChange(par, prev):
 		settings = parent.Inputs.par
 		if par.eval() == 'body':
 			_bodySince = absTime.seconds
+		if par.eval() in ('movement', 'body'):
+			chooseWebcamIfNone()
 		settings.Camerasource = camera
 		settings.Posesource = pose
 	elif par.name == 'Posesource':
@@ -100,22 +103,52 @@ def startBrowser():
 	if browser is not None and parent.Inputs.par.Posesource.eval() == 'camera':
 		pointBrowserAtServer()
 		browser.par.Active = True
-		# Switching the browser back on resumes the old page, whose webcam stream
-		# was stopped: it never sent results again and a newly chosen webcam
-		# timed out (LAPTOP, 2026-11-17). Reload it, as when the project opens.
-		run('args[0].reloadBrowser()', me.module, delayFrames=10)
 
 
-def reloadBrowser():
-	"""Load MediaPipe's page again from its address (a fresh start of the webcam)."""
-	render = op('mediapipe/MediaPipe/webBrowser1/webrender1')
-	if render is not None and parent.Inputs.par.Posesource.eval() == 'camera':
-		render.par.reloadsrc.pulse()
+def addressWithPort(address, port, webcam=None):
+	"""The browser address with its localhost port replaced by port and, if
+	webcam is given, its Webcam setting replaced by webcam (pure, unit tested)."""
+	address = re.sub(r'(//localhost:)\d+', lambda m: m.group(1) + str(port), address, count=1)
+	if webcam is not None:
+		value = urllib.parse.quote_plus(webcam)
+		if re.search(r'[?&]Webcam=', address):
+			address = re.sub(r'([?&]Webcam=)[^&]*', lambda m: m.group(1) + value, address, count=1)
+		else:
+			address += ('&' if '?' in address else '?') + 'Webcam=' + value
+	return address
 
 
-def addressWithPort(address, port):
-	"""The browser address with its localhost port replaced by port (pure, unit tested)."""
-	return re.sub(r'(//localhost:)\d+', lambda m: m.group(1) + str(port), address, count=1)
+VIRTUAL_WEBCAMS = ('virtual', 'ndi', 'obs', 'camo', 'mmhmm', 'iphone', 'snap camera', 'xsplit')
+
+
+def pickWebcam(names, labels):
+	"""The device to use when none is chosen (pure, unit tested): a Logitech C920
+	(the workshop webcams) if there is one, else the first that is not a virtual
+	camera (OBS, NDI...), else None."""
+	real = [(n, l) for n, l in zip(names, labels) if not any(v in l.lower() for v in VIRTUAL_WEBCAMS)]
+	for name, label in real:
+		if 'c920' in label.lower():
+			return name
+	return real[0][0] if real else None
+
+
+def chooseWebcamIfNone():
+	"""With no webcam chosen, choose one, so camera_in and MediaPipe agree on it.
+
+	Without a choice MediaPipe opened whatever its saved address named; after
+	switching off and on that could be a virtual camera, and the real webcam
+	never came on again (LAPTOP, 2026-11-17)."""
+	settings = parent.Inputs.par
+	camera = op('camera_in')
+	if settings.Cameradevice.eval() or camera is None:
+		return
+	try:
+		names, labels = list(camera.par.device.menuNames), list(camera.par.device.menuLabels)
+	except Exception:
+		return
+	device = pickWebcam(names, labels)
+	if device:
+		settings.Cameradevice = device
 
 
 def pointBrowserAtServer():
@@ -132,7 +165,13 @@ def pointBrowserAtServer():
 		return
 	port = int(plugin.par.Mediapipeport.eval())
 	address = browser.par.Address.eval()
-	fixed = addressWithPort(address, port)
+	# Name the chosen webcam in the address too: the page opens the webcam the
+	# address names, and MediaPipe does not rebuild the address when only the
+	# webcam changes. Left as it is when no webcam is chosen or it is not listed.
+	webcam = matchName(deviceLabel(parent.Inputs.par.Cameradevice.eval()), webcamNames(plugin))
+	if webcam is not None and plugin.par.Webcam.val != webcam:
+		plugin.par.Webcam = webcam
+	fixed = addressWithPort(address, port, webcam)
 	if fixed != address:
 		browser.par.Address = fixed
 
