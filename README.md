@@ -272,7 +272,7 @@ Each preset also holds **8 triggers** (Triggers page; on the control panel, Move
 |---|---|
 | **On** | Use this trigger |
 | **When** | **MIDI note** (a note of the song's MIDI file), or **Wearable 1-3: hit / button** |
-| **Note** | The note number, for MIDI note (midi_monitor shows the numbers as the song plays) |
+| **Note** | The note number, for MIDI note (midi_monitor shows the numbers as the song plays). Greyed out for wearable triggers |
 | **Does** | **Pulse**: swells the size and falls back (0.4 s). **Spin**: turns by Amount degrees. **More sides**: adds Amount sides (3-12, wrapping round). **Jump**: glides to a new place up to Amount away from its X / Y. **Flash colour**: goes towards Flash Colour and fades back (0.6 s) |
 | **Amount** | How much; picking a Does sets its usual amount and slider (Pulse 0.5, Spin 45, More sides 1, Jump 0.5, Flash 1) |
 

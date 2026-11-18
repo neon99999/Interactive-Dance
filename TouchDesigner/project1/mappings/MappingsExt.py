@@ -60,7 +60,7 @@ class MappingsExt:
 		self._writeMenu('trigger_does_menu', [(name, self._text('trigger.does.' + name, name))
 			for name in logic.TRIGGER_ACTIONS])
 		for i in range(1, logic.NUM_TRIGGERS + 1):
-			self._setAmountRange(i)
+			self._fitTrigger(i)
 		for i in range(1, logic.NUM_SLOTS + 1):
 			for field, table in (('signal', 'signal_menu'), ('target', 'target_menu')):
 				par = self._slotPar(i, field)
@@ -79,7 +79,7 @@ class MappingsExt:
 		for i, trig in enumerate(self._triggerPresets()[preset], start=1):
 			for field in logic.TRIGGER_FIELDS:
 				self._triggerPar(i, field).val = trig[field]
-			self._setAmountRange(i)
+			self._fitTrigger(i)
 		self.writeAssignments()
 
 	def CopyPreset(self, source: str, destination: str) -> None:
@@ -129,7 +129,7 @@ class MappingsExt:
 		self.writeAssignments()
 
 	def onTriggerChange(self, par: Par, prev) -> None:
-		"""A trigger parameter changed: a new Does gets its usual Amount and slider; then save.
+		"""A trigger parameter changed: a new Does gets its usual Amount and slider, Note is greyed out unless When is MIDI; then save.
 
 		Judged against the stored preset, like onSlotChange: values that match
 		it came from loading the preset, not from the user.
@@ -140,7 +140,7 @@ class MappingsExt:
 		for i, (now, old) in enumerate(zip(current, stored), start=1):
 			if now['does'] != old['does']:
 				self._triggerPar(i, 'amount').val = logic.triggerAmount(now['does'])[0]
-				self._setAmountRange(i)
+			self._fitTrigger(i)
 		current = self._currentTriggers()
 		if current != stored:
 			triggers = self._triggerPresets()
@@ -183,16 +183,27 @@ class MappingsExt:
 	def _triggerPar(self, trigger: int, field: str) -> Par:
 		return self.ownerComp.par['Trig%d%s' % (trigger, field)]
 
-	def _setAmountRange(self, trigger: int) -> None:
-		"""Fit trigger's Amount slider to its action (and the control panel's copy of it)."""
+	def _fitTrigger(self, trigger: int) -> None:
+		"""Fit a trigger's Amount slider to its action, and grey out its Note unless When is a MIDI note.
+
+		The control panel's copies follow (ControlExt also copies enable when it rebuilds).
+		"""
 		_default, low, high = self._logic().triggerAmount(self._triggerPar(trigger, 'does').eval())
-		pars = [self._triggerPar(trigger, 'amount')]
-		control = getattr(op, 'Control', None)
-		if control is not None:
-			pars += [p for p in control.customPars if (p.bindExpr or '').endswith('.par.Trig%damount' % trigger)]
-		for par in pars:
+		midi = self._triggerPar(trigger, 'when').eval() == 'midi'
+		for par in self._withPanelCopies(self._triggerPar(trigger, 'amount')):
 			if (par.normMin, par.normMax) != (low, high):
 				par.normMin, par.normMax = low, high
+		for par in self._withPanelCopies(self._triggerPar(trigger, 'note')):
+			if par.enable != midi:
+				par.enable = midi
+
+	def _withPanelCopies(self, par: Par) -> list:
+		"""par and the control panel parameters bound to it."""
+		pars = [par]
+		control = getattr(op, 'Control', None)
+		if control is not None:
+			pars += [p for p in control.customPars if (p.bindExpr or '').endswith('.par.' + par.name)]
+		return pars
 
 	def _currentTriggers(self) -> list:
 		logic = self._logic()

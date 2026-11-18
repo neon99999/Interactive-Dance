@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 3
+build: 4
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/stage
@@ -134,7 +134,7 @@ operators:
   parameters:
     w: 1920
     h: 72
-    topanchor: 0.0666666667
+    topanchor: 0.0666667
     alignorder: -1
     bgcolorr: 0.075
     bgcolorg: 0.085
@@ -201,8 +201,8 @@ operators:
     leftanchor: 0.134375
     rightanchor: 0.2125
     vmode: anchors
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [600, 0]
   size: [160, 130]
   color: [0.67, 0.67, 0.67]
@@ -231,8 +231,8 @@ operators:
     h: 48
     leftanchor: 0.00625
     rightanchor: 0.06875
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [200, 0]
   children:
   - name: out1
@@ -314,6 +314,7 @@ operators:
     pagenames: true
     builtin: false
     parscope: '* ^Build ^Date ^Touchbuild'
+    syncpage: true
     x: 1152
     y: 72
     w: 768
@@ -321,7 +322,7 @@ operators:
     hmode: anchors
     leftanchor: 0.6
     vmode: anchors
-    bottomanchor: 0.0666666667
+    bottomanchor: 0.0666667
     resizecomp: =me
     repocomp: =me
     bgcolorr: =ui.colors['parms.dialog.bg'][0]
@@ -340,10 +341,10 @@ operators:
     y: 12
     w: 110
     h: 48
-    leftanchor: 0.0729166667
-    rightanchor: 0.1302083333
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    leftanchor: 0.0729167
+    rightanchor: 0.130208
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [400, 0]
   children:
   - name: out1
@@ -427,8 +428,8 @@ operators:
     h: 180
     leftanchor: 0.45
     rightanchor: 0.6
-    bottomanchor: 0.0666666667
-    topanchor: 0.2333333333
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
     bgcolorr: 0.075
     bgcolorg: 0.085
     bgcolorb: 0.1
@@ -483,8 +484,8 @@ operators:
     h: 180
     leftanchor: 0.15
     rightanchor: 0.3
-    bottomanchor: 0.0666666667
-    topanchor: 0.2333333333
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
     bgcolorr: 0.075
     bgcolorg: 0.085
     bgcolorb: 0.1
@@ -552,7 +553,7 @@ operators:
     h: 180
     leftanchor: 0.15
     rightanchor: 0.3
-    bottomanchor: 0.2333333333
+    bottomanchor: 0.233333
     topanchor: 0.4
     bgcolorr: 0.075
     bgcolorg: 0.085
@@ -701,7 +702,7 @@ operators:
     h: 180
     leftanchor: 0.3
     rightanchor: 0.45
-    bottomanchor: 0.2333333333
+    bottomanchor: 0.233333
     topanchor: 0.4
     bgcolorr: 0.075
     bgcolorg: 0.085
@@ -848,7 +849,7 @@ operators:
     w: 288
     h: 180
     rightanchor: 0.15
-    bottomanchor: 0.2333333333
+    bottomanchor: 0.233333
     topanchor: 0.4
     bgcolorr: 0.075
     bgcolorg: 0.085
@@ -904,7 +905,7 @@ operators:
     h: 180
     leftanchor: 0.45
     rightanchor: 0.6
-    bottomanchor: 0.2333333333
+    bottomanchor: 0.233333
     topanchor: 0.4
     bgcolorr: 0.075
     bgcolorg: 0.085
@@ -1054,10 +1055,10 @@ operators:
     y: 12
     w: 200
     h: 48
-    leftanchor: 0.8895833333
+    leftanchor: 0.889583
     rightanchor: 0.99375
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [1800, 0]
   children:
   - name: out1
@@ -1171,9 +1172,9 @@ operators:
     w: 160
     h: 48
     leftanchor: 0.21875
-    rightanchor: 0.3020833333
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    rightanchor: 0.302083
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [800, 0]
   children:
   - name: out1
@@ -1269,8 +1270,8 @@ operators:
     h: 180
     leftanchor: 0.3
     rightanchor: 0.45
-    bottomanchor: 0.0666666667
-    topanchor: 0.2333333333
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
     bgcolorr: 0.075
     bgcolorg: 0.085
     bgcolorb: 0.1
@@ -1327,9 +1328,9 @@ operators:
     w: 230
     h: 48
     leftanchor: 0.5
-    rightanchor: 0.6197916667
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    rightanchor: 0.619792
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [1400, 0]
   children:
   - name: out1
@@ -1418,9 +1419,9 @@ operators:
     w: 160
     h: 48
     leftanchor: 0.39375
-    rightanchor: 0.4770833333
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    rightanchor: 0.477083
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [1200, 0]
   children:
   - name: out1
@@ -1502,8 +1503,8 @@ operators:
     w: 288
     h: 180
     rightanchor: 0.15
-    bottomanchor: 0.0666666667
-    topanchor: 0.2333333333
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
     bgcolorr: 0.075
     bgcolorg: 0.085
     bgcolorb: 0.1
@@ -1663,10 +1664,10 @@ operators:
     y: 12
     w: 230
     h: 48
-    leftanchor: 0.6239583333
+    leftanchor: 0.623958
     rightanchor: 0.74375
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [1600, 0]
   children:
   - name: out1
@@ -1755,9 +1756,9 @@ operators:
     w: 160
     h: 48
     leftanchor: 0.30625
-    rightanchor: 0.3895833333
-    bottomanchor: 0.0111111111
-    topanchor: 0.0555555556
+    rightanchor: 0.389583
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
   position: [1000, 0]
   children:
   - name: out1

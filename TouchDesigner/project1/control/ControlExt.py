@@ -14,6 +14,10 @@ tab (switching one by menu rebuilt the panel and froze it for a second). Labels,
 parameter, so they follow the Language switch; tab and section names come
 from the lang table (control.page.<id>, control.section.<id>).
 Pulses (Reset, Load, Open Output Window) are forwarded by control_pulses.
+The stage's panel (stage/controls) has Sync Page on: it shows this COMP's
+current page and a tab click sets it, so a refresh of the panel (a parameter
+whose menu, range or enable state changes) keeps the tab instead of jumping
+back to Show. Rebuild keeps the tab too.
 """
 
 from typing import Optional
@@ -39,6 +43,7 @@ class ControlExt:
 	def Rebuild(self) -> int:
 		"""Recreate the panel's generated controls for the current Mode and Language. Returns how many."""
 		comp = self.ownerComp
+		shown = self._shownPageKey()
 		for par in list(comp.customPars):
 			if par.name not in OWN and par.page.name not in KEEP_PAGES:
 				par.destroy()
@@ -72,6 +77,8 @@ class ControlExt:
 		for name, key in OWN_PAGE.items():
 			pages[key].sort(name, *[p.name for p in pages[key].pars if p.name != name])
 		pulses = [p.name for p in comp.customPars if p.isPulse]
+		if shown in pages:
+			comp.currentPage = pages[shown]
 		watcher = comp.op('control_pulses')
 		if watcher is not None:
 			watcher.par.pars = ' '.join(list(OWN) + pulses)
@@ -135,6 +142,7 @@ class ControlExt:
 			par.min, par.max = source.min, source.max
 			par.clampMin, par.clampMax = source.clampMin, source.clampMax
 		par.help = source.help
+		par.enable = source.enable
 		if style != 'Pulse':
 			par.default = source.default
 			par.bindExpr = path
@@ -152,6 +160,12 @@ class ControlExt:
 			mode.default = 'basic'
 			mode.val = 'basic'
 			mode.help = 'Basic shows the few controls needed on day one. Advanced shows every setting.'
+
+	def _shownPageKey(self) -> str:
+		"""The tab the panel shows now (stage/controls has Sync Page on, so it is this COMP's current page)."""
+		names = self.ownerComp.fetch('_pageNames', {}, storeDefault=False) or {}
+		current = self.ownerComp.currentPage.name
+		return next((key for key, name in names.items() if name == current), '')
 
 	def _storedPageName(self, key: str) -> str:
 		return (self.ownerComp.fetch('_pageNames', {}, storeDefault=False) or {}).get(key, '')
