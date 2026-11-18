@@ -62,3 +62,6 @@ TouchDesigner/*.[0-9]*.toe
 
 # Local notes from another project; not published
 HANDOFF_TouchDesigner_lessons.md
+
+# Student packages (tools/make_student_package.py)
+dist/
