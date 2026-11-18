@@ -150,6 +150,9 @@ def _playbackSteps():
 		worst = 0.0
 		for snap in samples:
 			expected = sl.evaluate(engine._midi['events'], base, snap['clock_seconds'])
+			# The Trigger Shape's song triggers act on top (the starter triggers use the test notes).
+			fx = sl.triggerEffects(engine._triggers['events'], snap['clock_seconds'])
+			expected = sl.applyTriggerEffects(expected, fx)
 			for k, v in expected.items():
 				worst = max(worst, abs(snap[k.replace('.', '_')] - v))
 		times = [round(snap['clock_seconds'], 2) for snap in samples]

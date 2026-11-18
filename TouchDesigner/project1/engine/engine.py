@@ -6,6 +6,10 @@
            the input_assignments table, then the mapping page's rows
            (mappings/assignments), which win for the same target
 
+        -> trigger effects on the Trigger Shape instrument (show_logic, triggers):
+           song notes and live wearable hits / buttons, from the mapping
+           page's trigger rows (mappings/trigger_presets)
+
 Targets: the 4 layers, master, mapping.preset, and every instrument's settings
 (any COMP in visuals with an 'Instrument' page, see show_logic). Instruments
 are found again every frame, so a new one is a target at once.
@@ -28,6 +32,8 @@ _inputs = {'key': None, 'assignments': [], 'errors': []}
 MAPPING_ROW_OFFSET = 1000  # mapping page rows are numbered from here, apart from the table's rows
 _mapper = None
 _last_seconds = None
+_triggers = {'key': None, 'parsed': {}, 'events': [], 'start': None}
+_live_triggers = None
 
 
 def onFrameStart(frame):
@@ -44,7 +50,9 @@ def onFrameStart(frame):
 	now = absTime.seconds
 	dt = 0.0 if _last_seconds is None else max(0.0, now - _last_seconds)
 	_last_seconds = now
-	state = _mapper.apply(_inputs['assignments'], _signals(), state, dt)
+	signals = _signals()
+	state = _mapper.apply(_inputs['assignments'], signals, state, dt)
+	state = sl.applyTriggerEffects(state, _triggerEffects(sl, _transportSeconds(), signals))
 	state['clock.seconds'] = _transportSeconds()
 	_publish(state)
 
@@ -122,12 +130,52 @@ def noteOns():
 def _refreshMidi(sl, known):
 	table = op('midi_assignments')
 	notes, notes_key = noteOns()
-	key = (table.text, notes_key, tuple(known))
+	extra = _presetNoteRows()
+	key = (table.text, notes_key, tuple(known), str(extra))
 	if key == _midi['key']:
 		return
-	assignments, errors = sl.parseAssignments([[c.val for c in row] for row in table.rows()], known)
+	assignments, errors = sl.parseAssignments([[c.val for c in row] for row in table.rows()] + extra, known)
 	_midi.update(key=key, events=sl.buildEvents(notes, assignments), errors=errors)
 	_writeErrors()
+
+
+def _presetNoteRows():
+	"""MIDI rows for the mapping page's preset notes: the note that switches to A, B, C or D (-1 = none)."""
+	mappings = getattr(op, 'Mappings', None)
+	rows = []
+	for i, letter in enumerate('abcd', start=1):
+		par = getattr(mappings.par, 'Presetnote' + letter, None) if mappings else None
+		if par is not None and 0 <= int(par.eval()) <= 127:
+			rows.append([str(int(par.eval())), 'mapping.preset', 'set', str(i), ''])
+	return rows
+
+
+def _triggerEffects(sl, seconds, signals):
+	"""Song and live trigger effects for this frame (show_logic, triggers)."""
+	global _live_triggers
+	mappings = getattr(op, 'Mappings', None)
+	table = mappings.op('trigger_presets') if mappings else None
+	if table is None:
+		return sl.emptyEffects()
+	current = mappings.par.Preset.eval()
+	switches = sl.presetSwitches(_midi['events']) if mappings.par.Followmidi.eval() else []
+	# Notes before the first MIDI preset switch use the preset chosen by hand.
+	if not switches or seconds < switches[0][0] or _triggers['start'] is None:
+		_triggers['start'] = current
+	notes, notes_key = noteOns()
+	key = (table.text, notes_key, tuple(switches), _triggers['start'])
+	if key != _triggers['key']:
+		parsed = sl.parseTriggers([[c.val for c in row] for row in table.rows()])
+		_triggers.update(key=key, parsed=parsed,
+			events=sl.midiTriggerEvents(notes, parsed, switches, _triggers['start']))
+	song = sl.triggerEffects(_triggers['events'], seconds)
+	if _live_triggers is None:
+		_live_triggers = sl.LiveTriggers()
+	rows = [(when, action, amount, slot) for when, _note, action, amount, slot
+		in _triggers['parsed'].get(current, ()) if when != 'midi']
+	now = absTime.seconds
+	_live_triggers.update(rows, signals, now)
+	return sl.addEffects(song, _live_triggers.effects(now))
 
 
 def _refreshInputs(sl, known):

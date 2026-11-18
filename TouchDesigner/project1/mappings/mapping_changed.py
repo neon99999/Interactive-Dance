@@ -7,6 +7,8 @@ def onValueChange(par, prev):
 		parent.Mappings.LoadPreset(par.eval())
 	elif par.name.startswith('Map'):
 		ext.onSlotChange(par, prev)
+	elif par.name.startswith('Trig'):
+		ext.onTriggerChange(par, prev)
 
 
 def onPulse(par):

@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 5
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/mappings
@@ -40,6 +40,338 @@ custom_pars:
     label: Follow MIDI
     default: true
     help: 'On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.'
+  - name: Presetnotea
+    style: Int
+    label: Note for Preset A
+    startSection: true
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset A (needs Follow MIDI on). -1: none.'
+  - name: Presetnoteb
+    style: Int
+    label: Note for Preset B
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset B (needs Follow MIDI on). -1: none.'
+  - name: Presetnotec
+    style: Int
+    label: Note for Preset C
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset C (needs Follow MIDI on). -1: none.'
+  - name: Presetnoted
+    style: Int
+    label: Note for Preset D
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset D (needs Follow MIDI on). -1: none.'
+  Triggers:
+  - name: Trig1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Trigger 1 is used while on.
+    value: true
+  - name: Trig1when
+    style: Menu
+    label: 1 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig1note
+    style: Int
+    label: 1 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig1does
+    style: Menu
+    label: 1 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig1amount
+    style: Float
+    label: 1 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Trigger 2 is used while on.
+    value: true
+  - name: Trig2when
+    style: Menu
+    label: 2 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig2note
+    style: Int
+    label: 2 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: 62
+  - name: Trig2does
+    style: Menu
+    label: 2 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: spin
+  - name: Trig2amount
+    style: Float
+    label: 2 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMin: -180.0
+    normMax: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 45
+  - name: Trig3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Trigger 3 is used while on.
+    value: true
+  - name: Trig3when
+    style: Menu
+    label: 3 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig3note
+    style: Int
+    label: 3 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: 64
+  - name: Trig3does
+    style: Menu
+    label: 3 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: sides
+  - name: Trig3amount
+    style: Float
+    label: 3 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMin: -4.0
+    normMax: 4.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 1
+  - name: Trig4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Trigger 4 is used while on.
+    value: true
+  - name: Trig4when
+    style: Menu
+    label: 4 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig4note
+    style: Int
+    label: 4 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: 65
+  - name: Trig4does
+    style: Menu
+    label: 4 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: flash
+  - name: Trig4amount
+    style: Float
+    label: 4 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 1
+  - name: Trig5on
+    style: Toggle
+    label: 5 On
+    startSection: true
+    help: Trigger 5 is used while on.
+  - name: Trig5when
+    style: Menu
+    label: 5 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig5note
+    style: Int
+    label: 5 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig5does
+    style: Menu
+    label: 5 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig5amount
+    style: Float
+    label: 5 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig6on
+    style: Toggle
+    label: 6 On
+    startSection: true
+    help: Trigger 6 is used while on.
+  - name: Trig6when
+    style: Menu
+    label: 6 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig6note
+    style: Int
+    label: 6 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig6does
+    style: Menu
+    label: 6 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig6amount
+    style: Float
+    label: 6 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig7on
+    style: Toggle
+    label: 7 On
+    startSection: true
+    help: Trigger 7 is used while on.
+  - name: Trig7when
+    style: Menu
+    label: 7 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig7note
+    style: Int
+    label: 7 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig7does
+    style: Menu
+    label: 7 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig7amount
+    style: Float
+    label: 7 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig8on
+    style: Toggle
+    label: 8 On
+    startSection: true
+    help: Trigger 8 is used while on.
+  - name: Trig8when
+    style: Menu
+    label: 8 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig8note
+    style: Int
+    label: 8 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig8does
+    style: Menu
+    label: 8 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig8amount
+    style: Float
+    label: 8 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
   Mappings 1-4:
   - name: Map1on
     style: Toggle
@@ -548,6 +880,53 @@ operators:
   color: [0.9, 0.3, 0.4]
   tags:
   - py
+- name: trigger_presets
+  type: tableDAT
+  parameters:
+    file: project1/mappings/trigger_presets.tsv
+    syncfile: true
+    rows: 33
+    cols: 7
+  position: [1600, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: trigger_does_menu
+  type: tableDAT
+  position: [2400, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - pulse
+    - Pulse (grow)
+  - - spin
+    - Spin
+  - - sides
+    - More sides
+  - - jump
+    - Jump
+  - - flash
+    - Flash colour
+  dat_content_format: table
+- name: trigger_when_menu
+  type: tableDAT
+  position: [2000, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - midi
+    - MIDI note
+  - - serial_w1_hit
+    - 'Wearable 1: hit'
+  - - serial_w1_btn
+    - 'Wearable 1: button'
+  - - serial_w2_hit
+    - 'Wearable 2: hit'
+  - - serial_w2_btn
+    - 'Wearable 2: button'
+  - - serial_w3_hit
+    - 'Wearable 3: hit'
+  - - serial_w3_btn
+    - 'Wearable 3: button'
+  dat_content_format: table
 - name: midi_preset_changed
   type: chopexecuteDAT
   parameters:
@@ -563,8 +942,8 @@ operators:
 annotations:
 - name: annotate1
   mode: annotate
-  title: Mapping page (8 slots, presets A-D)
-  text: MappingsExt + mapping_logic turn the slots into assignments (read by the engine). presets holds A-D. signal_menu / target_menu feed the slot menus (rebuilt by RefreshMenus, in the current language). midi_preset follows the engine's mapping_preset channel so a MIDI note can switch presets during the song.
+  title: Mapping page (8 slots, 8 triggers, presets A-D)
+  text: MappingsExt + mapping_logic turn the slots into assignments (read by the engine). presets holds A-D. trigger_presets holds each preset's 8 triggers (read directly by the engine; trigger_when_menu / trigger_does_menu feed their menus). signal_menu / target_menu feed the slot menus (rebuilt by RefreshMenus, in the current language). midi_preset follows the engine's mapping_preset channel so a MIDI note can switch presets during the song.
   position: [-70, -870]
-  size: [1470, 1130]
+  size: [2670, 1130]
   color: [0.45, 0.45, 0.45]

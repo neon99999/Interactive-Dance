@@ -6,8 +6,14 @@ The slots of the current preset are written to the assignments table, which
 the engine applies after its input assignment table. Every edit is saved into
 the presets table at once, so switching presets never loses work.
 
-A MIDI note can switch presets: a row 'set mapping.preset <1-4>' in the MIDI
-assignment table selects A-D at that moment of the song (Follow MIDI on).
+Each preset also holds 8 triggers (Triggers page): When (a MIDI note of the
+song, or a wearable hit or button), Note, Does (pulse, spin, sides, jump,
+flash) and Amount, acted out by the Trigger Shape instrument. They are kept
+in trigger_presets and read by the engine (show_logic, triggers).
+
+A MIDI note can switch presets: Note for Preset A-D on the Mappings page, or
+a row 'set mapping.preset <1-4>' in the MIDI assignment table, selects A-D at
+that moment of the song (Follow MIDI on).
 
 mapping_logic holds the catalogues and the row building (unit-tested in plain
 Python); this extension is the TouchDesigner side.
@@ -49,6 +55,12 @@ class MappingsExt:
 		# stored 8 times over in every parameter.
 		self._writeMenu('signal_menu', [(name, self._text('signal.' + name, name)) for name in signals])
 		self._writeMenu('target_menu', [(name, self._text('target.' + name, name)) for name in targets])
+		self._writeMenu('trigger_when_menu', [(name, self._text('trigger.when.' + name, self._text('signal.' + name, name)))
+			for name in logic.triggerSources()])
+		self._writeMenu('trigger_does_menu', [(name, self._text('trigger.does.' + name, name))
+			for name in logic.TRIGGER_ACTIONS])
+		for i in range(1, logic.NUM_TRIGGERS + 1):
+			self._setAmountRange(i)
 		for i in range(1, logic.NUM_SLOTS + 1):
 			for field, table in (('signal', 'signal_menu'), ('target', 'target_menu')):
 				par = self._slotPar(i, field)
@@ -64,6 +76,10 @@ class MappingsExt:
 		for i, slot in enumerate(slots, start=1):
 			for field in logic.SLOT_FIELDS:
 				self._slotPar(i, field).val = slot[field]
+		for i, trig in enumerate(self._triggerPresets()[preset], start=1):
+			for field in logic.TRIGGER_FIELDS:
+				self._triggerPar(i, field).val = trig[field]
+			self._setAmountRange(i)
 		self.writeAssignments()
 
 	def CopyPreset(self, source: str, destination: str) -> None:
@@ -71,6 +87,9 @@ class MappingsExt:
 		presets = self._presets()
 		presets[destination] = [dict(s) for s in presets[source]]
 		self._writePresets(presets)
+		triggers = self._triggerPresets()
+		triggers[destination] = [dict(t) for t in triggers[source]]
+		self._writeTriggerPresets(triggers)
 		if self.ownerComp.par.Preset.eval() == destination:
 			self.LoadPreset(destination)
 
@@ -79,6 +98,9 @@ class MappingsExt:
 		presets = self._presets()
 		presets[preset] = self._logic().emptySlots()
 		self._writePresets(presets)
+		triggers = self._triggerPresets()
+		triggers[preset] = self._logic().emptyTriggers()
+		self._writeTriggerPresets(triggers)
 		if self.ownerComp.par.Preset.eval() == preset:
 			self.LoadPreset(preset)
 
@@ -105,6 +127,25 @@ class MappingsExt:
 		if self._currentSlots() != stored:
 			self._saveCurrent()
 		self.writeAssignments()
+
+	def onTriggerChange(self, par: Par, prev) -> None:
+		"""A trigger parameter changed: a new Does gets its usual Amount and slider; then save.
+
+		Judged against the stored preset, like onSlotChange: values that match
+		it came from loading the preset, not from the user.
+		"""
+		logic = self._logic()
+		stored = self._triggerPresets()[self.ownerComp.par.Preset.eval()]
+		current = self._currentTriggers()
+		for i, (now, old) in enumerate(zip(current, stored), start=1):
+			if now['does'] != old['does']:
+				self._triggerPar(i, 'amount').val = logic.triggerAmount(now['does'])[0]
+				self._setAmountRange(i)
+		current = self._currentTriggers()
+		if current != stored:
+			triggers = self._triggerPresets()
+			triggers[self.ownerComp.par.Preset.eval()] = current
+			self._writeTriggerPresets(triggers)
 
 	def onMidiPreset(self, value: float) -> None:
 		"""The engine's mapping_preset changed (a MIDI 'mapping.preset' row): switch preset if following MIDI."""
@@ -138,6 +179,43 @@ class MappingsExt:
 		digits = ''.join(c for c in name[3:] if c.isdigit())
 		field = name[3 + len(digits):]
 		return (int(digits), field) if digits and field in SLOT_PARS else (None, None)
+
+	def _triggerPar(self, trigger: int, field: str) -> Par:
+		return self.ownerComp.par['Trig%d%s' % (trigger, field)]
+
+	def _setAmountRange(self, trigger: int) -> None:
+		"""Fit trigger's Amount slider to its action (and the control panel's copy of it)."""
+		_default, low, high = self._logic().triggerAmount(self._triggerPar(trigger, 'does').eval())
+		pars = [self._triggerPar(trigger, 'amount')]
+		control = getattr(op, 'Control', None)
+		if control is not None:
+			pars += [p for p in control.customPars if (p.bindExpr or '').endswith('.par.Trig%damount' % trigger)]
+		for par in pars:
+			if (par.normMin, par.normMax) != (low, high):
+				par.normMin, par.normMax = low, high
+
+	def _currentTriggers(self) -> list:
+		logic = self._logic()
+		triggers = []
+		for i in range(1, logic.NUM_TRIGGERS + 1):
+			trig = {}
+			for field in logic.TRIGGER_FIELDS:
+				par = self._triggerPar(i, field)
+				trig[field] = par.eval() if field in logic.TRIGGER_TEXT else float(par.eval())
+			triggers.append(trig)
+		return triggers
+
+	def _triggerPresets(self) -> dict:
+		table = self.ownerComp.op('trigger_presets')
+		return self._logic().readTriggers([[c.val for c in r] for r in table.rows()])
+
+	def _writeTriggerPresets(self, presets: dict) -> None:
+		rows = self._logic().triggerRows(presets)
+		table = self.ownerComp.op('trigger_presets')
+		if [[c.val for c in r] for r in table.rows()] != rows:
+			table.clear()
+			for row in rows:
+				table.appendRow(row)
 
 	def _currentSlots(self) -> list:
 		logic = self._logic()

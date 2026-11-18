@@ -349,3 +349,204 @@ def recentNotes(note_ons, t, hold):
 	recent = [(t - start, note) for start, note in note_ons if 0.0 <= t - start < hold]
 	recent.sort(key=lambda item: (-item[0], item[1]))
 	return [(note, age) for age, note in recent]
+
+
+# ---------------------------------------------------------------- triggers
+# A trigger row (mapping page, Triggers) makes the Trigger Shape instrument
+# react to an event: a MIDI note of the song, or a wearable's hit or button.
+# Every event starts an action that settles by itself, so a trigger reads as
+# a beat, not a switch:
+#   pulse  the size swells by amount (0.5 = half as big again) and falls back
+#   spin   turns by amount degrees, eased
+#   sides  adds amount sides (3-12, wrapping round)
+#   jump   glides to a new place, up to amount away from its position (the
+#          same note at the same moment always lands on the same place)
+#   flash  goes towards the Flash colour (amount = how far) and fades back
+# MIDI events are worked out from the playback position, like the MIDI table,
+# so seeking and Reset land on the right state. Wearable events are live.
+
+TRIGGER_INSTRUMENT = 'trigger'
+TRIGGER_ACTIONS = ('pulse', 'spin', 'sides', 'jump', 'flash')
+TRIGGER_COLUMNS = ('preset', 'slot', 'on', 'when', 'note', 'does', 'amount')
+PULSE_S = 0.4
+SPIN_S = 0.3
+JUMP_S = 0.15
+FLASH_S = 0.6
+SIDES_RANGE = (3, 12)
+PRESET_LETTERS = ('A', 'B', 'C', 'D')
+
+
+def emptyEffects():
+	return {'pulse': 0.0, 'spin': 0.0, 'steps': 0, 'jumpx': 0.0, 'jumpy': 0.0, 'flash': 0.0}
+
+
+def _unit(seed, k):
+	"""A repeatable pseudo-random number in -1..1 for a seed."""
+	x = math.sin(seed * 12.9898 + k * 78.233) * 43758.5453
+	return (x - math.floor(x)) * 2.0 - 1.0
+
+
+def _ease(x):
+	x = min(1.0, max(0.0, x))
+	return x * x * (3.0 - 2.0 * x)
+
+
+def jumpTarget(seed, amount):
+	"""Where a jump goes, relative to the shape's own position."""
+	return amount * _unit(seed, 1), amount * _unit(seed, 2)
+
+
+def parseTriggers(rows):
+	"""Trigger table rows (header first) -> {preset: [(when, note, action, amount, slot)]}: rows that are on and valid."""
+	header = [str(c).strip().lower() for c in rows[0]] if rows else []
+	col = {name: header.index(name) for name in TRIGGER_COLUMNS if name in header}
+	found = {p: [] for p in PRESET_LETTERS}
+	for row in rows[1:]:
+		cell = lambda name: str(row[col[name]]).strip() if name in col and col[name] < len(row) else ''
+		try:
+			on = float(cell('on') or 0)
+			note = int(float(cell('note') or 0))
+			amount = float(cell('amount') or 0)
+			slot = int(float(cell('slot') or 0))
+		except ValueError:
+			continue
+		preset, when, action = cell('preset').upper(), cell('when'), cell('does').lower()
+		if not on or preset not in found or action not in TRIGGER_ACTIONS or not when:
+			continue
+		if when == 'midi' and not 0 <= note <= 127:
+			continue
+		found[preset].append((when, note, action, amount, slot))
+	return found
+
+
+def presetSwitches(events):
+	"""[(time, preset letter)] from the MIDI events that set mapping.preset (1-4), in time order."""
+	switches = []
+	for te, _row, a in events:
+		index = int(round(a.value))
+		if a.param == 'mapping.preset' and a.action in ('set', 'fade') and 1 <= index <= len(PRESET_LETTERS):
+			switches.append((te, PRESET_LETTERS[index - 1]))
+	return switches
+
+
+def presetAt(switches, t, start):
+	"""The preset in use at time t: the last switch at or before t, else start."""
+	current = start
+	for te, preset in switches:
+		if te > t:
+			break
+		current = preset
+	return current
+
+
+def midiTriggerEvents(note_ons, triggers, switches, start):
+	"""Song triggers -> [(time, action, amount, seed)] in time order.
+
+	note_ons: (seconds, note). triggers: parseTriggers output. Each note uses
+	the rows of the preset in use at that moment (switches, else start).
+	"""
+	events = []
+	for te, note in sorted(note_ons):
+		for when, n, action, amount, slot in triggers.get(presetAt(switches, te, start), ()):
+			if when == 'midi' and n == note:
+				events.append((te, action, amount, round(te, 4) * 1000.0 + slot))
+	return events
+
+
+def triggerEffects(events, t, start=None):
+	"""The effects at time t of events [(time, action, amount, seed)] in time order (later ones are ignored).
+
+	start: effects already folded in (live triggers), its jump position included.
+	"""
+	fx = dict(start) if start else emptyEffects()
+	jump_from = jump_to = (fx['jumpx'], fx['jumpy'])
+	jump_age = None
+	for te, action, amount, seed in events:
+		if te > t:
+			break
+		age = t - te
+		if action == 'pulse':
+			if age < PULSE_S:
+				fx['pulse'] += amount * (1.0 - age / PULSE_S) ** 2
+		elif action == 'spin':
+			fx['spin'] += amount * _ease(age / SPIN_S)
+		elif action == 'sides':
+			fx['steps'] += int(round(amount))
+		elif action == 'jump':
+			jump_from, jump_to, jump_age = jump_to, jumpTarget(seed, amount), age
+		elif action == 'flash':
+			if age < FLASH_S:
+				fx['flash'] = max(fx['flash'], amount * (1.0 - age / FLASH_S))
+	if jump_age is not None:
+		f = _ease(jump_age / JUMP_S)
+		fx['jumpx'] = jump_from[0] + (jump_to[0] - jump_from[0]) * f
+		fx['jumpy'] = jump_from[1] + (jump_to[1] - jump_from[1]) * f
+	return fx
+
+
+def addEffects(a, b):
+	"""Song and live effects together: pulses, spins, steps and jumps add up; the stronger flash wins."""
+	return {'pulse': a['pulse'] + b['pulse'], 'spin': a['spin'] + b['spin'], 'steps': a['steps'] + b['steps'],
+		'jumpx': a['jumpx'] + b['jumpx'], 'jumpy': a['jumpy'] + b['jumpy'], 'flash': max(a['flash'], b['flash'])}
+
+
+def applyTriggerEffects(state, fx, name=TRIGGER_INSTRUMENT):
+	"""Put the effects on the Trigger Shape's values in state (nothing happens without the instrument)."""
+	key = lambda p: '%s.%s' % (name, p)
+	if key('size') not in state:
+		return state
+	state[key('size')] = state[key('size')] * (1.0 + fx['pulse'])
+	state[key('rotate')] = state.get(key('rotate'), 0.0) + fx['spin']
+	low, high = SIDES_RANGE
+	sides = min(high, max(low, int(round(state.get(key('sides'), low)))))
+	state[key('sides')] = float(low + (sides - low + fx['steps']) % (high - low + 1))
+	state[key('x')] = state.get(key('x'), 0.0) + fx['jumpx']
+	state[key('y')] = state.get(key('y'), 0.0) + fx['jumpy']
+	state[key('flash')] = min(1.0, max(state.get(key('flash'), 0.0), fx['flash']))
+	return state
+
+
+class LiveTriggers:
+	"""Triggers from live signals (wearable hit / button): an event on each rising edge past 0.5.
+
+	Events older than FOLD_S are folded into running totals, so the list
+	stays short however long the show runs.
+	"""
+
+	FOLD_S = 2.0
+
+	def __init__(self):
+		self._previous = {}
+		self._events = []
+		self._start = emptyEffects()
+		self._count = 0
+
+	def update(self, rows, signals, now):
+		"""rows: [(signal, action, amount, slot)] of the preset in use. signals: {name: value}."""
+		names = {r[0] for r in rows}
+		rising = set()
+		for name in names:
+			if name not in signals:
+				continue
+			value = float(signals[name])
+			if value >= 0.5 and self._previous.get(name, 0.0) < 0.5:
+				rising.add(name)
+			self._previous[name] = value
+		for name in list(self._previous):
+			if name not in names or name not in signals:
+				del self._previous[name]
+		for signal, action, amount, slot in rows:
+			if signal in rising:
+				self._count += 1
+				self._events.append((now, action, amount, self._count * 31.0 + slot))
+		while self._events and now - self._events[0][0] > self.FOLD_S:
+			_te, action, amount, seed = self._events.pop(0)
+			if action == 'spin':
+				self._start['spin'] += amount
+			elif action == 'sides':
+				self._start['steps'] += int(round(amount))
+			elif action == 'jump':
+				self._start['jumpx'], self._start['jumpy'] = jumpTarget(seed, amount)
+
+	def effects(self, now):
+		return triggerEffects(self._events, now, self._start)

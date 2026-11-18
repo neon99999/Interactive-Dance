@@ -454,3 +454,145 @@ stage.testdancer	Test Dancer	Bailarín de prueba
 stage.openoutput	Open Output Window	Abrir ventana de salida
 stage.closeoutput	Close Output Window	Cerrar ventana de salida
 stage.language	English / Español	English / Español
+control.section.trigger	Trigger Shape	Figura con disparadores
+control.section.triggers	Triggers (Trigger Shape)	Disparadores (figura)
+stage.trigger	Trigger Shape	Figura con disparadores
+trigger.when.midi	MIDI note	Nota MIDI
+trigger.does.pulse	Pulse (grow)	Pulso (crecer)
+trigger.does.spin	Spin	Girar
+trigger.does.sides	More sides	Más lados
+trigger.does.jump	Jump	Saltar
+trigger.does.flash	Flash colour	Destello de color
+target.trigger.visible	Trigger Shape: on	Figura: encendida
+target.trigger.opacity	Trigger Shape: opacity	Figura: opacidad
+target.trigger.blend	Trigger Shape: blend	Figura: mezcla de capas
+target.trigger.order	Trigger Shape: order	Figura: orden
+target.trigger.sides	Trigger Shape: sides	Figura: lados
+target.trigger.size	Trigger Shape: size	Figura: tamaño
+target.trigger.x	Trigger Shape: X	Figura: X
+target.trigger.y	Trigger Shape: Y	Figura: Y
+target.trigger.rotate	Trigger Shape: rotate	Figura: rotación
+target.trigger.fill	Trigger Shape: fill	Figura: relleno
+target.trigger.line	Trigger Shape: line	Figura: línea
+target.trigger.colour	Trigger Shape: colour	Figura: color
+target.trigger.flashcolour	Trigger Shape: flash colour	Figura: color del destello
+target.trigger.flash	Trigger Shape: flash	Figura: destello
+visuals/trigger.Visible.label	On	Encendida
+visuals/trigger.Visible.help	Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.	Muestra la figura en la salida. MIDI: show / hide / toggle trigger.
+visuals/trigger.Opacity.label	Opacity	Opacidad
+visuals/trigger.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
+visuals/trigger.Blend.label	Blend	Mezcla
+visuals/trigger.Blend.help	How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.	Cómo se une a los instrumentos de abajo. Normal: los cubre (también las partes oscuras). Sumar: suma su luz a la de ellos, así las partes oscuras dejan ver los de abajo.
+visuals/trigger.Order.label	Order	Orden
+visuals/trigger.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
+visuals/trigger.Sides.label	Sides	Lados
+visuals/trigger.Sides.help	Number of sides: 3 = triangle, 4 = square ... 12 = nearly a circle. The "More sides" trigger adds to it.	Número de lados: 3 = triángulo, 4 = cuadrado ... 12 = casi un círculo. El disparador "Más lados" los aumenta.
+visuals/trigger.Size.label	Size	Tamaño
+visuals/trigger.Size.help	How big: 1 = as tall as the image. The "Pulse" trigger swells it for a moment.	Qué tan grande: 1 = tan alta como la imagen. El disparador "Pulso" la agranda un momento.
+visuals/trigger.X.label	X	X
+visuals/trigger.X.help	Left (-1) to right (1); 0 = centre. The "Jump" trigger moves it away from here.	De izquierda (-1) a derecha (1); 0 = centro. El disparador "Saltar" la mueve desde aquí.
+visuals/trigger.Y.label	Y	Y
+visuals/trigger.Y.help	Bottom (-1) to top (1); 0 = centre.	De abajo (-1) a arriba (1); 0 = centro.
+visuals/trigger.Rotate.label	Rotate	Rotación
+visuals/trigger.Rotate.help	Turn in degrees. The "Spin" trigger adds to it.	Giro en grados. El disparador "Girar" lo aumenta.
+visuals/trigger.Fill.label	Fill	Relleno
+visuals/trigger.Fill.help	On: a solid shape. Off: only its outline.	Activo: figura llena. Apagado: solo el contorno.
+visuals/trigger.Line.label	Line	Línea
+visuals/trigger.Line.help	Outline thickness (when Fill is off).	Grosor del contorno (con Relleno apagado).
+visuals/trigger.Colour.label	Colour	Color
+visuals/trigger.Colour.help	The colour of the shape.	El color de la figura.
+visuals/trigger.Flashcolour.label	Flash Colour	Color del destello
+visuals/trigger.Flashcolour.help	The colour the "Flash colour" trigger goes to.	El color al que va el disparador "Destello de color".
+visuals/trigger.Flash.label	Flash	Destello
+visuals/trigger.Flash.help	How far the shape is towards its Flash Colour (0-1). The "Flash colour" trigger raises it for a moment.	Cuánto va la figura hacia su color de destello (0-1). El disparador "Destello de color" lo sube un momento.
+visuals/trigger.Blend.menu	Normal|Add	Normal|Sumar
+visuals/trigger.Colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
+visuals/trigger.Flashcolour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
+mappings.Presetnotea.label	Note for Preset A	Nota para preset A
+mappings.Presetnotea.help	The MIDI note in the song that switches to preset A (needs Follow MIDI on). -1: none.	La nota MIDI de la canción que cambia al preset A (necesita Seguir MIDI activo). -1: ninguna.
+mappings.Presetnoteb.label	Note for Preset B	Nota para preset B
+mappings.Presetnoteb.help	The MIDI note in the song that switches to preset B (needs Follow MIDI on). -1: none.	La nota MIDI de la canción que cambia al preset B (necesita Seguir MIDI activo). -1: ninguna.
+mappings.Presetnotec.label	Note for Preset C	Nota para preset C
+mappings.Presetnotec.help	The MIDI note in the song that switches to preset C (needs Follow MIDI on). -1: none.	La nota MIDI de la canción que cambia al preset C (necesita Seguir MIDI activo). -1: ninguna.
+mappings.Presetnoted.label	Note for Preset D	Nota para preset D
+mappings.Presetnoted.help	The MIDI note in the song that switches to preset D (needs Follow MIDI on). -1: none.	La nota MIDI de la canción que cambia al preset D (necesita Seguir MIDI activo). -1: ninguna.
+mappings.Trig1on.label	1 On	1 Activo
+mappings.Trig1on.help	Trigger 1 is used while on.	El disparador 1 se usa mientras está activo.
+mappings.Trig1when.label	1 When	1 Cuándo
+mappings.Trig1when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig1note.label	1 Note	1 Nota
+mappings.Trig1note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig1does.label	1 Does	1 Hace
+mappings.Trig1does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig1amount.label	1 Amount	1 Cantidad
+mappings.Trig1amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig2on.label	2 On	2 Activo
+mappings.Trig2on.help	Trigger 2 is used while on.	El disparador 2 se usa mientras está activo.
+mappings.Trig2when.label	2 When	2 Cuándo
+mappings.Trig2when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig2note.label	2 Note	2 Nota
+mappings.Trig2note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig2does.label	2 Does	2 Hace
+mappings.Trig2does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig2amount.label	2 Amount	2 Cantidad
+mappings.Trig2amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig3on.label	3 On	3 Activo
+mappings.Trig3on.help	Trigger 3 is used while on.	El disparador 3 se usa mientras está activo.
+mappings.Trig3when.label	3 When	3 Cuándo
+mappings.Trig3when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig3note.label	3 Note	3 Nota
+mappings.Trig3note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig3does.label	3 Does	3 Hace
+mappings.Trig3does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig3amount.label	3 Amount	3 Cantidad
+mappings.Trig3amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig4on.label	4 On	4 Activo
+mappings.Trig4on.help	Trigger 4 is used while on.	El disparador 4 se usa mientras está activo.
+mappings.Trig4when.label	4 When	4 Cuándo
+mappings.Trig4when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig4note.label	4 Note	4 Nota
+mappings.Trig4note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig4does.label	4 Does	4 Hace
+mappings.Trig4does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig4amount.label	4 Amount	4 Cantidad
+mappings.Trig4amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig5on.label	5 On	5 Activo
+mappings.Trig5on.help	Trigger 5 is used while on.	El disparador 5 se usa mientras está activo.
+mappings.Trig5when.label	5 When	5 Cuándo
+mappings.Trig5when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig5note.label	5 Note	5 Nota
+mappings.Trig5note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig5does.label	5 Does	5 Hace
+mappings.Trig5does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig5amount.label	5 Amount	5 Cantidad
+mappings.Trig5amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig6on.label	6 On	6 Activo
+mappings.Trig6on.help	Trigger 6 is used while on.	El disparador 6 se usa mientras está activo.
+mappings.Trig6when.label	6 When	6 Cuándo
+mappings.Trig6when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig6note.label	6 Note	6 Nota
+mappings.Trig6note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig6does.label	6 Does	6 Hace
+mappings.Trig6does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig6amount.label	6 Amount	6 Cantidad
+mappings.Trig6amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig7on.label	7 On	7 Activo
+mappings.Trig7on.help	Trigger 7 is used while on.	El disparador 7 se usa mientras está activo.
+mappings.Trig7when.label	7 When	7 Cuándo
+mappings.Trig7when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig7note.label	7 Note	7 Nota
+mappings.Trig7note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig7does.label	7 Does	7 Hace
+mappings.Trig7does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig7amount.label	7 Amount	7 Cantidad
+mappings.Trig7amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
+mappings.Trig8on.label	8 On	8 Activo
+mappings.Trig8on.help	Trigger 8 is used while on.	El disparador 8 se usa mientras está activo.
+mappings.Trig8when.label	8 When	8 Cuándo
+mappings.Trig8when.help	What sets it off: a MIDI note of the song, or a wearable hit or button.	Qué lo dispara: una nota MIDI de la canción, o un golpe o el botón de un sensor.
+mappings.Trig8note.label	8 Note	8 Nota
+mappings.Trig8note.help	The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando Cuándo es Nota MIDI. midi_monitor muestra los números mientras suena la canción.
+mappings.Trig8does.label	8 Does	8 Hace
+mappings.Trig8does.help	What the Trigger Shape does each time.	Qué hace la figura cada vez.
+mappings.Trig8amount.label	8 Amount	8 Cantidad
+mappings.Trig8amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).

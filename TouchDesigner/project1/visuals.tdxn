@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 12
+build: 14
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -1403,6 +1403,237 @@ operators:
     type: selectTOP
     parameters:
       top: ../comp_layers
+- name: trigger
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 4
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Sides
+      style: Int
+      startSection: true
+      default: 3
+      min: 3.0
+      max: 12.0
+      clampMin: true
+      clampMax: true
+      normMin: 3.0
+      normMax: 12.0
+      help: 'Number of sides: 3 = triangle, 4 = square ... 12 = nearly a circle. The "More sides" trigger adds to it.'
+    - name: Size
+      style: Float
+      default: 0.5
+      max: 2.0
+      clampMin: true
+      clampMax: true
+      help: 'How big: 1 = as tall as the image. The "Pulse" trigger swells it for a moment.'
+    - name: X
+      style: Float
+      min: -1.5
+      max: 1.5
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: Left (-1) to right (1); 0 = centre. The "Jump" trigger moves it away from here.
+    - name: Y
+      style: Float
+      min: -1.5
+      max: 1.5
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: Bottom (-1) to top (1); 0 = centre.
+    - name: Rotate
+      style: Float
+      min: -3600.0
+      max: 3600.0
+      clampMin: true
+      clampMax: true
+      normMax: 360.0
+      help: Turn in degrees. The "Spin" trigger adds to it.
+    - name: Fill
+      style: Toggle
+      startSection: true
+      help: 'On: a solid shape. Off: only its outline.'
+    - name: Line
+      style: Float
+      default: 0.015
+      max: 0.2
+      clampMin: true
+      clampMax: true
+      normMax: 0.1
+      help: Outline thickness (when Fill is off).
+    - name: Colour
+      style: Menu
+      default: cyan
+      menuNames:
+      - white
+      - red
+      - orange
+      - yellow
+      - green
+      - cyan
+      - blue
+      - magenta
+      menuLabels:
+      - White
+      - Red
+      - Orange
+      - Yellow
+      - Green
+      - Cyan
+      - Blue
+      - Magenta
+      help: The colour of the shape.
+    - name: Flashcolour
+      style: Menu
+      label: Flash Colour
+      default: white
+      menuNames:
+      - white
+      - red
+      - orange
+      - yellow
+      - green
+      - cyan
+      - blue
+      - magenta
+      menuLabels:
+      - White
+      - Red
+      - Orange
+      - Yellow
+      - Green
+      - Cyan
+      - Blue
+      - Magenta
+      help: The colour the "Flash colour" trigger goes to.
+    - name: Flash
+      style: Float
+      clampMin: true
+      clampMax: true
+      help: How far the shape is towards its Flash Colour (0-1). The "Flash colour" trigger raises it for a moment.
+  position: [400, -1000]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [200, 0]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [600, 0]
+    inputs:
+    - circle_shape
+  - name: palette
+    type: tableDAT
+    position: [0, -300]
+    dat_content:
+    - - name
+      - r
+      - g
+      - b
+    - - white
+      - '1'
+      - '1'
+      - '1'
+    - - red
+      - '1'
+      - '0.15'
+      - '0.2'
+    - - orange
+      - '1'
+      - '0.5'
+      - '0.1'
+    - - yellow
+      - '1'
+      - '0.9'
+      - '0.2'
+    - - green
+      - '0.3'
+      - '1'
+      - '0.4'
+    - - cyan
+      - '0.2'
+      - '0.9'
+      - '1'
+    - - blue
+      - '0.25'
+      - '0.4'
+      - '1'
+    - - magenta
+      - '1'
+      - '0.25'
+      - '0.9'
+    dat_content_format: table
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: trigger_*
+      renamefrom: trigger_*
+      renameto: '*'
+  - name: circle_shape
+    type: circleTOP
+    parameters:
+      radiusx: =op('live')['size'] * 0.5 * parent.Visuals.par.Resolution2 / parent.Visuals.par.Resolution1
+      radiusy: =op('live')['size'] * 0.5 * parent.Visuals.par.Resolution2 / parent.Visuals.par.Resolution1
+      rotate: =op('live')['rotate'] + 90
+      centerx: =op('live')['x'] * 0.5
+      centery: =op('live')['y'] * 0.5
+      fillcolorr: '=(lambda p, f, a, b: p[a, 1] + (p[b, 1] - p[a, 1]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillcolorg: '=(lambda p, f, a, b: p[a, 2] + (p[b, 2] - p[a, 2]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillcolorb: '=(lambda p, f, a, b: p[a, 3] + (p[b, 3] - p[a, 3]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillalpha: =op('live')['fill']
+      borderr: '=(lambda p, f, a, b: p[a, 1] + (p[b, 1] - p[a, 1]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderg: '=(lambda p, f, a, b: p[a, 2] + (p[b, 2] - p[a, 2]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderb: '=(lambda p, f, a, b: p[a, 3] + (p[b, 3] - p[a, 3]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderwidth: =0 if op('live')['fill'] >= 0.5 else op('live')['line']
+      borderwidthunit: fractionaspect
+      ispolygon: true
+      sides: =int(op('live')['sides'])
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [400, 0]
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Trigger Shape
+    text: Engine values (trigger_*, trigger effects already applied by the engine) -> one polygon (Circle TOP, Polygon on). Colour and Flash Colour index the palette table.
+    position: [-70, -370]
+    size: [870, 630]
+    color: [0.45, 0.45, 0.45]
 - name: bg_black
   type: constantTOP
   parameters:
@@ -2151,7 +2382,7 @@ annotations:
   title: Instruments
   text: 'Visual instruments: any COMP here with an Instrument page (see README). Its settings become engine targets (particles.energy ...) and its out1 is its image; On, Opacity, Blend and Order place it in the compositor. particles, video (feedback), noise (patterns), shapes (the four layers). instrument_presets applies each instrument''s presets table when Preset changes or Reset is pressed.'
   position: [-70, -1670]
-  size: [700, 770]
+  size: [700, 970]
   color: [0.45, 0.45, 0.45]
 - name: annotate3
   mode: annotate

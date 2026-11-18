@@ -150,6 +150,66 @@ def _text(value):
 	return value if isinstance(value, str) else '%g' % value
 
 
+# ---------------------------------------------------------------- triggers
+# 8 trigger rows per preset, kept with the mappings so one preset is "what
+# everything does" in that part of the piece. The engine reads the stored
+# table (show_logic.parseTriggers); the actions are described there.
+
+NUM_TRIGGERS = 8
+TRIGGER_FIELDS = ('on', 'when', 'note', 'does', 'amount')
+TRIGGER_COLUMNS = ('preset', 'slot') + TRIGGER_FIELDS
+TRIGGER_DEFAULTS = {'on': 0.0, 'when': 'midi', 'note': 60.0, 'does': 'pulse', 'amount': 0.5}
+TRIGGER_ACTIONS = ('pulse', 'spin', 'sides', 'jump', 'flash')
+TRIGGER_SIGNALS = ('hit', 'btn')
+# By action: the amount a new trigger starts with, and the slider range.
+TRIGGER_AMOUNTS = {'pulse': (0.5, 0.0, 2.0), 'spin': (45.0, -180.0, 180.0), 'sides': (1.0, -4.0, 4.0),
+	'jump': (0.5, 0.0, 1.0), 'flash': (1.0, 0.0, 1.0)}
+TRIGGER_TEXT = ('when', 'does')
+
+
+def triggerSources():
+	"""What a trigger can listen to, in menu order: a MIDI note, then each wearable's hit and button."""
+	return ['midi'] + ['serial_w%d_%s' % (w, s) for w in WEARABLES for s in TRIGGER_SIGNALS]
+
+
+def triggerAmount(action):
+	"""(default, slider low, slider high) of an action's amount."""
+	return TRIGGER_AMOUNTS.get(action, (0.5, 0.0, 1.0))
+
+
+def emptyTriggers():
+	return [dict(TRIGGER_DEFAULTS) for _ in range(NUM_TRIGGERS)]
+
+
+def readTriggers(rows):
+	"""Trigger table rows (header first) -> {preset: [trigger dicts]}, every preset with NUM_TRIGGERS rows."""
+	presets = {p: emptyTriggers() for p in PRESETS}
+	header = [str(c).strip().lower() for c in rows[0]] if rows else []
+	col = {name: header.index(name) for name in TRIGGER_COLUMNS if name in header}
+	for row in rows[1:]:
+		cell = lambda name: str(row[col[name]]).strip() if name in col and col[name] < len(row) else ''
+		preset = cell('preset').upper()
+		slot = int(_number(cell('slot'), 0))
+		if preset not in presets or not 1 <= slot <= NUM_TRIGGERS:
+			continue
+		values = presets[preset][slot - 1]
+		for name in TRIGGER_FIELDS:
+			text = cell(name)
+			if text == '':
+				continue
+			values[name] = text if name in TRIGGER_TEXT else _number(text, TRIGGER_DEFAULTS[name])
+	return presets
+
+
+def triggerRows(presets):
+	"""{preset: [trigger dicts]} -> table rows (header first), one row per trigger."""
+	rows = [list(TRIGGER_COLUMNS)]
+	for preset in PRESETS:
+		for i, trig in enumerate(presets.get(preset, emptyTriggers())[:NUM_TRIGGERS], start=1):
+			rows.append([preset, str(i)] + [_text(trig.get(name, TRIGGER_DEFAULTS[name])) for name in TRIGGER_FIELDS])
+	return rows
+
+
 def presetFromMidi(value):
 	"""The preset a MIDI 'mapping.preset' value selects (1 = A ... 4 = D), or None for 0 / out of range."""
 	index = int(round(value))

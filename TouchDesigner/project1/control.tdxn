@@ -300,6 +300,77 @@ custom_pars:
     menuSource: me.parent().op('visuals/noise').par.Colour
     help: 'Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).'
     value: ~me.parent().op('visuals/noise').par.Colour
+  - name: Hinsttrigger
+    style: Header
+    label: Trigger Shape
+  - name: Insttriggervisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
+    value: ~me.parent().op('visuals/trigger').par.Visible
+  - name: Insttriggersides
+    style: Int
+    label: Sides
+    default: 3
+    min: 3.0
+    max: 12.0
+    clampMin: true
+    clampMax: true
+    normMin: 3.0
+    normMax: 12.0
+    help: 'Number of sides: 3 = triangle, 4 = square ... 12 = nearly a circle. The "More sides" trigger adds to it.'
+    value: ~me.parent().op('visuals/trigger').par.Sides
+  - name: Insttriggersize
+    style: Float
+    label: Size
+    default: 0.5
+    max: 2.0
+    clampMin: true
+    clampMax: true
+    help: 'How big: 1 = as tall as the image. The "Pulse" trigger swells it for a moment.'
+    value: ~me.parent().op('visuals/trigger').par.Size
+  - name: Insttriggerx
+    style: Float
+    label: X
+    min: -1.5
+    max: 1.5
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    help: Left (-1) to right (1); 0 = centre. The "Jump" trigger moves it away from here.
+    value: ~me.parent().op('visuals/trigger').par.X
+  - name: Insttriggery
+    style: Float
+    label: Y
+    min: -1.5
+    max: 1.5
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    help: Bottom (-1) to top (1); 0 = centre.
+    value: ~me.parent().op('visuals/trigger').par.Y
+  - name: Insttriggerrotate
+    style: Float
+    label: Rotate
+    min: -3600.0
+    max: 3600.0
+    clampMin: true
+    clampMax: true
+    normMax: 360.0
+    help: Turn in degrees. The "Spin" trigger adds to it.
+    value: ~me.parent().op('visuals/trigger').par.Rotate
+  - name: Insttriggerfill
+    style: Toggle
+    label: Fill
+    help: 'On: a solid shape. Off: only its outline.'
+    value: ~me.parent().op('visuals/trigger').par.Fill
+  - name: Insttriggercolour
+    style: Menu
+    label: Colour
+    default: cyan
+    menuSource: me.parent().op('visuals/trigger').par.Colour
+    help: The colour of the shape.
+    value: ~me.parent().op('visuals/trigger').par.Colour
   Composition:
   - name: Hcompparticles
     style: Header
@@ -442,6 +513,41 @@ custom_pars:
     normMax: 9.0
     help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
     value: ~me.parent().op('visuals/shapes').par.Order
+  - name: Hcomptrigger
+    style: Header
+    label: Trigger Shape
+  - name: Comptriggervisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
+    value: ~me.parent().op('visuals/trigger').par.Visible
+  - name: Comptriggeropacity
+    style: Float
+    label: Opacity
+    default: 1
+    clampMin: true
+    clampMax: true
+    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    value: ~me.parent().op('visuals/trigger').par.Opacity
+  - name: Comptriggerblend
+    style: Menu
+    label: Blend
+    default: add
+    menuSource: me.parent().op('visuals/trigger').par.Blend
+    help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    value: ~me.parent().op('visuals/trigger').par.Blend
+  - name: Comptriggerorder
+    style: Int
+    label: Order
+    default: 4
+    min: 1.0
+    max: 9.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 9.0
+    help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    value: ~me.parent().op('visuals/trigger').par.Order
   Movement:
   - name: Hmovemovement
     style: Header
@@ -453,6 +559,367 @@ custom_pars:
     menuSource: me.parent().op('mappings').par.Preset
     help: Which set of 8 mappings is active. Edits are saved into the chosen preset at once.
     value: ~me.parent().op('mappings').par.Preset
+  - name: Movemappingspresetnotea
+    style: Int
+    label: Note for Preset A
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset A (needs Follow MIDI on). -1: none.'
+    value: ~me.parent().op('mappings').par.Presetnotea
+  - name: Movemappingspresetnoteb
+    style: Int
+    label: Note for Preset B
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset B (needs Follow MIDI on). -1: none.'
+    value: ~me.parent().op('mappings').par.Presetnoteb
+  - name: Movemappingspresetnotec
+    style: Int
+    label: Note for Preset C
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset C (needs Follow MIDI on). -1: none.'
+    value: ~me.parent().op('mappings').par.Presetnotec
+  - name: Movemappingspresetnoted
+    style: Int
+    label: Note for Preset D
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset D (needs Follow MIDI on). -1: none.'
+    value: ~me.parent().op('mappings').par.Presetnoted
+  - name: Hmovetriggers
+    style: Header
+    label: Triggers (Trigger Shape)
+  - name: Movetriggervisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
+    value: ~me.parent().op('visuals/trigger').par.Visible
+  - name: Movemappingstrig1on
+    style: Toggle
+    label: 1 On
+    help: Trigger 1 is used while on.
+    value: ~me.parent().op('mappings').par.Trig1on
+  - name: Movemappingstrig1when
+    style: Menu
+    label: 1 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig1when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig1when
+  - name: Movemappingstrig1note
+    style: Int
+    label: 1 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig1note
+  - name: Movemappingstrig1does
+    style: Menu
+    label: 1 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig1does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig1does
+  - name: Movemappingstrig1amount
+    style: Float
+    label: 1 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig1amount
+  - name: Movemappingstrig2on
+    style: Toggle
+    label: 2 On
+    help: Trigger 2 is used while on.
+    value: ~me.parent().op('mappings').par.Trig2on
+  - name: Movemappingstrig2when
+    style: Menu
+    label: 2 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig2when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig2when
+  - name: Movemappingstrig2note
+    style: Int
+    label: 2 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig2note
+  - name: Movemappingstrig2does
+    style: Menu
+    label: 2 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig2does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig2does
+  - name: Movemappingstrig2amount
+    style: Float
+    label: 2 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMin: -180.0
+    normMax: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig2amount
+  - name: Movemappingstrig3on
+    style: Toggle
+    label: 3 On
+    help: Trigger 3 is used while on.
+    value: ~me.parent().op('mappings').par.Trig3on
+  - name: Movemappingstrig3when
+    style: Menu
+    label: 3 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig3when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig3when
+  - name: Movemappingstrig3note
+    style: Int
+    label: 3 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig3note
+  - name: Movemappingstrig3does
+    style: Menu
+    label: 3 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig3does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig3does
+  - name: Movemappingstrig3amount
+    style: Float
+    label: 3 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMin: -4.0
+    normMax: 4.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig3amount
+  - name: Movemappingstrig4on
+    style: Toggle
+    label: 4 On
+    help: Trigger 4 is used while on.
+    value: ~me.parent().op('mappings').par.Trig4on
+  - name: Movemappingstrig4when
+    style: Menu
+    label: 4 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig4when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig4when
+  - name: Movemappingstrig4note
+    style: Int
+    label: 4 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig4note
+  - name: Movemappingstrig4does
+    style: Menu
+    label: 4 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig4does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig4does
+  - name: Movemappingstrig4amount
+    style: Float
+    label: 4 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig4amount
+  - name: Movemappingstrig5on
+    style: Toggle
+    label: 5 On
+    help: Trigger 5 is used while on.
+    value: ~me.parent().op('mappings').par.Trig5on
+  - name: Movemappingstrig5when
+    style: Menu
+    label: 5 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig5when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig5when
+  - name: Movemappingstrig5note
+    style: Int
+    label: 5 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig5note
+  - name: Movemappingstrig5does
+    style: Menu
+    label: 5 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig5does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig5does
+  - name: Movemappingstrig5amount
+    style: Float
+    label: 5 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig5amount
+  - name: Movemappingstrig6on
+    style: Toggle
+    label: 6 On
+    help: Trigger 6 is used while on.
+    value: ~me.parent().op('mappings').par.Trig6on
+  - name: Movemappingstrig6when
+    style: Menu
+    label: 6 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig6when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig6when
+  - name: Movemappingstrig6note
+    style: Int
+    label: 6 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig6note
+  - name: Movemappingstrig6does
+    style: Menu
+    label: 6 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig6does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig6does
+  - name: Movemappingstrig6amount
+    style: Float
+    label: 6 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig6amount
+  - name: Movemappingstrig7on
+    style: Toggle
+    label: 7 On
+    help: Trigger 7 is used while on.
+    value: ~me.parent().op('mappings').par.Trig7on
+  - name: Movemappingstrig7when
+    style: Menu
+    label: 7 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig7when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig7when
+  - name: Movemappingstrig7note
+    style: Int
+    label: 7 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig7note
+  - name: Movemappingstrig7does
+    style: Menu
+    label: 7 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig7does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig7does
+  - name: Movemappingstrig7amount
+    style: Float
+    label: 7 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig7amount
+  - name: Movemappingstrig8on
+    style: Toggle
+    label: 8 On
+    help: Trigger 8 is used while on.
+    value: ~me.parent().op('mappings').par.Trig8on
+  - name: Movemappingstrig8when
+    style: Menu
+    label: 8 When
+    default: midi
+    menuSource: me.parent().op('mappings').par.Trig8when
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: ~me.parent().op('mappings').par.Trig8when
+  - name: Movemappingstrig8note
+    style: Int
+    label: 8 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Trig8note
+  - name: Movemappingstrig8does
+    style: Menu
+    label: 8 Does
+    default: pulse
+    menuSource: me.parent().op('mappings').par.Trig8does
+    help: What the Trigger Shape does each time.
+    value: ~me.parent().op('mappings').par.Trig8does
+  - name: Movemappingstrig8amount
+    style: Float
+    label: 8 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: ~me.parent().op('mappings').par.Trig8amount
   - name: Hmoveslots14
     style: Header
     label: Mappings 1-4
@@ -695,7 +1162,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 145
+    rows: 205
     cols: 5
   position: [0, -200]
   size: [130, 90]

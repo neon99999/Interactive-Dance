@@ -260,9 +260,25 @@ Dancers never type sensor ranges: each movement's range is built in (gyro ±500 
 
 - **Preset** (Mappings page) picks A, B, C or D. Every edit is saved into the current preset at once. **Presets** page: **Copy Preset** (From/To) and **Clear Current Preset**.
 - The mapping rows go to the engine after the input table, so a mapping wins over both the input table and MIDI for its visual.
-- **Switching presets during the song:** add a MIDI row `note, mapping.preset, set, 2` and that note selects preset B (1 = A ... 4 = D). Like every MIDI action it follows the playback position, so seeking lands on the right preset. **Follow MIDI** off ignores these rows.
+- **Switching presets during the song:** set **Note for Preset A-D** (Mappings page; -1 = none) to a note of the song, and that note selects the preset. The same works as a MIDI table row `note, mapping.preset, set, 2` (1 = A ... 4 = D). Like every MIDI action it follows the playback position, so seeking lands on the right preset. **Follow MIDI** off ignores both.
 - The Visual menu is built from the engine's list of values, so when visuals get new values they appear in the menu by themselves (with their raw name until a translation is added to `lang/strings`).
 - Starter presets: **A** body (hands -> layer sizes, position -> layer 1 X, arms spread -> layer 1 opacity), **B** zones (zone 1-3 -> layers 1-3 visible, energy -> flash), **C** wearables (activity -> layer sizes, wearable 1 roll -> rotate, hit -> flash), **D** mixed. Change them freely.
+
+#### Triggers: events that make the Trigger Shape act
+
+Each preset also holds **8 triggers** (Triggers page; on the control panel, Movement tab, under the preset). A trigger is an event and what it does to the **Trigger Shape** instrument (below), so changing the preset changes what the same note does: the day-one teaching example.
+
+| Control | What it does |
+|---|---|
+| **On** | Use this trigger |
+| **When** | **MIDI note** (a note of the song's MIDI file), or **Wearable 1-3: hit / button** |
+| **Note** | The note number, for MIDI note (midi_monitor shows the numbers as the song plays) |
+| **Does** | **Pulse**: swells the size and falls back (0.4 s). **Spin**: turns by Amount degrees. **More sides**: adds Amount sides (3-12, wrapping round). **Jump**: glides to a new place up to Amount away from its X / Y. **Flash colour**: goes towards Flash Colour and fades back (0.6 s) |
+| **Amount** | How much; picking a Does sets its usual amount and slider (Pulse 0.5, Spin 45, More sides 1, Jump 0.5, Flash 1) |
+
+- Song notes follow the playback position like the MIDI table: pausing repeats nothing, seeking and Reset land on the right state, and each note uses the preset in use at its moment (so a spin from preset A stays when the song switches to B). Wearable hits and buttons act live, also while paused.
+- Starter triggers, made to show on **Test Track** (notes 60, 62, 64, 65 at 5, 10, 15, 20 s): **A** pulse, spin, more sides, flash; **B** spin 90, jump, big pulse, more sides; **C** wearable 1 hit pulse, wearable 1 button more sides, note 60 flash, note 62 jump; **D** jump, flash, spin back, wearable 1 hit spin. Copy Preset and Clear Current Preset include the triggers.
+- The triggers are stored in `mappings/trigger_presets` (preset, slot, on, when, note, does, amount).
 
 ### lang: English / Español
 
@@ -306,6 +322,20 @@ The output is made of **visual instruments**: Particles, Video Feedback and Shap
 Defaults: Video Feedback Normal (it fills the frame), Particles and Shapes Add. These are mapping and MIDI targets too (`video.opacity`, `particles.blend`, `shapes.order` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four by Order). After the compositor come the master **Level**, **Blackout** and **Flash**, then the output window as before.
 
 **Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default), Opacity, Blend (Add) and Order (3) only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
+
+**Trigger Shape** (`visuals/trigger`, Instrument page): one polygon for teaching triggers. Off by default; Order 4, Add.
+
+| Setting | What it does |
+|---|---|
+| **Sides** | 3 triangle ... 12 nearly a circle |
+| **Size** | 1 = as tall as the image |
+| **X** / **Y** | -1 to 1, 0 = centre |
+| **Rotate** | Degrees |
+| **Fill** / **Line** | Solid, or an outline of Line thickness |
+| **Colour** / **Flash Colour** | White, Red, Orange, Yellow, Green, Cyan, Blue or Magenta |
+| **Flash** | 0-1, how far towards Flash Colour |
+
+The triggers (mapping page, above) act on these settings on top of everything else, so a mapping can set the size from a movement while a note pulses it. They are also ordinary targets (`trigger.sides`, `trigger.size` ...) for the MIDI table and mappings. The palette is `trigger/palette`.
 
 **Particles** (`visuals/particles`, Instrument page): luminous particles flowing along a swirling field, on black. Built from POPs (a Particle POP loop with curl noise), rendered as soft glowing dots with trails and a colour palette.
 
