@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 1
+build: 2
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/stage
@@ -101,6 +101,11 @@ custom_pars:
     style: Pulse
     label: Close Stage Window
     help: Close the stage window.
+  - name: Openonstart
+    style: Toggle
+    label: Open on Start
+    default: true
+    help: 'On: the stage window opens by itself when the project opens.'
 parameters:
   w: 1707
   h: 996
@@ -1243,6 +1248,18 @@ operators:
     size: [126, 62]
     dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
     dat_content_format: text
+- name: open_on_start
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    start: true
+    file: project1/stage/open_on_start.py
+    syncfile: true
+  position: [800, 2000]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
 - name: tile_wearable
   type: containerCOMP
   parameters:
@@ -1819,9 +1836,9 @@ annotations:
 - name: annotate1
   mode: annotate
   title: Logic
-  text: 'StageExt: tiles, labels, test switches (op.Stage.Open() / Close()). stage_pars: Test Track / Pattern / Dancer, Open, Close. panel_clicks: tile clicks pick the big view; bar buttons act. stage_window: the window (fills the screen).'
+  text: 'StageExt: tiles, labels, test switches (op.Stage.Open() / Close()). stage_pars: Test Track / Pattern / Dancer, Open, Close. panel_clicks: tile clicks pick the big view; bar buttons act. stage_window: the window (fills the screen). open_on_start: opens it when the project opens (Stage page, Open on Start).'
   position: [-70, 1930]
-  size: [880, 330]
+  size: [1080, 330]
   color: [0.45, 0.45, 0.45]
 - name: annotate2
   mode: annotate
