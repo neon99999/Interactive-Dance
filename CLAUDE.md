@@ -11,6 +11,7 @@ Granted (may do unattended):
 - Run Python in TD through Embody/Envoy (read, inspect, small edits).
 - Create, delete and rewire operators inside a sandbox COMP.
 - Commit locally to git (small commits).
+- Push fixes and changes to `origin feature/wearable-sensors` once committed and verified (granted 2026-11-17). Never force-push, never push or merge to `main`, never create a new remote.
 - Create and edit files in this folder; delete files Claude created.
 - Start long-running background processes (test servers, recorders), and stop them when done.
 - Web lookups for documentation.
@@ -29,7 +30,7 @@ Ask each time:
 
 Always ask:
 - sudo / admin commands (Claude writes a script; the user runs it), reboots, firewall, SSH, Tailscale.
-- Creating a git remote or pushing anywhere.
+- Creating a git remote, or pushing anywhere other than `origin feature/wearable-sensors`.
 - Windows settings: startup items, scheduled tasks, power settings.
 
 ## Working with the user
@@ -53,7 +54,7 @@ Project-specific status and configuration stay in this repo (DEVELOPMENT_STATUS.
 ## Practice
 - Verify claims with an independent check before reporting them done.
 - Commit small; on PowerShell 5.1 use `git commit -F <file>`.
-- Remote: `origin` = https://github.com/neon99999/Interactive-Dance (public). Pushing still needs asking each time. This repo stores its GitHub token per repo path (`credential.https://github.com.useHttpPath`), separate from the TouchClaude token.
+- Remote: `origin` = https://github.com/neon99999/Interactive-Dance (public). Pushing `feature/wearable-sensors` there is granted (see Permissions); anything else still needs asking. This repo stores its GitHub token per repo path (`credential.https://github.com.useHttpPath`), separate from the TouchClaude token.
 - Git: `C:\Program Files\Git\cmd\git.exe`. Python: use the full Python 3.12 path, not bare `python`.
 - The `.toe` is the source of truth (Embody's TDXN mode is Export-on-Save): opening the project keeps the COMPs stored in the `.toe`, and a pulled `.tdxn` does not replace them; only `.py`/`.glsl` files sync live. So any change to a network or its parameters must be saved into `DanceWorkshop.toe` and that `.toe` committed and pushed with it, or LAPTOP never sees it (learned 2026-10-29). Before saving, check the `.tdxn` diffs for unrelated live changes the save would carry (test values, toggled layers). TD saves also write `DanceWorkshop.N.toe` and move the previous numbered copy to `Backup/`; both are local only (gitignored).
 - A panel COMP's Background TOP (`par.top`) resolves from the COMP's parent network: a TOP inside the container needs `./null_out`, not `null_out`. Verify a panel by capturing the COMP itself, not only its inner TOP.
