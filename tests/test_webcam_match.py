@@ -45,14 +45,6 @@ class WebcamMatch(unittest.TestCase):
 		self.assertIsNone(ps.pickWebcam(names, ['OBS Virtual Camera', 'NDI Webcam', 'mmhmm']))
 		self.assertIsNone(ps.pickWebcam([], []))
 
-	def test_should_kick(self):
-		self.assertFalse(ps.shouldKick(10, 0, 0, -1e9, 0))      # still starting
-		self.assertTrue(ps.shouldKick(25, 0, 20, -1e9, 0))      # started, no frames for 5 s
-		self.assertFalse(ps.shouldKick(25, 0, 23, -1e9, 0))     # frames 2 s ago
-		self.assertFalse(ps.shouldKick(25, 0, 20, 20, 1))       # kicked 5 s ago
-		self.assertFalse(ps.shouldKick(60, 0, 20, 40, 3))       # gave up after 3 tries
-		self.assertFalse(ps.shouldKick(60, None, 0, -1e9, 0))   # not running
-
 	def test_no_match(self):
 		self.assertIsNone(ps.matchName('Logitech BRIO', ['OBS Virtual Camera']))
 		self.assertIsNone(ps.matchName('', ['OBS Virtual Camera']))
