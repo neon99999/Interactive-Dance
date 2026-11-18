@@ -85,3 +85,5 @@ def _matchMediapipeCooking(wanted):
 		if absTime.frame % 60 == 0:
 			# The browser lists its webcams only once MediaPipe runs: match the Device again.
 			op('pose_settings').module.applyWebcam()
+		if absTime.frame % 30 == 0:
+			op('pose_settings').module.kickWebcamIfStalled()

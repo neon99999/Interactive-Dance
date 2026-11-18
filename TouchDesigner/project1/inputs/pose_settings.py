@@ -64,6 +64,7 @@ def onValueChange(par, prev):
 		if plugin is not None:
 			plugin.par.Detectsegments = bool(par.eval())
 	elif par.name == 'Cameradevice':
+		_kick['since'] = None
 		if parent.Inputs.par.Webcamuse.eval() == 'body':
 			_bodySince = absTime.seconds
 		applyWebcam()
@@ -90,6 +91,7 @@ def setMediapipeRunning(on):
 			_pending['start'] = True
 			run('args[0].startBrowser()', me.module, delayMilliSeconds=START_MS)
 	else:
+		_kick['since'] = None
 		if browser is not None and browser.par.Active.eval():
 			browser.par.Active = False
 			WebcamFree.val = False
@@ -130,6 +132,63 @@ def pickWebcam(names, labels):
 		if 'c920' in label.lower():
 			return name
 	return real[0][0] if real else None
+
+
+def wantedWebcam(names):
+	"""The browser webcam name body tracking should use (pure, unit tested): the chosen
+	one if listed, else a C920 or the first non-virtual camera MediaPipe lists."""
+	label = deviceLabel(parent.Inputs.par.Cameradevice.eval()) if names else ''
+	return matchName(label, names) or pickWebcam(names, names)
+
+
+# Webcam restart: switching body tracking off and on sometimes left the page
+# running without its webcam (camera light off, no results). Choosing another
+# webcam in MediaPipe and back turned it on again (the user, LAPTOP,
+# 2026-11-17), so this does the same when the page has stopped processing frames.
+KICK_AFTER_SECONDS = 20   # after starting, as long as MediaPipe may take to send its first frame
+KICK_IDLE_SECONDS = 4     # no frame processed for this long
+KICK_EVERY_SECONDS = 8
+KICK_TRIES = 3
+_kick = {'since': None}
+
+
+def shouldKick(now, since, framesChangedAt, lastKick, tries):
+	"""Whether to restart MediaPipe's webcam now (pure, unit tested)."""
+	return (since is not None and now - since >= KICK_AFTER_SECONDS
+		and now - framesChangedAt >= KICK_IDLE_SECONDS
+		and now - lastKick >= KICK_EVERY_SECONDS and tries < KICK_TRIES)
+
+
+def kickWebcamIfStalled():
+	"""While body tracking runs: if MediaPipe's page has stopped processing webcam
+	frames, choose another webcam in MediaPipe and then the right one again."""
+	plugin = op('mediapipe/MediaPipe')
+	server = op('mediapipe/MediaPipe/webserver1_callbacks')
+	if plugin is None or server is None or parent.Inputs.par.Posesource.eval() != 'camera':
+		_kick['since'] = None
+		return
+	try:
+		frames = sum(server.module.timersReceived.values())   # one per frame the page processed
+	except Exception:
+		return
+	now = absTime.seconds
+	if _kick['since'] is None:
+		_kick.update(since=now, frames=frames, changedAt=now, lastKick=-1e9, tries=0)
+	if frames != _kick['frames']:
+		_kick['frames'], _kick['changedAt'] = frames, now
+		return
+	if not shouldKick(now, _kick['since'], _kick['changedAt'], _kick['lastKick'], _kick['tries']):
+		return
+	names = webcamNames(plugin)
+	want = wantedWebcam(names)
+	others = [n for n in names if n != want]
+	if not want or not others:
+		return
+	_kick['tries'] += 1
+	_kick['lastKick'] = now
+	debug('body tracking: no webcam frames for %d s, restarting %s' % (now - _kick['changedAt'], want))
+	plugin.par.Webcam = others[0]
+	run('args[0].par.Webcam = args[1]', plugin, want, delayMilliSeconds=1500)
 
 
 def chooseWebcamIfNone():
