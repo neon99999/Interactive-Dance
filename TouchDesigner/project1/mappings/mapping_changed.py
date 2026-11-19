@@ -19,3 +19,6 @@ def onPulse(par):
 		comp.ClearPreset(comp.par.Preset.eval())
 	elif par.name == 'Refresh':
 		comp.RefreshMenus()
+		control = getattr(op, 'Control', None)
+		if control is not None:
+			control.Rebuild()  # the panel keeps copies of the menus

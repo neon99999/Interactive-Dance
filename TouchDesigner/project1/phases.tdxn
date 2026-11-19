@@ -1,0 +1,1805 @@
+format: tdxn
+version: '2.2'
+build: 6
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/phases
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  tableDAT:
+    size: [130, 90]
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+type: baseCOMP
+custom_pars:
+  Phases:
+  - name: Phase
+    style: Menu
+    default: '1'
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    help: The phase shown below. Follow MIDI switches it when the song plays a phase note. Edits are saved into this phase at once.
+  - name: Followmidi
+    style: Toggle
+    label: Follow MIDI
+    default: true
+    help: 'On: a phase note of the song switches the phase (before the first one: phase 1). Off: only the Phase menu switches it.'
+  - name: Phasenote1
+    style: Int
+    label: Note for Phase 1
+    startSection: true
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 1 (-1 = none).
+  - name: Phasenote2
+    style: Int
+    label: Note for Phase 2
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 2 (-1 = none).
+  - name: Phasenote3
+    style: Int
+    label: Note for Phase 3
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 3 (-1 = none).
+  - name: Phasenote4
+    style: Int
+    label: Note for Phase 4
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 4 (-1 = none).
+  - name: Phasenote5
+    style: Int
+    label: Note for Phase 5
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 5 (-1 = none).
+  - name: Phasenote6
+    style: Int
+    label: Note for Phase 6
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 6 (-1 = none).
+  - name: Phasenote7
+    style: Int
+    label: Note for Phase 7
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 7 (-1 = none).
+  - name: Phasenote8
+    style: Int
+    label: Note for Phase 8
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 8 (-1 = none).
+  - name: Copyto
+    style: Menu
+    label: Copy To
+    startSection: true
+    default: '2'
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    help: The phase that Copy Phase writes into.
+  - name: Copy
+    style: Pulse
+    label: Copy Phase
+    help: Copy the shown phase into Copy To.
+  - name: Clear
+    style: Pulse
+    label: Clear Phase
+    help: Empty every event of the shown phase.
+  Events:
+  - name: Ev1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Use this event in the phase.
+    value: true
+  - name: Ev1name
+    style: Str
+    label: 1 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+    value: punch
+  - name: Ev1shape
+    style: Menu
+    label: 1 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev1colour
+    style: Menu
+    label: 1 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+    value: cyan
+  - name: Ev1x
+    style: Float
+    label: 1 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+    value: -0.4
+  - name: Ev1y
+    style: Float
+    label: 1 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev1size
+    style: Float
+    label: 1 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+    value: 0.35
+  - name: Ev1show
+    style: Menu
+    label: 1 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+    value: toggle
+  - name: Ev1time
+    style: Float
+    label: 1 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+    enable: false
+  - name: Ev1trigger
+    style: Menu
+    label: 1 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w1_hit
+  - name: Ev1note
+    style: Int
+    label: 1 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev1link1in
+    style: StrMenu
+    label: 1 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+    value: serial_w1_roll
+  - name: Ev1link1prop
+    style: Menu
+    label: 1 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+  - name: Ev1link1from
+    style: Float
+    label: 1 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+  - name: Ev1link1to
+    style: Float
+    label: 1 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+  - name: Ev1link2in
+    style: StrMenu
+    label: 1 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev1link2prop
+    style: Menu
+    label: 1 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev1link2from
+    style: Float
+    label: 1 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev1link2to
+    style: Float
+    label: 1 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Use this event in the phase.
+    value: true
+  - name: Ev2name
+    style: Str
+    label: 2 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+    value: stomp
+  - name: Ev2shape
+    style: Menu
+    label: 2 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+    value: circle
+  - name: Ev2colour
+    style: Menu
+    label: 2 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+    value: orange
+  - name: Ev2x
+    style: Float
+    label: 2 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+    value: 0.4
+  - name: Ev2y
+    style: Float
+    label: 2 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+    value: 0.3
+  - name: Ev2size
+    style: Float
+    label: 2 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev2show
+    style: Menu
+    label: 2 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev2time
+    style: Float
+    label: 2 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+    value: 1.5
+  - name: Ev2trigger
+    style: Menu
+    label: 2 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w2_hit
+  - name: Ev2note
+    style: Int
+    label: 2 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev2link1in
+    style: StrMenu
+    label: 2 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev2link1prop
+    style: Menu
+    label: 2 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev2link1from
+    style: Float
+    label: 2 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev2link1to
+    style: Float
+    label: 2 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev2link2in
+    style: StrMenu
+    label: 2 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev2link2prop
+    style: Menu
+    label: 2 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev2link2from
+    style: Float
+    label: 2 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev2link2to
+    style: Float
+    label: 2 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Use this event in the phase.
+    value: true
+  - name: Ev3name
+    style: Str
+    label: 3 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+    value: beat
+  - name: Ev3shape
+    style: Menu
+    label: 3 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+    value: triangle
+  - name: Ev3colour
+    style: Menu
+    label: 3 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+    value: magenta
+  - name: Ev3x
+    style: Float
+    label: 3 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+    value: 0.4
+  - name: Ev3y
+    style: Float
+    label: 3 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+    value: -0.4
+  - name: Ev3size
+    style: Float
+    label: 3 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev3show
+    style: Menu
+    label: 3 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev3time
+    style: Float
+    label: 3 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+    value: 0.5
+  - name: Ev3trigger
+    style: Menu
+    label: 3 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+    value: midi
+  - name: Ev3note
+    style: Int
+    label: 3 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+  - name: Ev3link1in
+    style: StrMenu
+    label: 3 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev3link1prop
+    style: Menu
+    label: 3 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev3link1from
+    style: Float
+    label: 3 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev3link1to
+    style: Float
+    label: 3 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev3link2in
+    style: StrMenu
+    label: 3 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev3link2prop
+    style: Menu
+    label: 3 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev3link2from
+    style: Float
+    label: 3 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev3link2to
+    style: Float
+    label: 3 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Use this event in the phase.
+  - name: Ev4name
+    style: Str
+    label: 4 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+  - name: Ev4shape
+    style: Menu
+    label: 4 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev4colour
+    style: Menu
+    label: 4 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+  - name: Ev4x
+    style: Float
+    label: 4 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+  - name: Ev4y
+    style: Float
+    label: 4 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev4size
+    style: Float
+    label: 4 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev4show
+    style: Menu
+    label: 4 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev4time
+    style: Float
+    label: 4 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+  - name: Ev4trigger
+    style: Menu
+    label: 4 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+  - name: Ev4note
+    style: Int
+    label: 4 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev4link1in
+    style: StrMenu
+    label: 4 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev4link1prop
+    style: Menu
+    label: 4 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev4link1from
+    style: Float
+    label: 4 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev4link1to
+    style: Float
+    label: 4 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev4link2in
+    style: StrMenu
+    label: 4 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev4link2prop
+    style: Menu
+    label: 4 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev4link2from
+    style: Float
+    label: 4 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev4link2to
+    style: Float
+    label: 4 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev5on
+    style: Toggle
+    label: 5 On
+    startSection: true
+    help: Use this event in the phase.
+  - name: Ev5name
+    style: Str
+    label: 5 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+  - name: Ev5shape
+    style: Menu
+    label: 5 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev5colour
+    style: Menu
+    label: 5 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+  - name: Ev5x
+    style: Float
+    label: 5 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+  - name: Ev5y
+    style: Float
+    label: 5 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev5size
+    style: Float
+    label: 5 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev5show
+    style: Menu
+    label: 5 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev5time
+    style: Float
+    label: 5 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+  - name: Ev5trigger
+    style: Menu
+    label: 5 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+  - name: Ev5note
+    style: Int
+    label: 5 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev5link1in
+    style: StrMenu
+    label: 5 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev5link1prop
+    style: Menu
+    label: 5 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev5link1from
+    style: Float
+    label: 5 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev5link1to
+    style: Float
+    label: 5 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev5link2in
+    style: StrMenu
+    label: 5 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev5link2prop
+    style: Menu
+    label: 5 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev5link2from
+    style: Float
+    label: 5 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev5link2to
+    style: Float
+    label: 5 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev6on
+    style: Toggle
+    label: 6 On
+    startSection: true
+    help: Use this event in the phase.
+  - name: Ev6name
+    style: Str
+    label: 6 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+  - name: Ev6shape
+    style: Menu
+    label: 6 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev6colour
+    style: Menu
+    label: 6 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+  - name: Ev6x
+    style: Float
+    label: 6 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+  - name: Ev6y
+    style: Float
+    label: 6 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev6size
+    style: Float
+    label: 6 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev6show
+    style: Menu
+    label: 6 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev6time
+    style: Float
+    label: 6 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+  - name: Ev6trigger
+    style: Menu
+    label: 6 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+  - name: Ev6note
+    style: Int
+    label: 6 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev6link1in
+    style: StrMenu
+    label: 6 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev6link1prop
+    style: Menu
+    label: 6 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev6link1from
+    style: Float
+    label: 6 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev6link1to
+    style: Float
+    label: 6 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev6link2in
+    style: StrMenu
+    label: 6 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev6link2prop
+    style: Menu
+    label: 6 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev6link2from
+    style: Float
+    label: 6 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev6link2to
+    style: Float
+    label: 6 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev7on
+    style: Toggle
+    label: 7 On
+    startSection: true
+    help: Use this event in the phase.
+  - name: Ev7name
+    style: Str
+    label: 7 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+  - name: Ev7shape
+    style: Menu
+    label: 7 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev7colour
+    style: Menu
+    label: 7 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+  - name: Ev7x
+    style: Float
+    label: 7 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+  - name: Ev7y
+    style: Float
+    label: 7 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev7size
+    style: Float
+    label: 7 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev7show
+    style: Menu
+    label: 7 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev7time
+    style: Float
+    label: 7 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+  - name: Ev7trigger
+    style: Menu
+    label: 7 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+  - name: Ev7note
+    style: Int
+    label: 7 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev7link1in
+    style: StrMenu
+    label: 7 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev7link1prop
+    style: Menu
+    label: 7 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev7link1from
+    style: Float
+    label: 7 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev7link1to
+    style: Float
+    label: 7 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev7link2in
+    style: StrMenu
+    label: 7 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev7link2prop
+    style: Menu
+    label: 7 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev7link2from
+    style: Float
+    label: 7 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev7link2to
+    style: Float
+    label: 7 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev8on
+    style: Toggle
+    label: 8 On
+    startSection: true
+    help: Use this event in the phase.
+  - name: Ev8name
+    style: Str
+    label: 8 Name
+    help: 'The name written in the shape: what the action is, e.g. punch explode.'
+  - name: Ev8shape
+    style: Menu
+    label: 8 Shape
+    default: rectangle
+    menuNames:
+    - rectangle
+    - circle
+    - triangle
+    menuLabels:
+    - Rectangle
+    - Circle
+    - Triangle
+    help: The placeholder shape.
+  - name: Ev8colour
+    style: Menu
+    label: 8 Colour
+    default: white
+    menuNames:
+    - white
+    - red
+    - orange
+    - yellow
+    - green
+    - cyan
+    - blue
+    - magenta
+    menuLabels:
+    - White
+    - Red
+    - Orange
+    - Yellow
+    - Green
+    - Cyan
+    - Blue
+    - Magenta
+    help: The colour of the shape.
+  - name: Ev8x
+    style: Float
+    label: 8 X
+    normMin: -1.0
+    help: Position left (-1) to right (1).
+  - name: Ev8y
+    style: Float
+    label: 8 Y
+    normMin: -1.0
+    help: Position bottom (-1) to top (1).
+  - name: Ev8size
+    style: Float
+    label: 8 Size
+    default: 0.3
+    clampMin: true
+    normMin: 0.05
+    help: Size, as a part of the screen height.
+  - name: Ev8show
+    style: Menu
+    label: 8 Show
+    default: timed
+    menuNames:
+    - always
+    - toggle
+    - timed
+    menuLabels:
+    - Always
+    - Toggle
+    - For a time
+    help: 'Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.'
+  - name: Ev8time
+    style: Float
+    label: 8 Time
+    default: 1
+    clampMin: true
+    normMax: 10.0
+    help: 'For a time: how many seconds the event stays. A new trigger starts the time again.'
+  - name: Ev8trigger
+    style: Menu
+    label: 8 Trigger
+    default: none
+    menuSource: tdu.TableMenu(me.op('trigger_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What shows the event: a MIDI note of the song, or a wearable hit or button.'
+  - name: Ev8note
+    style: Int
+    label: 8 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note of the song, for a MIDI trigger.
+    enable: false
+  - name: Ev8link1in
+    style: StrMenu
+    label: 8 Link 1 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev8link1prop
+    style: Menu
+    label: 8 Link 1 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev8link1from
+    style: Float
+    label: 8 Link 1 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev8link1to
+    style: Float
+    label: 8 Link 1 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+  - name: Ev8link2in
+    style: StrMenu
+    label: 8 Link 2 Movement
+    default: none
+    menuSource: tdu.TableMenu(me.op('link_menu'), labelCol=1, includeFirstRow=True)
+    help: A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.
+  - name: Ev8link2prop
+    style: Menu
+    label: 8 Link 2 Moves
+    default: rotate
+    menuNames:
+    - size
+    - x
+    - y
+    - rotate
+    - bright
+    menuLabels:
+    - Size
+    - X position
+    - Y position
+    - Rotation
+    - Brightness
+    help: What the movement changes.
+    enable: false
+  - name: Ev8link2from
+    style: Float
+    label: 8 Link 2 From
+    default: -180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the low end of the movement.
+    enable: false
+  - name: Ev8link2to
+    style: Float
+    label: 8 Link 2 To
+    default: 180
+    normMin: -180.0
+    normMax: 180.0
+    help: The value at the high end of the movement.
+    enable: false
+parameters:
+  parentshortcut: Phases
+  opshortcut: Phases
+sequences:
+  ext:
+  - object: op('./PhasesExt').module.PhasesExt(me)
+    name: Phases
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+storage:
+  _t:
+  - $type: tuple
+    $value:
+    - 8.8
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 9.23
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 10.25
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 11.25
+    - '0'
+    - '1'
+  - $type: tuple
+    $value:
+    - 11.75
+    - '0'
+    - '1'
+  - $type: tuple
+    $value:
+    - 18.23
+    - '0'
+    - '2'
+operators:
+- name: phases
+  type: tableDAT
+  parameters:
+    file: project1/phases/phases.tsv
+    syncfile: true
+    rows: 65
+    cols: 21
+  position: [0, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: PhasesExt
+  type: textDAT
+  parameters:
+    file: project1/phases/PhasesExt.py
+- name: link_menu
+  type: tableDAT
+  position: [800, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - none
+    - No link
+  - - pose_x
+    - 'Body: position left-right'
+  - - pose_hand_l
+    - 'Body: left hand height'
+  - - pose_hand_r
+    - 'Body: right hand height'
+  - - pose_spread
+    - 'Body: arms spread'
+  - - pose_energy
+    - 'Body: energy'
+  - - serial_w1_roll
+    - 'Wearable 1: tilt sideways'
+  - - serial_w1_pitch
+    - 'Wearable 1: tilt up-down'
+  - - serial_w1_act
+    - 'Wearable 1: activity'
+  - - serial_w1_gx
+    - 'Wearable 1: twist speed'
+  - - serial_w1_gy
+    - 'Wearable 1: tilt speed'
+  - - serial_w1_gz
+    - 'Wearable 1: turn speed'
+  - - serial_w2_roll
+    - 'Wearable 2: tilt sideways'
+  - - serial_w2_pitch
+    - 'Wearable 2: tilt up-down'
+  - - serial_w2_act
+    - 'Wearable 2: activity'
+  - - serial_w2_gx
+    - 'Wearable 2: twist speed'
+  - - serial_w2_gy
+    - 'Wearable 2: tilt speed'
+  - - serial_w2_gz
+    - 'Wearable 2: turn speed'
+  - - serial_w3_roll
+    - 'Wearable 3: tilt sideways'
+  - - serial_w3_pitch
+    - 'Wearable 3: tilt up-down'
+  - - serial_w3_act
+    - 'Wearable 3: activity'
+  - - serial_w3_gx
+    - 'Wearable 3: twist speed'
+  - - serial_w3_gy
+    - 'Wearable 3: tilt speed'
+  - - serial_w3_gz
+    - 'Wearable 3: turn speed'
+  - - camera_motion
+    - 'Camera: motion'
+  - - camera_left
+    - 'Camera: motion left'
+  - - camera_right
+    - 'Camera: motion right'
+  - - sim_level
+    - 'Test: level'
+  dat_content_format: table
+- name: event_state
+  type: tableDAT
+  position: [1200, -400]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: phase_logic
+  type: textDAT
+  parameters:
+    file: project1/phases/phase_logic.py
+  position: [400, 0]
+- name: phases_frame
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+    file: project1/phases/phases_frame.py
+    syncfile: true
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: trigger_menu
+  type: tableDAT
+  position: [400, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - none
+    - Nothing
+  - - midi
+    - MIDI note (song)
+  - - serial_w1_hit
+    - 'Wearable 1: hit'
+  - - serial_w1_btn
+    - 'Wearable 1: button'
+  - - serial_w2_hit
+    - 'Wearable 2: hit'
+  - - serial_w2_btn
+    - 'Wearable 2: button'
+  - - serial_w3_hit
+    - 'Wearable 3: hit'
+  - - serial_w3_btn
+    - 'Wearable 3: button'
+  dat_content_format: table
+- name: phases_changed
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    builtin: false
+    file: project1/phases/phases_changed.py
+    syncfile: true
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Phases and placeholder events
+  text: 'Phases (1-8) start on MIDI notes of the song (Follow MIDI). Each phase has 8 events: a named shape that a trigger (MIDI note, wearable hit or button) shows always / as a toggle / for a time, and 2 links that let a continuous movement move it. phases (phases.tsv) stores every phase; the Ev parameters show the Phase being edited. phases_frame runs PhasesExt.frame each frame, which writes event_state for visuals/events. Rules in phase_logic (tests/test_phases.py).'
+  position: [-70, -470]
+  size: [1460, 700]
+  color: [0.45, 0.45, 0.45]

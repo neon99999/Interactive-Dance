@@ -54,13 +54,16 @@ class LangExt:
 			if par is None:
 				continue
 			text = self.T(table[r, 'key'].val)
+			# Only what differs: every parameter change costs time on a COMP with many.
 			if parts[2] == 'label':
-				par.label = text
+				if par.label != text:
+					par.label = text
 			elif parts[2] == 'help':
-				par.help = text
+				if par.help != text:
+					par.help = text
 			elif par.isMenu:
 				labels = text.split('|')
-				if len(labels) == len(par.menuNames):
+				if len(labels) == len(par.menuNames) and list(par.menuLabels) != labels:
 					par.menuLabels = labels
 			changed += 1
 		return changed

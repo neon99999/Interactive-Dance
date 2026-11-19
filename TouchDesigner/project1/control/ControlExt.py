@@ -1,15 +1,16 @@
 """Control: the one panel dancers and teachers use, instead of the network.
 
-Five tabs: Show, Instruments, Composition, Movement, Inputs. The panel holds
+Six tabs: Show, Phases, Instruments, Composition, Movement, Inputs. The panel holds
 no values of its own: every control is bound to the parameter it shows on
 another component (visuals/particles Energy, inputs Webcamuse, ...), so that
 parameter stays the one source of truth, and MIDI, presets and mappings work
 exactly as before.
 
 What the panel shows is data, not code: the layout table lists each control
-(tab, section, component, parameter, shown in Basic). Rebuild()
-recreates the generated parameters from it whenever Mode (Basic / Advanced),
-Language changes. Each instrument has its own section on the Instruments
+(tab, section, component, parameter, level). Rebuild()
+recreates the generated parameters from it whenever Level (Mode: Level 1-3
+or Advanced) or Language changes. A row's level is the first Level that
+shows it (1, 2 or 3); 0 = Advanced only. Advanced shows every row. Each instrument has its own section on the Instruments
 tab (switching one by menu rebuilt the panel and froze it for a second). Labels, help and menus come from the bound
 parameter, so they follow the Language switch; tab and section names come
 from the lang table (control.page.<id>, control.section.<id>).
@@ -22,7 +23,8 @@ back to Show. Rebuild keeps the tab too.
 
 from typing import Optional
 
-PAGES = ('show', 'instruments', 'composition', 'movement', 'inputs')
+PAGES = ('show', 'phases', 'instruments', 'composition', 'movement', 'inputs')
+LEVELS = {'level1': 1, 'level2': 2, 'level3': 3, 'advanced': 99}
 OWN = ('Mode',)                       # the panel's own setting, never rebuilt
 OWN_PAGE = {'Mode': 'show'}
 KEEP_PAGES = ('About',)                # Embody's build info, kept last
@@ -41,27 +43,32 @@ class ControlExt:
 		pass
 
 	def Rebuild(self) -> int:
-		"""Recreate the panel's generated controls for the current Mode and Language. Returns how many."""
+		"""Bring the panel's generated controls up to date for the current Level and Language. Returns how many.
+
+		Controls that already exist with the right style are kept and only
+		updated where they differ (labels, help, menus, ranges): creating and
+		destroying hundreds of parameters took several seconds.
+		"""
 		comp = self.ownerComp
 		shown = self._shownPageKey()
-		for par in list(comp.customPars):
-			if par.name not in OWN and par.page.name not in KEEP_PAGES:
-				par.destroy()
 		pages = {}
 		for key in PAGES:
 			label = self._text('control.page.' + key, key.title())
 			page = next((p for p in comp.customPages if p.name in (label, self._storedPageName(key))), None)
 			if page is None:
 				page = comp.appendCustomPage(label)
-			page.name = label
+			if page.name != label:
+				page.name = label
 			pages[key] = page
 		comp.store('_pageNames', {k: p.name for k, p in pages.items()})
 		self._ensureOwn(pages)
-		basicOnly = comp.par.Mode.eval() == 'basic'
+		level = LEVELS.get(comp.par.Mode.eval(), 1)
+		existing = {p.name: p for p in comp.customPars if p.name not in OWN and p.page.name not in KEEP_PAGES}
+		order = {key: [] for key in PAGES}
 		built = 0
 		section = {}
 		for row in self.rows():
-			if basicOnly and not row['basic']:
+			if level < 99 and not 0 < row['level'] <= level:
 				continue
 			source = self.sourcePar(row)
 			if source is None:
@@ -69,13 +76,36 @@ class ControlExt:
 			page = pages[row['page']]
 			if section.get(row['page']) != row['section'] and row['section']:
 				section[row['page']] = row['section']
-				page.appendHeader('H' + self._name(row['page'], row['section'], '').lower(),
-					label=self._text('control.section.' + row['section'], row['section'].title()))
-			self._appendLike(page, self._name(row['page'], row['comp'], row['par']), source, row)
+				name = 'H' + self._name(row['page'], row['section'], '').lower()
+				label = self._text('control.section.' + row['section'], row['section'].title())
+				header = existing.pop(name, None)
+				if header is not None and header.page != page:
+					header.destroy()
+					header = None
+				if header is None:
+					header = page.appendHeader(name, label=label)[0]
+				elif header.label != label:
+					header.label = label
+				order[row['page']].append(name)
+			name = self._name(row['page'], row['comp'], row['par'])
+			par = existing.pop(name, None)
+			if par is not None and (par.style != source.style or par.page != page):
+				par.destroy()
+				par = None
+			if par is None:
+				self._appendLike(page, name, source, row)
+			else:
+				self._matchSource(par, source)
+			order[row['page']].append(name)
 			built += 1
-		comp.sortCustomPages(*[pages[k].name for k in PAGES])
-		for name, key in OWN_PAGE.items():
-			pages[key].sort(name, *[p.name for p in pages[key].pars if p.name != name])
+		for par in existing.values():
+			par.destroy()
+		for key, names in order.items():
+			own = [name for name, k in OWN_PAGE.items() if k == key]
+			wanted = own + names
+			if [p.name for p in pages[key].pars] != wanted:
+				pages[key].sort(*wanted)
+		comp.sortCustomPages(*[pages[k].name for k in PAGES], *[p.name for p in comp.customPages if p.name in KEEP_PAGES])
 		pulses = [p.name for p in comp.customPars if p.isPulse]
 		if shown in pages:
 			comp.currentPage = pages[shown]
@@ -96,7 +126,7 @@ class ControlExt:
 			out.append({
 				'page': table[r, 'page'].val, 'section': table[r, 'section'].val,
 				'comp': table[r, 'comp'].val, 'par': table[r, 'par'].val,
-				'basic': table[r, 'basic'].val == '1',
+				'level': int(table[r, 'level'].val or 0),
 			})
 		return out
 
@@ -128,7 +158,10 @@ class ControlExt:
 			par = page.appendToggle(name, label=source.label)[0]
 		elif style in ('Menu', 'StrMenu'):
 			par = (page.appendMenu if style == 'Menu' else page.appendStrMenu)(name, label=source.label)[0]
-			par.menuSource = path
+			# A copy, not a menuSource: hundreds of menu sources made every Rebuild
+			# re-evaluate them all for each new parameter (8 s instead of 1).
+			# Language changes and the mapping page's Refresh rebuild the panel.
+			par.menuNames, par.menuLabels = source.menuNames, source.menuLabels
 		elif style == 'Int':
 			par = page.appendInt(name, label=source.label)[0]
 		elif style == 'Float':
@@ -151,15 +184,33 @@ class ControlExt:
 				par.readOnly = True
 		return par
 
+	def _matchSource(self, par: Par, source: Par) -> None:
+		"""Update a kept control where it differs from its source (labels and menus follow the Language)."""
+		if par.label != source.label:
+			par.label = source.label
+		if par.help != source.help:
+			par.help = source.help
+		if par.enable != source.enable:
+			par.enable = source.enable
+		if par.isMenu and (list(par.menuNames) != list(source.menuNames) or list(par.menuLabels) != list(source.menuLabels)):
+			par.menuNames, par.menuLabels = source.menuNames, source.menuLabels
+		if source.style in ('Int', 'Float') and (par.normMin, par.normMax) != (source.normMin, source.normMax):
+			par.normMin, par.normMax = source.normMin, source.normMax
+
 	def _ensureOwn(self, pages: dict) -> None:
-		"""Get-or-create Mode (Show tab)."""
+		"""Get-or-create Mode, shown as Level (Show tab): Level 1-3 reveal the tools step by step, Advanced shows all."""
 		comp = self.ownerComp
-		if getattr(comp.par, 'Mode', None) is None:
-			mode = pages['show'].appendMenu('Mode', label='Mode')[0]
-			mode.menuNames, mode.menuLabels = ['basic', 'advanced'], ['Basic', 'Advanced']
-			mode.default = 'basic'
-			mode.val = 'basic'
-			mode.help = 'Basic shows the few controls needed on day one. Advanced shows every setting.'
+		mode = getattr(comp.par, 'Mode', None)
+		if mode is None:
+			mode = pages['show'].appendMenu('Mode', label='Level')[0]
+		names = list(LEVELS)
+		if list(mode.menuNames) != names:
+			value = str(mode.eval())
+			mode.menuNames = names
+			mode.menuLabels = ['Level 1', 'Level 2', 'Level 3', 'Advanced']
+			mode.val = 'advanced' if value == 'advanced' else (value if value in names else 'level1')
+		mode.default = 'level1'
+		mode.help = 'Level 1: music, phases and trigger events. Level 2: adds continuous links. Level 3: everything for students. Advanced: every setting.'
 
 	def _shownPageKey(self) -> str:
 		"""The tab the panel shows now (stage/controls has Sync Page on, so it is this COMP's current page)."""

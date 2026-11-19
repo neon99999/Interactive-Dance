@@ -44,17 +44,18 @@ The tests change a few settings and put them back when you switch them off: **Te
 
 ## The control panel (one panel for everything)
 
-Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()` for a floating window). It has five tabs:
+Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()` for a floating window). It has six tabs:
 
 | Tab | What is on it |
 |---|---|
-| **Show** | Mode (Basic / Advanced), Language, the music (Play, Reset, files, position) and the output window (open, close, Level, Blackout) |
+| **Show** | Level (1, 2, 3, Advanced), Language, the music (Play, Reset, files, position) and the output window (open, close, Level, Blackout) |
+| **Phases** | The phases of the piece and their placeholder events (see **phases** below). Level 2 adds the continuous links |
 | **Instruments** | One section per instrument (Particles, Video Feedback, Noise): its On switch, Preset, Reset to Preset and sliders; Video Feedback also its source and Status |
 | **Composition** | Every instrument's On, Opacity, Blend and Order: what is in the picture and how it is stacked |
 | **Movement** | The mapping preset and the 8 movement -> visual mappings (Basic: On, Movement, Visual; Advanced adds From, To, Smoothing, Sensitivity) |
 | **Inputs** | Webcam (Use, Webcam, Status), Wearables (Read Serial, Port, Status, Use Wearable 1-3), Stage Zones; Advanced adds body-tracking details, test signals and OSC |
 
-**Basic** shows what a dancer needs on day one; **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, shown in Basic): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Mode or Language rebuilds the panel, which takes a moment.
+**Level** reveals the tools step by step: **Level 1** shows what a dancer needs on day one (music, phases and trigger events, and the controls Basic showed before), **Level 2** adds the continuous links, **Level 3** is kept for the next tools (today the same as Level 2), **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, level: the first Level that shows the row, 0 = Advanced only): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Level or Language updates the panel, which takes a moment (a few seconds for Language).
 
 ## The four components
 
@@ -280,6 +281,28 @@ Each preset also holds **8 triggers** (Triggers page; on the control panel, Move
 - Starter triggers, made to show on **Test Track** (notes 60, 62, 64, 65 at 5, 10, 15, 20 s): **A** pulse, spin, more sides, flash; **B** spin 90, jump, big pulse, more sides; **C** wearable 1 hit pulse, wearable 1 button more sides, note 60 flash, note 62 jump; **D** jump, flash, spin back, wearable 1 hit spin. Copy Preset and Clear Current Preset include the triggers.
 - The triggers are stored in `mappings/trigger_presets` (preset, slot, on, when, note, does, amount).
 
+### phases: the piece in phases, with placeholder events
+
+The first way students build a piece: the music and its MIDI notes divide it into **phases**, and in each phase dancers call up **events**, simple named shapes that stand in for the visuals that come later. On the control panel: **Phases** tab.
+
+**Phases.** Up to 8. **Note for Phase 1-8** is the MIDI note of the song that starts each phase (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, and seeking moves it too. The **Phase** menu shows (and edits) one phase; when the song changes phase, the menu follows. **Copy Phase** and **Clear Phase** work like the mapping presets.
+
+**Events.** Each phase has 8:
+
+| Control | What it does |
+|---|---|
+| **On** | Use this event |
+| **Name** | The text in the shape: what the action is (punch explode, stomp...) |
+| **Shape**, **Colour**, **X**, **Y**, **Size** | The placeholder: rectangle, circle or triangle, where and how big |
+| **Show** | **Always**: on for the whole phase. **Toggle**: the trigger shows it, the trigger again hides it. **For a time**: the trigger shows it for **Time** seconds (a new trigger starts the time again) |
+| **Trigger**, **Note** | What shows it: a MIDI note of the song, or Wearable 1-3 hit / button |
+| **Link 1-2: Movement, Moves, From, To** | (Level 2) A continuous movement (arm tilt, body position, activity...) moves the shape while it is on screen: its size, X, Y, rotation or brightness, from From to To across the movement's range |
+
+- Events fade in and out (0.3 s). A new phase starts with its events hidden; Always events fade in.
+- Song notes act when the playback crosses them (forward play), wearable hits and buttons act live.
+- Example in phase 1: *punch* (Toggle on wearable 1 hit; wearable 1 roll turns it), *stomp* (1.5 s on wearable 2 hit), *beat* (0.5 s on note 60).
+- The shapes are the **Phase Events** instrument (`visuals/events`, below), so the Composition tab places them like any instrument. Everything is stored in `phases/phases` (one row per phase and event). The rules are in `phases/phase_logic` (tested in `tests/test_phases.py`).
+
 ### lang: English / Español
 
 **Language / Idioma** on **lang** switches the labels, help texts and menus of the mapping page and the Pose page, and the texts on pose_monitor, between English and Spanish. The texts are in `lang/strings` (key, en, es): edit a cell to change a translation; a missing Spanish text falls back to English.
@@ -322,6 +345,8 @@ The output is made of **visual instruments**: Particles, Video Feedback and Shap
 Defaults: Video Feedback Normal (it fills the frame), Particles and Shapes Add. These are mapping and MIDI targets too (`video.opacity`, `particles.blend`, `shapes.order` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four by Order). After the compositor come the master **Level**, **Blackout** and **Flash**, then the output window as before.
 
 **Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default), Opacity, Blend (Add) and Order (3) only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
+
+**Phase Events** (`visuals/events`, Instrument page): draws the placeholder events of the current phase (see **phases**). It has only the compositor settings (On, Opacity, Blend, Order); the shapes come from the Phases tab. On by default; Order 5, Normal. `slot1` draws one event (the others are clones of it), reading its row of `phases/event_state`.
 
 **Trigger Shape** (`visuals/trigger`, Instrument page): one polygon for teaching triggers. Off by default; Order 4, Add.
 
