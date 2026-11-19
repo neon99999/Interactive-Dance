@@ -4876,7 +4876,7 @@ custom_pars:
   - name: Inpuinputscameradevice
     style: Menu
     label: Webcam
-    menuNames: []
+    menuSource: me.parent().op('inputs').par.Cameradevice
     help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
     value: ~me.parent().op('inputs').par.Cameradevice
   - name: Inpuinputswebcamstatus
@@ -4896,7 +4896,7 @@ custom_pars:
   - name: Inpuinputsserialport
     style: StrMenu
     label: Port
-    menuNames: []
+    menuSource: me.parent().op('inputs').par.Serialport
     help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
     value: ~me.parent().op('inputs').par.Serialport
   - name: Inpuinputsserialstatus

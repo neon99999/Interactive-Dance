@@ -158,10 +158,7 @@ class ControlExt:
 			par = page.appendToggle(name, label=source.label)[0]
 		elif style in ('Menu', 'StrMenu'):
 			par = (page.appendMenu if style == 'Menu' else page.appendStrMenu)(name, label=source.label)[0]
-			# A copy, not a menuSource: hundreds of menu sources made every Rebuild
-			# re-evaluate them all for each new parameter (8 s instead of 1).
-			# Language changes and the mapping page's Refresh rebuild the panel.
-			par.menuNames, par.menuLabels = source.menuNames, source.menuLabels
+			self._copyMenu(par, source, path)
 		elif style == 'Int':
 			par = page.appendInt(name, label=source.label)[0]
 		elif style == 'Float':
@@ -184,6 +181,26 @@ class ControlExt:
 				par.readOnly = True
 		return par
 
+	def _copyMenu(self, par: Par, source: Par, path: str) -> None:
+		"""Give a panel menu its source's entries.
+
+		Mostly a copy, not a menuSource: hundreds of menu sources made every
+		Rebuild re-evaluate them all for each new parameter (8 s instead of 1);
+		Language changes and the mapping page's Refresh rebuild the panel. A
+		live device list (serial ports, cameras: a menuSource that is not a
+		table) stays live, or the panel would keep the ports of the computer
+		that last saved the project.
+		"""
+		live = bool(source.menuSource) and 'TableMenu' not in source.menuSource
+		if live:
+			if par.menuSource != path:
+				par.menuSource = path
+			return
+		if par.menuSource:
+			par.menuSource = ''
+		if list(par.menuNames) != list(source.menuNames) or list(par.menuLabels) != list(source.menuLabels):
+			par.menuNames, par.menuLabels = source.menuNames, source.menuLabels
+
 	def _matchSource(self, par: Par, source: Par) -> None:
 		"""Update a kept control where it differs from its source (labels and menus follow the Language)."""
 		if par.label != source.label:
@@ -192,8 +209,8 @@ class ControlExt:
 			par.help = source.help
 		if par.enable != source.enable:
 			par.enable = source.enable
-		if par.isMenu and (list(par.menuNames) != list(source.menuNames) or list(par.menuLabels) != list(source.menuLabels)):
-			par.menuNames, par.menuLabels = source.menuNames, source.menuLabels
+		if par.isMenu:
+			self._copyMenu(par, source, par.bindExpr)
 		if source.style in ('Int', 'Float') and (par.normMin, par.normMax) != (source.normMin, source.normMax):
 			par.normMin, par.normMax = source.normMin, source.normMax
 
