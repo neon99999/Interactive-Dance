@@ -126,146 +126,54 @@ custom_pars:
     - Phase 8
     help: The phase shown below. Follow MIDI switches it when the song plays a phase note. Edits are saved into this phase at once.
     value: ~me.parent().op('phases').par.Phase
+  - name: Phasphasesphasenote
+    style: Int
+    label: Note for This Phase
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts the shown phase (-1 = none).
+    value: ~me.parent().op('phases').par.Phasenote
   - name: Phasphasesfollowmidi
     style: Toggle
     label: Follow MIDI
     default: true
     help: 'On: a phase note of the song switches the phase (before the first one: phase 1). Off: only the Phase menu switches it.'
     value: ~me.parent().op('phases').par.Followmidi
-  - name: Hphasphasenotes
-    style: Header
-    label: Phase notes
-  - name: Phasphasesphasenote1
-    style: Int
-    label: Note for Phase 1
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 1 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote1
-  - name: Phasphasesphasenote2
-    style: Int
-    label: Note for Phase 2
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 2 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote2
-  - name: Phasphasesphasenote3
-    style: Int
-    label: Note for Phase 3
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 3 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote3
-  - name: Phasphasesphasenote4
-    style: Int
-    label: Note for Phase 4
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 4 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote4
-  - name: Phasphasesphasenote5
-    style: Int
-    label: Note for Phase 5
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 5 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote5
-  - name: Phasphasesphasenote6
-    style: Int
-    label: Note for Phase 6
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 6 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote6
-  - name: Phasphasesphasenote7
-    style: Int
-    label: Note for Phase 7
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 7 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote7
-  - name: Phasphasesphasenote8
-    style: Int
-    label: Note for Phase 8
-    default: -1
-    min: -1.0
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    normMax: 127.0
-    help: The MIDI note of the song that starts phase 8 (-1 = none).
-    value: ~me.parent().op('phases').par.Phasenote8
   - name: Hphasphasecopy
     style: Header
-    label: Copy and clear
-  - name: Phasphasescopyto
-    style: Menu
-    label: Copy To
-    default: '2'
-    menuNames:
-    - '1'
-    - '2'
-    - '3'
-    - '4'
-    - '5'
-    - '6'
-    - '7'
-    - '8'
-    menuLabels:
-    - Phase 1
-    - Phase 2
-    - Phase 3
-    - Phase 4
-    - Phase 5
-    - Phase 6
-    - Phase 7
-    - Phase 8
-    help: The phase that Copy Phase writes into.
-    value: ~me.parent().op('phases').par.Copyto
-  - name: Phasphasescopy
-    style: Pulse
-    label: Copy Phase
-    help: Copy the shown phase into Copy To.
+    label: Clear
   - name: Phasphasesclear
     style: Pulse
     label: Clear Phase
     help: Empty every event of the shown phase.
+  - name: Hphasshowfile
+    style: Header
+    label: Save and load the show
+  - name: Phasphasesshowfile
+    style: File
+    label: Show File
+    default: shows/my_show.json
+    help: 'The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.'
+    value: ~me.parent().op('phases').par.Showfile
+  - name: Phasphasessaveshow
+    style: Pulse
+    label: Save Show
+    help: Write the phases, the music, the mapping presets and the instrument settings to the Show File.
+  - name: Phasphasesloadshow
+    style: Pulse
+    label: Load Show
+    help: Read the Show File and set everything in it.
+  - name: Phasphasesshowstatus
+    style: Str
+    label: Show Status
+    readOnly: true
+    help: What the last Save Show or Load Show did.
+    value: ~me.parent().op('phases').par.Showstatus
   - name: Hphasevent1
     style: Header
     label: Event 1
@@ -5055,7 +4963,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 375
+    rows: 370
     cols: 5
   position: [0, -200]
   size: [130, 90]
@@ -5077,7 +4985,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasescopy Phasphasesclear Instparticlesreset Instvideoreset Instnoisereset
+    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasesclear Phasphasessaveshow Phasphasesloadshow Instparticlesreset Instvideoreset Instnoisereset
     builtin: false
     file: project1/control/control_pulses.py
     syncfile: true

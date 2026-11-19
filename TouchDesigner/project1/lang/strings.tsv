@@ -598,8 +598,7 @@ mappings.Trig8amount.label	8 Amount	8 Cantidad
 mappings.Trig8amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
 control.page.phases	Phases	Fases
 control.section.phases	Phases (song)	Fases (canción)
-control.section.phasenotes	Phase notes	Notas de fase
-control.section.phasecopy	Copy and clear	Copiar y borrar
+control.section.phasecopy	Clear	Borrar
 control.section.events	Phase Events	Eventos de fase
 control.section.event1	Event 1	Evento 1
 control.section.event2	Event 2	Evento 2
@@ -633,11 +632,6 @@ phases.Phasenote7.label	Note for Phase 7	Nota para fase 7
 phases.Phasenote7.help	The MIDI note of the song that starts phase 7 (-1 = none).	La nota MIDI de la canción que empieza la fase 7 (-1 = ninguna).
 phases.Phasenote8.label	Note for Phase 8	Nota para fase 8
 phases.Phasenote8.help	The MIDI note of the song that starts phase 8 (-1 = none).	La nota MIDI de la canción que empieza la fase 8 (-1 = ninguna).
-phases.Copyto.label	Copy To	Copiar a
-phases.Copyto.menu	Phase 1|Phase 2|Phase 3|Phase 4|Phase 5|Phase 6|Phase 7|Phase 8	Fase 1|Fase 2|Fase 3|Fase 4|Fase 5|Fase 6|Fase 7|Fase 8
-phases.Copyto.help	The phase that Copy Phase writes into.	La fase en la que Copiar fase escribe.
-phases.Copy.label	Copy Phase	Copiar fase
-phases.Copy.help	Copy the shown phase into Copy To.	Copia la fase mostrada en Copiar a.
 phases.Clear.label	Clear Phase	Borrar fase
 phases.Clear.help	Empty every event of the shown phase.	Vacía todos los eventos de la fase mostrada.
 phases.Ev1on.label	1 On	1 Activo
@@ -997,3 +991,14 @@ target.events.visible	Phase Events: on	Eventos de fase: encendido
 target.events.opacity	Phase Events: opacity	Eventos de fase: opacidad
 target.events.blend	Phase Events: blend	Eventos de fase: mezcla
 target.events.order	Phase Events: order	Eventos de fase: orden
+control.section.showfile	Save and load the show	Guardar y abrir el show
+phases.Phasenote.label	Note for This Phase	Nota para esta fase
+phases.Phasenote.help	The MIDI note of the song that starts the shown phase (-1 = none).	La nota MIDI de la canción que empieza la fase mostrada (-1 = ninguna).
+phases.Showfile.label	Show File	Archivo del show
+phases.Showfile.help	The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.	El archivo del show: un nombre (shows/my_show.json, junto al proyecto) o cualquier archivo. Guardar show lo escribe, Abrir show lo lee.
+phases.Saveshow.label	Save Show	Guardar show
+phases.Saveshow.help	Write the phases, the music, the mapping presets and the instrument settings to the Show File.	Escribe las fases, la música, los presets de conexiones y los ajustes de los instrumentos en el archivo del show.
+phases.Loadshow.label	Load Show	Abrir show
+phases.Loadshow.help	Read the Show File and set everything in it.	Lee el archivo del show y aplica todo lo que contiene.
+phases.Showstatus.label	Show Status	Estado del show
+phases.Showstatus.help	What the last Save Show or Load Show did.	Qué hizo el último Guardar show o Abrir show.

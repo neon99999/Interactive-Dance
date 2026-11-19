@@ -7,11 +7,20 @@ the last phase note the song played), fires triggers (MIDI notes since the
 last frame, wearable hits and buttons) and writes the event_state table,
 which the Phase Events instrument (visuals/events) draws.
 
+Note for This Phase edits the shown phase's note (Phasenote1-8 keep them).
+Save Show / Load Show write and read one JSON file (Show File, relative to
+the folder of the .toe) with the phases, the music, the mapping presets and
+the instruments' settings, so a show moves to a new version of the toolkit.
+
 phase_logic holds the rules (unit-tested in plain Python); this extension
 is the TouchDesigner side.
 """
 
+import json
+import os
 from typing import Optional
+
+SHOW_VERSION = 1
 
 LINK_LEVEL_FIELDS = ('in', 'prop', 'from', 'to')
 STATE_COLUMNS = ('event', 'alpha', 'sides', 'colour', 'x', 'y', 'size', 'rotate', 'bright', 'name')
@@ -64,6 +73,9 @@ class PhasesExt:
 			for field in logic.EVENT_FIELDS:
 				self._eventPar(i, field).val = event[field]
 			self._fitEvent(i)
+		note = self.ownerComp.par['Phasenote%d' % phase]
+		if note is not None and self.ownerComp.par['Phasenote'] is not None:
+			self.ownerComp.par.Phasenote.val = int(note.eval())
 
 	def ClearPhase(self, phase: Optional[int] = None) -> None:
 		"""Empty every event of a phase."""
@@ -74,15 +86,45 @@ class PhasesExt:
 		if phase == self._phase():
 			self.LoadPhase(phase)
 
-	def CopyPhase(self, source: int, destination: int) -> None:
-		"""Copy every event of phase source into phase destination."""
-		phases = self._phases()
-		phases[destination] = [dict(e) for e in phases[source]]
-		self._writePhases(phases)
-		if destination == self._phase():
-			self.LoadPhase(destination)
+	def SaveShow(self, path: Optional[str] = None) -> str:
+		"""Write the whole show to a file (default: Show File). Returns the file path.
+
+		A show is everything a student sets that is not a visual they made: the
+		phases and their notes, the song and MIDI file, the mapping presets and
+		triggers, and every instrument's settings.
+		"""
+		path = self._showPath(path)
+		try:
+			os.makedirs(os.path.dirname(path), exist_ok=True)
+			with open(path, 'w', encoding='utf-8') as f:
+				json.dump(self._collectShow(), f, indent=1, ensure_ascii=False)
+		except OSError as e:
+			self._status('Not saved: %s' % e)
+			raise
+		self._status('Saved %s' % os.path.basename(path))
+		return path
+
+	def LoadShow(self, path: Optional[str] = None) -> str:
+		"""Read a show file (default: Show File) and set everything in it. Returns the file path."""
+		path = self._showPath(path)
+		try:
+			with open(path, encoding='utf-8') as f:
+				show = json.load(f)
+		except (OSError, ValueError) as e:
+			self._status('Not loaded: %s' % e)
+			raise
+		skipped = self._applyShow(show)
+		self._status('Loaded %s%s' % (os.path.basename(path), ' (%d settings skipped)' % skipped if skipped else ''))
+		return path
 
 	# ------------------------------------------------------------ wiring (called by the COMP's own DATs)
+
+	def onPhaseNoteChange(self) -> None:
+		"""Note for This Phase changed: keep it as the shown phase's note."""
+		comp = self.ownerComp
+		stored = comp.par['Phasenote%d' % self._phase()]
+		if int(stored.eval()) != int(comp.par.Phasenote.eval()):
+			stored.val = int(comp.par.Phasenote.eval())
 
 	def onEventChange(self, par, prev) -> None:
 		"""An event parameter changed: a link's new property gets its usual From / To; then save.
@@ -240,6 +282,90 @@ class PhasesExt:
 	def _transportSeconds(self) -> float:
 		transport = getattr(op, 'Transport', None)
 		return float(transport.time.seconds) if transport else 0.0
+
+	def _showPath(self, path: Optional[str]) -> str:
+		"""An absolute path: a relative one is taken from the folder of the .toe."""
+		par = self.ownerComp.par['Showfile']
+		path = path or (str(par.eval()) if par is not None else '') or 'shows/my_show.json'
+		if not path.lower().endswith('.json'):
+			path += '.json'
+		return os.path.normpath(path if os.path.isabs(path) else os.path.join(project.folder, path))
+
+	def _status(self, text: str) -> None:
+		par = self.ownerComp.par['Showstatus']
+		if par is not None:
+			par.val = text
+
+	def _collectShow(self) -> dict:
+		comp = self.ownerComp
+		show = {'version': SHOW_VERSION, 'phases': self._rows(),
+			'phase_notes': [int(comp.par['Phasenote%d' % i].eval()) for i in range(1, self._logic().NUM_PHASES + 1)],
+			'follow_midi': int(comp.par.Followmidi.eval())}
+		transport = getattr(op, 'Transport', None)
+		if transport is not None:
+			show['music'] = {name: str(transport.par[name].eval()) for name in ('Audiofile', 'Midifile')}
+		mappings = getattr(op, 'Mappings', None)
+		if mappings is not None:
+			show['mappings'] = {name: [[c.val for c in r] for r in mappings.op(name).rows()]
+				for name in ('presets', 'trigger_presets')}
+			show['mapping_pars'] = {p.name: self._plain(p) for p in mappings.customPars
+				if p.name in ('Preset', 'Followmidi') or p.name.startswith('Presetnote')}
+		visuals = getattr(op, 'Visuals', None)
+		show['instruments'] = {}
+		for inst in (visuals.children if visuals is not None else []):
+			page = next((pg for pg in inst.customPages if pg.name == 'Instrument'), None) if inst.isCOMP else None
+			if page is not None:
+				show['instruments'][inst.name] = {p.name: self._plain(p) for p in page.pars
+					if not p.isPulse and not p.isMomentary and p.style != 'Header' and p.mode == ParMode.CONSTANT}
+		return show
+
+	def _applyShow(self, show: dict) -> int:
+		"""Set everything in a show; returns how many settings did not fit this version."""
+		comp = self.ownerComp
+		logic = self._logic()
+		skipped = 0
+		if show.get('phases'):
+			self._writePhases(logic.readPhases(show['phases']))
+		for i, note in enumerate(show.get('phase_notes', [])[:logic.NUM_PHASES], start=1):
+			comp.par['Phasenote%d' % i] = int(note)
+		if 'follow_midi' in show:
+			comp.par.Followmidi = int(show['follow_midi'])
+		transport = getattr(op, 'Transport', None)
+		for name, value in show.get('music', {}).items():
+			skipped += not self._setPar(transport, name, value)
+		mappings = getattr(op, 'Mappings', None)
+		if mappings is not None:
+			for name, rows in show.get('mappings', {}).items():
+				table = mappings.op(name) if name in ('presets', 'trigger_presets') else None
+				if table is not None:
+					table.clear()
+					for row in rows:
+						table.appendRow(row)
+			for name, value in show.get('mapping_pars', {}).items():
+				skipped += not self._setPar(mappings, name, value)
+			mappings.LoadPreset()
+		visuals = getattr(op, 'Visuals', None)
+		for inst_name, values in show.get('instruments', {}).items():
+			inst = visuals.op(inst_name) if visuals is not None else None
+			for name, value in values.items():
+				skipped += not self._setPar(inst, name, value)
+		self.LoadPhase()
+		return skipped
+
+	def _setPar(self, owner, name: str, value) -> bool:
+		par = owner.par[name] if owner is not None else None
+		if par is None or par.mode != ParMode.CONSTANT:
+			return False
+		if par.isMenu and value not in par.menuNames:
+			return False
+		par.val = value
+		return True
+
+	def _plain(self, par: Par):
+		value = par.eval()
+		if par.isMenu or par.isString:
+			return str(value)
+		return float(value) if par.style == 'Float' else int(value)
 
 	def _text(self, key: str, default: str) -> str:
 		lang = getattr(op, 'Lang', None)

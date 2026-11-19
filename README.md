@@ -285,7 +285,9 @@ Each preset also holds **8 triggers** (Triggers page; on the control panel, Move
 
 The first way students build a piece: the music and its MIDI notes divide it into **phases**, and in each phase dancers call up **events**, simple named shapes that stand in for the visuals that come later. On the control panel: **Phases** tab.
 
-**Phases.** Up to 8. **Note for Phase 1-8** is the MIDI note of the song that starts each phase (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, and seeking moves it too. The **Phase** menu shows (and edits) one phase; when the song changes phase, the menu follows. **Copy Phase** and **Clear Phase** work like the mapping presets.
+**Phases.** Up to 8. The **Phase** menu shows (and edits) one phase; **Note for This Phase** is the MIDI note of the song that starts it (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, seeking moves it too, and the Phase menu follows. **Clear Phase** empties the shown phase.
+
+**Save Show / Load Show** (Phases tab) write and read one file, **Show File** (default `shows/my_show.json`, in the `TouchDesigner` folder next to the .toe; any other path works too). It holds the phases and their notes, the song and MIDI file, the mapping presets and triggers, and every instrument's settings. To move a show to a new version of the toolkit: Save Show, copy the `shows` folder into the new copy, open it and Load Show. **Show Status** says what happened. The Level only changes what the panel shows: nothing is lost when you switch levels.
 
 **Events.** Each phase has 8:
 

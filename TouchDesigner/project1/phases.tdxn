@@ -43,11 +43,46 @@ custom_pars:
     - Phase 7
     - Phase 8
     help: The phase shown below. Follow MIDI switches it when the song plays a phase note. Edits are saved into this phase at once.
+  - name: Phasenote
+    style: Int
+    label: Note for This Phase
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts the shown phase (-1 = none).
   - name: Followmidi
     style: Toggle
     label: Follow MIDI
     default: true
     help: 'On: a phase note of the song switches the phase (before the first one: phase 1). Off: only the Phase menu switches it.'
+  - name: Clear
+    style: Pulse
+    label: Clear Phase
+    startSection: true
+    help: Empty every event of the shown phase.
+  - name: Showfile
+    style: File
+    label: Show File
+    startSection: true
+    default: shows/my_show.json
+    help: 'The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.'
+  - name: Saveshow
+    style: Pulse
+    label: Save Show
+    help: Write the phases, the music, the mapping presets and the instrument settings to the Show File.
+  - name: Loadshow
+    style: Pulse
+    label: Load Show
+    help: Read the Show File and set everything in it.
+  - name: Showstatus
+    style: Str
+    label: Show Status
+    readOnly: true
+    help: What the last Save Show or Load Show did.
   - name: Phasenote1
     style: Int
     label: Note for Phase 1
@@ -137,38 +172,6 @@ custom_pars:
     normMin: -1.0
     normMax: 127.0
     help: The MIDI note of the song that starts phase 8 (-1 = none).
-  - name: Copyto
-    style: Menu
-    label: Copy To
-    startSection: true
-    default: '2'
-    menuNames:
-    - '1'
-    - '2'
-    - '3'
-    - '4'
-    - '5'
-    - '6'
-    - '7'
-    - '8'
-    menuLabels:
-    - Phase 1
-    - Phase 2
-    - Phase 3
-    - Phase 4
-    - Phase 5
-    - Phase 6
-    - Phase 7
-    - Phase 8
-    help: The phase that Copy Phase writes into.
-  - name: Copy
-    style: Pulse
-    label: Copy Phase
-    help: Copy the shown phase into Copy To.
-  - name: Clear
-    style: Pulse
-    label: Clear Phase
-    help: Empty every event of the shown phase.
   Events:
   - name: Ev1on
     style: Toggle

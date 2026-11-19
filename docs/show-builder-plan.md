@@ -2,7 +2,7 @@
 
 Written in ASD-STE100 Simplified Technical English.
 
-Status: stage 1 is built (2026-11-19). Stages 2 and 3 are not built.
+Status: stages 1 and 3 are built (2026-11-19). Stage 2 is not built.
 
 ## 1. Purpose
 
@@ -26,7 +26,7 @@ The music, the phases and the inputs stay the same when a student replaces a pla
 ## 3. How a student makes a piece (stage 1)
 
 1. Load the song and its MIDI file.
-2. Set the MIDI note that starts each phase.
+2. Select each phase, and set the MIDI note that starts it.
 3. In each phase, add the events. Give each event a name, for example "punch explode".
 4. For each event, select the shape, the colour, the position and the size.
 5. Select how the event shows, and select its trigger.
@@ -66,11 +66,11 @@ Settings for this example: Show = Toggle, Trigger = Wearable 1: hit, Link 1 = We
 | 3 | Level 2. Later: the tools to replace the placeholders. |
 | Advanced | All settings. |
 
-## 7. Stages that are not built
+## 7. The next stages
 
 **Stage 2: replace the placeholders.** For each event, the student selects a visual: the placeholder, an image or video, particles, noise, or a visual that the student makes. The trigger and the links stay the same.
 
-**Stage 3: save and load a show.** One file keeps the phases and the events of a show. The student can then move the show to a new version of the toolkit.
+**Stage 3: save and load a show.** This stage is built (2026-11-19). One file keeps the phases, the music, the mapping presets and the settings of the instruments. The student can move the show to a new version of the toolkit.
 
 ## 8. Where it is
 
