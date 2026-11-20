@@ -147,13 +147,13 @@ def Steps(check):
 	def panel_pages():
 		control = op.Control
 		names = [p.name for p in control.customPages if p.name != 'About']
-		check(s, 'panel: six tabs (plus Embody About)', names == ['Show', 'Phases', 'Instruments', 'Composition', 'Movement', 'Inputs'], ', '.join(names))
+		check(s, 'panel: Basic has five tabs, no Instruments (plus Embody About)', names == ['Show', 'Phases', 'Composition', 'Movement', 'Inputs'], ', '.join(names))
 		basic = len(control.customPars)
 		control.par.Mode = 'advanced'
 		control.Rebuild()
-		check(s, 'panel: Advanced shows more than Level 1', len(control.customPars) > basic, '%d -> %d' % (basic, len(control.customPars)))
-		control.par.Mode = 'level1'
-		control.Rebuild()
+		names = [p.name for p in control.customPages if p.name != 'About']
+		check(s, 'panel: Advanced has six tabs', names == ['Show', 'Phases', 'Instruments', 'Composition', 'Movement', 'Inputs'], ', '.join(names))
+		check(s, 'panel: Advanced shows more than Basic', len(control.customPars) > basic, '%d -> %d' % (basic, len(control.customPars)))
 
 	def panel_binds():
 		control = op.Control
@@ -171,11 +171,12 @@ def Steps(check):
 		control.par.Compnoisevisible = 0
 
 	panel_steps = [
-		panel('level1'), wait, base._do(panel_pages, 'panel pages'),
+		panel('basic'), wait, base._do(panel_pages, 'panel pages'),
 		base._do(panel_binds, 'panel binds'), wait,
 		setp('particles', 'Preset', 'calm'), wait, setp('particles', 'Energy', 0.9), wait,
 		base._do(lambda: op.Control.par.Instparticlesreset.pulse(), 'panel Reset pulse'), wait, wait,
 		pars_are('panel Reset reaches the instrument', 'particles', {'Energy': 0.15}),
+		panel('basic'), wait,
 	]
 
 	return midi + mapping + presets + panel_steps

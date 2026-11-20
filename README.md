@@ -36,26 +36,26 @@ The final image is `visuals/null_out`. It is also shown as the background of the
 Click **stage** in `project1`, press **P** and pulse **Open Stage Window** on its Stage page (or run `op.Stage.Open()`). The window fills the screen; put it on the laptop screen and the output window on the projector.
 
 - **Big view** (top left): the output. Click a tile to see that instrument or monitor big; click **Output** to go back.
-- **Tiles**: Output, the four instruments (Noise, Video Feedback, Shapes, Particles) and the three monitors (Body Tracking, Wearables, MIDI Notes). Each instrument tile has its **On** switch. A hidden instrument's tile stays dark, so it does not cost frame rate, until you click it.
+- **Tiles**: Output, four instruments (Noise, Camera, Shapes, Particles; Colour Tiles, Media and Trigger Shape have no tile) and the three monitors (Body Tracking, Wearables, MIDI Notes). Each instrument tile has its **On** switch. A hidden instrument's tile stays dark, so it does not cost frame rate, until you click it.
 - **Controls** (right): the control panel's five tabs, the same as below.
 - **Bottom bar**: Play, Reset, the time, three tests, Open / Close Output Window and English / Español.
 
-The tests change a few settings and put them back when you switch them off: **Test Track** plays `media/test` with the demo cues (a circle at 5 s, bigger at 10 s, gone at 15 s, a flash at 20 s), **Test Pattern** shows the Video Feedback instrument with its test pattern, and **Test Dancer** sets inputs **Use** to Test (a made-up dancer, no webcam needed).
+The tests change a few settings and put them back when you switch them off: **Test Track** plays `media/test` with the demo cues (a circle at 5 s, bigger at 10 s, gone at 15 s, a flash at 20 s), **Test Pattern** shows the Camera instrument with its test pattern, and **Test Dancer** sets inputs **Use** to Test (a made-up dancer, no webcam needed).
 
 ## The control panel (one panel for everything)
 
-Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()` for a floating window). It has six tabs:
+Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()` for a floating window). It has six tabs (Basic: five; Instruments is Advanced only):
 
 | Tab | What is on it |
 |---|---|
-| **Show** | Level (1, 2, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout) |
+| **Show** | Level (Basic, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout); Advanced adds the whole-picture effects (Trails, Blur, Glitch, Outline, Melt) |
 | **Phases** | The 10 phases of the piece, the note that starts each one, Save Show / Load Show (see **phases** below) |
-| **Instruments** | One section per instrument (Particles, Video Feedback, Noise): its On switch, Preset, Reset to Preset and sliders; Video Feedback also its source and Status |
-| **Composition** | Every instrument's On and Opacity: what is in the picture (the stacking order is fixed) |
-| **Movement** | The triggers (Level 1: Source, Moment, Does, Amount) and the 8 continuous mappings (Level 2: Source, Input, Instrument, Setting; Advanced adds From, To, Smoothing, Sensitivity) |
-| **Inputs** | Webcam (Use, Webcam, Status), Wearables (Read Serial, Port, Status, Use Wearable 1-3), Stage Zones; Advanced adds body-tracking details, test signals and OSC |
+| **Instruments** | Advanced only. One section per instrument (Particles, Camera, Noise, Colour Tiles, Media, Trigger Shape): Preset, Reset to Preset and sliders; Camera also its source and Status |
+| **Composition** | Every instrument's On (Basic) and Opacity (Advanced), and the Media folder: what is in the picture (the stacking order is fixed). Shapes is Advanced only |
+| **Movement** | The 4 connections of the phase, one section each: On, Source, Input, Instrument, Does, Note, Amount; Advanced adds From, To, Smoothing, Sensitivity |
+| **Inputs** | Basic: Webcam Use and Status, Wearables Read Serial and Status. Advanced adds the webcam and port choice, Use Wearable 1-3, Stage Zones, body-tracking details, test signals and OSC |
 
-**Level** reveals the tools step by step: **Level 1** shows what a dancer needs on day one (music, phases, instruments and triggers), **Level 2** adds the continuous mappings, **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, level: the first Level that shows the row, 0 = Advanced only): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Level or Language updates the panel, which takes a moment (a few seconds for Language).
+**Level**: **Basic** is for students and shows what they need (music, phases, which instruments are on, the connections, inputs on or off); **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, level: 1 = Basic, 0 = Advanced only; a colour row such as `Colour1` is one colour control): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. A tab with nothing on it at the current Level is left out.
 
 ## The four components
 
@@ -136,7 +136,7 @@ Every source adds signals to `inputs/signals`. Use their names in the input tabl
 | **Body Tracking** | MediaPipe | yes, measured from MediaPipe's picture | yes |
 | **Test (No Webcam)** | nothing | test pattern | test dancer |
 
-**Status** (read-only, also shown over the picture on pose_monitor) says what is happening and what to do: no webcam chosen; the webcam does not open (another app holds it); MediaPipe starting (up to about 20 s); MediaPipe sees no webcam or cannot find yours (it lists what it sees); working, dancer seen or not. If Pose shows nothing, read Status first. The greyed **Motion From** (Webcam page) and **Tracking** (Pose page) show what Use set. The Video Feedback instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
+**Status** (read-only, also shown over the picture on pose_monitor) says what is happening and what to do: no webcam chosen; the webcam does not open (another app holds it); MediaPipe starting (up to about 20 s); MediaPipe sees no webcam or cannot find yours (it lists what it sees); working, dancer seen or not. If Pose shows nothing, read Status first. The greyed **Motion From** (Webcam page) and **Tracking** (Pose page) show what Use set. The Camera instrument uses the same picture. MediaPipe's own overlay drawing is kept off, so the picture going to the visuals is clean; the tracked body is drawn on pose_monitor instead.
 
 Serial devices should print one line per reading, in either of these forms:
 
@@ -175,7 +175,7 @@ Body tracking uses the [MediaPipe TouchDesigner plugin](https://github.com/torin
 
 **Stage zones:** **Stage Zones** (1-5, default 3) splits the picture into equal zones from left to right. `pose_zone` is the zone the dancer is in (1 = left, 0 = nobody seen), and `pose_zone1` ... `pose_zone5` are 1 in their zone and 0 elsewhere, ready for a layer's `visible`. **Zone Margin** (0.05 = 5 % of the picture width) is how far past a border the dancer must go before the zone changes, so standing on a border does not flicker. The zones follow `pose_x`, so **Flip Left/Right** flips them too.
 
-**Body Mask** (default off) also asks MediaPipe for the dancer's outline, which the Video Feedback instrument's **Echo: Dancer** uses. Turn it on only when you use Echo: Dancer: measured on MINI-PC with a C920 and a moving dancer, it cut MediaPipe's body updates from about 14 to 9 a second, with gaps of up to 2 s (off: under 1 s).
+**Body Mask** (default off) also asks MediaPipe for the dancer's outline, which the Camera instrument's **Echo: Dancer** uses. Turn it on only when you use Echo: Dancer: measured on MINI-PC with a C920 and a moving dancer, it cut MediaPipe's body updates from about 14 to 9 a second, with gaps of up to 2 s (off: under 1 s).
 
 **Switching Use:** body tracking takes about 11-18 s to start every time (MediaPipe's browser starts and loads its model; Status says "starting"). When you leave Body Tracking, the browser is closed so it lets go of the webcam, and Movement Only opens it about 1.5 s later; going back, MediaPipe waits 2.5 s for the movement camera to let go. (Before this, Movement Only after Body Tracking failed with "Failed to start video" and TouchDesigner stuttered.)
 
@@ -244,51 +244,34 @@ A panel with one card per wearable, so dancers can see what each signal does bef
 - Each row is labelled with its signal name, and the card's header shows the prefix (`serial_w1_...`). Put them together for the input assignment table: the `act` row of wearable 1 is `serial_w1_act`. The hit row's value is the latest `hitdir` as a number and a name (`1 fwd`); the mode in the header is `serial_w1_mode` and LIVE is `serial_w1_live`.
 - It reads the same `serial_wN_...` signals as the assignment table, so switch on **inputs > Serial** as for imu_monitor.
 
-### mappings: the mapping page for dancers
+### mappings: connections (what students use)
 
-A friendlier front for the input table. **mappings** has 8 slots on its **Mappings 1-4** and **Mappings 5-8** pages. Each slot connects one movement to one visual:
-
-| Control | What it does |
-|---|---|
-| **On** | Use this slot |
-| **Movement** | A signal from the menu: body tracking, wearables 1-3 (activity, rotation, tilt, hit, still, button), simulated and camera signals |
-| **Visual** | A value from the menu, e.g. Layer 1: size or Whole image: flash |
-| **From** / **To** | The visual's value at no movement and at full movement. Choosing a Visual fills in its natural range (size 0.5-2, rotate 0-360, X -1 to 1, others 0-1); reverse them to invert |
-| **Smoothing** | Seconds; higher is calmer |
-| **Sensitivity** | 1 = the full movement reaches To; 2 = half the movement does |
-
-Dancers never type sensor ranges: each movement's range is built in (gyro ±500 degrees per second, pitch ±90, roll ±180, everything else 0-1).
-
-- **Preset** ("Mappings of Phase", Mappings page) is the phase whose mappings and triggers are shown; it follows the Phases tab. Every edit is saved into it at once. **Presets** page: **Copy Preset** (From/To) and **Clear Current Preset**.
-- Each mapping is chosen with four short menus: **Source** (Wearable 1-3, Body, Camera motion, Test) and **Input** (only that source's movements), **Instrument** and **Setting** (only that instrument's settings). They write the same signal and target as before.
-- The mapping rows go to the engine after the input table, so a mapping wins over both the input table and MIDI for its visual.
-- **Switching during the song:** the phase notes (Phases tab) switch the phase, and with it the mappings. A MIDI table row `note, mapping.preset, set, 2` selects phase 2's mappings only.
-- The Visual menu is built from the engine's list of values, so when visuals get new values they appear in the menu by themselves (with their raw name until a translation is added to `lang/strings`).
-- Starter mappings: phase **1** body (hands -> layer sizes, position -> layer 1 X, arms spread -> layer 1 opacity), **2** zones (zone 1-3 -> layers 1-3 visible, energy -> flash), **3** wearables (activity -> layer sizes, wearable 1 roll -> rotate, hit -> flash), **4** mixed. Change them freely.
-
-#### Triggers: events that make the Trigger Shape act
-
-Each phase also holds **8 triggers** (Triggers page; on the control panel, Movement tab, under the preset). A trigger is an event and what it does to the **Trigger Shape** instrument (below), so changing the preset changes what the same note does: the day-one teaching example.
+Each phase has **4 connections** (mappings page **Connections**; control panel, Movement tab). A connection is one list of four menus:
 
 | Control | What it does |
 |---|---|
-| **On** | Use this trigger |
-| **Source**, **Moment** | What starts it: **Song** (a MIDI note), **Wearable 1-3** (hit, button press, becomes still), **Body** (dancer appears, enters zone 1-5) or **Test** (test trigger). A trigger fires once, when its moment starts (a continuous signal fires when it rises past 0.5) |
-| **Note** | The note number, for MIDI note (midi_monitor shows the numbers as the song plays). Greyed out for wearable triggers |
-| **Does** | **Pulse**: swells the size and falls back (0.4 s). **Spin**: turns by Amount degrees. **More sides**: adds Amount sides (3-12, wrapping round). **Jump**: glides to a new place up to Amount away from its X / Y. **Flash colour**: goes towards Flash Colour and fades back (0.6 s) |
-| **Amount** | How much; picking a Does sets its usual amount and slider (Pulse 0.5, Spin 45, More sides 1, Jump 0.5, Flash 1) |
+| **On** | Use this connection. It comes on when the four menus are set |
+| **Source**, **Input** | Where the movement comes from (Wearable 1-3, Body, Camera motion, Song, Test) and which movement or moment. Input lists only that source's inputs |
+| **Instrument** | The instrument it acts on; **Whole picture** is the master (Brightness, Saturation, Flash and the effects) |
+| **Does** | Filtered by the Input. A **movement** (tilt, position, activity ...) offers **Controls: <setting>**: the movement sets the value all the time. A **moment** (hit, button, a song note, enters a zone ...) offers one-time actions: **Burst: <setting>** (jumps by Amount and falls back over 0.6 s) and the instrument's own actions (Trigger Shape: Pulse, Spin, More sides, Jump, Flash colour; Media: Play from the start, Next file, Random file; Colour Tiles: Shuffle the colours). Some inputs are both (still, dancer seen, in zone N): Does offers both |
+| **Note** | The note number when Input is a note of the song (greyed out otherwise) |
+| **Amount** | How much for a burst or a Trigger Shape action (greyed out for controls and counters) |
+| **From**, **To**, **Smoothing**, **Sensitivity** | Advanced, for controls: the setting's values at the two ends of the movement (a new setting fills in its natural range), seconds of smoothing, and 2 = half the movement reaches To |
 
-- Song notes follow the playback position like the MIDI table: pausing repeats nothing, seeking and Reset land on the right state, and each note uses the preset in use at its moment (so a spin from phase 1 stays when the song switches to phase 2). Wearable hits and buttons act live, also while paused.
-- Starter triggers, made to show on **Test Track** (notes 60, 62, 64, 65 at 5, 10, 15, 20 s): phase **1** pulse, spin, more sides, flash; **2** spin 90, jump, big pulse, more sides; **3** wearable 1 hit pulse, wearable 1 button more sides, note 60 flash, note 62 jump; **4** jump, flash, spin back, wearable 1 hit spin. Copy Preset and Clear Current Preset include the triggers.
-- The triggers are stored in `mappings/trigger_presets` (preset, slot, on, when, note, does, amount).
+How it is stored: connection N is written into mapping slot N (Controls) or trigger N (a moment), so presets, phases and show files keep their format. Only slots 1-4 are used; slots 5-8 stay in the tables, unused. The mapping slots go to the engine after the input table, so a connection wins over both the input table and MIDI for its setting. The triggers are in `mappings/trigger_presets` (preset, slot, on, when, note, does, amount); does is a Trigger Shape action, `burst:<instrument>.<setting>` or `count:<instrument>.<counter>` (the engine adds 1 to the counter; Media and Colour Tiles watch theirs on `engine/live`). Logic and menus: `mappings/mapping_logic` (tested in `tests/test_mapping_logic.py`, `tests/test_triggers.py`).
+
+- Song notes follow the playback position like the MIDI table: pausing repeats nothing, seeking and Reset land on the right state, and each note uses the phase in use at its moment. Wearable and body moments act live, also while paused. A continuous signal counts as a moment when it rises past 0.5.
+- The Instrument and Does menus are built from the engine's list of targets, so new instrument settings appear by themselves (with their raw name until a translation is added to `lang/strings`).
+- **Switching during the song:** the phase notes (Phases tab) switch the phase, and with it the connections. A MIDI table row `note, mapping.preset, set, 2` selects phase 2's connections only.
+- The older pages (**Mappings 1-4**, **Mappings 5-8**, **Triggers**) still show the raw slots, for checking.
 
 ### phases: the piece in 10 phases, each with its own settings
 
 The first way students build a piece: the music and its MIDI notes divide it into **phases**, and each phase keeps its own look: every instrument's settings, the triggers and the mappings. On the control panel: **Phases** tab. Student guides: `docs/student-guide-phases-en.md`, `docs/guia-estudiantes-fases-es.md`.
 
-**Phases.** 10. The **Phase** menu selects one; **Note for This Phase** is the MIDI note of the song that starts it (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, seeking moves it too, and the Phase menu follows. The number keys **1-9** select phases 1-9 and **0** selects phase 10 (click the Stage picture first; keys with Ctrl/Alt are ignored).
+**Phases.** 10. The **Phase** menu selects one; **Note for This Phase** is the MIDI note of the song that starts it (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, seeking moves it too, and the Phase menu follows. The number keys **1-9** select phases 1-9 and **0** selects phase 10, anywhere in TouchDesigner, the control panel too. A number key acts only when no other key comes 0.4 s before or after it, so typing a value (Note 60) does not switch the phase; keys with Ctrl/Alt/Shift are ignored.
 
-**Snapshots.** While a phase is shown, every change to an instrument's Instrument, Source or Layer page is kept in that phase (checked every 10 frames). Selecting another phase first keeps the current one, then applies the new phase's values; a phase that was never shown starts as a copy of the one before. The mappings and triggers of phase N are mapping preset N, so they switch with it. Stored in `phases/phase_settings` (phase, comp, par, value); rules in `phases/phase_logic` (tested in `tests/test_phases.py`). Old shows with presets A-D load as phases 1-4.
+**Snapshots.** While a phase is shown, every change to an instrument's Instrument, Source or Layer page is kept in that phase (checked every 10 frames). Selecting another phase first keeps the current one, then applies the new phase's values; a phase that was never shown starts as a copy of the one before. The connections of phase N are mapping preset N, so they switch with it. Stored in `phases/phase_settings` (phase, comp, par, value); rules in `phases/phase_logic` (tested in `tests/test_phases.py`). Old shows with presets A-D load as phases 1-4.
 
 **Save Show / Load Show** (Phases tab) write and read one file, **Show File** (default `shows/my_show.json`, in the `TouchDesigner` folder next to the .toe; any other path works too). It holds the phases, their notes and settings, the song and MIDI file, the mappings and triggers, and every instrument's settings. **Autosave:** 3 s after a change the show is also written to `shows/autosave.json`; on open it is loaded when it is newer than the .toe. To move a show to a new version of the toolkit: Save Show, copy the `shows` folder into the new copy, open it and Load Show. **Show Status** says what happened.
 
@@ -314,7 +297,7 @@ Assignments change these values while the show runs. Layer 4 is on top. The four
 
 #### Instruments
 
-The output is made of **visual instruments**: Particles, Video Feedback and Shapes (the four layers). The rule, in one sentence: *any component inside visuals with a custom page named **Instrument** is an instrument.* Then, with nothing else to wire:
+The output is made of **visual instruments**: Particles, Camera, Noise, Colour Tiles, Media, Trigger Shape and Shapes (the four layers). The rule, in one sentence: *any component inside visuals with a custom page named **Instrument** is an instrument.* Then, with nothing else to wire:
 
 - each number, toggle or menu on its Instrument page (except **Preset**) is a target named `<instrument>.<parameter>`, e.g. `particles.energy`, usable in the MIDI table, the input table and the mapping page's Visual menu;
 - a new slot's **From** / **To** come from that parameter's slider range;
@@ -329,7 +312,19 @@ The output is made of **visual instruments**: Particles, Video Feedback and Shap
 | **On** | In the output or not. An instrument that is off does not run at all, so it costs no frame time |
 | **Opacity** | 0 invisible, 1 full |
 
-The order is fixed, back to front: Video Feedback, Noise, Particles, Shapes, Trigger Shape. Each is laid **over** the ones below with its own alpha (Particles and Noise make their dark parts transparent), so the layers below show through. On and Opacity are mapping and MIDI targets too (`video.opacity` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four). After the compositor come the master **Level**, **Saturation** (0 grey, 1 normal, 2 strong; target `master.saturation`), **Blackout** and **Flash**, then the output window as before.
+The order is fixed, back to front: Media, Camera, Noise, Colour Tiles, Particles, Shapes, Trigger Shape. Each is laid **over** the ones below with its own alpha (Particles and Noise make their dark parts transparent), so the layers below show through. On and Opacity are mapping and MIDI targets too (`video.opacity` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four). After the compositor come the whole-picture effects (`visuals/master_fx`), then the master **Level**, **Saturation** (0 grey, 1 normal, 2 strong; target `master.saturation`), **Blackout** and **Flash**, then the output window as before.
+
+**Whole-picture effects** (visuals Master page; control panel, Show tab, Advanced). Each is off at 0 and costs nothing then (a Switch TOP skips it). Targets `master.<name>`, so a connection can control one with a movement or burst it with a moment.
+
+| Setting | What it does |
+|---|---|
+| **Trails** | The old Video Feedback on the whole picture: 0 off, 1 very long trails |
+| **Trails Zoom** / **Warp** / **Colour** | The trails grow outward (below 0: inward), ripple and turn, shift through the colours |
+| **Blur** | 0 sharp, 1 very soft |
+| **Glitch** | Bands slide sideways and the colours split (GLSL) |
+| **Outline** | Mixes towards the edges only |
+| **Melt** | The picture slides down, dark parts first, and slowly refreshes |
+
 
 **Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default) and Opacity only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
 
@@ -363,27 +358,28 @@ The triggers (mapping page, above) act on these settings on top of everything el
 
 Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset.
 
-**Video Feedback** (`visuals/video`): the camera image (or a video file) with echoes that trail, drift, bend and change colour. Off by default.
+**Camera** (`visuals/video`; was Video Feedback): the webcam picture, with an optional echo of the dancer or of what moves. Off by default. Whole-picture trails are now the **Trails** effect (above).
 
 | Setting | What it does |
 |---|---|
-| **On** | Show the video feedback |
-| **Preset** | Clean, Echo (default) or Abstract: sets the five settings below |
-| **Reset to Preset** | Put the five settings back to the chosen preset |
-| **Echo** | What leaves the trails: **Dancer** (only the dancer repeats, on a dark background), **Movement** (only what moves repeats), **Whole Picture** (classic video feedback: the whole image fed back into itself), **Auto** (default: Dancer when available, otherwise Movement). Not set by presets |
-| **Feedback** | How long the echoes last: 0 none, 1 very long |
-| **Zoom** | Above 0 the echoes grow outward, below 0 they shrink inward |
-| **Distortion** | 0 straight, 1 slow, melting bends |
-| **Colour** | 0 natural colour, 1 each echo shifts further through the rainbow |
-| **Mix** | 0 the plain video, 1 only the echoes |
+| **Echo** | **Off** (the plain picture), **Auto** (default: Dancer when available, otherwise Movement), **Dancer** (only the dancer repeats), **Movement** (only what moves repeats) |
+| **Preset**, **Feedback**, **Zoom**, **Distortion**, **Colour** | The echo's look and length, as before |
 
-**Source** page: **Source** Webcam / Video File / Test Pattern, **Video File** + **Load**, and a read-only **Status**.
+**Source** page: **Source** Webcam / Test Pattern and a read-only **Status**. Webcam never opens a camera itself: with **inputs > Webcam > Use** on Body Tracking it uses MediaPipe's image, on Movement Only the camera_in picture. **Dancer** needs **Body Mask** (Pose page) on. Targets `video.<setting>`.
 
-- **Webcam** never opens a camera itself, so it cannot fight body tracking for the C920: with **inputs > Webcam > Use** on Body Tracking it uses MediaPipe's (clean) image, on Movement Only the camera_in picture. With Use Off or Test it shows the test pattern and Status says what to turn on.
-- **Video File** loads only when you press **Load**, and only if the file exists (Status shows `File not found` otherwise), so a missing file never stops the project opening. Paths can be relative to the TouchDesigner folder, e.g. `../media/clip.mp4`.
-- **Dancer** uses MediaPipe's body mask, so it needs **inputs > Webcam > Use: Body Tracking** with **Body Mask** (Pose page) on (default off, because it slows body tracking), and **Source: Webcam** (the mask only fits MediaPipe's own picture). Otherwise Auto falls back to Movement; Status says which echo is in use.
-- Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
-- Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
+**Colour Tiles** (`visuals/tiles`, from the ProjectionRig `scenes/scene_tiles.tox`): scrolling strips of colour tiles with shaped edges. Colour 1-5 are kept per phase (no palette menu). Movements control Scroll Speed, Edge Size and the other sliders (`tiles.scrollspeed` ...); the moment **Shuffle the colours** re-deals the colours (counter `tiles.shufflecount`).
+
+**Media** (`visuals/media`): the pictures and videos of one folder (sub-folders too) or one file.
+
+| Setting | What it does |
+|---|---|
+| **Folder** | A folder or one file. Relative paths start at the TouchDesigner folder |
+| **File** | The file shown now (the list comes from Folder; **Refresh** reads it again) |
+| **Playback** | **Play** (videos play and loop) or **Position** (Position sets the place in the video: a movement can scrub it) |
+| **Fade (s)** | Crossfade when the file changes; 0 = cut |
+| **Fit** | Outside, Inside or Fill |
+
+Moments: **Play from the start**, **Next file**, **Random file** (counters `media.restartcount`, `media.nextcount`, `media.randomcount`). No speed or zoom on purpose.
 
 **Noise** (`visuals/noise`): moving noise patterns only (no camera): clouds, marble, lava, folded and smeared by feedback. Off by default; under Particles, its dark parts transparent.
 

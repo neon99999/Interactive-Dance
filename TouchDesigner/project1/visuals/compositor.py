@@ -3,7 +3,7 @@
 Each instrument's Instrument page has On (Visible) and Opacity. The values
 come from engine/live (<name>_visible, <name>_opacity), so MIDI and mappings
 drive them like any other target. The stacking order is fixed (LAYER_ORDER:
-video at the back, then noise, particles, shapes, the trigger shape on top)
+media and camera at the back, then noise, tiles, particles, shapes, the trigger shape on top)
 and every layer is laid over the ones below with its own alpha, so an
 instrument with a transparent background shows the layers under it. A hidden instrument (or one at opacity 0) is in no slot, so
 nothing demands its image and it does not cook. SLOTS instruments show at
@@ -15,7 +15,7 @@ over comp_slot1, and so on; switch_compose takes the last filled slot.
 
 SLOTS = 4
 # Back to front. An instrument not listed goes on top, in name order.
-LAYER_ORDER = ('video', 'noise', 'particles', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4', 'trigger')
+LAYER_ORDER = ('media', 'video', 'noise', 'tiles', 'particles', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4', 'trigger')
 _cache = {'frame': None, 'layers': []}
 
 

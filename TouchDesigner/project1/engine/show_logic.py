@@ -17,7 +17,9 @@ TRIGGER_DEFAULT_S = 0.2
 
 LAYER_DEFAULTS = {'visible': 0.0, 'opacity': 1.0, 'red': 1.0, 'green': 1.0, 'blue': 1.0,
 				  'scale': 1.0, 'x': 0.0, 'y': 0.0, 'rotate': 0.0, 'content': 0.0, 'effect': 0.0}
-MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0, 'saturation': 1.0}
+MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0, 'saturation': 1.0,
+				   'trails': 0.0, 'trailszoom': 0.0, 'trailswarp': 0.0, 'trailscolour': 0.0,
+				   'blur': 0.0, 'glitch': 0.0, 'outline': 0.0, 'melt': 0.0}
 # Show controls that are not visuals. mapping.preset: a MIDI 'set' to 1-4
 # switches the mapping page to preset A-D at that moment of the song (0 = no
 # switch yet). Like every value it is replayed from the timeline, so seeking
@@ -373,13 +375,24 @@ SPIN_S = 0.3
 JUMP_S = 0.15
 FLASH_S = 0.6
 SIDES_RANGE = (3, 12)
+# Any instrument: 'burst:<instrument>.<setting>' jumps the setting by amount and
+# lets it fall back over BURST_S; 'count:<instrument>.<name>' adds 1 to a counter
+# value the instrument watches (Media: next file ...). Only connection slots
+# 1-NUM_CONNECTIONS act; slots 5-8 stay in the table, unused.
+BURST_S = 0.6
+NUM_CONNECTIONS = 4
+COUNT_TARGETS = ('media.restartcount', 'media.nextcount', 'media.randomcount', 'tiles.shufflecount')
+
+
+def _isAction(action):
+	return action in TRIGGER_ACTIONS or (action.startswith(('burst:', 'count:')) and '.' in action)
 # Mapping presets are the phases: '1' ... '10'. Letters A-D from older shows read as 1-4.
 PRESET_LETTERS = tuple(str(i) for i in range(1, 11))
 _OLD_LETTERS = {'A': '1', 'B': '2', 'C': '3', 'D': '4'}
 
 
 def emptyEffects():
-	return {'pulse': 0.0, 'spin': 0.0, 'steps': 0, 'jumpx': 0.0, 'jumpy': 0.0, 'flash': 0.0}
+	return {'pulse': 0.0, 'spin': 0.0, 'steps': 0, 'jumpx': 0.0, 'jumpy': 0.0, 'flash': 0.0, 'bursts': {}, 'counts': {}}
 
 
 def _unit(seed, k):
@@ -412,9 +425,10 @@ def parseTriggers(rows):
 			slot = int(float(cell('slot') or 0))
 		except ValueError:
 			continue
-		preset, when, action = cell('preset').upper(), cell('when'), cell('does').lower()
+		preset, when, action = cell('preset').upper(), cell('when'), cell('does')
+		action = action if action.startswith(('burst:', 'count:')) else action.lower()
 		preset = _OLD_LETTERS.get(preset, preset)
-		if not on or preset not in found or action not in TRIGGER_ACTIONS or not when:
+		if not on or preset not in found or not _isAction(action) or not when or not 1 <= slot <= NUM_CONNECTIONS:
 			continue
 		if when == 'midi' and not 0 <= note <= 127:
 			continue
@@ -462,6 +476,8 @@ def triggerEffects(events, t, start=None):
 	start: effects already folded in (live triggers), its jump position included.
 	"""
 	fx = dict(start) if start else emptyEffects()
+	fx['bursts'] = {}
+	fx['counts'] = dict(fx.get('counts', {}))
 	jump_from = jump_to = (fx['jumpx'], fx['jumpy'])
 	jump_age = None
 	for te, action, amount, seed in events:
@@ -480,6 +496,13 @@ def triggerEffects(events, t, start=None):
 		elif action == 'flash':
 			if age < FLASH_S:
 				fx['flash'] = max(fx['flash'], amount * (1.0 - age / FLASH_S))
+		elif action.startswith('burst:'):
+			if age < BURST_S:
+				target = action[len('burst:'):]
+				fx['bursts'][target] = fx['bursts'].get(target, 0.0) + amount * (1.0 - age / BURST_S) ** 2
+		elif action.startswith('count:'):
+			target = action[len('count:'):]
+			fx['counts'][target] = fx['counts'].get(target, 0) + 1
 	if jump_age is not None:
 		f = _ease(jump_age / JUMP_S)
 		fx['jumpx'] = jump_from[0] + (jump_to[0] - jump_from[0]) * f
@@ -489,12 +512,20 @@ def triggerEffects(events, t, start=None):
 
 def addEffects(a, b):
 	"""Song and live effects together: pulses, spins, steps and jumps add up; the stronger flash wins."""
+	merged = lambda x, y: {k: x.get(k, 0) + y.get(k, 0) for k in set(x) | set(y)}
 	return {'pulse': a['pulse'] + b['pulse'], 'spin': a['spin'] + b['spin'], 'steps': a['steps'] + b['steps'],
-		'jumpx': a['jumpx'] + b['jumpx'], 'jumpy': a['jumpy'] + b['jumpy'], 'flash': max(a['flash'], b['flash'])}
+		'jumpx': a['jumpx'] + b['jumpx'], 'jumpy': a['jumpy'] + b['jumpy'], 'flash': max(a['flash'], b['flash']),
+		'bursts': merged(a.get('bursts', {}), b.get('bursts', {})), 'counts': merged(a.get('counts', {}), b.get('counts', {}))}
 
 
 def applyTriggerEffects(state, fx, name=TRIGGER_INSTRUMENT):
 	"""Put the effects on the Trigger Shape's values in state (nothing happens without the instrument)."""
+	for target, value in fx.get('bursts', {}).items():
+		if target in state:
+			state[target] += value
+	for target in COUNT_TARGETS:
+		if any(k.startswith(target.split('.')[0] + '.') for k in state):
+			state[target] = float(fx.get('counts', {}).get(target, 0))
 	key = lambda p: '%s.%s' % (name, p)
 	if key('size') not in state:
 		return state
@@ -550,6 +581,9 @@ class LiveTriggers:
 				self._start['steps'] += int(round(amount))
 			elif action == 'jump':
 				self._start['jumpx'], self._start['jumpy'] = jumpTarget(seed, amount)
+			elif action.startswith('count:'):
+				target = action[len('count:'):]
+				self._start['counts'][target] = self._start['counts'].get(target, 0) + 1
 
 	def effects(self, now):
 		return triggerEffects(self._events, now, self._start)

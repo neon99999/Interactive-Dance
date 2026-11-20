@@ -147,5 +147,66 @@ class Live(unittest.TestCase):
 		self.assertEqual(live.effects(0.0)['pulse'], 0.0)
 
 
+class AnyInstrument(unittest.TestCase):
+	"""Moments act on any instrument: bursts of a setting and counters."""
+
+	def test_burst_jumps_and_falls_back(self):
+		events = [(1.0, 'burst:master.glitch', 0.8, 0)]
+		self.assertAlmostEqual(sl.triggerEffects(events, 1.0)['bursts']['master.glitch'], 0.8)
+		self.assertNotIn('master.glitch', sl.triggerEffects(events, 1.0 + sl.BURST_S)['bursts'])
+		state = sl.applyTriggerEffects({'master.glitch': 0.1}, sl.triggerEffects(events, 1.0))
+		self.assertAlmostEqual(state['master.glitch'], 0.9)
+
+	def test_counts_add_up_and_survive_folding(self):
+		live = sl.LiveTriggers()
+		rows = [('serial_w1_hit', 'count:media.nextcount', 1.0, 1)]
+		for t, v in ((0.0, 1), (0.1, 0), (0.2, 1), (0.3, 0)):
+			live.update(rows, {'serial_w1_hit': v}, t)
+		live.update(rows, {'serial_w1_hit': 0}, 30.0)
+		state = sl.applyTriggerEffects({'media.position': 0.0}, live.effects(30.0))
+		self.assertEqual(state['media.nextcount'], 2.0)
+
+	def test_parse_accepts_any_instrument_and_only_slots_1_to_4(self):
+		rows = [COLUMNS,
+			['1', '1', '1', 'sim_trigger', '60', 'burst:master.blur', '0.5'],
+			['1', '2', '1', 'serial_w1_hit', '0', 'count:tiles.shufflecount', '1'],
+			['1', '3', '1', 'midi', '60', 'burst:nodot', '1'],     # no instrument
+			['1', '5', '1', 'midi', '60', 'pulse', '1']]           # slot 5 is not used
+		self.assertEqual(sl.parseTriggers(rows)['1'], [('sim_trigger', 60, 'burst:master.blur', 0.5, 1),
+			('serial_w1_hit', 0, 'count:tiles.shufflecount', 1.0, 2)])
+
+
+class Connections(unittest.TestCase):
+	"""One list: the Input decides what Does offers."""
+
+	def test_input_kinds(self):
+		self.assertEqual(ml.inputKinds('hit'), ('moment',))
+		self.assertEqual(ml.inputKinds('roll'), ('continuous',))
+		self.assertEqual(ml.inputKinds('pose_zone1'), ('moment', 'continuous'))
+		self.assertIn('hit', ml.connectionInputs('wearable1'))
+		self.assertEqual(ml.connectionInputs('song'), ['midi'])
+
+	def test_does_follows_the_input(self):
+		settings = ['visible', 'opacity', 'position', 'fade']
+		moment = ml.doesOptions('media', ('moment',), settings)
+		self.assertEqual(moment[:3], ['count:restartcount', 'count:nextcount', 'count:randomcount'])
+		self.assertIn('burst:opacity', moment)
+		self.assertNotIn('burst:visible', moment)
+		self.assertFalse([d for d in moment if d.startswith('set:')])
+		self.assertEqual(ml.doesOptions('media', ('continuous',), settings),
+			['set:visible', 'set:opacity', 'set:position', 'set:fade'])
+
+	def test_trigger_action_round_trip(self):
+		for instrument, does in (('trigger', 'spin'), ('media', 'count:nextcount'), ('master', 'burst:glitch')):
+			action = ml.triggerAction(instrument, does)
+			self.assertEqual(ml.connectionAction(action), (instrument, does))
+		self.assertEqual(ml.triggerAction('master', 'burst:glitch'), 'burst:master.glitch')
+
+	def test_amounts(self):
+		self.assertEqual(ml.connectionAmount('master', 'burst:glitch'), (0.5, -1.0, 1.0))
+		self.assertEqual(ml.connectionAmount('trigger', 'spin'), ml.triggerAmount('spin'))
+		self.assertIsNone(ml.connectionAmount('media', 'count:nextcount'))
+
+
 if __name__ == '__main__':
 	unittest.main()

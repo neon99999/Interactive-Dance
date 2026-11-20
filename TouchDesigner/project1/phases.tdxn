@@ -242,8 +242,6 @@ operators:
 - name: phase_keys
   type: keyboardinDAT
   parameters:
-    keys: 0 1 2 3 4 5 6 7 8 9
-    panels: ../stage/bar ../stage/view ../stage/clock ../stage/btn_play ../stage/btn_reset ../stage/tile_midi ../stage/tile_pose ../stage/tile_noise ../stage/tile_video ../stage/tile_output ../stage/tile_shapes ../stage/btn_language ../stage/btn_testtrack ../stage/tile_wearable ../stage/btn_openoutput ../stage/btn_testdancer ../stage/tile_particles ../stage/btn_closeoutput ../stage/btn_testpattern
     callbacks: phase_keys_callbacks
     fromop: =parent()
   position: [400, -400]
@@ -272,7 +270,7 @@ operators:
   parameters:
     file: project1/phases/phase_settings.tsv
     syncfile: true
-    rows: 211
+    rows: 248
   position: [0, -400]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]

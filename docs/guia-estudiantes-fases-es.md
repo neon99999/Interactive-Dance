@@ -7,11 +7,11 @@ Escrita en lenguaje simple. Versión en inglés: `student-guide-phases-en.md`.
 Haces tu pieza por pasos:
 
 1. Tu canción tiene partes. Cada parte se llama **fase**. Una pieza tiene un máximo de 10 fases.
-2. En cada fase eliges los instrumentos (Partículas, Ruido, Video eco, Formas, Figura con disparadores) y sus ajustes.
-3. Conectas tus movimientos a los instrumentos:
-   - Un **disparador** es un momento: un golpe, presionar el botón, una nota de la canción, entrar en una zona. Cada vez que pasa, la figura hace algo una vez.
-   - Una **conexión** es continua: mientras te mueves, un número cambia, y cambia un ajuste todo el tiempo (por ejemplo, subes el brazo y las partículas crecen).
-4. Cada fase guarda sus propios ajustes de instrumentos, disparadores y conexiones. Cuando cambia la fase, todo cambia con ella.
+2. En cada fase eliges los instrumentos que se ven (Medios, Cámara, Ruido, Franjas de color, Partículas, Figura con disparadores).
+3. En cada fase haces 4 **conexiones**. Una conexión une un movimiento del bailarín con un instrumento.
+   - Un **movimiento** (subir el brazo, cruzar el escenario) controla un ajuste todo el tiempo.
+   - Un **momento** (un golpe, presionar el botón, una nota de la canción, entrar en una zona) hace algo una vez.
+4. Cada fase guarda sus propios instrumentos y conexiones. Cuando cambia la fase, todo cambia con ella.
 
 No necesitas escribir código. Solo cambias ajustes en el panel de control.
 
@@ -19,13 +19,13 @@ No necesitas escribir código. Solo cambias ajustes en el panel de control.
 
 1. Abre el proyecto. Se abre la ventana **Stage**.
 2. El panel de control está a la derecha de la ventana Stage. Si no lo ves, presiona la tecla **P**.
-3. Arriba del panel hay pestañas: **Función**, **Fases**, **Instrumentos**, **Composición**, **Movimiento**, **Entradas**.
+3. Arriba del panel hay pestañas: **Función**, **Fases**, **Composición**, **Movimiento**, **Entradas**.
 4. Para cambiar el idioma, haz clic en **English / Español**, abajo a la derecha.
-5. Haz clic en **Función**. Pon **Nivel** en **Nivel 1**.
+5. Haz clic en **Función**. Revisa que **Nivel** esté en **Básico**.
 
 Consejo: pon el ratón sobre el nombre de un ajuste y espera. Aparece un texto de ayuda.
 
-## 3. Nivel 1: fases, instrumentos y disparadores
+## 3. Fases
 
 ### 3.1 Divide tu canción en fases
 
@@ -45,113 +45,99 @@ Para encontrar los números de las notas, reproduce la canción y mira la ventan
 
 ### 3.2 Cambia de fase con las teclas de números
 
-1. Haz clic en la imagen de la ventana Stage (no en el panel de control).
-2. Presiona una tecla de número: **1** a **9** eligen las fases 1 a 9. **0** elige la fase 10.
+Presiona una tecla de número: **1** a **9** eligen las fases 1 a 9. **0** elige la fase 10.
 
-Las teclas de números no funcionan mientras escribes en el panel de control. Primero haz clic en la imagen.
+La fase cambia después de un momento corto (menos de medio segundo). Cuando escribes un número en un ajuste (por ejemplo una nota), la fase no cambia.
 
-### 3.3 Haz el aspecto de cada fase
-
-Ejemplo: el inicio tranquilo tiene partículas lentas y azules. El medio rápido tiene partículas rápidas y ruido.
+### 3.3 Elige los instrumentos de cada fase
 
 1. Pon **Fase** en **Fase 1**.
-2. Haz clic en **Composición**. En **Partículas**, pon **Encendido** en **On**. Pon **Encendido** de los otros instrumentos en **Off**.
-3. Haz clic en **Instrumentos**. En **Partículas**, pon **Preset** en **Calma**. Cambia **Color** si quieres.
-4. Pon **Fase** en **Fase 2** (o presiona **2**). La fase 2 empieza como una copia de la fase 1.
-5. Haz clic en **Composición**. En **Ruido**, pon **Encendido** en **On**.
-6. Haz clic en **Instrumentos**. En **Partículas**, pon **Preset** en **Enérgico**.
-7. Presiona **1**, luego **2**. El aspecto cambia cada vez.
+2. Haz clic en **Composición**. Pon **Encendido** en cada instrumento que quieres. Apaga los otros instrumentos.
+3. Para **Medios**, escribe o elige una **Carpeta** con fotos y videos.
+4. Pon **Fase** en **Fase 2** (o presiona **2**). La fase 2 empieza como copia de la fase 1. Cámbiala.
+5. Presiona **1** y luego **2**. El aspecto cambia cada vez.
 
 No necesitas guardar cada fase. Cada cambio se guarda en la fase que ves.
 
-Las capas siempre están en el mismo orden: Video eco al fondo, luego Ruido, luego Partículas, luego Formas, y la Figura con disparadores al frente. Las partes oscuras de una capa dejan ver las capas de abajo.
+Los instrumentos siempre están en el mismo orden: Medios al fondo, luego Cámara, Ruido, Franjas de color, Partículas, y la Figura con disparadores adelante. Las partes oscuras de un instrumento dejan ver los instrumentos de abajo.
 
-### 3.4 Un disparador: un momento hace que la figura haga algo
+## 4. Conexiones
 
-Ejemplo: la bailarina da un golpe y la figura salta.
-
-1. Haz clic en **Composición**. En **Figura con disparadores**, pon **Encendida** en **On**.
-2. Haz clic en **Movimiento**. Ve a **Disparadores**.
-3. Pon **1 Activo** en **On**.
-4. Pon **1 Fuente** en **Sensor 1**.
-5. Pon **1 Momento** en **Golpe**.
-6. Pon **1 Hace** en **Saltar**.
-7. Ponte el sensor 1 y da un golpe. La figura salta.
-
-### 3.5 Qué puede escuchar un disparador
-
-| Fuente | Momento |
-|---|---|
-| Canción (MIDI) | Una nota de la canción. Escribe su número en **Nota**. |
-| Sensor 1, 2 o 3 | **Golpe** (un movimiento rápido), **Presionar el botón**, **Se queda quieto** |
-| Cuerpo (cámara) | **Aparece el bailarín**, **Entra en la zona 1** ... **Entra en la zona 5** |
-| Señales de prueba | **Disparador de prueba** (para probar sin bailarín) |
-
-Zonas: la imagen de la cámara se corta en franjas de izquierda a derecha (pestaña Entradas, **Zonas del escenario**). "Entra en la zona 2" pasa una vez, en el momento en que el bailarín entra en la zona 2.
-
-### 3.6 Qué hace un disparador
-
-| Hace | Qué pasa |
-|---|---|
-| Pulso (crecer) | La figura crece por un momento. |
-| Girar | La figura gira. **Cantidad** = grados. |
-| Más lados | La figura tiene más lados (o menos). |
-| Saltar | La figura salta a otro lugar. |
-| Destello de color | La figura destella en otro color. |
-
-## 4. Nivel 2: conexiones (el movimiento cambia un ajuste todo el tiempo)
-
-Haz clic en **Función** y pon **Nivel** en **Nivel 2**. Tu trabajo del Nivel 1 no cambia. Ahora la pestaña **Movimiento** también muestra 8 **conexiones**.
-
-Una conexión tiene cuatro menús cortos:
+Haz clic en **Movimiento**. Cada fase tiene 4 conexiones. Una conexión tiene cuatro menús:
 
 | Menú | Qué eliges | Ejemplo |
 |---|---|---|
 | Fuente | De dónde viene el movimiento | Sensor 1 |
-| Entrada | Qué movimiento de esa fuente | Subir o bajar el brazo (pitch) |
-| Instrumento | Qué instrumento cambia | Partículas |
-| Ajuste | Qué ajuste de ese instrumento | Tamaño |
+| Entrada | El movimiento o el momento | Golpe |
+| Instrumento | El instrumento que cambia | Toda la imagen |
+| Hace | Qué pasa | Impulso: Glitch |
 
-El menú **Entrada** muestra solo los movimientos de la fuente que elegiste. El menú **Ajuste** muestra solo los ajustes del instrumento que elegiste.
+Los menús te ayudan:
 
-### 4.1 Sube el brazo y las partículas crecen
+- **Entrada** muestra solo las entradas de la fuente que elegiste.
+- **Hace** muestra solo lo que el instrumento puede hacer con esa entrada.
+  - Para un movimiento, **Hace** muestra "Controla: ..." (el movimiento fija el valor todo el tiempo).
+  - Para un momento, **Hace** muestra acciones que pasan una vez: "Impulso: ..." (el valor salta y vuelve) y las acciones propias del instrumento (Saltar, Archivo siguiente ...).
+  - Algunas entradas son las dos cosas (por ejemplo "En zona 1 / entra en la zona 1"). Entonces **Hace** muestra las dos.
 
-1. Haz clic en **Movimiento**. Ve a **Asignaciones 1-4**.
-2. Pon **1 Fuente** en **Sensor 1**.
-3. Pon **1 Entrada** en **Subir o bajar el brazo (pitch)**.
-4. Pon **1 Instrumento** en **Partículas**.
-5. Pon **1 Ajuste** en **Tamaño**. La conexión se activa (**On**).
-6. Sube y baja el brazo. Las partículas crecen y se hacen más pequeñas.
+Cuando los cuatro menús están puestos, la conexión se activa (**Activa**).
 
-### 4.2 El ruido te sigue por el escenario
+### 4.1 Sube el brazo y las partículas crecen (un movimiento)
 
-1. Pon **2 Fuente** en **Cuerpo (cámara)**.
-2. Pon **2 Entrada** en **Posición izquierda-derecha**.
-3. Pon **2 Instrumento** en **Ruido** y **2 Ajuste** en **Velocidad**.
-4. Camina de izquierda a derecha. El ruido se mueve más rápido. La cámara te debe ver.
+1. Pon **1 Fuente** en **Sensor 1**.
+2. Pon **1 Entrada** en **Subir o bajar el brazo (pitch)**.
+3. Pon **1 Instrumento** en **Partículas**.
+4. Pon **1 Hace** en **Controla: Tamaño**.
+5. Sube y baja el brazo. Las partículas crecen y se achican.
 
-### 4.3 Los movimientos
+### 4.2 Das un golpe y la imagen hace glitch (un momento)
 
-| Fuente | Entrada | Tu movimiento |
+1. Pon **2 Fuente** en **Sensor 1**.
+2. Pon **2 Entrada** en **Golpe**.
+3. Pon **2 Instrumento** en **Toda la imagen**.
+4. Pon **2 Hace** en **Impulso: Glitch**.
+5. Da un golpe. La imagen hace glitch por un momento. **2 Cantidad** fija qué tan fuerte.
+
+### 4.3 Entras en una zona y se ve el video siguiente (un momento)
+
+1. Pon **3 Fuente** en **Cuerpo (cámara)**.
+2. Pon **3 Entrada** en **En zona 2 / entra en la zona 2**.
+3. Pon **3 Instrumento** en **Medios**.
+4. Pon **3 Hace** en **Archivo siguiente**.
+5. Entra en la zona 2. Se ve la foto o el video siguiente. La cámara te debe ver.
+
+### 4.4 Una nota de la canción hace saltar la figura
+
+1. Pon **4 Fuente** en **Canción (MIDI)**.
+2. Pon **4 Entrada** en **Una nota de la canción**. Escribe el número de la nota en **4 Nota**.
+3. Pon **4 Instrumento** en **Figura con disparadores** y **4 Hace** en **Saltar**.
+
+### 4.5 Las entradas
+
+| Fuente | Entrada | Tipo |
 |---|---|---|
-| Sensor 1-3 | Girar la muñeca (roll) | Gira el antebrazo, como cuando giras una llave |
-| Sensor 1-3 | Subir o bajar el brazo (pitch) | Brazo abajo = bajo, brazo adelante = medio, brazo arriba = alto |
-| Sensor 1-3 | Actividad | Cuánto te mueves |
-| Sensor 1-3 | Velocidad de giro / inclinación / vuelta | Qué tan rápido giras el sensor |
-| Sensor 1-3 | Quieto, Golpe, Botón | 1 mientras pasa, si no 0 |
-| Cuerpo (cámara) | Posición izquierda-derecha, altura de las manos, apertura de brazos, energía | Tu cuerpo en la imagen de la cámara |
-| Cuerpo (cámara) | En zona 1-5 | 1 mientras estás en esa zona, si no 0 |
-| Movimiento en la cámara | Movimiento, izquierda, derecha | Movimiento en cualquier parte de la imagen |
+| Sensor 1-3 | Girar la muñeca (roll), Subir o bajar el brazo (pitch), Actividad, velocidades de giro | Movimiento |
+| Sensor 1-3 | Golpe, Presionar el botón | Momento |
+| Sensor 1-3 | Quieto / se queda quieto | Las dos |
+| Cuerpo (cámara) | Posición izquierda-derecha, altura de las manos, brazos abiertos, energía | Movimiento |
+| Cuerpo (cámara) | En zona 1-5 / entra en la zona 1-5, Bailarín visto / aparece el bailarín | Las dos |
+| Movimiento en la cámara | Movimiento, izquierda, derecha | Movimiento |
+| Canción (MIDI) | Una nota de la canción | Momento |
+| Señales de prueba | Nivel, Zona (movimiento), Disparador de prueba (momento) | Para probar sin bailarín |
+
+Zonas: la imagen de la cámara se corta en franjas de izquierda a derecha (pestaña Entradas, **Zonas del escenario**, Avanzado).
 
 Consejo: "Girar la muñeca" no funciona bien cuando el brazo apunta recto hacia abajo o hacia arriba. Usa **Subir o bajar el brazo** para movimientos grandes del brazo.
 
-### 4.4 Más ajustes (Avanzado)
+### 4.6 Qué pueden hacer los instrumentos
 
-En **Avanzado**, cada conexión también tiene **Desde**, **Hasta**, **Suavizado** y **Sensibilidad**:
-
-- **Desde** y **Hasta**: los valores del ajuste en los dos extremos del movimiento. Si el ajuste se mueve al revés, intercambia **Desde** y **Hasta**.
-- **Suavizado**: segundos que tarda el ajuste en seguir el movimiento.
-- **Sensibilidad**: 2 = la mitad del movimiento llega a **Hasta**.
+| Instrumento | Acciones de una vez (momentos) | Controla (movimientos) |
+|---|---|---|
+| Toda la imagen | Impulso de Brillo, Saturación, Estelas, Desenfoque, Glitch, Contorno, Derretir, Destello | Los mismos ajustes |
+| Figura con disparadores | Pulso (crecer), Girar, Más lados, Saltar, Destello de color | Tamaño, posición, giro ... |
+| Medios | Reproducir desde el inicio, Archivo siguiente, Archivo al azar | Posición en el video, Opacidad |
+| Franjas de color | Mezclar los colores | Velocidad, tamaño del borde ... |
+| Partículas, Ruido, Cámara | Impulso de un ajuste | Cada ajuste |
 
 ## 5. Guarda tu trabajo
 
@@ -165,7 +151,7 @@ Para guardar una copia con tu nombre:
 
 Para abrir tu show otra vez: escribe el mismo nombre en **Archivo del show** y haz clic en **Abrir show**.
 
-El archivo del show guarda tus fases y sus notas, los ajustes de cada fase, los disparadores y las conexiones de cada fase, y tu canción.
+El archivo del show guarda tus fases y sus notas, los instrumentos de cada fase, las conexiones de cada fase y tu canción.
 
 ## 6. Salida al proyector
 
@@ -181,9 +167,9 @@ En la pestaña **Función**, en **Salida**:
 
 | Problema | Qué hacer |
 |---|---|
-| Las teclas de números no hacen nada. | Primero haz clic en la imagen de la ventana Stage, luego presiona la tecla. |
+| Las teclas de números no hacen nada. | Presiona una sola tecla y espera. No presiones otras teclas al mismo tiempo. |
 | Un instrumento no aparece. | Revisa su **Encendido** en la pestaña **Composición**, en la fase que suena ahora. |
-| El disparador no hace nada. | Revisa **Activo**, **Fuente** y **Momento**. Revisa que la Figura con disparadores esté **Encendida**. Revisa que el sensor esté encendido y conectado (ventana Sensores corporales, abajo en la ventana Stage). |
-| La conexión no hace nada. | Pon **Nivel** en **Nivel 2**. Revisa **Fuente**, **Entrada**, **Instrumento** y **Ajuste**. Para las entradas de **Cuerpo**, la cámara te debe ver. |
+| Una conexión no hace nada. | Revisa **Activa**, **Fuente**, **Entrada**, **Instrumento** y **Hace**. Revisa que el instrumento esté **Encendido**. Sensores: revisa que el sensor esté encendido y conectado (pestaña Entradas, **Estado**). Entradas de **Cuerpo**: la cámara te debe ver. |
+| Medios no muestra nada. | Revisa **Carpeta** en la pestaña **Composición**. |
 | La fase no cambia con la canción. | Revisa que **Seguir MIDI** esté en **On**. Revisa la nota en **Nota para esta fase**. |
 | La computadora va lenta. | Pregunta al profesor. Apaga los instrumentos que no usas (pestaña Composición). |

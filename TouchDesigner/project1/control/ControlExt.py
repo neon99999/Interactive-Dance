@@ -8,9 +8,10 @@ exactly as before.
 
 What the panel shows is data, not code: the layout table lists each control
 (tab, section, component, parameter, level). Rebuild()
-recreates the generated parameters from it whenever Level (Mode: Level 1-2
-or Advanced) or Language changes. A row's level is the first Level that
-shows it (1 or 2); 0 = Advanced only. Advanced shows every row. Each instrument has its own section on the Instruments
+recreates the generated parameters from it whenever Level (Mode: Basic or
+Advanced) or Language changes. A row's level is 1 (Basic: what students
+need) or 0 (Advanced only). Advanced shows every row. A colour (RGB)
+parameter is one row (Colour1), shown as one colour control. Each instrument has its own section on the Instruments
 tab (switching one by menu rebuilt the panel and froze it for a second). Labels, help and menus come from the bound
 parameter, so they follow the Language switch; tab and section names come
 from the lang table (control.page.<id>, control.section.<id>).
@@ -24,7 +25,7 @@ back to Show. Rebuild keeps the tab too.
 from typing import Optional
 
 PAGES = ('show', 'phases', 'instruments', 'composition', 'movement', 'inputs')
-LEVELS = {'level1': 1, 'level2': 2, 'advanced': 99}
+LEVELS = {'basic': 1, 'advanced': 99}
 OWN = ('Mode',)                       # the panel's own setting, never rebuilt
 OWN_PAGE = {'Mode': 'show'}
 KEEP_PAGES = ('About',)                # Embody's build info, kept last
@@ -88,6 +89,18 @@ class ControlExt:
 					header.label = label
 				order[row['page']].append(name)
 			name = self._name(row['page'], row['comp'], row['par'])
+			if source.style in ('RGB', 'RGBA'):
+				parts = [existing.pop(name + c, None) for c in 'rgb']
+				if any(p is None or p.page != page for p in parts):
+					for p in parts:
+						if p is not None and p.valid:
+							p.destroy()
+					self._appendColour(page, name, source, row)
+				else:
+					self._matchSource(parts[0], source)
+				order[row['page']] += [name + c for c in 'rgb']
+				built += 1
+				continue
 			par = existing.pop(name, None)
 			if par is not None and (par.style != source.style or par.page != page):
 				par.destroy()
@@ -99,13 +112,18 @@ class ControlExt:
 			order[row['page']].append(name)
 			built += 1
 		for par in existing.values():
-			par.destroy()
+			if par.valid:  # destroying one part of a colour destroys all three
+				par.destroy()
 		for key, names in order.items():
 			own = [name for name, k in OWN_PAGE.items() if k == key]
 			wanted = own + names
 			if [p.name for p in pages[key].pars] != wanted:
 				pages[key].sort(*wanted)
-		comp.sortCustomPages(*[pages[k].name for k in PAGES], *[p.name for p in comp.customPages if p.name in KEEP_PAGES])
+		# A tab with nothing on it at this Level (Instruments in Basic) is removed; Advanced makes it again.
+		for key in PAGES:
+			if not order[key] and not [n for n, k in OWN_PAGE.items() if k == key]:
+				pages.pop(key).destroy()
+		comp.sortCustomPages(*[pages[k].name for k in PAGES if k in pages], *[p.name for p in comp.customPages if p.name in KEEP_PAGES])
 		pulses = [p.name for p in comp.customPars if p.isPulse]
 		if shown in pages:
 			comp.currentPage = pages[shown]
@@ -133,7 +151,11 @@ class ControlExt:
 	def sourcePar(self, row: dict) -> Optional[Par]:
 		"""The parameter a layout row shows, or None if its component or parameter is missing."""
 		target = self.ownerComp.parent().op(row['comp'])
-		return getattr(target.par, row['par'], None) if target is not None else None
+		if target is None:
+			return None
+		# A colour row (Colour1) names the tuplet: its first part (Colour1r) stands for it.
+		par = target.par[row['par']]
+		return par if par is not None else target.par[row['par'] + 'r']  # (a Par's truth is its value: test None)
 
 	def sourceOf(self, panelPar: Par) -> Optional[Par]:
 		"""The parameter a panel control is bound to (used to forward pulses)."""
@@ -141,6 +163,14 @@ class ControlExt:
 			if self._name(row['page'], row['comp'], row['par']) == panelPar.name:
 				return self.sourcePar(row)
 		return None
+
+	def _appendColour(self, page, name: str, source: Par, row: dict) -> None:
+		"""A colour control bound part by part to an RGB parameter (Colour1 -> Colour1r/g/b)."""
+		parts = page.appendRGB(name, label=source.label)
+		for par, c in zip(parts, 'rgb'):
+			par.bindExpr = "me.parent().op('%s').par.%s%s" % (row['comp'], row['par'], c)
+			par.mode = ParMode.BIND
+			par.help = source.help
 
 	def onOwnChange(self, par: Par, prev) -> None:
 		"""Mode changed: rebuild next frame (not inside the callback that destroys pars)."""
@@ -224,12 +254,11 @@ class ControlExt:
 		if list(mode.menuNames) != names:
 			value = str(mode.eval())
 			mode.menuNames = names
-			mode.menuLabels = ['Level 1', 'Level 2', 'Advanced']
-			mode.val = 'advanced' if value == 'advanced' else (value if value in names else
-				('level2' if value == 'level3' else 'level1'))
-		mode.default = 'level1'
-		mode.help = ('Level 1: music, phases, instruments and triggers (moments: a hit, a note, entering a zone). '
-			'Level 2: adds the mappings (a movement continuously changes a setting). Advanced: every setting.')
+			mode.menuLabels = ['Basic', 'Advanced']
+			mode.val = 'advanced' if value == 'advanced' else 'basic'
+		mode.default = 'basic'
+		mode.help = ('Basic: what students need (music, phases, which instruments are on, the connections, '
+			'inputs on or off). Advanced: every setting.')
 
 	def _shownPageKey(self) -> str:
 		"""The tab the panel shows now (stage/controls has Sync Page on, so it is this COMP's current page)."""

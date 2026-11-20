@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 16
+build: 17
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/inputs
@@ -128,7 +128,7 @@ custom_pars:
     style: Menu
     label: Webcam
     menuSource: op('./camera_in').par.device
-    help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
+    help: The one webcam the project uses, for camera motion, body tracking and the Camera instrument. Close other apps that use it.
   - name: Webcamuse
     style: Menu
     label: Use

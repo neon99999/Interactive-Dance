@@ -13,7 +13,7 @@ MediaPipe runs only while Posesource is camera: stopping it when it is not used
 saves frame time (it runs a web browser and the pose model).
 
 Body Mask (Pose page) switches MediaPipe's image segmentation (the dancer mask
-that Video Feedback's Echo: Dancer uses) on or off. MediaPipe's own overlay
+that the Camera's Echo: Dancer uses) on or off. MediaPipe's own overlay
 drawing is always kept off, so its picture stays clean for the visuals;
 pose_monitor draws the tracked body instead.
 """

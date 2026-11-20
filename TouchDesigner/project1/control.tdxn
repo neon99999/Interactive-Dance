@@ -13,16 +13,14 @@ custom_pars:
   - name: Mode
     style: Menu
     label: Level
-    default: level1
+    default: basic
     menuNames:
-    - level1
-    - level2
+    - basic
     - advanced
     menuLabels:
-    - Level 1
-    - Level 2
+    - Basic
     - Advanced
-    help: 'Level 1: music, phases, instruments and triggers (moments: a hit, a note, entering a zone). Level 2: adds the mappings (a movement continuously changes a setting). Advanced: every setting.'
+    help: 'Basic: what students need (music, phases, which instruments are on, the connections, inputs on or off). Advanced: every setting.'
   - name: Hshowshow
     style: Header
     label: Language and Level
@@ -185,360 +183,44 @@ custom_pars:
     readOnly: true
     help: What the last Save Show or Load Show did.
     value: ~me.parent().op('phases').par.Showstatus
-  Instruments:
-  - name: Hinstparticles
+  Composition:
+  - name: Hcompmedia
     style: Header
-    label: Particles
-  - name: Instparticlesvisible
+    label: Media (pictures and videos)
+  - name: Compmediavisible
     style: Toggle
     label: 'On'
-    default: true
-    help: 'Show the particles. MIDI: show / hide / toggle particles.'
-    value: ~me.parent().op('visuals/particles').par.Visible
-  - name: Instparticlespreset
-    style: Menu
-    label: Preset
-    default: flowing
-    menuNames:
-    - calm
-    - flowing
-    - energetic
-    menuLabels:
-    - Calm
-    - Flowing
-    - Energetic
-    help: 'A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.'
-    value: ~me.parent().op('visuals/particles').par.Preset
-  - name: Instparticlesreset
-    style: Pulse
-    label: Reset to Preset
-    help: Put the six settings back to the chosen preset.
-  - name: Instparticlesenergy
-    style: Float
-    label: Energy
-    default: 0.4
-    clampMin: true
-    clampMax: true
-    help: 'How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.'
-    value: ~me.parent().op('visuals/particles').par.Energy
-  - name: Instparticlesspread
-    style: Float
-    label: Spread
-    default: 0.5
-    clampMin: true
-    clampMax: true
-    help: 'How far the particles spread: 0 = a tight cloud in the centre, 1 = the whole screen.'
-    value: ~me.parent().op('visuals/particles').par.Spread
-  - name: Instparticlesturbulence
-    style: Float
-    label: Turbulence
-    default: 0.45
-    clampMin: true
-    clampMax: true
-    help: 'How irregular the motion is: 0 = big smooth swirls, 1 = small, restless eddies.'
-    value: ~me.parent().op('visuals/particles').par.Turbulence
-  - name: Instparticlessize
-    style: Float
-    label: Size
-    default: 0.4
-    clampMin: true
-    clampMax: true
-    help: 'Size of each particle: 0 = fine dust, 1 = large glowing dots.'
-    value: ~me.parent().op('visuals/particles').par.Size
-  - name: Instparticlescolour
-    style: Menu
-    label: Colour
-    default: aurora
-    menuNames:
-    - aurora
-    - ocean
-    - ember
-    - moon
-    menuLabels:
-    - Aurora
-    - Ocean
-    - Ember
-    - Moon
-    help: 'Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).'
-    value: ~me.parent().op('visuals/particles').par.Colour
-  - name: Instparticlestrails
-    style: Float
-    label: Trails
-    default: 0.6
-    clampMin: true
-    clampMax: true
-    help: 'How long the particles leave a glowing trail: 0 = none, 1 = long streaks.'
-    value: ~me.parent().op('visuals/particles').par.Trails
-  - name: Hinstvideo
-    style: Header
-    label: Video Feedback
-  - name: Instvideovisible
-    style: Toggle
-    label: 'On'
-    help: 'Show the video feedback. MIDI: show / hide / toggle video.'
-    value: ~me.parent().op('visuals/video').par.Visible
-  - name: Instvideopreset
-    style: Menu
-    label: Preset
-    default: echo
-    menuNames:
-    - clean
-    - echo
-    - abstract
-    menuLabels:
-    - Clean
-    - Echo
-    - Abstract
-    help: 'A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.'
-    value: ~me.parent().op('visuals/video').par.Preset
-  - name: Instvideoreset
-    style: Pulse
-    label: Reset to Preset
-    help: Put the five settings back to the chosen preset.
-  - name: Instvideoecho
-    style: Menu
-    label: Echo
-    default: auto
-    menuNames:
-    - auto
-    - dancer
-    - movement
-    - whole
-    menuLabels:
-    - Auto
-    - Dancer
-    - Movement
-    - Whole Picture
-    help: 'What leaves the trails. Dancer: only the dancer repeats (needs body tracking with Body Mask on, and Source: Webcam). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole image fed back into itself. Auto: Dancer when available, otherwise Movement.'
-    value: ~me.parent().op('visuals/video').par.Echo
-  - name: Instvideofeedback
-    style: Float
-    label: Feedback
-    default: 0.7
-    clampMin: true
-    clampMax: true
-    help: 'How long the image echoes: 0 = no echo, 1 = very long trails.'
-    value: ~me.parent().op('visuals/video').par.Feedback
-  - name: Instvideozoom
-    style: Float
-    label: Zoom
-    default: 0.1
-    min: -1.0
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    help: 'Which way the echoes move: above 0 they grow outward, below 0 they shrink inward, 0 = they stay in place.'
-    value: ~me.parent().op('visuals/video').par.Zoom
-  - name: Instvideodistortion
-    style: Float
-    label: Distortion
-    default: 0.1
-    clampMin: true
-    clampMax: true
-    help: 'How much the echoes ripple and bend: 0 = straight, 1 = melting.'
-    value: ~me.parent().op('visuals/video').par.Distortion
-  - name: Instvideocolour
-    style: Float
-    label: Colour
-    default: 0.1
-    clampMin: true
-    clampMax: true
-    help: 'Colour treatment: 0 = natural colour, 1 = echoes shift through the rainbow and glow.'
-    value: ~me.parent().op('visuals/video').par.Colour
-  - name: Hinstvideosource
-    style: Header
-    label: Video Source
-  - name: Instvideosource
-    style: Menu
-    label: Source
-    default: webcam
-    menuNames:
-    - webcam
-    - file
-    - test
-    menuLabels:
-    - Webcam
-    - Video File
-    - Test Pattern
-    help: 'Webcam: the camera image (from body tracking when it is on, otherwise from inputs > Camera). Video File: the file below. Test Pattern: a moving shape, to try the effect without a camera.'
-    value: ~me.parent().op('visuals/video').par.Source
-  - name: Instvideostatus
+    help: Show the pictures and videos.
+    value: ~me.parent().op('visuals/media').par.Visible
+  - name: Compmediafolder
     style: Str
-    label: Status
-    readOnly: true
-    help: What the instrument is showing now.
-    value: ~me.parent().op('visuals/video').par.Status
-  - name: Hinstnoise
+    label: Folder
+    help: A folder of pictures and videos (sub-folders too), or one file.
+    value: ~me.parent().op('visuals/media').par.Folder
+  - name: Hcompvideo
+    style: Header
+    label: Camera
+  - name: Compvideovisible
+    style: Toggle
+    label: 'On'
+    help: 'Show the camera picture. MIDI: show / hide / toggle video.'
+    value: ~me.parent().op('visuals/video').par.Visible
+  - name: Hcompnoise
     style: Header
     label: Noise
-  - name: Instnoisevisible
+  - name: Compnoisevisible
     style: Toggle
     label: 'On'
     help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
     value: ~me.parent().op('visuals/noise').par.Visible
-  - name: Instnoisepreset
-    style: Menu
-    label: Preset
-    default: smoke
-    menuNames:
-    - smoke
-    - lava
-    - storm
-    menuLabels:
-    - Smoke
-    - Lava
-    - Storm
-    help: 'A starting look: Smoke (slow grey clouds), Lava (warm, slowly twisting), Storm (fast, detailed, neon). Choosing one sets the six settings below.'
-    value: ~me.parent().op('visuals/noise').par.Preset
-  - name: Instnoisereset
-    style: Pulse
-    label: Reset to Preset
-    help: Put the six settings back to the chosen preset.
-  - name: Instnoisescale
-    style: Float
-    label: Scale
-    default: 0.6
-    clampMin: true
-    clampMax: true
-    help: 'Size of the pattern: 0 = fine grain, 1 = big slow shapes.'
-    value: ~me.parent().op('visuals/noise').par.Scale
-  - name: Instnoisespeed
-    style: Float
-    label: Speed
-    default: 0.2
-    clampMin: true
-    clampMax: true
-    help: 'How fast the pattern changes: 0 = almost still, 1 = boiling.'
-    value: ~me.parent().op('visuals/noise').par.Speed
-  - name: Instnoisedetail
-    style: Float
-    label: Detail
-    default: 0.5
-    clampMin: true
-    clampMax: true
-    help: 'How much fine detail sits on the big shapes: 0 = soft and smooth, 1 = rough and grainy.'
-    value: ~me.parent().op('visuals/noise').par.Detail
-  - name: Instnoisewarp
-    style: Float
-    label: Warp
-    default: 0.3
-    clampMin: true
-    clampMax: true
-    help: 'How much the pattern twists and folds into itself: 0 = plain noise, 1 = marbled swirls.'
-    value: ~me.parent().op('visuals/noise').par.Warp
-  - name: Instnoisefeedback
-    style: Float
-    label: Feedback
-    default: 0.6
-    clampMin: true
-    clampMax: true
-    help: 'How long the pattern leaves trails as it drifts outward: 0 = none, 1 = long smears.'
-    value: ~me.parent().op('visuals/noise').par.Feedback
-  - name: Instnoisecolour
-    style: Menu
-    label: Colour
-    default: smoke
-    menuNames:
-    - smoke
-    - lava
-    - ocean
-    - neon
-    menuLabels:
-    - Smoke
-    - Lava
-    - Ocean
-    - Neon
-    help: 'Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).'
-    value: ~me.parent().op('visuals/noise').par.Colour
-  - name: Hinsttrigger
+  - name: Hcomptiles
     style: Header
-    label: Trigger Shape
-  - name: Insttriggervisible
+    label: Colour Tiles
+  - name: Comptilesvisible
     style: Toggle
     label: 'On'
-    help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
-    value: ~me.parent().op('visuals/trigger').par.Visible
-  - name: Insttriggersides
-    style: Int
-    label: Sides
-    default: 3
-    min: 3.0
-    max: 12.0
-    clampMin: true
-    clampMax: true
-    normMin: 3.0
-    normMax: 12.0
-    help: 'Number of sides: 3 = triangle, 4 = square ... 12 = nearly a circle. The "More sides" trigger adds to it.'
-    value: ~me.parent().op('visuals/trigger').par.Sides
-  - name: Insttriggersize
-    style: Float
-    label: Size
-    default: 0.5
-    max: 2.0
-    clampMin: true
-    clampMax: true
-    help: 'How big: 1 = as tall as the image. The "Pulse" trigger swells it for a moment.'
-    value: ~me.parent().op('visuals/trigger').par.Size
-  - name: Insttriggerx
-    style: Float
-    label: X
-    min: -1.5
-    max: 1.5
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    help: Left (-1) to right (1); 0 = centre. The "Jump" trigger moves it away from here.
-    value: ~me.parent().op('visuals/trigger').par.X
-  - name: Insttriggery
-    style: Float
-    label: Y
-    min: -1.5
-    max: 1.5
-    clampMin: true
-    clampMax: true
-    normMin: -1.0
-    help: Bottom (-1) to top (1); 0 = centre.
-    value: ~me.parent().op('visuals/trigger').par.Y
-  - name: Insttriggerrotate
-    style: Float
-    label: Rotate
-    min: -3600.0
-    max: 3600.0
-    clampMin: true
-    clampMax: true
-    normMax: 360.0
-    help: Turn in degrees. The "Spin" trigger adds to it.
-    value: ~me.parent().op('visuals/trigger').par.Rotate
-  - name: Insttriggerfill
-    style: Toggle
-    label: Fill
-    help: 'On: a solid shape. Off: only its outline.'
-    value: ~me.parent().op('visuals/trigger').par.Fill
-  - name: Insttriggercolour
-    style: Menu
-    label: Colour
-    default: cyan
-    menuNames:
-    - white
-    - red
-    - orange
-    - yellow
-    - green
-    - cyan
-    - blue
-    - magenta
-    menuLabels:
-    - White
-    - Red
-    - Orange
-    - Yellow
-    - Green
-    - Cyan
-    - Blue
-    - Magenta
-    help: The colour of the shape.
-    value: ~me.parent().op('visuals/trigger').par.Colour
-  Composition:
+    help: Show the colour tiles.
+    value: ~me.parent().op('visuals/tiles').par.Visible
   - name: Hcompparticles
     style: Header
     label: Particles
@@ -548,62 +230,6 @@ custom_pars:
     default: true
     help: 'Show the particles. MIDI: show / hide / toggle particles.'
     value: ~me.parent().op('visuals/particles').par.Visible
-  - name: Compparticlesopacity
-    style: Float
-    label: Opacity
-    default: 1
-    clampMin: true
-    clampMax: true
-    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
-    value: ~me.parent().op('visuals/particles').par.Opacity
-  - name: Hcompvideo
-    style: Header
-    label: Video Feedback
-  - name: Compvideovisible
-    style: Toggle
-    label: 'On'
-    help: 'Show the video feedback. MIDI: show / hide / toggle video.'
-    value: ~me.parent().op('visuals/video').par.Visible
-  - name: Compvideoopacity
-    style: Float
-    label: Opacity
-    default: 1
-    clampMin: true
-    clampMax: true
-    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
-    value: ~me.parent().op('visuals/video').par.Opacity
-  - name: Hcompnoise
-    style: Header
-    label: Noise
-  - name: Compnoisevisible
-    style: Toggle
-    label: 'On'
-    help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
-    value: ~me.parent().op('visuals/noise').par.Visible
-  - name: Compnoiseopacity
-    style: Float
-    label: Opacity
-    default: 1
-    clampMin: true
-    clampMax: true
-    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
-    value: ~me.parent().op('visuals/noise').par.Opacity
-  - name: Hcompshapes
-    style: Header
-    label: Shapes (4 Layers)
-  - name: Compshapesvisible
-    style: Toggle
-    label: 'On'
-    help: 'Show the four shape layers (layer1 ... layer4, set on their own pages and by MIDI). Off by default. MIDI: show / hide / toggle shapes.'
-    value: ~me.parent().op('visuals/shapes').par.Visible
-  - name: Compshapesopacity
-    style: Float
-    label: Opacity
-    default: 1
-    clampMin: true
-    clampMax: true
-    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
-    value: ~me.parent().op('visuals/shapes').par.Opacity
   - name: Hcomptrigger
     style: Header
     label: Trigger Shape
@@ -612,43 +238,44 @@ custom_pars:
     label: 'On'
     help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
     value: ~me.parent().op('visuals/trigger').par.Visible
-  - name: Comptriggeropacity
-    style: Float
-    label: Opacity
-    default: 1
-    clampMin: true
-    clampMax: true
-    help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
-    value: ~me.parent().op('visuals/trigger').par.Opacity
   Movement:
-  - name: Hmovetriggers
+  - name: Hmoveconnection1
     style: Header
-    label: Triggers (Trigger Shape)
-  - name: Movetriggervisible
-    style: Toggle
-    label: 'On'
-    help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
-    value: ~me.parent().op('visuals/trigger').par.Visible
-  - name: Movemappingstrig1on
+    label: Connection 1
+  - name: Movemappingscon1on
     style: Toggle
     label: 1 On
-    help: Trigger 1 is used while on.
-    value: ~me.parent().op('mappings').par.Trig1on
-  - name: Movemappingstrig1source
+    help: Connection 1 is used while on.
+    value: ~me.parent().op('mappings').par.Con1on
+  - name: Movemappingscon1source
     style: Menu
     label: 1 Source
     default: none
-    menuSource: me.parent().op('mappings').par.Trig1source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig1source
-  - name: Movemappingstrig1input
+    menuSource: me.parent().op('mappings').par.Con1source
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: ~me.parent().op('mappings').par.Con1source
+  - name: Movemappingscon1input
     style: Menu
-    label: 1 Moment
+    label: 1 Input
     default: none
-    menuSource: me.parent().op('mappings').par.Trig1input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig1input
-  - name: Movemappingstrig1note
+    menuSource: me.parent().op('mappings').par.Con1input
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: ~me.parent().op('mappings').par.Con1input
+  - name: Movemappingscon1instrument
+    style: Menu
+    label: 1 Instrument
+    default: none
+    menuSource: me.parent().op('mappings').par.Con1instrument
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: ~me.parent().op('mappings').par.Con1instrument
+  - name: Movemappingscon1does
+    style: Menu
+    label: 1 Does
+    default: none
+    menuSource: me.parent().op('mappings').par.Con1does
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: ~me.parent().op('mappings').par.Con1does
+  - name: Movemappingscon1note
     style: Int
     label: 1 Note
     default: 60
@@ -656,55 +283,52 @@ custom_pars:
     clampMin: true
     clampMax: true
     normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig1note
-  - name: Movemappingstrig1does
-    style: Menu
-    label: 1 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig1does
-  - name: Movemappingstrig1amount
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Con1note
+  - name: Movemappingscon1amount
     style: Float
     label: 1 Amount
     default: 0.5
-    min: -180.0
-    max: 180.0
     normMax: 2.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig1amount
-  - name: Movemappingstrig2on
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    value: ~me.parent().op('mappings').par.Con1amount
+  - name: Hmoveconnection2
+    style: Header
+    label: Connection 2
+  - name: Movemappingscon2on
     style: Toggle
     label: 2 On
-    help: Trigger 2 is used while on.
-    value: ~me.parent().op('mappings').par.Trig2on
-  - name: Movemappingstrig2source
+    help: Connection 2 is used while on.
+    value: ~me.parent().op('mappings').par.Con2on
+  - name: Movemappingscon2source
     style: Menu
     label: 2 Source
     default: none
-    menuSource: me.parent().op('mappings').par.Trig2source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig2source
-  - name: Movemappingstrig2input
+    menuSource: me.parent().op('mappings').par.Con2source
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: ~me.parent().op('mappings').par.Con2source
+  - name: Movemappingscon2input
     style: Menu
-    label: 2 Moment
+    label: 2 Input
     default: none
-    menuSource: me.parent().op('mappings').par.Trig2input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig2input
-  - name: Movemappingstrig2note
+    menuSource: me.parent().op('mappings').par.Con2input
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: ~me.parent().op('mappings').par.Con2input
+  - name: Movemappingscon2instrument
+    style: Menu
+    label: 2 Instrument
+    default: none
+    menuSource: me.parent().op('mappings').par.Con2instrument
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: ~me.parent().op('mappings').par.Con2instrument
+  - name: Movemappingscon2does
+    style: Menu
+    label: 2 Does
+    default: none
+    menuSource: me.parent().op('mappings').par.Con2does
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: ~me.parent().op('mappings').par.Con2does
+  - name: Movemappingscon2note
     style: Int
     label: 2 Note
     default: 60
@@ -712,56 +336,53 @@ custom_pars:
     clampMin: true
     clampMax: true
     normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig2note
-  - name: Movemappingstrig2does
-    style: Menu
-    label: 2 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig2does
-  - name: Movemappingstrig2amount
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Con2note
+  - name: Movemappingscon2amount
     style: Float
     label: 2 Amount
     default: 0.5
-    min: -180.0
-    max: 180.0
     normMin: -180.0
     normMax: 180.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig2amount
-  - name: Movemappingstrig3on
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    value: ~me.parent().op('mappings').par.Con2amount
+  - name: Hmoveconnection3
+    style: Header
+    label: Connection 3
+  - name: Movemappingscon3on
     style: Toggle
     label: 3 On
-    help: Trigger 3 is used while on.
-    value: ~me.parent().op('mappings').par.Trig3on
-  - name: Movemappingstrig3source
+    help: Connection 3 is used while on.
+    value: ~me.parent().op('mappings').par.Con3on
+  - name: Movemappingscon3source
     style: Menu
     label: 3 Source
     default: none
-    menuSource: me.parent().op('mappings').par.Trig3source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig3source
-  - name: Movemappingstrig3input
+    menuSource: me.parent().op('mappings').par.Con3source
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: ~me.parent().op('mappings').par.Con3source
+  - name: Movemappingscon3input
     style: Menu
-    label: 3 Moment
+    label: 3 Input
     default: none
-    menuSource: me.parent().op('mappings').par.Trig3input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig3input
-  - name: Movemappingstrig3note
+    menuSource: me.parent().op('mappings').par.Con3input
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: ~me.parent().op('mappings').par.Con3input
+  - name: Movemappingscon3instrument
+    style: Menu
+    label: 3 Instrument
+    default: none
+    menuSource: me.parent().op('mappings').par.Con3instrument
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: ~me.parent().op('mappings').par.Con3instrument
+  - name: Movemappingscon3does
+    style: Menu
+    label: 3 Does
+    default: none
+    menuSource: me.parent().op('mappings').par.Con3does
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: ~me.parent().op('mappings').par.Con3does
+  - name: Movemappingscon3note
     style: Int
     label: 3 Note
     default: 60
@@ -769,56 +390,53 @@ custom_pars:
     clampMin: true
     clampMax: true
     normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig3note
-  - name: Movemappingstrig3does
-    style: Menu
-    label: 3 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig3does
-  - name: Movemappingstrig3amount
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Con3note
+  - name: Movemappingscon3amount
     style: Float
     label: 3 Amount
     default: 0.5
-    min: -180.0
-    max: 180.0
     normMin: -4.0
     normMax: 4.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig3amount
-  - name: Movemappingstrig4on
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    value: ~me.parent().op('mappings').par.Con3amount
+  - name: Hmoveconnection4
+    style: Header
+    label: Connection 4
+  - name: Movemappingscon4on
     style: Toggle
     label: 4 On
-    help: Trigger 4 is used while on.
-    value: ~me.parent().op('mappings').par.Trig4on
-  - name: Movemappingstrig4source
+    help: Connection 4 is used while on.
+    value: ~me.parent().op('mappings').par.Con4on
+  - name: Movemappingscon4source
     style: Menu
     label: 4 Source
     default: none
-    menuSource: me.parent().op('mappings').par.Trig4source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig4source
-  - name: Movemappingstrig4input
+    menuSource: me.parent().op('mappings').par.Con4source
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: ~me.parent().op('mappings').par.Con4source
+  - name: Movemappingscon4input
     style: Menu
-    label: 4 Moment
+    label: 4 Input
     default: none
-    menuSource: me.parent().op('mappings').par.Trig4input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig4input
-  - name: Movemappingstrig4note
+    menuSource: me.parent().op('mappings').par.Con4input
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: ~me.parent().op('mappings').par.Con4input
+  - name: Movemappingscon4instrument
+    style: Menu
+    label: 4 Instrument
+    default: none
+    menuSource: me.parent().op('mappings').par.Con4instrument
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: ~me.parent().op('mappings').par.Con4instrument
+  - name: Movemappingscon4does
+    style: Menu
+    label: 4 Does
+    default: none
+    menuSource: me.parent().op('mappings').par.Con4does
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: ~me.parent().op('mappings').par.Con4does
+  - name: Movemappingscon4note
     style: Int
     label: 4 Note
     default: 60
@@ -826,258 +444,14 @@ custom_pars:
     clampMin: true
     clampMax: true
     normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig4note
-  - name: Movemappingstrig4does
-    style: Menu
-    label: 4 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig4does
-  - name: Movemappingstrig4amount
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    value: ~me.parent().op('mappings').par.Con4note
+  - name: Movemappingscon4amount
     style: Float
     label: 4 Amount
     default: 0.5
-    min: -180.0
-    max: 180.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig4amount
-  - name: Movemappingstrig5on
-    style: Toggle
-    label: 5 On
-    help: Trigger 5 is used while on.
-    value: ~me.parent().op('mappings').par.Trig5on
-  - name: Movemappingstrig5source
-    style: Menu
-    label: 5 Source
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig5source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig5source
-  - name: Movemappingstrig5input
-    style: Menu
-    label: 5 Moment
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig5input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig5input
-  - name: Movemappingstrig5note
-    style: Int
-    label: 5 Note
-    default: 60
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig5note
-  - name: Movemappingstrig5does
-    style: Menu
-    label: 5 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig5does
-  - name: Movemappingstrig5amount
-    style: Float
-    label: 5 Amount
-    default: 0.5
-    min: -180.0
-    max: 180.0
-    normMax: 2.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig5amount
-  - name: Movemappingstrig6on
-    style: Toggle
-    label: 6 On
-    help: Trigger 6 is used while on.
-    value: ~me.parent().op('mappings').par.Trig6on
-  - name: Movemappingstrig6source
-    style: Menu
-    label: 6 Source
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig6source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig6source
-  - name: Movemappingstrig6input
-    style: Menu
-    label: 6 Moment
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig6input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig6input
-  - name: Movemappingstrig6note
-    style: Int
-    label: 6 Note
-    default: 60
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig6note
-  - name: Movemappingstrig6does
-    style: Menu
-    label: 6 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig6does
-  - name: Movemappingstrig6amount
-    style: Float
-    label: 6 Amount
-    default: 0.5
-    min: -180.0
-    max: 180.0
-    normMax: 2.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig6amount
-  - name: Movemappingstrig7on
-    style: Toggle
-    label: 7 On
-    help: Trigger 7 is used while on.
-    value: ~me.parent().op('mappings').par.Trig7on
-  - name: Movemappingstrig7source
-    style: Menu
-    label: 7 Source
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig7source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig7source
-  - name: Movemappingstrig7input
-    style: Menu
-    label: 7 Moment
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig7input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig7input
-  - name: Movemappingstrig7note
-    style: Int
-    label: 7 Note
-    default: 60
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig7note
-  - name: Movemappingstrig7does
-    style: Menu
-    label: 7 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig7does
-  - name: Movemappingstrig7amount
-    style: Float
-    label: 7 Amount
-    default: 0.5
-    min: -180.0
-    max: 180.0
-    normMax: 2.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig7amount
-  - name: Movemappingstrig8on
-    style: Toggle
-    label: 8 On
-    help: Trigger 8 is used while on.
-    value: ~me.parent().op('mappings').par.Trig8on
-  - name: Movemappingstrig8source
-    style: Menu
-    label: 8 Source
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig8source
-    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: ~me.parent().op('mappings').par.Trig8source
-  - name: Movemappingstrig8input
-    style: Menu
-    label: 8 Moment
-    default: none
-    menuSource: me.parent().op('mappings').par.Trig8input
-    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: ~me.parent().op('mappings').par.Trig8input
-  - name: Movemappingstrig8note
-    style: Int
-    label: 8 Note
-    default: 60
-    max: 127.0
-    clampMin: true
-    clampMax: true
-    normMax: 127.0
-    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
-    value: ~me.parent().op('mappings').par.Trig8note
-  - name: Movemappingstrig8does
-    style: Menu
-    label: 8 Does
-    default: pulse
-    menuNames:
-    - pulse
-    - spin
-    - sides
-    - jump
-    - flash
-    menuLabels:
-    - Pulse (grow)
-    - Spin
-    - More sides
-    - Jump
-    - Flash colour
-    help: What the Trigger Shape does each time.
-    value: ~me.parent().op('mappings').par.Trig8does
-  - name: Movemappingstrig8amount
-    style: Float
-    label: 8 Amount
-    default: 0.5
-    min: -180.0
-    max: 180.0
-    normMax: 2.0
-    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: ~me.parent().op('mappings').par.Trig8amount
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    value: ~me.parent().op('mappings').par.Con4amount
   Inputs:
   - name: Hinpuwebcam
     style: Header
@@ -1098,12 +472,6 @@ custom_pars:
     - Test (No Webcam)
     help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
     value: ~me.parent().op('inputs').par.Webcamuse
-  - name: Inpuinputscameradevice
-    style: Menu
-    label: Webcam
-    menuSource: me.parent().op('inputs').par.Cameradevice
-    help: The one webcam the project uses, for camera motion, body tracking and the Video Feedback instrument. Close other apps that use it.
-    value: ~me.parent().op('inputs').par.Cameradevice
   - name: Inpuinputswebcamstatus
     style: Str
     label: Status
@@ -1118,51 +486,12 @@ custom_pars:
     label: Read Serial
     help: 'Read lines of text from a serial (USB) device such as the wireless receiver. Off when the project opens: turn it on once the receiver is plugged in and its Port is picked. Missing and Bluetooth ports are never opened (see Status).'
     value: ~me.parent().op('inputs').par.Serialenable
-  - name: Inpuinputsserialport
-    style: StrMenu
-    label: Port
-    menuSource: me.parent().op('inputs').par.Serialport
-    help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
-    value: ~me.parent().op('inputs').par.Serialport
   - name: Inpuinputsserialstatus
     style: Str
     label: Status
     readOnly: true
     help: 'What Read Serial is doing now. A missing port or a Bluetooth port is never opened (either froze TouchDesigner), so a wrong Port is safe: pick the receiver and reading starts within a second.'
     value: ~me.parent().op('inputs').par.Serialstatus
-  - name: Inpuinputswearable1
-    style: Toggle
-    label: Use Wearable 1
-    default: true
-    help: 'On: wearable 1''s signals (serial_w1_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
-    value: ~me.parent().op('inputs').par.Wearable1
-  - name: Inpuinputswearable2
-    style: Toggle
-    label: Use Wearable 2
-    default: true
-    help: 'On: wearable 2''s signals (serial_w2_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
-    value: ~me.parent().op('inputs').par.Wearable2
-  - name: Inpuinputswearable3
-    style: Toggle
-    label: Use Wearable 3
-    default: true
-    help: 'On: wearable 3''s signals (serial_w3_...) reach the mappings and wearable_monitor. Off: they are dropped, as if that wearable were switched off. Each group turns on only its own wearable.'
-    value: ~me.parent().op('inputs').par.Wearable3
-  - name: Hinpubody
-    style: Header
-    label: Body Tracking
-  - name: Inpuinputsposezones
-    style: Int
-    label: Stage Zones
-    default: 3
-    min: 1.0
-    max: 5.0
-    clampMin: true
-    clampMax: true
-    normMin: 1.0
-    normMax: 5.0
-    help: How many equal zones pose_x is split into, left to right (1-5). pose_zone says which one the dancer is in (1 = left), and pose_zone1 ... pose_zone5 are 1 in that zone. Shown on pose_monitor.
-    value: ~me.parent().op('inputs').par.Posezones
 parameters:
   parentshortcut: Control
   opshortcut: Control
@@ -1188,7 +517,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 222
+    rows: 178
     cols: 5
   position: [0, -200]
   size: [130, 90]
@@ -1210,7 +539,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasessaveshow Phasphasesloadshow Instparticlesreset Instvideoreset Instnoisereset
+    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasessaveshow Phasphasesloadshow
     builtin: false
     file: project1/control/control_pulses.py
     syncfile: true

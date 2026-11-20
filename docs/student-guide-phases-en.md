@@ -7,11 +7,11 @@ Written in ASD-STE100 Simplified Technical English. Spanish version: `guia-estud
 You make your piece in steps:
 
 1. Your song has parts. We call each part a **phase**. A piece has a maximum of 10 phases.
-2. In each phase, you choose the instruments (Particles, Noise, Video Feedback, Shapes, Trigger Shape) and their settings.
-3. You connect your movements to the instruments:
-   - A **trigger** is a moment: a hit, a button press, a note of the song, entering a zone. Each time it happens, the Trigger Shape does something one time.
-   - A **mapping** is continuous: while you move, a number changes, and it changes a setting all the time (for example, raise the arm and the particles get bigger).
-4. Each phase keeps its own instrument settings, triggers and mappings. When the phase changes, everything changes with it.
+2. In each phase, you choose the instruments that show (Media, Camera, Noise, Colour Tiles, Particles, Trigger Shape).
+3. In each phase, you make 4 **connections**. A connection connects a movement of the dancer to an instrument.
+   - A **movement** (raise the arm, walk across the stage) controls a setting all the time.
+   - A **moment** (a hit, a button press, a note of the song, entering a zone) does something one time.
+4. Each phase keeps its own instruments and connections. When the phase changes, everything changes with it.
 
 You do not need to write code. You only change settings on the control panel.
 
@@ -19,13 +19,13 @@ You do not need to write code. You only change settings on the control panel.
 
 1. Open the project. The **Stage** window opens.
 2. The control panel is on the right side of the Stage window. If you do not see it, push the **P** key.
-3. At the top of the control panel, there are tabs: **Show**, **Phases**, **Instruments**, **Composition**, **Movement**, **Inputs**.
+3. At the top of the control panel, there are tabs: **Show**, **Phases**, **Composition**, **Movement**, **Inputs**.
 4. To change the language, click **English / Español** at the bottom right.
-5. Click **Show**. Set **Level** to **Level 1**.
+5. Click **Show**. Make sure that **Level** is **Basic**.
 
 Tip: put the mouse on the name of a setting and wait. A short help text shows.
 
-## 3. Level 1: phases, instruments and triggers
+## 3. Phases
 
 ### 3.1 Divide your song into phases
 
@@ -45,113 +45,99 @@ To find the note numbers, play the song and look at the **MIDI Notes** window at
 
 ### 3.2 Change phase with the number keys
 
-1. Click the picture in the Stage window (not the control panel).
-2. Push a number key: **1** to **9** select phases 1 to 9. **0** selects phase 10.
+Push a number key: **1** to **9** select phases 1 to 9. **0** selects phase 10.
 
-The number keys do not work while you type in the control panel. Click the picture first.
+The phase changes after a short time (less than half a second). When you type a number into a setting (for example a note), the phase does not change.
 
-### 3.3 Make the look of each phase
-
-Example: the calm start has slow blue particles. The fast middle has fast particles and noise.
+### 3.3 Choose the instruments of each phase
 
 1. Set **Phase** to **Phase 1**.
-2. Click **Composition**. In **Particles**, set **On** to **On**. Set **On** of the other instruments to **Off**.
-3. Click **Instruments**. In **Particles**, set **Preset** to **Calm**. Change **Colour** if you want.
-4. Set **Phase** to **Phase 2** (or push **2**). Phase 2 starts as a copy of phase 1.
-5. Click **Composition**. In **Noise**, set **On** to **On**.
-6. Click **Instruments**. In **Particles**, set **Preset** to **Energetic**.
-7. Push **1**, then **2**. The look changes each time.
+2. Click **Composition**. Set **On** of each instrument that you want. Set the other instruments to **Off**.
+3. For **Media**, type or choose a **Folder** with pictures and videos.
+4. Set **Phase** to **Phase 2** (or push **2**). Phase 2 starts as a copy of phase 1. Change it.
+5. Push **1**, then **2**. The look changes each time.
 
 You do not need to save each phase. Each change is kept in the phase that you see.
 
-The layers are always in the same order: Video Feedback at the back, then Noise, then Particles, then Shapes, and the Trigger Shape at the front. Parts of a layer that are dark let the layers below show through.
+The instruments are always in the same order: Media at the back, then Camera, Noise, Colour Tiles, Particles, and the Trigger Shape at the front. Parts of an instrument that are dark let the instruments below show through.
 
-### 3.4 A trigger: a moment makes the Trigger Shape do something
+## 4. Connections
 
-Example: the dancer punches, and the shape jumps.
-
-1. Click **Composition**. In **Trigger Shape**, set **On** to **On**.
-2. Click **Movement**. Go to **Triggers**.
-3. Set **1 On** to **On**.
-4. Set **1 Source** to **Wearable 1**.
-5. Set **1 Moment** to **Hit**.
-6. Set **1 Does** to **Jump**.
-7. Put on wearable 1 and punch. The shape jumps.
-
-### 3.5 What a trigger can listen to
-
-| Source | Moment |
-|---|---|
-| Song (MIDI) | A note of the song. Type its number in **Note**. |
-| Wearable 1, 2 or 3 | **Hit** (a fast movement), **Button press**, **Becomes still** |
-| Body (camera) | **Dancer appears**, **Enters zone 1** ... **Enters zone 5** |
-| Test signals | **Test trigger** (for a test without a dancer) |
-
-Zones: the camera picture is cut into strips from left to right (Inputs tab, **Stage Zones**). "Enters zone 2" happens one time, at the moment the dancer walks into zone 2.
-
-### 3.6 What a trigger does
-
-| Does | What happens |
-|---|---|
-| Pulse (grow) | The shape gets bigger for a short time. |
-| Spin | The shape turns. **Amount** = degrees. |
-| More sides | The shape gets more sides (or fewer). |
-| Jump | The shape jumps to a new place. |
-| Flash colour | The shape flashes in another colour. |
-
-## 4. Level 2: mappings (movement changes a setting all the time)
-
-Click **Show** and set **Level** to **Level 2**. Your work from Level 1 stays the same. Now the **Movement** tab also shows 8 **mappings**.
-
-A mapping has four short menus:
+Click **Movement**. Each phase has 4 connections. A connection has four menus:
 
 | Menu | What you choose | Example |
 |---|---|---|
 | Source | Where the movement comes from | Wearable 1 |
-| Input | Which movement of that source | Raise or lower the arm (pitch) |
-| Instrument | Which instrument changes | Particles |
-| Setting | Which setting of that instrument | Size |
+| Input | The movement or the moment | Hit |
+| Instrument | The instrument that changes | Whole picture |
+| Does | What happens | Burst: Glitch |
 
-The **Input** menu shows only the movements of the source that you chose. The **Setting** menu shows only the settings of the instrument that you chose.
+The menus help you:
 
-### 4.1 Raise the arm, the particles get bigger
+- **Input** shows only the inputs of the source that you chose.
+- **Does** shows only what the instrument can do with that input.
+  - For a movement, **Does** shows "Controls: ..." (the movement sets the value all the time).
+  - For a moment, **Does** shows actions that happen one time: "Burst: ..." (the value jumps and falls back), and the instrument's own actions (Jump, Next file ...).
+  - Some inputs are both (for example "In zone 1 / enters zone 1"). Then **Does** shows both.
 
-1. Click **Movement**. Go to **Mappings 1-4**.
-2. Set **1 Source** to **Wearable 1**.
-3. Set **1 Input** to **Raise or lower the arm (pitch)**.
-4. Set **1 Instrument** to **Particles**.
-5. Set **1 Setting** to **Size**. The mapping comes **On**.
-6. Raise and lower your arm. The particles get bigger and smaller.
+When the four menus are set, the connection comes **On**.
 
-### 4.2 The noise follows you across the stage
+### 4.1 Raise the arm, the particles get bigger (a movement)
 
-1. Set **2 Source** to **Body (camera)**.
-2. Set **2 Input** to **Position left-right**.
-3. Set **2 Instrument** to **Noise** and **2 Setting** to **Speed**.
-4. Walk from the left to the right. The noise moves faster. The camera must see you.
+1. Set **1 Source** to **Wearable 1**.
+2. Set **1 Input** to **Raise or lower the arm (pitch)**.
+3. Set **1 Instrument** to **Particles**.
+4. Set **1 Does** to **Controls: Size**.
+5. Raise and lower your arm. The particles get bigger and smaller.
 
-### 4.3 The movements
+### 4.2 Punch, and the picture glitches (a moment)
 
-| Source | Input | Your movement |
+1. Set **2 Source** to **Wearable 1**.
+2. Set **2 Input** to **Hit**.
+3. Set **2 Instrument** to **Whole picture**.
+4. Set **2 Does** to **Burst: Glitch**.
+5. Punch. The picture glitches for a short time. **2 Amount** sets how strong.
+
+### 4.3 Enter a zone, the next video plays (a moment)
+
+1. Set **3 Source** to **Body (camera)**.
+2. Set **3 Input** to **In zone 2 / enters zone 2**.
+3. Set **3 Instrument** to **Media**.
+4. Set **3 Does** to **Next file**.
+5. Walk into zone 2. The next picture or video shows. The camera must see you.
+
+### 4.4 A note of the song makes the shape jump
+
+1. Set **4 Source** to **Song (MIDI)**.
+2. Set **4 Input** to **A note of the song**. Type the note number in **4 Note**.
+3. Set **4 Instrument** to **Trigger Shape** and **4 Does** to **Jump**.
+
+### 4.5 The inputs
+
+| Source | Input | Kind |
 |---|---|---|
-| Wearable 1-3 | Turn the wrist (roll) | Turn the forearm, like you turn a key |
-| Wearable 1-3 | Raise or lower the arm (pitch) | Arm down = low, arm forward = middle, arm up = high |
-| Wearable 1-3 | Activity | How much you move |
-| Wearable 1-3 | Twist / tilt / turn speed | How fast you turn the wearable |
-| Wearable 1-3 | Still, Hit, Button | 1 while it happens, else 0 |
-| Body (camera) | Position left-right, hand heights, arms spread, energy | Your body in the camera picture |
-| Body (camera) | In zone 1-5 | 1 while you are in that zone, else 0 |
-| Camera motion | Motion, left, right | Movement anywhere in the picture |
+| Wearable 1-3 | Turn the wrist (roll), Raise or lower the arm (pitch), Activity, Twist / tilt / turn speed | Movement |
+| Wearable 1-3 | Hit, Button press | Moment |
+| Wearable 1-3 | Still / becomes still | Both |
+| Body (camera) | Position left-right, hand heights, arms spread, energy | Movement |
+| Body (camera) | In zone 1-5 / enters zone 1-5, Dancer seen / dancer appears | Both |
+| Camera motion | Motion, left, right | Movement |
+| Song (MIDI) | A note of the song | Moment |
+| Test signals | Level, Zone (movement), Test trigger (moment) | For a test without a dancer |
+
+Zones: the camera picture is cut into strips from left to right (Inputs tab, **Stage Zones**, Advanced).
 
 Tip: "Turn the wrist" does not work well when the arm points straight down or straight up. Use **Raise or lower the arm** for big arm movements.
 
-### 4.4 More settings (Advanced)
+### 4.6 What the instruments can do
 
-At **Advanced**, each mapping also has **From**, **To**, **Smoothing** and **Sensitivity**:
-
-- **From** and **To**: the setting's values at the two ends of the movement. If the setting moves in the wrong direction, change **From** and **To**.
-- **Smoothing**: seconds the setting takes to follow the movement.
-- **Sensitivity**: 2 = half of the movement reaches **To**.
+| Instrument | One-time actions (moments) | Controls (movements) |
+|---|---|---|
+| Whole picture | Burst of Brightness, Saturation, Trails, Blur, Glitch, Outline, Melt, Flash | The same settings |
+| Trigger Shape | Pulse (grow), Spin, More sides, Jump, Flash colour | Size, position, rotation ... |
+| Media | Play from the start, Next file, Random file | Position in the video, Opacity |
+| Colour Tiles | Shuffle the colours | Scroll speed, Edge size ... |
+| Particles, Noise, Camera | Burst of a setting | Each setting |
 
 ## 5. Save your work
 
@@ -165,7 +151,7 @@ To keep a copy with your name:
 
 To open your show again: type the same name in **Show File** and click **Load Show**.
 
-The show file keeps your phases and their notes, the settings of each phase, the triggers and mappings of each phase, and your song.
+The show file keeps your phases and their notes, the instruments of each phase, the connections of each phase, and your song.
 
 ## 6. Output to the projector
 
@@ -181,9 +167,9 @@ On the **Show** tab, in **Output**:
 
 | Problem | What to do |
 |---|---|
-| The number keys do nothing. | Click the picture in the Stage window first, then push the key. |
+| The number keys do nothing. | Push one key and wait. Do not push other keys at the same time. |
 | An instrument does not show. | Check its **On** on the **Composition** tab, in the phase that plays now. |
-| The trigger does nothing. | Check **On**, **Source** and **Moment**. Check that the Trigger Shape is **On**. Check that the wearable is on and connected (Wearables window at the bottom of the Stage window). |
-| The mapping does nothing. | Set **Level** to **Level 2**. Check **Source**, **Input**, **Instrument** and **Setting**. For **Body** inputs, the camera must see you. |
+| A connection does nothing. | Check **On**, **Source**, **Input**, **Instrument** and **Does**. Check that the instrument is **On**. For wearables: check that the wearable is on and connected (Inputs tab, **Status**). For **Body** inputs: the camera must see you. |
+| Media shows nothing. | Check **Folder** on the **Composition** tab. |
 | The phase does not change with the song. | Check that **Follow MIDI** is **On**. Check the note in **Note for This Phase**. |
 | The computer is slow. | Ask the teacher. Turn off the instruments that you do not use (Composition tab). |

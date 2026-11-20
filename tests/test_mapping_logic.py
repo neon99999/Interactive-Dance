@@ -150,7 +150,7 @@ class FourMenus(unittest.TestCase):
 	def test_instruments_and_settings(self):
 		known = ['layer1.x', 'master.level', 'mapping.preset', 'noise.blend', 'noise.order', 'noise.speed',
 			'particles.size', 'particles.order', 'video.mix', 'video.zoom', 'events.visible']
-		self.assertEqual(ml.instrumentsOf(known), ['particles', 'noise', 'video', 'layer1', 'master'])
+		self.assertEqual(ml.instrumentsOf(known), ['particles', 'noise', 'video', 'master', 'layer1'])
 		self.assertEqual(ml.settingsOf('noise', known), ['speed'])
 		self.assertEqual(ml.settingsOf('video', known), ['zoom'])
 		self.assertEqual(ml.splitTarget('particles.size'), ('particles', 'size'))

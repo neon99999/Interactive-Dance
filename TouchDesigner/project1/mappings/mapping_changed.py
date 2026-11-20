@@ -9,6 +9,8 @@ def onValueChange(par, prev):
 		ext.onSlotChange(par, prev)
 	elif par.name.startswith('Trig'):
 		ext.onTriggerChange(par, prev)
+	elif par.name.startswith('Con'):
+		ext.onConnectionChange(par, prev)
 
 
 def onPulse(par):

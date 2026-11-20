@@ -249,9 +249,9 @@ TRIGGER_INPUTS = {
 }
 # Settings never offered as a mapping target: compositing order and blend are
 # fixed, Mix is gone, and a mapping must not switch the mappings themselves.
-HIDDEN_SETTINGS = ('blend', 'order', 'mix')
+HIDDEN_SETTINGS = ('blend', 'order', 'mix', 'restartcount', 'nextcount', 'randomcount', 'shufflecount', 'refresh')
 HIDDEN_INSTRUMENTS = ('mapping', 'events')
-INSTRUMENT_ORDER = ('particles', 'noise', 'video', 'trigger', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4', 'master')
+INSTRUMENT_ORDER = ('trigger', 'particles', 'noise', 'tiles', 'media', 'video', 'master', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4')
 
 
 def _kind(source):
@@ -327,3 +327,102 @@ def settingsOf(instrument, known):
 		if inst == instrument and setting not in HIDDEN_SETTINGS and target not in HIDDEN_TARGETS:
 			found.append(setting)
 	return found
+
+
+# ---------------------------------------------------------------- connections
+# What students see: 4 connections per phase. Each one is Source + Input (the
+# movement or moment), Instrument, and Does. The Input decides what Does
+# offers:
+#   a moment (hit, button, a note, enters a zone ...) -> one-time actions:
+#       the instrument's own actions (Trigger Shape: pulse, spin ...; Media:
+#       next file ...), or 'burst:<setting>' (the setting jumps by Amount and
+#       falls back);
+#   a movement (tilt, position, activity ...) -> 'set:<setting>' (the
+#       movement controls the setting all the time).
+# Some inputs are both (still, dancer present, in zone N): Does offers both.
+# Connection N is stored as mapping slot N (continuous) or trigger slot N
+# (moment), so presets, phases and show files keep their format. Slots 5-8
+# are kept in the tables but not used.
+
+NUM_CONNECTIONS = 4
+CONNECTION_SOURCES = ('song', 'wearable1', 'wearable2', 'wearable3', 'body', 'camera', 'test')
+MOMENT_ONLY = ('midi', 'hit', 'btn', 'sim_trigger')
+MOMENT_TOO = ('still', 'pose_present', 'pose_zone1', 'pose_zone2', 'pose_zone3', 'pose_zone4', 'pose_zone5')
+# One-time actions an instrument has besides a burst of a setting.
+INSTRUMENT_ACTIONS = {
+	'trigger': ('pulse', 'spin', 'sides', 'jump', 'flash'),
+	'media': ('count:restartcount', 'count:nextcount', 'count:randomcount'),
+	'tiles': ('count:shufflecount',),
+}
+# Settings a burst or a control never offers (menus, switches, counters).
+NO_BURST = ('visible', 'preset', 'echo', 'source', 'playback', 'fit', 'orientation', 'edgeshape',
+	'cycle', 'shuffle', 'matchends', 'randomdir', 'blackout', 'content', 'effect', 'strips', 'fade')
+BURST_DEFAULT = 0.5  # of the setting's range
+
+
+def connectionInputs(source):
+	"""Every input of a source for a connection: movements and moments, in menu order."""
+	if source == 'song':
+		return ['midi']
+	names = sourceInputs(source) + [n for n in sourceInputs(source, trigger=True) if n not in sourceInputs(source)]
+	return names
+
+
+def inputKinds(name):
+	"""('moment',), ('continuous',) or ('moment', 'continuous') for an input name."""
+	if name in MOMENT_ONLY:
+		return ('moment',)
+	if name in MOMENT_TOO:
+		return ('moment', 'continuous')
+	return ('continuous',)
+
+
+def doesOptions(instrument, kinds, settings):
+	"""The Does values for an instrument and the input's kinds: actions, bursts, then controls."""
+	found = []
+	if 'moment' in kinds:
+		found += list(INSTRUMENT_ACTIONS.get(instrument, ()))
+		found += ['burst:' + s for s in settings if s not in NO_BURST]
+	if 'continuous' in kinds:
+		found += ['set:' + s for s in settings if s not in ('preset',)]
+	return found
+
+
+def isContinuous(does):
+	return str(does).startswith('set:')
+
+
+def triggerAction(instrument, does):
+	"""Connection Does -> the trigger row's does: 'pulse', 'burst:particles.size', 'count:media.nextcount'."""
+	does = str(does)
+	for prefix in ('burst:', 'count:'):
+		if does.startswith(prefix):
+			return '%s%s.%s' % (prefix, instrument, does[len(prefix):])
+	return does
+
+
+def connectionAction(action):
+	"""Trigger row does -> (instrument, connection Does): the reverse of triggerAction."""
+	action = str(action)
+	for prefix in ('burst:', 'count:'):
+		if action.startswith(prefix) and '.' in action:
+			instrument, rest = action[len(prefix):].split('.', 1)
+			return instrument, prefix + rest
+	return 'trigger', action
+
+
+def burstAmount(target, ranges=None):
+	"""(default, slider low, slider high) of a burst's Amount: half the setting's range, either way."""
+	low, high = targetRange(target, ranges)
+	span = abs(high - low) or 1.0
+	return round(span * BURST_DEFAULT, 4), -span, span
+
+
+def connectionAmount(instrument, does, ranges=None):
+	"""(default, low, high) of a connection's Amount, or None when Does has no amount (controls, counters)."""
+	does = str(does)
+	if does.startswith('burst:'):
+		return burstAmount('%s.%s' % (instrument, does[len('burst:'):]), ranges)
+	if does in INSTRUMENT_ACTIONS['trigger'] and instrument == 'trigger':
+		return triggerAmount(does)
+	return None

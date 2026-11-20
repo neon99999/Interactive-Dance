@@ -12,7 +12,7 @@ The stage holds no show settings of its own. Play is bound to transport,
 each tile's On to its instrument's Visible. The three tests change a few
 settings and put them back when switched off:
   Test Track    transport plays media/test (the demo cues at 5, 10, 15, 20 s)
-  Test Pattern  the Video Feedback instrument shows the test pattern
+  Test Pattern  the Camera instrument shows the test pattern
   Test Dancer   inputs Use: Test, a made-up dancer for the pose signals
 The settings they replace are kept in storage ('testPrevious').
 """

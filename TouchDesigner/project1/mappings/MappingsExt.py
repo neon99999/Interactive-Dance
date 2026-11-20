@@ -28,6 +28,7 @@ mapping_logic holds the catalogues and the row building (unit-tested in plain
 Python); this extension is the TouchDesigner side.
 """
 
+import re
 from typing import Optional
 
 SLOT_PARS = {'on': 'on', 'signal': 'signal', 'target': 'target', 'from': 'from', 'to': 'to',
@@ -51,6 +52,7 @@ class MappingsExt:
 
 	def __init__(self, ownerComp: COMP) -> None:
 		self.ownerComp = ownerComp
+		self._syncing = False
 
 	def onDestroyTD(self) -> None:
 		pass
@@ -78,9 +80,23 @@ class MappingsExt:
 		self._writeMenu('target_menu', [(name, self._text('target.' + name, name)) for name in targets])
 		self._writeMenu('trigger_when_menu', [(name, self._text('trigger.when.' + name, self._text('signal.' + name, name)))
 			for name in logic.triggerSources()])
-		self._writeMenu('trigger_does_menu', [(name, self._text('trigger.does.' + name, name))
-			for name in logic.TRIGGER_ACTIONS])
+		# Every action a trigger row can hold: the Trigger Shape's own, then the
+		# connections' bursts and counters on any instrument (written by the connections).
+		actions = [(name, self._text('trigger.does.' + name, name)) for name in logic.TRIGGER_ACTIONS]
+		for instrument in logic.instrumentsOf(targets):
+			settings = logic.settingsOf(instrument, targets)
+			for does in logic.doesOptions(instrument, ('moment',), settings):
+				if does.startswith(('burst:', 'count:')):
+					actions.append((logic.triggerAction(instrument, does), self._text('instrument.' + instrument, instrument)
+						+ ': ' + self._doesLabel(instrument, does)))
+		self._writeMenu('trigger_does_menu', actions)
 		self._writeMenu('menu_items', self._menuItems(targets))
+		for i in range(1, logic.NUM_CONNECTIONS + 1):
+			self._setMenuSource(self._conPar(i, 'source'), "me.ext.Mappings.menu('con_source', '')")
+			self._setMenuSource(self._conPar(i, 'input'), "me.ext.Mappings.menu('con_input', me.par.Con%dsource.eval())" % i)
+			self._setMenuSource(self._conPar(i, 'instrument'), "me.ext.Mappings.menu('con_instrument', '')")
+			self._setMenuSource(self._conPar(i, 'does'),
+				"me.ext.Mappings.doesMenu(me.par.Con%dinstrument.eval(), me.par.Con%dinput.eval())" % (i, i))
 		for i in range(1, logic.NUM_TRIGGERS + 1):
 			self._setMenuSource(self._triggerPar(i, 'source'), "me.ext.Mappings.menu('trigger_source', '')")
 			self._setMenuSource(self._triggerPar(i, 'input'),
@@ -110,6 +126,7 @@ class MappingsExt:
 				self._triggerPar(i, field).val = trig[field]
 			self._fitTrigger(i)
 		self.syncMenus()
+		self.syncConnections()
 		self.writeAssignments()
 
 	def CopyPreset(self, source: str, destination: str) -> None:
@@ -200,7 +217,8 @@ class MappingsExt:
 
 	def writeAssignments(self) -> None:
 		"""Write the current slots as engine rows into the assignments table."""
-		rows = self._logic().assignmentRows(self._currentSlots(), known=self._knownTargets())
+		logic = self._logic()
+		rows = logic.assignmentRows(self._currentSlots()[:logic.NUM_CONNECTIONS], known=self._knownTargets())
 		table = self.ownerComp.op('assignments')
 		if [[c.val for c in r] for r in table.rows()] != rows:
 			table.clear()
@@ -226,6 +244,145 @@ class MappingsExt:
 		for i in range(1, logic.NUM_TRIGGERS + 1):
 			self._triggerToMenus(i)
 
+
+	# ------------------------------------------------------------ connections (what students see)
+
+	def onConnectionChange(self, par: Par, prev) -> None:
+		"""A connection parameter changed (Con<N><field>): keep its menus valid, then write it into its slot or trigger."""
+		digits = ''.join(c for c in par.name[3:] if c.isdigit())
+		field = par.name[3 + len(digits):]
+		if not digits or self._syncing:
+			return
+		self._connectionToSlots(int(digits), field)
+
+	def syncConnections(self) -> None:
+		"""Set every connection's menus from its stored mapping slot or trigger (after a preset load)."""
+		self._syncing = True
+		try:
+			for i in range(1, self._logic().NUM_CONNECTIONS + 1):
+				self._slotsToConnection(i)
+		finally:
+			run('args[0]._endSync()', self, delayFrames=2)
+
+	def _endSync(self) -> None:
+		self._syncing = False
+
+	def _conPar(self, i: int, field: str) -> Par:
+		return self.ownerComp.par['Con%d%s' % (i, field)]
+
+	def _connectionKinds(self, i: int) -> tuple:
+		return self._logic().inputKinds(self._conPar(i, 'input').eval())
+
+	def _slotsToConnection(self, i: int) -> None:
+		"""Mapping slot i (on) or trigger i -> the connection's menus.
+
+		Both on (shows from before connections): the trigger is kept and the
+		slot is switched off, as one connection can do one thing.
+		"""
+		logic = self._logic()
+		slot_on = bool(self._slotPar(i, 'on').eval())
+		trig_on = bool(self._triggerPar(i, 'on').eval())
+		use_trigger = trig_on
+		if not slot_on and not trig_on and not self._slotPar(i, 'signal').eval():
+			# Both off: show the trigger only when it was set up (not the untouched default).
+			default = logic.TRIGGER_DEFAULTS
+			use_trigger = (self._triggerPar(i, 'when').eval(), self._triggerPar(i, 'does').eval()) != (default['when'], default['does'])
+		if slot_on and trig_on:
+			self._slotPar(i, 'on').val = 0
+			slot_on = False
+		if use_trigger:
+			source, name = logic.splitSignal(self._triggerPar(i, 'when').eval())
+			instrument, does = logic.connectionAction(self._triggerPar(i, 'does').eval())
+			on = trig_on
+			self._conPar(i, 'note').val = int(self._triggerPar(i, 'note').eval())
+			self._conPar(i, 'amount').val = float(self._triggerPar(i, 'amount').eval())
+		else:
+			source, name = logic.splitSignal(self._slotPar(i, 'signal').eval())
+			instrument, setting = logic.splitTarget(self._slotPar(i, 'target').eval())
+			does = 'set:' + setting if setting else NONE
+			on = slot_on
+		self._setMenu(self._conPar(i, 'source'), source)
+		self._setMenu(self._conPar(i, 'input'), name)
+		self._setMenu(self._conPar(i, 'instrument'), instrument)
+		self._setMenu(self._conPar(i, 'does'), does)
+		if bool(self._conPar(i, 'on').eval()) != on:
+			self._conPar(i, 'on').val = int(on)
+		self._fitConnection(i)
+
+	def _connectionToSlots(self, i: int, field: str) -> None:
+		"""The connection's menus -> its mapping slot (Does = controls a setting) or trigger (a one-time action)."""
+		logic = self._logic()
+		source = self._conPar(i, 'source').eval()
+		name = self._conPar(i, 'input').eval()
+		inputs = logic.connectionInputs(source) if source != NONE else []
+		if field == 'source' and name not in inputs:
+			name = inputs[0] if inputs else NONE
+			self._setMenu(self._conPar(i, 'input'), name)
+		instrument = self._conPar(i, 'instrument').eval()
+		does = self._conPar(i, 'does').eval()
+		options = [n for n in self.menu('does', self._doesKey(instrument, name)).menuNames if n != NONE]
+		if field in ('source', 'input', 'instrument') and does not in options:
+			does = options[0] if options else NONE
+			self._setMenu(self._conPar(i, 'does'), does)
+		signal = logic.joinSignal(source if source != NONE else '', name)
+		complete = bool(signal) and instrument != NONE and does != NONE
+		if field in ('source', 'input', 'instrument', 'does') and complete and not self._conPar(i, 'on').eval():
+			self._conPar(i, 'on').val = 1
+		on = int(bool(self._conPar(i, 'on').eval()) and complete)
+		if logic.isContinuous(does):
+			target = logic.joinTarget(instrument, does[len('set:'):])
+			if self._slotPar(i, 'target').eval() != target:
+				low, high = logic.targetRange(target, self._targetRanges())
+				self._slotPar(i, 'from').val = low
+				self._slotPar(i, 'to').val = high
+			self._slotPar(i, 'signal').val = signal
+			self._slotPar(i, 'target').val = target
+			self._slotPar(i, 'on').val = on
+			self._triggerPar(i, 'on').val = 0
+		else:
+			if field in ('instrument', 'does'):
+				amount = logic.connectionAmount(instrument, does, self._targetRanges())
+				if amount is not None:
+					self._conPar(i, 'amount').val = amount[0]
+			self._triggerPar(i, 'when').val = signal or 'midi'
+			self._triggerPar(i, 'note').val = int(self._conPar(i, 'note').eval())
+			self._triggerPar(i, 'does').val = logic.triggerAction(instrument, does) if does != NONE else 'pulse'
+			self._triggerPar(i, 'amount').val = float(self._conPar(i, 'amount').eval())
+			self._triggerPar(i, 'on').val = on
+			self._slotPar(i, 'on').val = 0
+		self._fitConnection(i)
+		self._fitTrigger(i)
+		# Save here: changes made inside a parameter callback do not call the callbacks again.
+		preset = self.ownerComp.par.Preset.eval()
+		presets = self._presets()
+		if presets[preset] != self._currentSlots():
+			presets[preset] = self._currentSlots()
+			self._writePresets(presets)
+		triggers = self._triggerPresets()
+		if triggers[preset] != self._currentTriggers():
+			triggers[preset] = self._currentTriggers()
+			self._writeTriggerPresets(triggers)
+		self.writeAssignments()
+
+	def _doesKey(self, instrument: str, name: str) -> str:
+		return '%s|%s' % (instrument, '+'.join(self._logic().inputKinds(name)))
+
+	def _fitConnection(self, i: int) -> None:
+		"""Amount only for actions that have one (with its slider range); Note only for a song note."""
+		logic = self._logic()
+		instrument = self._conPar(i, 'instrument').eval()
+		does = self._conPar(i, 'does').eval()
+		amount = logic.connectionAmount(instrument, does, self._targetRanges())
+		midi = self._conPar(i, 'input').eval() == 'midi'
+		for par in self._withPanelCopies(self._conPar(i, 'amount')):
+			if amount is not None and (par.normMin, par.normMax) != (amount[1], amount[2]):
+				par.normMin, par.normMax = amount[1], amount[2]
+			if par.enable != (amount is not None):
+				par.enable = amount is not None
+		for par in self._withPanelCopies(self._conPar(i, 'note')):
+			if par.enable != midi:
+				par.enable = midi
+
 	# ------------------------------------------------------------ private
 
 	def _setMenuSource(self, par: Par, source: str) -> None:
@@ -248,7 +405,44 @@ class MappingsExt:
 			rows.append(('instrument', '', instrument, self._text('instrument.' + instrument, instrument)))
 			for setting in logic.settingsOf(instrument, targets):
 				rows.append(('setting', instrument, setting, self._settingLabel(instrument, setting)))
+		for source in logic.CONNECTION_SOURCES:
+			rows.append(('con_source', '', source, self._text('source.' + source, source)))
+			for name in logic.connectionInputs(source):
+				rows.append(('con_input', source, name, self._connectionInputLabel(source, name)))
+		kinds_all = (('moment',), ('continuous',), ('moment', 'continuous'))
+		for instrument in logic.instrumentsOf(targets):
+			# (the four shape layers come last: older phases still use them)
+			rows.append(('con_instrument', '', instrument, self._text('instrument.' + instrument, instrument)))
+			settings = logic.settingsOf(instrument, targets)
+			for kinds in kinds_all:
+				key = '%s|%s' % (instrument, '+'.join(kinds))
+				for does in logic.doesOptions(instrument, kinds, settings):
+					rows.append(('does', key, does, self._doesLabel(instrument, does)))
 		return rows
+
+	def doesMenu(self, instrument: str, name: str) -> _Menu:
+		"""The Does menu of a connection (menuSource): what the instrument can do with this input."""
+		return self.menu('does', self._doesKey(instrument, name))
+
+	def _connectionInputLabel(self, source: str, name: str) -> str:
+		"""'Hit (a moment)' / 'Turn the wrist' / 'In zone 1 / enters zone 1'."""
+		kinds = self._logic().inputKinds(name)
+		if kinds == ('moment',):
+			return self._inputLabel(source, name, True)
+		label = self._inputLabel(source, name, False)
+		if 'moment' in kinds:
+			# 'In zone 1 (1 while there)' -> 'In zone 1 / enters zone 1'
+			label = re.sub(r' \(1 [^)]*\)', '', label) + ' / ' + self._inputLabel(source, name, True).lower()
+		return label
+
+	def _doesLabel(self, instrument: str, does: str) -> str:
+		if does.startswith('set:'):
+			return self._text('does.set', 'Controls') + ': ' + self._settingLabel(instrument, does[4:])
+		if does.startswith('burst:'):
+			return self._text('does.burst', 'Burst') + ': ' + self._settingLabel(instrument, does[6:])
+		if does.startswith('count:'):
+			return self._text('does.count.' + does[6:], does[6:])
+		return self._text('trigger.does.' + does, does)
 
 	def _inputLabel(self, source: str, name: str, trigger: bool) -> str:
 		"""'Tilt sideways' for wearable roll: the input's own label, else the signal label without its source."""
