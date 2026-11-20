@@ -29,6 +29,23 @@ LAYER_PARAMS = tuple(LAYER_DEFAULTS)
 MASTER_PARAMS = tuple(MASTER_DEFAULTS)
 
 
+# Whole-picture effects act only while something drives them (a connection,
+# an input-table row or a MIDI row): otherwise they are off, whatever their
+# slider says, so an effect never stays on after its connection moved on.
+# Bursts (moments) add on top later. The Trails zoom/warp/colour settings
+# only shape Trails, so they keep their values.
+GATED_EFFECTS = ('trails', 'blur', 'glitch', 'outline', 'melt')
+
+
+def gateEffects(base, controlled):
+	"""Set every whole-picture effect that no assignment drives to 0. controlled: the driven target names."""
+	for name in GATED_EFFECTS:
+		key = 'master.' + name
+		if key in base and key not in controlled:
+			base[key] = 0.0
+	return base
+
+
 def defaultBase(num_layers=4):
 	"""Base values used when a layer or the master controls are missing."""
 	base = {'layer%d.%s' % (i, p): v for i in range(1, num_layers + 1) for p, v in LAYER_DEFAULTS.items()}

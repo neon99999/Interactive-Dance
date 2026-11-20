@@ -801,7 +801,7 @@ does.count.nextcount	Next file	Archivo siguiente
 does.count.randomcount	Random file	Archivo al azar
 does.count.shufflecount	Shuffle the colours	Mezclar los colores
 visuals.Trails.label	Trails	Estelas
-visuals.Trails.help	Whole-picture trails (the old Video Feedback): 0 = off, 1 = very long trails.	Estelas de toda la imagen (el antiguo Video eco): 0 = apagado, 1 = estelas muy largas.
+visuals.Trails.help	Whole-picture trails (the old Video Feedback): 0 = off, 1 = very long trails. Acts only while a connection (or a MIDI row) drives it.	Estelas de toda la imagen (el antiguo Video eco): 0 = apagado, 1 = estelas muy largas. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.trails	Trails	Estelas
 visuals.Trailszoom.label	Trails zoom	Zoom de estelas
 visuals.Trailszoom.help	Trails grow outward (above 0) or shrink inward (below 0).	Las estelas crecen hacia afuera (mayor que 0) o se encogen hacia adentro (menor que 0).
@@ -813,16 +813,16 @@ visuals.Trailscolour.label	Trails colour	Color de estelas
 visuals.Trailscolour.help	Trails shift through the colours: 0 = natural colour, 1 = rainbow.	Las estelas cambian de color: 0 = color natural, 1 = arcoíris.
 target.master.trailscolour	Trails colour	Color de estelas
 visuals.Blur.label	Blur	Desenfoque
-visuals.Blur.help	Blur of the whole picture: 0 = sharp, 1 = very soft.	Desenfoque de toda la imagen: 0 = nítido, 1 = muy suave.
+visuals.Blur.help	Blur of the whole picture: 0 = sharp, 1 = very soft. Acts only while a connection (or a MIDI row) drives it.	Desenfoque de toda la imagen: 0 = nítido, 1 = muy suave. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.blur	Blur	Desenfoque
 visuals.Glitch.label	Glitch	Glitch
-visuals.Glitch.help	Bands slide sideways and the colours split: 0 = off, 1 = strong.	Franjas que se desplazan y colores que se separan: 0 = apagado, 1 = fuerte.
+visuals.Glitch.help	Bands slide sideways and the colours split: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.	Franjas que se desplazan y colores que se separan: 0 = apagado, 1 = fuerte. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.glitch	Glitch	Glitch
 visuals.Outline.label	Outline	Contorno
-visuals.Outline.help	Shows the edges only: 0 = off, 1 = only outlines.	Muestra solo los bordes: 0 = apagado, 1 = solo contornos.
+visuals.Outline.help	Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.	Muestra solo los bordes: 0 = apagado, 1 = solo contornos. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.outline	Outline	Contorno
 visuals.Melt.label	Melt	Derretir
-visuals.Melt.help	The picture slides down, dark parts first: 0 = off, 1 = strong.	La imagen se escurre hacia abajo, primero las partes oscuras: 0 = apagado, 1 = fuerte.
+visuals.Melt.help	The picture slides down, dark parts first: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.	La imagen se escurre hacia abajo, primero las partes oscuras: 0 = apagado, 1 = fuerte. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.melt	Melt	Derretir
 visuals/media.Visible.label	On	Encendido
 visuals/media.Visible.help	Show the pictures and videos.	Muestra las fotos y los videos.

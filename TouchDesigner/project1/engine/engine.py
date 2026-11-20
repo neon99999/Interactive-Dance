@@ -46,7 +46,9 @@ def onFrameStart(frame):
 	known = sl.knownParams(NUM_LAYERS, ranges)
 	_refreshMidi(sl, known)
 	_refreshInputs(sl, known)
-	state = sl.evaluate(_midi['events'], _base(sl, found, ranges), _transportSeconds())
+	controlled = {a.param for a in _inputs['assignments']} | {e[2].param for e in _midi['events']}
+	base = sl.gateEffects(_base(sl, found, ranges), controlled)
+	state = sl.evaluate(_midi['events'], base, _transportSeconds())
 	if _mapper is None:
 		_mapper = sl.InputMapper()
 	now = absTime.seconds

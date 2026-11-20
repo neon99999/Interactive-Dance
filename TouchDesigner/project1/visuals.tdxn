@@ -442,12 +442,13 @@ operators:
     type: textDAT
     position: [800, 400]
     color: [0.67, 0.67, 0.67]
-    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(comp.par.Fade.eval())\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn 'specify' if _comp().par.Playback.eval() == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
+    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn
+      'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
     dat_content_format: text
   - name: fit_screen
     type: fitTOP
     parameters:
-      fit: =parent.Instrument.par.Fit.eval()
+      fit: =op('media_mod').module.setting('Fit')
       resolutionw: =op.Visuals.par.Resolution1
       resolutionh: =op.Visuals.par.Resolution2
     position: [800, 0]
@@ -1147,8 +1148,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -1162,8 +1163,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -1171,11 +1172,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.318667
+        displaceweighty: 0.3180000047
         extend: repeat
         outputresolution: custom
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -1184,10 +1185,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -840.399
+        tx: -560.265941766
         tunit: pixels
-        sx: 0.124479
-        sy: 1.00185
+        sx: 0.12421875
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1198,8 +1199,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -1209,8 +1210,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -1218,7 +1219,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(0)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -1226,8 +1227,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 239
-        resolutionh: 1082
+        resolutionw: 159
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -1236,8 +1237,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -1258,9 +1259,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.8156862854957581'
-        - '0.1921568661928177'
-        - '0.239215686917305'
+        - '0.98'
+        - '0.21'
+        - '0.45'
         - '1'
       - - '0.875'
         - '0'
@@ -1316,8 +1317,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 239
-        resolutionh: 270
+        resolutionw: 159
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -1382,8 +1383,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -1397,8 +1398,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -1409,8 +1410,8 @@ operators:
         displaceweighty: 0.324
         extend: repeat
         outputresolution: custom
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -1419,10 +1420,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -599.279
+        tx: -399.5193102644
         tunit: pixels
         sx: 0.126562
-        sy: 1.00185
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1433,8 +1434,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -1444,8 +1445,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -1453,7 +1454,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(1)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -1461,8 +1462,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 243
-        resolutionh: 1082
+        resolutionw: 162
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -1471,8 +1472,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -1493,9 +1494,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.8941176533699036'
-        - '0.3843137323856354'
-        - '0.3607843220233917'
+        - '0.1'
+        - '0.85'
+        - '0.95'
         - '1'
       - - '0.875'
         - '0'
@@ -1551,8 +1552,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 243
-        resolutionh: 270
+        resolutionw: 162
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -1617,8 +1618,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -1632,8 +1633,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -1641,11 +1642,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.250667
+        displaceweighty: 0.2500000037
         extend: repeat
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -1654,10 +1655,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -383.645
+        tx: -255.763259137
         tunit: pixels
-        sx: 0.0979167
-        sy: 1.00185
+        sx: 0.09765625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1668,8 +1669,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -1679,8 +1680,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -1688,7 +1689,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(2)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -1696,8 +1697,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 1082
+        resolutionw: 125
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -1706,8 +1707,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -1728,9 +1729,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.9725490212440491'
-        - '0.7450980544090271'
-        - '0.4627451002597809'
+        - '1.0'
+        - '0.85'
+        - '0.15'
         - '1'
       - - '0.875'
         - '0'
@@ -1786,8 +1787,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -1852,8 +1853,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -1867,8 +1868,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -1876,11 +1877,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.245333
+        displaceweighty: 0.2440000036
         extend: repeat
         outputresolution: custom
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -1889,10 +1890,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -197.761
+        tx: -131.8405916839
         tunit: pixels
-        sx: 0.0958333
-        sy: 1.00185
+        sx: 0.0953125
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1903,8 +1904,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -1914,8 +1915,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -1923,7 +1924,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(3)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -1931,8 +1932,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 184
-        resolutionh: 1082
+        resolutionw: 122
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -1941,8 +1942,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -1963,9 +1964,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.5529412031173706'
-        - '0.6941176652908325'
-        - '0.7686274647712708'
+        - '0.55'
+        - '0.3'
+        - '0.95'
         - '1'
       - - '0.875'
         - '0'
@@ -2021,8 +2022,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 184
-        resolutionh: 270
+        resolutionw: 122
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -2087,8 +2088,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -2102,8 +2103,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -2114,8 +2115,8 @@ operators:
         displaceweighty: 0.224
         extend: repeat
         outputresolution: custom
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -2124,10 +2125,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -21.7989
+        tx: -14.5326072986
         tunit: pixels
         sx: 0.0875
-        sy: 1.00185
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2138,8 +2139,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -2149,8 +2150,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -2158,7 +2159,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(4)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -2166,8 +2167,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 168
-        resolutionh: 1082
+        resolutionw: 112
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -2176,8 +2177,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -2198,9 +2199,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.3803921639919281'
-        - '0.32549020648002625'
-        - '0.4588235318660736'
+        - '0.96'
+        - '0.96'
+        - '0.92'
         - '1'
       - - '0.875'
         - '0'
@@ -2256,8 +2257,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 168
-        resolutionh: 270
+        resolutionw: 112
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -2322,8 +2323,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -2337,8 +2338,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -2346,11 +2347,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.241333
+        displaceweighty: 0.2400000036
         extend: repeat
         outputresolution: custom
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -2359,10 +2360,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 152.749
+        tx: 101.8323755324
         tunit: pixels
-        sx: 0.0942708
-        sy: 1.00185
+        sx: 0.09375
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2373,8 +2374,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -2384,8 +2385,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -2393,7 +2394,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(5)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -2401,8 +2402,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 181
-        resolutionh: 1082
+        resolutionw: 120
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -2411,8 +2412,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -2433,9 +2434,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.8156862854957581'
-        - '0.1921568661928177'
-        - '0.239215686917305'
+        - '0.98'
+        - '0.21'
+        - '0.45'
         - '1'
       - - '0.875'
         - '0'
@@ -2491,8 +2492,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 181
-        resolutionh: 270
+        resolutionw: 120
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -2557,8 +2558,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -2572,8 +2573,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -2581,11 +2582,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.205333
+        displaceweighty: 0.204000003
         extend: repeat
         outputresolution: custom
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -2594,10 +2595,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 319.891
+        tx: 213.2603783561
         tunit: pixels
-        sx: 0.0802083
-        sy: 1.00185
+        sx: 0.0796875
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2608,8 +2609,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -2619,8 +2620,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -2628,7 +2629,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(6)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -2636,8 +2637,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 154
-        resolutionh: 1082
+        resolutionw: 102
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -2646,8 +2647,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -2668,9 +2669,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.8941176533699036'
-        - '0.3843137323856354'
-        - '0.3607843220233917'
+        - '0.1'
+        - '0.85'
+        - '0.95'
         - '1'
       - - '0.875'
         - '0'
@@ -2726,8 +2727,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 154
-        resolutionh: 270
+        resolutionw: 102
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -2792,8 +2793,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -2807,8 +2808,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -2819,8 +2820,8 @@ operators:
         displaceweighty: 0.34
         extend: repeat
         outputresolution: custom
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -2829,10 +2830,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 524.09
+        tx: 349.3934416011
         tunit: pixels
         sx: 0.132812
-        sy: 1.00185
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2843,8 +2844,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -2854,8 +2855,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -2863,7 +2864,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(7)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -2871,8 +2872,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 255
-        resolutionh: 1082
+        resolutionw: 170
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -2881,8 +2882,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -2903,9 +2904,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.9725490212440491'
-        - '0.7450980544090271'
-        - '0.4627451002597809'
+        - '1.0'
+        - '0.85'
+        - '0.15'
         - '1'
       - - '0.875'
         - '0'
@@ -2961,8 +2962,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 255
-        resolutionh: 270
+        resolutionw: 170
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -3027,8 +3028,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -3042,8 +3043,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -3051,11 +3052,11 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.250667
+        displaceweighty: 0.2500000037
         extend: repeat
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -3064,10 +3065,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 745.505
+        tx: 497.003648963
         tunit: pixels
-        sx: 0.0979167
-        sy: 1.00185
+        sx: 0.09765625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -3078,8 +3079,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -3089,8 +3090,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -3098,7 +3099,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(8)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -3106,8 +3107,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 1082
+        resolutionw: 125
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -3116,8 +3117,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -3138,9 +3139,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.5529412031173706'
-        - '0.6941176652908325'
-        - '0.7686274647712708'
+        - '0.55'
+        - '0.3'
+        - '0.95'
         - '1'
       - - '0.875'
         - '0'
@@ -3196,8 +3197,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 188
-        resolutionh: 270
+        resolutionw: 125
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -3262,8 +3263,8 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [400, -400]
     - name: out1
@@ -3277,8 +3278,8 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [400, -200]
     - name: edges
@@ -3289,8 +3290,8 @@ operators:
         displaceweighty: 0.16
         extend: repeat
         outputresolution: custom
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [1600, 200]
       inputs:
@@ -3299,10 +3300,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 899.754
+        tx: 599.8363039322
         tunit: pixels
         sx: 0.0625
-        sy: 1.00185
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -3313,8 +3314,8 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [400, 0]
     - name: tiles
@@ -3324,8 +3325,8 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [400, 400]
     - name: scroll
@@ -3333,7 +3334,7 @@ operators:
       parameters:
         ty: =op('../strips_mod').module.scrollPixels(9)
         tunit: pixels
-        sy: 0.249538
+        sy: 0.2493074792
         extend: repeat
         limittiles: true
         tileu1: 0
@@ -3341,8 +3342,8 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 120
-        resolutionh: 1082
+        resolutionw: 80
+        resolutionh: 722
       position: [2000, 200]
       inputs:
       - edges
@@ -3351,8 +3352,8 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [1200, -200]
       inputs:
@@ -3373,9 +3374,9 @@ operators:
         - '0'
         - '0'
       - - '0.125'
-        - '0.3803921639919281'
-        - '0.32549020648002625'
-        - '0.4588235318660736'
+        - '0.96'
+        - '0.96'
+        - '0.92'
         - '1'
       - - '0.875'
         - '0'
@@ -3431,8 +3432,8 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 120
-        resolutionh: 270
+        resolutionw: 80
+        resolutionh: 180
         format: rgba16float
       position: [800, -100]
       inputs:
@@ -3517,7 +3518,7 @@ operators:
     dat_content: |
       """Colour Tiles instrument (from the ProjectionMappingRig scene_tiles): helper functions.
 
-      Scroll Speed and Edge Size follow engine/live (live CHOP), so mappings drive them; a
+      Every setting is read through val(): engine/live (live CHOP) first, so connections, MIDI and phases drive them; a
       Shuffle Colours trigger raises live shufflecount, which picks a new colour order.
 
       The canvas is cut into parallel strips (vertical or horizontal, optionally tilted). Each strip scrolls a repeating run of
@@ -3548,15 +3549,35 @@ operators:
           return int(chan.eval()) if name.endswith('count') and chan is not None else (chan.eval() if chan is not None else default)
 
 
+      def val(name):
+          """A setting's value now: engine/live (so connections, MIDI and phases drive it), else the parameter.
+
+          Menus come from engine/live as an index, toggles as 0/1.
+          """
+          scene = _scene()
+          par = scene.par[name]
+          chan = scene.op('live')[name.lower()]
+          if chan is None:
+              return par.eval()
+          v = chan.eval()
+          if par.isMenu:
+              names = list(par.menuNames)
+              return names[min(len(names) - 1, max(0, int(round(v))))] if names else par.eval()
+          if par.style == 'Toggle':
+              return v >= 0.5
+          if par.style == 'Int':
+              return int(round(v))
+          return v
+
+
       def edgeSize():
-          chan = _scene().op('live')['edgesize']
-          return float(chan.eval()) if chan is not None else float(_scene().par.Edgesize.eval())
+          return float(val('Edgesize'))
 
 
       def applyEdges():
           """Edge Size moved (by hand, a mapping or MIDI): only the edge depth changes, nothing is rebuilt."""
           scene = _scene()
-          active = int(scene.par.Strips.eval())
+          active = int(val('Strips'))
           for i in range(active):
               strip = scene.op('strip%d' % i)
               if strip is not None:
@@ -3581,7 +3602,7 @@ operators:
       def _angle():
           """Angle in degrees (counter-clockwise) of the strip direction from vertical."""
           scene = _scene()
-          base = 0.0 if scene.par.Orientation.eval() == 'vertical' else 90.0
+          base = 0.0 if val('Orientation') == 'vertical' else 90.0
           return base
 
 
@@ -3603,7 +3624,7 @@ operators:
           """Which palette colour each strip starts with (a shuffle when Shuffle is on)."""
           scene = _scene()
           order = list(range(PALETTE_SIZE))
-          if scene.par.Shuffle.eval():
+          if val('Shuffle'):
               random.Random(SEED + 7 + live('shufflecount')).shuffle(order)
           elif live('shufflecount'):
               random.Random(SEED + live('shufflecount')).shuffle(order)
@@ -3637,7 +3658,7 @@ operators:
           """Rebuild the shared edge shape table and every strip's colour keys (call after any colour or shape change)."""
           scene = _scene()
           _state['palette'] = None
-          _setKeys(scene.op('shape_keys'), _shapeRows(scene.par.Edgeshape.eval()))
+          _setKeys(scene.op('shape_keys'), _shapeRows(val('Edgeshape')))
           for strip in scene.children:
               if strip.name.startswith('strip') and strip.name[5:].isdigit():
                   _buildStrip(strip)
@@ -3658,7 +3679,7 @@ operators:
           """
           scene = _scene()
           angle = _angle()
-          active = int(scene.par.Strips.eval())
+          active = int(val('Strips'))
           for strip in scene.children:
               if not (strip.name.startswith('strip') and strip.name[5:].isdigit()):
                   continue
@@ -3693,10 +3714,10 @@ operators:
           i = int(strip.name[5:])
           colours = palette()
           order = _order()
-          cycle = bool(scene.par.Cycle.eval())
+          cycle = bool(val('Cycle'))
           count = PALETTE_SIZE if cycle else 1
-          gap = float(scene.par.Tilegap.eval())
-          match = bool(scene.par.Matchends.eval())
+          gap = float(val('Tilegap'))
+          match = bool(val('Matchends'))
           rows, zone = [], []
           for k in range(count):
               colour = colours[(order[i % PALETTE_SIZE] + k) % PALETTE_SIZE]
@@ -3730,9 +3751,9 @@ operators:
       def buildLayout():
           """Rebuild the `layout` table: strip positions (0 to 1 across the canvas), directions, speeds."""
           scene = _scene()
-          count = int(scene.par.Strips.eval())
-          variation = float(scene.par.Widthvar.eval())
-          speed_var = float(scene.par.Scrollvar.eval())
+          count = int(val('Strips'))
+          variation = float(val('Widthvar'))
+          speed_var = float(val('Scrollvar'))
           seed = SEED
           strips = []
           for i in range(count):
@@ -3755,7 +3776,7 @@ operators:
       def ensureStrips():
           """Make sure all MAX_STRIPS strips exist (built once) and switch on exactly `Strips` of them."""
           scene = _scene()
-          count = int(scene.par.Strips.eval())
+          count = int(val('Strips'))
           for i in range(MAX_STRIPS):
               strip = scene.op('strip%d' % i)
               if strip is None:
@@ -3878,18 +3899,18 @@ operators:
       def tileHeight():
           """Pixel length of one tile plus its gap (one repeat)."""
           _, length = _along()
-          return length / max(1.0, float(_scene().par.Repeats.eval()))
+          return length / max(1.0, float(val('Repeats')))
 
 
       def height(i):
           """Pixel height of the repeating image of strip i: one repeat, or five when colours cycle along the strip."""
-          count = PALETTE_SIZE if _scene().par.Cycle.eval() else 1
+          count = PALETTE_SIZE if val('Cycle') else 1
           return max(4, int(round(tileHeight() * count)))
 
 
       def period(i):
           """Horizontal ramp period (in strip widths) of the edge shape: one over the shape frequency."""
-          return 1.0 / max(0.1, float(_scene().par.Edgefreq.eval()))
+          return 1.0 / max(0.1, float(val('Edgefreq')))
 
 
       def weight(i):
@@ -3899,17 +3920,17 @@ operators:
           when only the tile start is shaped it must stay inside its own tile.
           """
           scene = _scene()
-          if float(scene.par.Edgefreq.eval()) <= 0.01:
+          if float(val('Edgefreq')) <= 0.01:
               return 0.0   # frequency 0: flat edges
-          reach = 0.45 * width(i) / max(0.25, float(scene.par.Edgefreq.eval()))
-          if not scene.par.Matchends.eval():
-              reach = min(reach, 0.4 * (1 - float(scene.par.Tilegap.eval())) * tileHeight())
+          reach = 0.45 * width(i) / max(0.25, float(val('Edgefreq')))
+          if not val('Matchends'):
+              reach = min(reach, 0.4 * (1 - float(val('Tilegap'))) * tileHeight())
           return _flip(i) * edgeSize() * reach / float(height(i))
 
 
       def _flip(i):
           """+1 or -1: which way strip i's edge shape points (random per strip when Random Edge Direction is on)."""
-          if not _scene().par.Randomdir.eval():
+          if not val('Randomdir'):
               return 1
           return _FLIPS[i % len(_FLIPS)]
 
@@ -3942,6 +3963,14 @@ operators:
       _pending = {'names': set(), 'scheduled': False}
 
 
+      def onLiveChange(name):
+          """A setting changed on engine/live (a connection, MIDI or a phase): rebuild like a parameter change."""
+          _pending['names'].add(name[:1].upper() + name[1:])
+          if not _pending['scheduled']:
+              _pending['scheduled'] = True
+              run("args[0]()", _flush, delayFrames=3)
+
+
       def onChange(par):
           """Called by the parameter callbacks. Changes are collected and applied at most every few frames, so dragging a slider is not one rebuild per tick."""
           _pending['names'].add(par.name)
@@ -3968,7 +3997,7 @@ operators:
   - name: comp_strips
     type: compositeTOP
     parameters:
-      tops: =' '.join('strip%d/out1' % i for i in range(int(parent().par.Strips)))
+      tops: =' '.join('strip%d/out1' % i for i in range(int(op('strips_mod').module.val('Strips'))))
       operand: over
     position: [2400, -400]
     inputs:
@@ -3988,10 +4017,8 @@ operators:
     - speed_clocks
   - name: live_changed
     type: chopexecuteDAT
-    parameters:
-      channel: edgesize shufflecount
     position: [0, 400]
-    dat_content: "\"\"\"live_changed: Edge Size and Shuffle Colours from engine/live (mappings, MIDI, triggers).\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tmod = op('strips_mod').module\n\tif channel.name == 'edgesize':\n\t\tmod.applyEdges()\n\telif channel.name == 'shufflecount':\n\t\tmod.refresh()\n"
+    dat_content: "\"\"\"live_changed: a tiles setting changed on engine/live (connections, MIDI, triggers): rebuild what it needs.\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tmod = op('strips_mod').module\n\tif channel.name == 'edgesize':\n\t\tmod.applyEdges()\n\telif channel.name == 'shufflecount':\n\t\tmod.refresh()\n\telif channel.name not in ('scrollspeed', 'visible', 'opacity'):\n\t\tmod.onLiveChange(channel.name)\n"
     dat_content_format: text
   - name: speed_clocks
     type: speedCHOP
@@ -5017,7 +5044,8 @@ operators:
   - name: blur_fx
     type: blurTOP
     parameters:
-      size: =op('live')['blur'] * 40
+      preshrink: 3
+      size: =op('live')['blur'] * 10
     position: [3200, -400]
     inputs:
     - switch_trails
