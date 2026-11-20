@@ -42,11 +42,11 @@ def Steps(check):
 		logic = mappings.op('mapping_logic').module
 		presets = {p: logic.emptySlots() for p in logic.PRESETS}
 		for index, slot in slots.items():
-			presets['A'][index] = slot
+			presets['1'][index] = slot
 		mappings.ext.Mappings._writePresets(presets)
 		mappings.par.Followmidi = 0
-		mappings.par.Preset = 'A'
-		mappings.LoadPreset('A')
+		mappings.par.Preset = '1'
+		mappings.LoadPreset('1')
 
 	def slot(signal, target, low, high):
 		return {'on': 1.0, 'signal': signal, 'target': target, 'from': float(low), 'to': float(high), 'smooth': 0.0, 'sens': 1.0}
@@ -127,7 +127,7 @@ def Steps(check):
 		pars_are('particles Reset restores the preset', 'particles', {'Energy': 0.15}),
 		setp('video', 'Preset', 'abstract'), wait,
 		pars_are('video preset abstract', 'video', {'Feedback': 0.95, 'Zoom': 0.4, 'Mix': 1}),
-		pars_are('presets leave the compositor settings alone', 'video', {'Opacity': 1, 'Blend': 'normal', 'Order': 1}),
+		pars_are('presets leave the compositor settings alone', 'video', {'Opacity': 1}),
 		setp('video', 'Visible', 0), wait,
 		setp('noise', 'Preset', 'lava'), wait,
 		pars_are('noise preset lava', 'noise', {'Scale': 0.4, 'Warp': 0.7, 'Colour': 'lava'}),
@@ -163,7 +163,8 @@ def Steps(check):
 		particles.par.Energy = 0.33
 		back = float(control.par.Instparticlesenergy.eval())
 		check(s, 'panel slider <-> instrument parameter (both ways)', abs(forward - 0.66) < 1e-4 and abs(back - 0.33) < 1e-4, '%.2f, %.2f' % (forward, back))
-		labels = [p.label for p in control.customPages[1].pars if p.style == 'Header']
+		page = [g for g in control.customPages if g.name == 'Instruments'][0]
+		labels = [p.label for p in page.pars if p.style == 'Header']
 		check(s, 'panel: every instrument has its own section', len(labels) >= 3, ', '.join(labels))
 		control.par.Compnoisevisible = 1
 		check(s, 'panel Composition On -> noise Visible', int(inst('noise').par.Visible.eval()) == 1, '')

@@ -17,7 +17,7 @@ TRIGGER_DEFAULT_S = 0.2
 
 LAYER_DEFAULTS = {'visible': 0.0, 'opacity': 1.0, 'red': 1.0, 'green': 1.0, 'blue': 1.0,
 				  'scale': 1.0, 'x': 0.0, 'y': 0.0, 'rotate': 0.0, 'content': 0.0, 'effect': 0.0}
-MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0}
+MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0, 'saturation': 1.0}
 # Show controls that are not visuals. mapping.preset: a MIDI 'set' to 1-4
 # switches the mapping page to preset A-D at that moment of the song (0 = no
 # switch yet). Like every value it is replayed from the timeline, so seeking
@@ -373,7 +373,9 @@ SPIN_S = 0.3
 JUMP_S = 0.15
 FLASH_S = 0.6
 SIDES_RANGE = (3, 12)
-PRESET_LETTERS = ('A', 'B', 'C', 'D')
+# Mapping presets are the phases: '1' ... '10'. Letters A-D from older shows read as 1-4.
+PRESET_LETTERS = tuple(str(i) for i in range(1, 11))
+_OLD_LETTERS = {'A': '1', 'B': '2', 'C': '3', 'D': '4'}
 
 
 def emptyEffects():
@@ -411,6 +413,7 @@ def parseTriggers(rows):
 		except ValueError:
 			continue
 		preset, when, action = cell('preset').upper(), cell('when'), cell('does').lower()
+		preset = _OLD_LETTERS.get(preset, preset)
 		if not on or preset not in found or action not in TRIGGER_ACTIONS or not when:
 			continue
 		if when == 'midi' and not 0 <= note <= 127:
@@ -420,7 +423,7 @@ def parseTriggers(rows):
 
 
 def presetSwitches(events):
-	"""[(time, preset letter)] from the MIDI events that set mapping.preset (1-4), in time order."""
+	"""[(time, preset)] from the MIDI events that set mapping.preset (1-10), in time order."""
 	switches = []
 	for te, _row, a in events:
 		index = int(round(a.value))

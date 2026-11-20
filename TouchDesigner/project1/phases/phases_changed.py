@@ -6,15 +6,13 @@ def onValueChange(par, prev):
 		parent.Phases.LoadPhase(int(par.eval()))
 	elif par.name == 'Phasenote':
 		parent.Phases.ext.Phases.onPhaseNoteChange()
-	elif par.name.startswith('Ev'):
-		parent.Phases.ext.Phases.onEventChange(par, prev)
+	elif par.name.startswith('Phasenote') or par.name == 'Followmidi':
+		parent.Phases.ext.Phases.markDirty()
 
 
 def onPulse(par):
 	comp = parent.Phases
-	if par.name == 'Clear':
-		comp.ClearPhase()
-	elif par.name == 'Saveshow':
+	if par.name == 'Saveshow':
 		comp.SaveShow()
 	elif par.name == 'Loadshow':
 		comp.LoadShow()

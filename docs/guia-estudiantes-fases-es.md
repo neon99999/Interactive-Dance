@@ -6,10 +6,12 @@ Escrita en lenguaje simple. Versión en inglés: `student-guide-phases-en.md`.
 
 Haces tu pieza por pasos:
 
-1. Tu canción tiene partes. Cada parte se llama **fase**.
-2. En cada fase pones figuras simples en la pantalla. Cada figura se llama **evento**. Un evento es un rectángulo, un círculo o un triángulo con un nombre adentro, por ejemplo "golpe" o "salto".
-3. Tus movimientos muestran las figuras, las esconden y las mueven.
-4. Después cambias las figuras simples por visuales reales.
+1. Tu canción tiene partes. Cada parte se llama **fase**. Una pieza tiene un máximo de 10 fases.
+2. En cada fase eliges los instrumentos (Partículas, Ruido, Video eco, Formas, Figura con disparadores) y sus ajustes.
+3. Conectas tus movimientos a los instrumentos:
+   - Un **disparador** es un momento: un golpe, presionar el botón, una nota de la canción, entrar en una zona. Cada vez que pasa, la figura hace algo una vez.
+   - Una **conexión** es continua: mientras te mueves, un número cambia, y cambia un ajuste todo el tiempo (por ejemplo, subes el brazo y las partículas crecen).
+4. Cada fase guarda sus propios ajustes de instrumentos, disparadores y conexiones. Cuando cambia la fase, todo cambia con ella.
 
 No necesitas escribir código. Solo cambias ajustes en el panel de control.
 
@@ -23,7 +25,7 @@ No necesitas escribir código. Solo cambias ajustes en el panel de control.
 
 Consejo: pon el ratón sobre el nombre de un ajuste y espera. Aparece un texto de ayuda.
 
-## 3. Nivel 1: fases y figuras
+## 3. Nivel 1: fases, instrumentos y disparadores
 
 ### 3.1 Divide tu canción en fases
 
@@ -41,165 +43,147 @@ Para encontrar los números de las notas, reproduce la canción y mira la ventan
 
 `-1` significa "sin nota". Una fase con `-1` no empieza desde la canción.
 
-### 3.2 Tu primera figura: siempre en pantalla
+### 3.2 Cambia de fase con las teclas de números
 
-Ejemplo: durante el inicio tranquilo, un círculo azul con el nombre "respira" está siempre en pantalla.
+1. Haz clic en la imagen de la ventana Stage (no en el panel de control).
+2. Presiona una tecla de número: **1** a **9** eligen las fases 1 a 9. **0** elige la fase 10.
+
+Las teclas de números no funcionan mientras escribes en el panel de control. Primero haz clic en la imagen.
+
+### 3.3 Haz el aspecto de cada fase
+
+Ejemplo: el inicio tranquilo tiene partículas lentas y azules. El medio rápido tiene partículas rápidas y ruido.
 
 1. Pon **Fase** en **Fase 1**.
-2. Baja hasta **Evento 1**.
+2. Haz clic en **Composición**. En **Partículas**, pon **Encendido** en **On**. Pon **Encendido** de los otros instrumentos en **Off**.
+3. Haz clic en **Instrumentos**. En **Partículas**, pon **Preset** en **Calma**. Cambia **Color** si quieres.
+4. Pon **Fase** en **Fase 2** (o presiona **2**). La fase 2 empieza como una copia de la fase 1.
+5. Haz clic en **Composición**. En **Ruido**, pon **Encendido** en **On**.
+6. Haz clic en **Instrumentos**. En **Partículas**, pon **Preset** en **Enérgico**.
+7. Presiona **1**, luego **2**. El aspecto cambia cada vez.
+
+No necesitas guardar cada fase. Cada cambio se guarda en la fase que ves.
+
+Las capas siempre están en el mismo orden: Video eco al fondo, luego Ruido, luego Partículas, luego Formas, y la Figura con disparadores al frente. Las partes oscuras de una capa dejan ver las capas de abajo.
+
+### 3.4 Un disparador: un momento hace que la figura haga algo
+
+Ejemplo: la bailarina da un golpe y la figura salta.
+
+1. Haz clic en **Composición**. En **Figura con disparadores**, pon **Encendida** en **On**.
+2. Haz clic en **Movimiento**. Ve a **Disparadores**.
 3. Pon **1 Activo** en **On**.
-4. En **1 Nombre**, escribe `respira`.
-5. Pon **1 Figura** en **Círculo** y **1 Color** en **Azul**.
-6. Pon **1 Mostrar** en **Siempre**.
-7. Haz clic en **Reproducir**, abajo en la ventana Stage. El círculo aparece en pantalla.
+4. Pon **1 Fuente** en **Sensor 1**.
+5. Pon **1 Momento** en **Golpe**.
+6. Pon **1 Hace** en **Saltar**.
+7. Ponte el sensor 1 y da un golpe. La figura salta.
 
-### 3.3 Cambia la posición y el tamaño
+### 3.5 Qué puede escuchar un disparador
 
-- **X** mueve la figura a la izquierda y a la derecha. `-1` es el borde izquierdo, `0` es el centro, `1` es el borde derecho.
-- **Y** mueve la figura abajo y arriba. `-1` es abajo, `0` es el centro, `1` es arriba.
-- **Tamaño** hace la figura más grande o más pequeña.
-
-Ejemplo: para poner "respira" arriba a la izquierda, pon **1 X** en `-0.5` y **1 Y** en `0.5`.
-
-### 3.4 Una figura que aparece con un movimiento: Alternar
-
-Ejemplo: la bailarina da un golpe y aparece un cuadrado rojo. Da otro golpe y el cuadrado desaparece.
-
-1. Ve a **Evento 2**. Pon **2 Activo** en **On**.
-2. En **2 Nombre**, escribe `golpe`.
-3. Pon **2 Figura** en **Rectángulo** y **2 Color** en **Rojo**.
-4. Pon **2 Mostrar** en **Alternar**.
-5. Pon **2 Disparador** en **Sensor 1: golpe**.
-6. Ponte el sensor 1 y da un golpe. Aparece el cuadrado. Da otro golpe. El cuadrado desaparece.
-
-### 3.5 Una figura por un tiempo corto: Por un tiempo
-
-Ejemplo: el bailarín pisa fuerte y aparece un triángulo amarillo por 2 segundos.
-
-1. Ve a **Evento 3**. Ponlo en **On**, nombre `pisada`, **Triángulo**, **Amarillo**.
-2. Pon **3 Mostrar** en **Por un tiempo**.
-3. Pon **3 Tiempo** en `2`.
-4. Pon **3 Disparador** en **Sensor 2: golpe**.
-5. Pisa fuerte. El triángulo aparece por 2 segundos. Si pisas otra vez antes de que terminen los 2 segundos, los 2 segundos empiezan de nuevo.
-
-### 3.6 Una figura con la música: nota MIDI
-
-Ejemplo: un círculo blanco aparece en cada golpe de tambor de la canción.
-
-1. Ve a **Evento 4**. Ponlo en **On**, nombre `ritmo`, **Círculo**, **Blanco**.
-2. Pon **4 Mostrar** en **Por un tiempo** y **4 Tiempo** en `0.3`.
-3. Pon **4 Disparador** en **Nota MIDI (canción)**.
-4. En **4 Nota**, escribe la nota MIDI del tambor.
-5. Reproduce la canción. El círculo aparece en cada golpe.
-
-### 3.7 Qué hace cada ajuste
-
-| Ajuste | Qué hace |
+| Fuente | Momento |
 |---|---|
-| Activo | Usa este evento. Off: el evento no aparece. |
-| Nombre | La palabra dentro de la figura. Usa el nombre del movimiento, por ejemplo "golpe". |
-| Figura | Rectángulo, Círculo o Triángulo. |
-| Color | El color de la figura. |
-| X, Y, Tamaño | La posición y el tamaño de la figura. |
-| Mostrar | **Siempre**: en pantalla durante toda la fase. **Alternar**: el disparador la muestra, el disparador otra vez la esconde. **Por un tiempo**: el disparador la muestra por los segundos de **Tiempo**. |
-| Tiempo | Solo para **Por un tiempo**: el número de segundos. |
-| Disparador | Qué muestra la figura: **Nota MIDI (canción)**, **Sensor 1-3: golpe** (un movimiento rápido) o **Sensor 1-3: botón**. |
-| Nota | Solo para **Nota MIDI (canción)**: el número de la nota. |
+| Canción (MIDI) | Una nota de la canción. Escribe su número en **Nota**. |
+| Sensor 1, 2 o 3 | **Golpe** (un movimiento rápido), **Presionar el botón**, **Se queda quieto** |
+| Cuerpo (cámara) | **Aparece el bailarín**, **Entra en la zona 1** ... **Entra en la zona 5** |
+| Señales de prueba | **Disparador de prueba** (para probar sin bailarín) |
 
-Un ajuste gris no tiene efecto con lo que elegiste. Por ejemplo, **Tiempo** está gris cuando **Mostrar** no es **Por un tiempo**.
+Zonas: la imagen de la cámara se corta en franjas de izquierda a derecha (pestaña Entradas, **Zonas del escenario**). "Entra en la zona 2" pasa una vez, en el momento en que el bailarín entra en la zona 2.
 
-### 3.8 Bueno saber
+### 3.6 Qué hace un disparador
 
-- Cada fase tiene sus propios 8 eventos. El Evento 1 de la Fase 1 y el Evento 1 de la Fase 2 son diferentes.
-- Cuando empieza una fase nueva, las figuras de la fase anterior desaparecen. Las figuras **Siempre** de la fase nueva aparecen.
-- **Borrar fase** borra todos los eventos de la fase que ves. Cuidado: no se puede deshacer.
-- Cuando la canción pasa a una fase nueva, el ajuste **Fase** cambia también. Así ves los eventos de esa fase.
-
-## 4. Nivel 2: figuras que siguen tu cuerpo
-
-Haz clic en **Función** y pon **Nivel** en **Nivel 2**. Tu trabajo del Nivel 1 no cambia. Ahora cada evento tiene 2 **enlaces**.
-
-Un enlace conecta un movimiento de tu cuerpo con un ajuste de la figura. El enlace funciona cuando la figura está en pantalla.
-
-### 4.1 Gira un cuadrado con tu brazo
-
-Ejemplo: la bailarina da un golpe y aparece el cuadrado rojo (de 3.4). Después inclina el brazo y el cuadrado gira.
-
-1. Ve a **Evento 2** (el cuadrado "golpe").
-2. Pon **2 Enlace 1 Movimiento** en `serial_w1_roll`.
-3. Pon **2 Enlace 1 Mueve** en **Rotación**.
-4. Deja **2 Enlace 1 Desde** en `-180` y **2 Enlace 1 Hasta** en `180`.
-5. Da un golpe para mostrar el cuadrado. Inclina el brazo a la izquierda y a la derecha. El cuadrado gira.
-
-### 4.2 Mueve una figura con la posición de tu cuerpo
-
-Ejemplo: un círculo sigue al bailarín de izquierda a derecha en el escenario. La cámara debe ver al bailarín.
-
-1. Ve a un evento con **Mostrar** en **Siempre**.
-2. Pon **Enlace 1 Movimiento** en `pose_x`.
-3. Pon **Enlace 1 Mueve** en **Posición X**.
-4. Camina del lado izquierdo al lado derecho. El círculo se mueve contigo.
-
-### 4.3 Dos enlaces en una figura
-
-Ejemplo: el círculo te sigue (enlace 1, de 4.2) y crece cuando abres los brazos.
-
-1. En el mismo evento, pon **Enlace 2 Movimiento** en `pose_spread`.
-2. Pon **Enlace 2 Mueve** en **Tamaño**.
-3. Abre y cierra los brazos. El círculo crece y se hace más pequeño.
-
-### 4.4 Los movimientos
-
-| Nombre en el menú | Tu movimiento |
+| Hace | Qué pasa |
 |---|---|
-| `serial_w1_roll` (`w2`, `w3` para los sensores 2 y 3) | Inclinar el sensor hacia un lado |
-| `serial_w1_pitch` | Inclinar el sensor arriba y abajo |
-| `serial_w1_act` | Cuánto te mueves (actividad) |
-| `serial_w1_gx`, `gy`, `gz` | Qué tan rápido tuerces, inclinas o giras |
-| `pose_x` | Tu posición, de izquierda a derecha (cámara) |
-| `pose_hand_l`, `pose_hand_r` | La altura de tu mano izquierda o derecha (cámara) |
-| `pose_spread` | Cuánto abres los brazos (cámara) |
-| `pose_energy` | Cuánto se mueve tu cuerpo (cámara) |
-| `camera_motion`, `camera_left`, `camera_right` | Movimiento en la imagen de la cámara |
+| Pulso (crecer) | La figura crece por un momento. |
+| Girar | La figura gira. **Cantidad** = grados. |
+| Más lados | La figura tiene más lados (o menos). |
+| Saltar | La figura salta a otro lugar. |
+| Destello de color | La figura destella en otro color. |
 
-### 4.5 Qué hace cada ajuste del enlace
+## 4. Nivel 2: conexiones (el movimiento cambia un ajuste todo el tiempo)
 
-| Ajuste | Qué hace |
-|---|---|
-| Movimiento | El movimiento del cuerpo que controla la figura. |
-| Mueve | Qué cambia: **Tamaño**, **Posición X**, **Posición Y**, **Rotación** o **Brillo**. |
-| Desde | El valor al inicio del movimiento (por ejemplo, el brazo inclinado del todo a la izquierda). |
-| Hasta | El valor al final del movimiento (por ejemplo, el brazo inclinado del todo a la derecha). |
+Haz clic en **Función** y pon **Nivel** en **Nivel 2**. Tu trabajo del Nivel 1 no cambia. Ahora la pestaña **Movimiento** también muestra 8 **conexiones**.
 
-Consejo: si la figura se mueve al revés, intercambia **Desde** y **Hasta**. Ejemplo: Desde `180`, Hasta `-180`.
+Una conexión tiene cuatro menús cortos:
 
-## 5. Nivel 3
+| Menú | Qué eliges | Ejemplo |
+|---|---|---|
+| Fuente | De dónde viene el movimiento | Sensor 1 |
+| Entrada | Qué movimiento de esa fuente | Subir o bajar el brazo (pitch) |
+| Instrumento | Qué instrumento cambia | Partículas |
+| Ajuste | Qué ajuste de ese instrumento | Tamaño |
 
-El Nivel 3 es para el siguiente paso: cambiar las figuras simples por visuales reales. Todavía no está listo. Por ahora, el Nivel 3 muestra lo mismo que el Nivel 2.
+El menú **Entrada** muestra solo los movimientos de la fuente que elegiste. El menú **Ajuste** muestra solo los ajustes del instrumento que elegiste.
 
-## 6. Guarda tu trabajo
+### 4.1 Sube el brazo y las partículas crecen
 
-Guarda tu show al final de cada sesión.
+1. Haz clic en **Movimiento**. Ve a **Asignaciones 1-4**.
+2. Pon **1 Fuente** en **Sensor 1**.
+3. Pon **1 Entrada** en **Subir o bajar el brazo (pitch)**.
+4. Pon **1 Instrumento** en **Partículas**.
+5. Pon **1 Ajuste** en **Tamaño**. La conexión se activa (**On**).
+6. Sube y baja el brazo. Las partículas crecen y se hacen más pequeñas.
+
+### 4.2 El ruido te sigue por el escenario
+
+1. Pon **2 Fuente** en **Cuerpo (cámara)**.
+2. Pon **2 Entrada** en **Posición izquierda-derecha**.
+3. Pon **2 Instrumento** en **Ruido** y **2 Ajuste** en **Velocidad**.
+4. Camina de izquierda a derecha. El ruido se mueve más rápido. La cámara te debe ver.
+
+### 4.3 Los movimientos
+
+| Fuente | Entrada | Tu movimiento |
+|---|---|---|
+| Sensor 1-3 | Girar la muñeca (roll) | Gira el antebrazo, como cuando giras una llave |
+| Sensor 1-3 | Subir o bajar el brazo (pitch) | Brazo abajo = bajo, brazo adelante = medio, brazo arriba = alto |
+| Sensor 1-3 | Actividad | Cuánto te mueves |
+| Sensor 1-3 | Velocidad de giro / inclinación / vuelta | Qué tan rápido giras el sensor |
+| Sensor 1-3 | Quieto, Golpe, Botón | 1 mientras pasa, si no 0 |
+| Cuerpo (cámara) | Posición izquierda-derecha, altura de las manos, apertura de brazos, energía | Tu cuerpo en la imagen de la cámara |
+| Cuerpo (cámara) | En zona 1-5 | 1 mientras estás en esa zona, si no 0 |
+| Movimiento en la cámara | Movimiento, izquierda, derecha | Movimiento en cualquier parte de la imagen |
+
+Consejo: "Girar la muñeca" no funciona bien cuando el brazo apunta recto hacia abajo o hacia arriba. Usa **Subir o bajar el brazo** para movimientos grandes del brazo.
+
+### 4.4 Más ajustes (Avanzado)
+
+En **Avanzado**, cada conexión también tiene **Desde**, **Hasta**, **Suavizado** y **Sensibilidad**:
+
+- **Desde** y **Hasta**: los valores del ajuste en los dos extremos del movimiento. Si el ajuste se mueve al revés, intercambia **Desde** y **Hasta**.
+- **Suavizado**: segundos que tarda el ajuste en seguir el movimiento.
+- **Sensibilidad**: 2 = la mitad del movimiento llega a **Hasta**.
+
+## 5. Guarda tu trabajo
+
+Tu trabajo se guarda solo: unos segundos después de cada cambio, el show se escribe en `shows/autosave.json`. Cuando se abre el proyecto, carga este archivo si es más nuevo que el proyecto.
+
+Para guardar una copia con tu nombre:
 
 1. Haz clic en la pestaña **Fases**.
 2. En **Archivo del show**, escribe un nombre con tu nombre, por ejemplo `shows/ana_show.json`.
 3. Haz clic en **Guardar show**. **Estado del show** muestra "Saved ana_show.json" (guardado).
 
-Para abrir tu show otra vez:
+Para abrir tu show otra vez: escribe el mismo nombre en **Archivo del show** y haz clic en **Abrir show**.
 
-1. Escribe el mismo nombre en **Archivo del show**.
-2. Haz clic en **Abrir show**. **Estado del show** muestra "Loaded ana_show.json" (abierto).
+El archivo del show guarda tus fases y sus notas, los ajustes de cada fase, los disparadores y las conexiones de cada fase, y tu canción.
 
-El archivo del show guarda tus fases, tus eventos, tu canción, tus ajustes de movimiento y tus ajustes de instrumentos.
+## 6. Salida al proyector
 
-Cuando cambias el **Nivel**, no pierdes trabajo. Los ajustes que no ves no cambian.
+En la pestaña **Función**, en **Salida**:
+
+1. Pon **Pantalla** en el proyector (la pantalla 1 es la pantalla principal de la computadora).
+2. Deja **Sin bordes (llenar la pantalla)** en **On**.
+3. Haz clic en **Abrir ventana de salida**. Para cerrarla, haz clic en **Cerrar ventana de salida**.
+
+**Nivel** hace toda la imagen más oscura o más clara. **Saturación** hace los colores más intensos (2) o blanco y negro (0).
 
 ## 7. Si hay un problema
 
 | Problema | Qué hacer |
 |---|---|
-| La figura no aparece. | Revisa que **Activo** esté en **On**. Revisa que **Fase** sea la fase que suena ahora. Revisa que **Eventos de fase** esté **Encendido** (pestaña Composición). |
-| La figura no aparece cuando me muevo. | Revisa el **Disparador**. Revisa que el sensor esté encendido y conectado (ventana Sensores corporales, abajo en la ventana Stage). |
+| Las teclas de números no hacen nada. | Primero haz clic en la imagen de la ventana Stage, luego presiona la tecla. |
+| Un instrumento no aparece. | Revisa su **Encendido** en la pestaña **Composición**, en la fase que suena ahora. |
+| El disparador no hace nada. | Revisa **Activo**, **Fuente** y **Momento**. Revisa que la Figura con disparadores esté **Encendida**. Revisa que el sensor esté encendido y conectado (ventana Sensores corporales, abajo en la ventana Stage). |
+| La conexión no hace nada. | Pon **Nivel** en **Nivel 2**. Revisa **Fuente**, **Entrada**, **Instrumento** y **Ajuste**. Para las entradas de **Cuerpo**, la cámara te debe ver. |
 | La fase no cambia con la canción. | Revisa que **Seguir MIDI** esté en **On**. Revisa la nota en **Nota para esta fase**. |
-| El enlace no hace nada. | Pon **Nivel** en **Nivel 2**. Revisa que la figura esté en pantalla. Para los movimientos `pose_`, la cámara te debe ver. |
 | La computadora va lenta. | Pregunta al profesor. Apaga los instrumentos que no usas (pestaña Composición). |

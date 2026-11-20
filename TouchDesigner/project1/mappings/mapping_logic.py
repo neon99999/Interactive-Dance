@@ -2,7 +2,7 @@
 
 Pure Python with no TouchDesigner imports, so it is unit-tested in plain
 Python (tests/test_mapping_logic.py). The mappings component (MappingsExt)
-holds 8 mapping slots and 4 presets (A-D) and uses this module to turn the
+holds 8 mapping slots and one preset per phase (1-10) and uses this module to turn the
 slots into rows for the engine, in the input assignment format:
   signal, target, in_min, in_max, out_min, out_max, smoothing
 
@@ -15,7 +15,9 @@ movement reaches To).
 import re
 
 NUM_SLOTS = 8
-PRESETS = ('A', 'B', 'C', 'D')
+# One preset per phase. Shows saved before phases kept presets A-D: they read as phases 1-4.
+PRESETS = tuple(str(i) for i in range(1, 11))
+OLD_PRESETS = {'A': '1', 'B': '2', 'C': '3', 'D': '4'}
 SLOT_FIELDS = ('on', 'signal', 'target', 'from', 'to', 'smooth', 'sens')
 PRESET_COLUMNS = ('preset', 'slot') + SLOT_FIELDS
 SLOT_DEFAULTS = {'on': 0.0, 'signal': '', 'target': '', 'from': 0.0, 'to': 1.0, 'smooth': 0.1, 'sens': 1.0}
@@ -35,7 +37,7 @@ WEARABLE_RANGES = {'gx': (-500.0, 500.0), 'gy': (-500.0, 500.0), 'gz': (-500.0, 
 _WEARABLE = re.compile(r'^serial_w\d+_(\w+)$')
 
 # Natural From / To for each kind of visual value, used when a target is chosen.
-TARGET_RANGES = {'scale': (0.5, 2.0), 'x': (-1.0, 1.0), 'y': (-1.0, 1.0), 'rotate': (0.0, 360.0),
+TARGET_RANGES = {'saturation': (0.0, 2.0), 'scale': (0.5, 2.0), 'x': (-1.0, 1.0), 'y': (-1.0, 1.0), 'rotate': (0.0, 360.0),
 	'content': (0.0, 6.0), 'effect': (0.0, 3.0)}
 # Targets left out of the menu: switching presets from a movement would make
 # the mappings change themselves.
@@ -125,6 +127,7 @@ def readPresets(rows):
 	for row in rows[1:]:
 		cell = lambda name: str(row[col[name]]).strip() if name in col and col[name] < len(row) else ''
 		preset = cell('preset').upper()
+		preset = OLD_PRESETS.get(preset, preset)
 		slot = int(_number(cell('slot'), 0))
 		if preset not in presets or not 1 <= slot <= NUM_SLOTS:
 			continue
@@ -168,8 +171,11 @@ TRIGGER_TEXT = ('when', 'does')
 
 
 def triggerSources():
-	"""What a trigger can listen to, in menu order: a MIDI note, then each wearable's hit and button."""
-	return ['midi'] + ['serial_w%d_%s' % (w, s) for w in WEARABLES for s in TRIGGER_SIGNALS]
+	"""What a trigger can listen to (its When), in menu order: every Source + Input of the trigger menus."""
+	names = []
+	for source in TRIGGER_SOURCES:
+		names += [joinSignal(source, name) for name in sourceInputs(source, trigger=True)]
+	return names
 
 
 def triggerAmount(action):
@@ -189,6 +195,7 @@ def readTriggers(rows):
 	for row in rows[1:]:
 		cell = lambda name: str(row[col[name]]).strip() if name in col and col[name] < len(row) else ''
 		preset = cell('preset').upper()
+		preset = OLD_PRESETS.get(preset, preset)
 		slot = int(_number(cell('slot'), 0))
 		if preset not in presets or not 1 <= slot <= NUM_TRIGGERS:
 			continue
@@ -211,6 +218,112 @@ def triggerRows(presets):
 
 
 def presetFromMidi(value):
-	"""The preset a MIDI 'mapping.preset' value selects (1 = A ... 4 = D), or None for 0 / out of range."""
+	"""The preset a MIDI 'mapping.preset' value selects ('1' ... '10'), or None for 0 / out of range."""
 	index = int(round(value))
 	return PRESETS[index - 1] if 1 <= index <= len(PRESETS) else None
+
+
+# ---------------------------------------------------------------- the four menus
+# A mapping is chosen in four short menus instead of two long ones:
+#   Source (Wearable 1, Body, ...) -> Input (Tilt sideways, Hit, ...)  = the signal
+#   Instrument (Particles, ...)    -> Setting (Size, ...)              = the target
+# The stored slot keeps the signal and target names, so presets and shows
+# do not change; the four menus are worked out from them.
+
+SOURCES = ('wearable1', 'wearable2', 'wearable3', 'body', 'camera', 'test')
+# Continuous inputs per kind of source (mappings), in menu order.
+SOURCE_INPUTS = {
+	'wearable': ('roll', 'pitch', 'act', 'gx', 'gy', 'gz', 'still', 'hit', 'btn'),
+	'body': ('pose_x', 'pose_hand_l', 'pose_hand_r', 'pose_spread', 'pose_energy', 'pose_present',
+		'pose_zone1', 'pose_zone2', 'pose_zone3', 'pose_zone4', 'pose_zone5'),
+	'camera': ('camera_motion', 'camera_left', 'camera_right'),
+	'test': ('sim_level', 'sim_trigger', 'sim_zone'),
+}
+# Inputs that make sense as a trigger (a moment: something starts), per kind of source.
+TRIGGER_SOURCES = ('song', 'wearable1', 'wearable2', 'wearable3', 'body', 'test')
+TRIGGER_INPUTS = {
+	'song': ('midi',),
+	'wearable': ('hit', 'btn', 'still'),
+	'body': ('pose_present', 'pose_zone1', 'pose_zone2', 'pose_zone3', 'pose_zone4', 'pose_zone5'),
+	'test': ('sim_trigger',),
+}
+# Settings never offered as a mapping target: compositing order and blend are
+# fixed, Mix is gone, and a mapping must not switch the mappings themselves.
+HIDDEN_SETTINGS = ('blend', 'order', 'mix')
+HIDDEN_INSTRUMENTS = ('mapping', 'events')
+INSTRUMENT_ORDER = ('particles', 'noise', 'video', 'trigger', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4', 'master')
+
+
+def _kind(source):
+	return 'wearable' if source.startswith('wearable') else source
+
+
+def joinSignal(source, name):
+	"""Source + input -> the signal name: ('wearable1', 'roll') -> 'serial_w1_roll'."""
+	if not source or not name or name == 'none':
+		return ''
+	if source.startswith('wearable'):
+		return 'serial_w%s_%s' % (source[len('wearable'):], name)
+	return name
+
+
+def splitSignal(signal):
+	"""Signal name -> (source, input): 'serial_w1_roll' -> ('wearable1', 'roll'); unknown -> ('', signal)."""
+	signal = str(signal or '').strip()
+	if not signal:
+		return '', ''
+	match = re.match(r'^serial_w(\d+)_(\w+)$', signal)
+	if match:
+		return 'wearable' + match.group(1), match.group(2)
+	if signal == 'midi':
+		return 'song', 'midi'
+	for source in ('body', 'camera', 'test'):
+		if signal in SOURCE_INPUTS[source] or signal in TRIGGER_INPUTS.get(source, ()):
+			return source, signal
+	if signal.startswith('pose_'):
+		return 'body', signal
+	if signal.startswith('camera_'):
+		return 'camera', signal
+	if signal.startswith('sim_'):
+		return 'test', signal
+	return '', signal
+
+
+def sourceInputs(source, trigger=False):
+	"""The inputs a source offers: continuous ones for a mapping, moments for a trigger."""
+	table = TRIGGER_INPUTS if trigger else SOURCE_INPUTS
+	return list(table.get(_kind(source), ()))
+
+
+def splitTarget(target):
+	"""'particles.size' -> ('particles', 'size'); '' -> ('', '')."""
+	target = str(target or '').strip()
+	if '.' not in target:
+		return '', target
+	instrument, setting = target.split('.', 1)
+	return instrument, setting
+
+
+def joinTarget(instrument, setting):
+	return '%s.%s' % (instrument, setting) if instrument and setting and setting != 'none' else ''
+
+
+def instrumentsOf(known):
+	"""The instruments in the target list, without hidden ones: INSTRUMENT_ORDER first, then the rest as found."""
+	found = [name for name in INSTRUMENT_ORDER if any(splitTarget(t)[0] == name for t in known)]
+	for target in known:
+		instrument, setting = splitTarget(target)
+		hidden = instrument in HIDDEN_INSTRUMENTS or setting in HIDDEN_SETTINGS or target in HIDDEN_TARGETS
+		if instrument and not hidden and instrument not in found:
+			found.append(instrument)
+	return found
+
+
+def settingsOf(instrument, known):
+	"""An instrument's settings in the target list, in order, without hidden ones."""
+	found = []
+	for target in known:
+		inst, setting = splitTarget(target)
+		if inst == instrument and setting not in HIDDEN_SETTINGS and target not in HIDDEN_TARGETS:
+			found.append(setting)
+	return found

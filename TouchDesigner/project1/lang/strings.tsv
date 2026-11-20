@@ -15,8 +15,8 @@ signal.serial_w1_act	Wearable 1: activity	Sensor 1: actividad
 signal.serial_w1_gx	Wearable 1: twist speed	Sensor 1: velocidad de torsión
 signal.serial_w1_gy	Wearable 1: tilt speed	Sensor 1: velocidad de inclinación
 signal.serial_w1_gz	Wearable 1: turn speed	Sensor 1: velocidad de giro
-signal.serial_w1_pitch	Wearable 1: tilt up-down	Sensor 1: inclinación arriba-abajo
-signal.serial_w1_roll	Wearable 1: tilt sideways	Sensor 1: inclinación lateral
+signal.serial_w1_pitch	Wearable 1: raise or lower the arm (pitch)	Sensor 1: subir o bajar el brazo (pitch)
+signal.serial_w1_roll	Wearable 1: turn the wrist (roll)	Sensor 1: girar la muñeca (roll)
 signal.serial_w1_hit	Wearable 1: hit	Sensor 1: golpe
 signal.serial_w1_hitdir	Wearable 1: hit direction	Sensor 1: dirección del golpe
 signal.serial_w1_still	Wearable 1: still	Sensor 1: quieto
@@ -26,8 +26,8 @@ signal.serial_w2_act	Wearable 2: activity	Sensor 2: actividad
 signal.serial_w2_gx	Wearable 2: twist speed	Sensor 2: velocidad de torsión
 signal.serial_w2_gy	Wearable 2: tilt speed	Sensor 2: velocidad de inclinación
 signal.serial_w2_gz	Wearable 2: turn speed	Sensor 2: velocidad de giro
-signal.serial_w2_pitch	Wearable 2: tilt up-down	Sensor 2: inclinación arriba-abajo
-signal.serial_w2_roll	Wearable 2: tilt sideways	Sensor 2: inclinación lateral
+signal.serial_w2_pitch	Wearable 2: raise or lower the arm (pitch)	Sensor 2: subir o bajar el brazo (pitch)
+signal.serial_w2_roll	Wearable 2: turn the wrist (roll)	Sensor 2: girar la muñeca (roll)
 signal.serial_w2_hit	Wearable 2: hit	Sensor 2: golpe
 signal.serial_w2_hitdir	Wearable 2: hit direction	Sensor 2: dirección del golpe
 signal.serial_w2_still	Wearable 2: still	Sensor 2: quieto
@@ -37,8 +37,8 @@ signal.serial_w3_act	Wearable 3: activity	Sensor 3: actividad
 signal.serial_w3_gx	Wearable 3: twist speed	Sensor 3: velocidad de torsión
 signal.serial_w3_gy	Wearable 3: tilt speed	Sensor 3: velocidad de inclinación
 signal.serial_w3_gz	Wearable 3: turn speed	Sensor 3: velocidad de giro
-signal.serial_w3_pitch	Wearable 3: tilt up-down	Sensor 3: inclinación arriba-abajo
-signal.serial_w3_roll	Wearable 3: tilt sideways	Sensor 3: inclinación lateral
+signal.serial_w3_pitch	Wearable 3: raise or lower the arm (pitch)	Sensor 3: subir o bajar el brazo (pitch)
+signal.serial_w3_roll	Wearable 3: turn the wrist (roll)	Sensor 3: girar la muñeca (roll)
 signal.serial_w3_hit	Wearable 3: hit	Sensor 3: golpe
 signal.serial_w3_hitdir	Wearable 3: hit direction	Sensor 3: dirección del golpe
 signal.serial_w3_still	Wearable 3: still	Sensor 3: quieto
@@ -97,8 +97,8 @@ target.layer4.effect	Layer 4 effect	Capa 4 efecto
 target.master.level	Master level	Nivel general
 target.master.blackout	Blackout	Apagón
 target.master.flash	Flash	Destello
-mappings.Preset.label	Preset	Preset
-mappings.Preset.help	Which set of 8 mappings is active. Edits are saved into the chosen preset at once.	Qué grupo de 8 conexiones está activo. Los cambios se guardan en el preset elegido al instante.
+mappings.Preset.label	Mappings of Phase	Conexiones de la fase
+mappings.Preset.help	Each phase has its own 8 mappings and 8 triggers. The Phase menu (Phases tab) chooses which ones you see and use.	Cada fase tiene sus propias 8 conexiones y 8 disparadores. El menú Fase (pestaña Fases) elige cuáles ves y usas.
 mappings.Followmidi.label	Follow MIDI	Seguir MIDI
 mappings.Followmidi.help	On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.	Activo: una fila MIDI "set mapping.preset 1-4" cambia el preset (A-D) en ese momento de la canción. Apagado: solo este menú lo cambia.
 mappings.Map1on.label	1 On	1 Activo
@@ -429,8 +429,8 @@ control.section.body	Body Tracking	Seguimiento del cuerpo
 control.section.test	Test Signals	Señales de prueba
 control.section.osc	OSC	OSC
 control.Mode.label	Level	Nivel
-control.Mode.menu	Level 1|Level 2|Level 3|Advanced	Nivel 1|Nivel 2|Nivel 3|Avanzado
-control.Mode.help	Level 1: music, phases and trigger events. Level 2: adds continuous links (arm tilt, body position). Level 3: everything for students. Advanced: every setting.	Nivel 1: música, fases y eventos con disparador. Nivel 2: añade enlaces continuos (inclinación del brazo, posición del cuerpo). Nivel 3: todo para estudiantes. Avanzado: todos los ajustes.
+control.Mode.menu	Level 1|Level 2|Advanced	Nivel 1|Nivel 2|Avanzado
+control.Mode.help	Level 1: music, phases, instruments and triggers (moments: a hit, a note, entering a zone). Level 2: adds the mappings (a movement continuously changes a setting). Advanced: every setting.	Nivel 1: música, fases, instrumentos y disparadores (momentos: un golpe, una nota, entrar en una zona). Nivel 2: agrega las conexiones (un movimiento cambia un ajuste de forma continua). Avanzado: todos los ajustes.
 webcam.stalled	Body tracking: MediaPipe stopped sending results ({1} s). Set Use to Off and back to Body Tracking.	Seguimiento: MediaPipe dejó de enviar resultados ({1} s). Pon Uso en Apagado y otra vez en Seguimiento del cuerpo.
 webcam.mpbusy	Body tracking: MediaPipe cannot open {0} (another app uses it?). It retries by itself; close other apps that use the webcam.	Seguimiento: MediaPipe no puede abrir {0} (¿otra app la usa?). Reintenta solo; cierra otras apps que usen la cámara.
 stage.output	Output	Salida
@@ -598,22 +598,9 @@ mappings.Trig8amount.label	8 Amount	8 Cantidad
 mappings.Trig8amount.help	How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).	Cuánto: Pulso = cuánto más grande (0.5 = la mitad más), Girar = grados, Más lados = lados añadidos, Saltar = qué tan lejos, Destello = qué tan fuerte (0-1).
 control.page.phases	Phases	Fases
 control.section.phases	Phases (song)	Fases (canción)
-control.section.phasecopy	Clear	Borrar
-control.section.events	Phase Events	Eventos de fase
-control.section.event1	Event 1	Evento 1
-control.section.event2	Event 2	Evento 2
-control.section.event3	Event 3	Evento 3
-control.section.event4	Event 4	Evento 4
-control.section.event5	Event 5	Evento 5
-control.section.event6	Event 6	Evento 6
-control.section.event7	Event 7	Evento 7
-control.section.event8	Event 8	Evento 8
-phase.trigger.none	Nothing	Nada
-phase.trigger.midi	MIDI note (song)	Nota MIDI (canción)
-phase.link.none	No link	Sin enlace
 phases.Phase.label	Phase	Fase
 phases.Phase.menu	Phase 1|Phase 2|Phase 3|Phase 4|Phase 5|Phase 6|Phase 7|Phase 8	Fase 1|Fase 2|Fase 3|Fase 4|Fase 5|Fase 6|Fase 7|Fase 8
-phases.Phase.help	The phase shown below. Follow MIDI switches it when the song plays a phase note. Edits are saved into this phase at once.	La fase que se muestra abajo. Seguir MIDI la cambia cuando la canción toca una nota de fase. Los cambios se guardan en esta fase al instante.
+phases.Phase.help	The phase you see and edit (1-10). Every instrument setting and every mapping you change is kept in this phase. Number keys 1-9 and 0 (= 10) switch phase when the Stage picture has focus.	La fase que ves y editas (1-10). Cada ajuste de instrumento y cada conexión que cambias se guarda en esta fase. Las teclas 1-9 y 0 (= 10) cambian de fase cuando la imagen del Stage tiene el foco.
 phases.Followmidi.label	Follow MIDI	Seguir MIDI
 phases.Followmidi.help	On: a phase note of the song switches the phase (before the first one: phase 1). Off: only the Phase menu switches it.	Activo: una nota de fase de la canción cambia la fase (antes de la primera: fase 1). Apagado: solo el menú Fase la cambia.
 phases.Phasenote1.label	Note for Phase 1	Nota para fase 1
@@ -632,361 +619,6 @@ phases.Phasenote7.label	Note for Phase 7	Nota para fase 7
 phases.Phasenote7.help	The MIDI note of the song that starts phase 7 (-1 = none).	La nota MIDI de la canción que empieza la fase 7 (-1 = ninguna).
 phases.Phasenote8.label	Note for Phase 8	Nota para fase 8
 phases.Phasenote8.help	The MIDI note of the song that starts phase 8 (-1 = none).	La nota MIDI de la canción que empieza la fase 8 (-1 = ninguna).
-phases.Clear.label	Clear Phase	Borrar fase
-phases.Clear.help	Empty every event of the shown phase.	Vacía todos los eventos de la fase mostrada.
-phases.Ev1on.label	1 On	1 Activo
-phases.Ev1on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev1name.label	1 Name	1 Nombre
-phases.Ev1name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev1shape.label	1 Shape	1 Figura
-phases.Ev1shape.help	The placeholder shape.	La figura provisional.
-phases.Ev1colour.label	1 Colour	1 Color
-phases.Ev1colour.help	The colour of the shape.	El color de la figura.
-phases.Ev1x.label	1 X	1 X
-phases.Ev1x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev1y.label	1 Y	1 Y
-phases.Ev1y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev1size.label	1 Size	1 Tamaño
-phases.Ev1size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev1show.label	1 Show	1 Mostrar
-phases.Ev1show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev1time.label	1 Time	1 Tiempo
-phases.Ev1time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev1trigger.label	1 Trigger	1 Disparador
-phases.Ev1trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev1note.label	1 Note	1 Nota
-phases.Ev1note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev1shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev1colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev1show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev1link1in.label	1 Link 1 Movement	1 Enlace 1 Movimiento
-phases.Ev1link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev1link1prop.label	1 Link 1 Moves	1 Enlace 1 Mueve
-phases.Ev1link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev1link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev1link1from.label	1 Link 1 From	1 Enlace 1 Desde
-phases.Ev1link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev1link1to.label	1 Link 1 To	1 Enlace 1 Hasta
-phases.Ev1link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev1link2in.label	1 Link 2 Movement	1 Enlace 2 Movimiento
-phases.Ev1link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev1link2prop.label	1 Link 2 Moves	1 Enlace 2 Mueve
-phases.Ev1link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev1link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev1link2from.label	1 Link 2 From	1 Enlace 2 Desde
-phases.Ev1link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev1link2to.label	1 Link 2 To	1 Enlace 2 Hasta
-phases.Ev1link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev2on.label	2 On	2 Activo
-phases.Ev2on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev2name.label	2 Name	2 Nombre
-phases.Ev2name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev2shape.label	2 Shape	2 Figura
-phases.Ev2shape.help	The placeholder shape.	La figura provisional.
-phases.Ev2colour.label	2 Colour	2 Color
-phases.Ev2colour.help	The colour of the shape.	El color de la figura.
-phases.Ev2x.label	2 X	2 X
-phases.Ev2x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev2y.label	2 Y	2 Y
-phases.Ev2y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev2size.label	2 Size	2 Tamaño
-phases.Ev2size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev2show.label	2 Show	2 Mostrar
-phases.Ev2show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev2time.label	2 Time	2 Tiempo
-phases.Ev2time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev2trigger.label	2 Trigger	2 Disparador
-phases.Ev2trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev2note.label	2 Note	2 Nota
-phases.Ev2note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev2shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev2colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev2show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev2link1in.label	2 Link 1 Movement	2 Enlace 1 Movimiento
-phases.Ev2link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev2link1prop.label	2 Link 1 Moves	2 Enlace 1 Mueve
-phases.Ev2link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev2link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev2link1from.label	2 Link 1 From	2 Enlace 1 Desde
-phases.Ev2link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev2link1to.label	2 Link 1 To	2 Enlace 1 Hasta
-phases.Ev2link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev2link2in.label	2 Link 2 Movement	2 Enlace 2 Movimiento
-phases.Ev2link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev2link2prop.label	2 Link 2 Moves	2 Enlace 2 Mueve
-phases.Ev2link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev2link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev2link2from.label	2 Link 2 From	2 Enlace 2 Desde
-phases.Ev2link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev2link2to.label	2 Link 2 To	2 Enlace 2 Hasta
-phases.Ev2link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev3on.label	3 On	3 Activo
-phases.Ev3on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev3name.label	3 Name	3 Nombre
-phases.Ev3name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev3shape.label	3 Shape	3 Figura
-phases.Ev3shape.help	The placeholder shape.	La figura provisional.
-phases.Ev3colour.label	3 Colour	3 Color
-phases.Ev3colour.help	The colour of the shape.	El color de la figura.
-phases.Ev3x.label	3 X	3 X
-phases.Ev3x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev3y.label	3 Y	3 Y
-phases.Ev3y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev3size.label	3 Size	3 Tamaño
-phases.Ev3size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev3show.label	3 Show	3 Mostrar
-phases.Ev3show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev3time.label	3 Time	3 Tiempo
-phases.Ev3time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev3trigger.label	3 Trigger	3 Disparador
-phases.Ev3trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev3note.label	3 Note	3 Nota
-phases.Ev3note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev3shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev3colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev3show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev3link1in.label	3 Link 1 Movement	3 Enlace 1 Movimiento
-phases.Ev3link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev3link1prop.label	3 Link 1 Moves	3 Enlace 1 Mueve
-phases.Ev3link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev3link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev3link1from.label	3 Link 1 From	3 Enlace 1 Desde
-phases.Ev3link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev3link1to.label	3 Link 1 To	3 Enlace 1 Hasta
-phases.Ev3link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev3link2in.label	3 Link 2 Movement	3 Enlace 2 Movimiento
-phases.Ev3link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev3link2prop.label	3 Link 2 Moves	3 Enlace 2 Mueve
-phases.Ev3link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev3link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev3link2from.label	3 Link 2 From	3 Enlace 2 Desde
-phases.Ev3link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev3link2to.label	3 Link 2 To	3 Enlace 2 Hasta
-phases.Ev3link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev4on.label	4 On	4 Activo
-phases.Ev4on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev4name.label	4 Name	4 Nombre
-phases.Ev4name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev4shape.label	4 Shape	4 Figura
-phases.Ev4shape.help	The placeholder shape.	La figura provisional.
-phases.Ev4colour.label	4 Colour	4 Color
-phases.Ev4colour.help	The colour of the shape.	El color de la figura.
-phases.Ev4x.label	4 X	4 X
-phases.Ev4x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev4y.label	4 Y	4 Y
-phases.Ev4y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev4size.label	4 Size	4 Tamaño
-phases.Ev4size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev4show.label	4 Show	4 Mostrar
-phases.Ev4show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev4time.label	4 Time	4 Tiempo
-phases.Ev4time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev4trigger.label	4 Trigger	4 Disparador
-phases.Ev4trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev4note.label	4 Note	4 Nota
-phases.Ev4note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev4shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev4colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev4show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev4link1in.label	4 Link 1 Movement	4 Enlace 1 Movimiento
-phases.Ev4link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev4link1prop.label	4 Link 1 Moves	4 Enlace 1 Mueve
-phases.Ev4link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev4link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev4link1from.label	4 Link 1 From	4 Enlace 1 Desde
-phases.Ev4link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev4link1to.label	4 Link 1 To	4 Enlace 1 Hasta
-phases.Ev4link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev4link2in.label	4 Link 2 Movement	4 Enlace 2 Movimiento
-phases.Ev4link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev4link2prop.label	4 Link 2 Moves	4 Enlace 2 Mueve
-phases.Ev4link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev4link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev4link2from.label	4 Link 2 From	4 Enlace 2 Desde
-phases.Ev4link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev4link2to.label	4 Link 2 To	4 Enlace 2 Hasta
-phases.Ev4link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev5on.label	5 On	5 Activo
-phases.Ev5on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev5name.label	5 Name	5 Nombre
-phases.Ev5name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev5shape.label	5 Shape	5 Figura
-phases.Ev5shape.help	The placeholder shape.	La figura provisional.
-phases.Ev5colour.label	5 Colour	5 Color
-phases.Ev5colour.help	The colour of the shape.	El color de la figura.
-phases.Ev5x.label	5 X	5 X
-phases.Ev5x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev5y.label	5 Y	5 Y
-phases.Ev5y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev5size.label	5 Size	5 Tamaño
-phases.Ev5size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev5show.label	5 Show	5 Mostrar
-phases.Ev5show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev5time.label	5 Time	5 Tiempo
-phases.Ev5time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev5trigger.label	5 Trigger	5 Disparador
-phases.Ev5trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev5note.label	5 Note	5 Nota
-phases.Ev5note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev5shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev5colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev5show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev5link1in.label	5 Link 1 Movement	5 Enlace 1 Movimiento
-phases.Ev5link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev5link1prop.label	5 Link 1 Moves	5 Enlace 1 Mueve
-phases.Ev5link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev5link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev5link1from.label	5 Link 1 From	5 Enlace 1 Desde
-phases.Ev5link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev5link1to.label	5 Link 1 To	5 Enlace 1 Hasta
-phases.Ev5link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev5link2in.label	5 Link 2 Movement	5 Enlace 2 Movimiento
-phases.Ev5link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev5link2prop.label	5 Link 2 Moves	5 Enlace 2 Mueve
-phases.Ev5link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev5link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev5link2from.label	5 Link 2 From	5 Enlace 2 Desde
-phases.Ev5link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev5link2to.label	5 Link 2 To	5 Enlace 2 Hasta
-phases.Ev5link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev6on.label	6 On	6 Activo
-phases.Ev6on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev6name.label	6 Name	6 Nombre
-phases.Ev6name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev6shape.label	6 Shape	6 Figura
-phases.Ev6shape.help	The placeholder shape.	La figura provisional.
-phases.Ev6colour.label	6 Colour	6 Color
-phases.Ev6colour.help	The colour of the shape.	El color de la figura.
-phases.Ev6x.label	6 X	6 X
-phases.Ev6x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev6y.label	6 Y	6 Y
-phases.Ev6y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev6size.label	6 Size	6 Tamaño
-phases.Ev6size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev6show.label	6 Show	6 Mostrar
-phases.Ev6show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev6time.label	6 Time	6 Tiempo
-phases.Ev6time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev6trigger.label	6 Trigger	6 Disparador
-phases.Ev6trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev6note.label	6 Note	6 Nota
-phases.Ev6note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev6shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev6colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev6show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev6link1in.label	6 Link 1 Movement	6 Enlace 1 Movimiento
-phases.Ev6link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev6link1prop.label	6 Link 1 Moves	6 Enlace 1 Mueve
-phases.Ev6link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev6link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev6link1from.label	6 Link 1 From	6 Enlace 1 Desde
-phases.Ev6link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev6link1to.label	6 Link 1 To	6 Enlace 1 Hasta
-phases.Ev6link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev6link2in.label	6 Link 2 Movement	6 Enlace 2 Movimiento
-phases.Ev6link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev6link2prop.label	6 Link 2 Moves	6 Enlace 2 Mueve
-phases.Ev6link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev6link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev6link2from.label	6 Link 2 From	6 Enlace 2 Desde
-phases.Ev6link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev6link2to.label	6 Link 2 To	6 Enlace 2 Hasta
-phases.Ev6link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev7on.label	7 On	7 Activo
-phases.Ev7on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev7name.label	7 Name	7 Nombre
-phases.Ev7name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev7shape.label	7 Shape	7 Figura
-phases.Ev7shape.help	The placeholder shape.	La figura provisional.
-phases.Ev7colour.label	7 Colour	7 Color
-phases.Ev7colour.help	The colour of the shape.	El color de la figura.
-phases.Ev7x.label	7 X	7 X
-phases.Ev7x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev7y.label	7 Y	7 Y
-phases.Ev7y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev7size.label	7 Size	7 Tamaño
-phases.Ev7size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev7show.label	7 Show	7 Mostrar
-phases.Ev7show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev7time.label	7 Time	7 Tiempo
-phases.Ev7time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev7trigger.label	7 Trigger	7 Disparador
-phases.Ev7trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev7note.label	7 Note	7 Nota
-phases.Ev7note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev7shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev7colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev7show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev7link1in.label	7 Link 1 Movement	7 Enlace 1 Movimiento
-phases.Ev7link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev7link1prop.label	7 Link 1 Moves	7 Enlace 1 Mueve
-phases.Ev7link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev7link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev7link1from.label	7 Link 1 From	7 Enlace 1 Desde
-phases.Ev7link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev7link1to.label	7 Link 1 To	7 Enlace 1 Hasta
-phases.Ev7link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev7link2in.label	7 Link 2 Movement	7 Enlace 2 Movimiento
-phases.Ev7link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev7link2prop.label	7 Link 2 Moves	7 Enlace 2 Mueve
-phases.Ev7link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev7link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev7link2from.label	7 Link 2 From	7 Enlace 2 Desde
-phases.Ev7link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev7link2to.label	7 Link 2 To	7 Enlace 2 Hasta
-phases.Ev7link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev8on.label	8 On	8 Activo
-phases.Ev8on.help	Use this event in the phase.	Usa este evento en la fase.
-phases.Ev8name.label	8 Name	8 Nombre
-phases.Ev8name.help	The name written in the shape: what the action is, e.g. punch explode.	El nombre escrito en la figura: qué es la acción, p. ej. puño explota.
-phases.Ev8shape.label	8 Shape	8 Figura
-phases.Ev8shape.help	The placeholder shape.	La figura provisional.
-phases.Ev8colour.label	8 Colour	8 Color
-phases.Ev8colour.help	The colour of the shape.	El color de la figura.
-phases.Ev8x.label	8 X	8 X
-phases.Ev8x.help	Position left (-1) to right (1).	Posición de izquierda (-1) a derecha (1).
-phases.Ev8y.label	8 Y	8 Y
-phases.Ev8y.help	Position bottom (-1) to top (1).	Posición de abajo (-1) a arriba (1).
-phases.Ev8size.label	8 Size	8 Tamaño
-phases.Ev8size.help	Size, as a part of the screen height.	Tamaño, como parte de la altura de la pantalla.
-phases.Ev8show.label	8 Show	8 Mostrar
-phases.Ev8show.help	Always: on for the whole phase. Toggle: the trigger shows it, the trigger again hides it. For a time: the trigger shows it for Time seconds.	Siempre: visible toda la fase. Alternar: el disparador lo muestra, otra vez lo oculta. Por un tiempo: el disparador lo muestra durante Tiempo segundos.
-phases.Ev8time.label	8 Time	8 Tiempo
-phases.Ev8time.help	For a time: how many seconds the event stays. A new trigger starts the time again.	Por un tiempo: cuántos segundos queda el evento. Un disparador nuevo empieza el tiempo otra vez.
-phases.Ev8trigger.label	8 Trigger	8 Disparador
-phases.Ev8trigger.help	What shows the event: a MIDI note of the song, or a wearable hit or button.	Qué muestra el evento: una nota MIDI de la canción, o un golpe o botón de un sensor.
-phases.Ev8note.label	8 Note	8 Nota
-phases.Ev8note.help	The MIDI note of the song, for a MIDI trigger.	La nota MIDI de la canción, para un disparador MIDI.
-phases.Ev8shape.menu	Rectangle|Circle|Triangle	Rectángulo|Círculo|Triángulo
-phases.Ev8colour.menu	White|Red|Orange|Yellow|Green|Cyan|Blue|Magenta	Blanco|Rojo|Naranja|Amarillo|Verde|Cian|Azul|Magenta
-phases.Ev8show.menu	Always|Toggle|For a time	Siempre|Alternar|Por un tiempo
-phases.Ev8link1in.label	8 Link 1 Movement	8 Enlace 1 Movimiento
-phases.Ev8link1in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev8link1prop.label	8 Link 1 Moves	8 Enlace 1 Mueve
-phases.Ev8link1prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev8link1prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev8link1from.label	8 Link 1 From	8 Enlace 1 Desde
-phases.Ev8link1from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev8link1to.label	8 Link 1 To	8 Enlace 1 Hasta
-phases.Ev8link1to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-phases.Ev8link2in.label	8 Link 2 Movement	8 Enlace 2 Movimiento
-phases.Ev8link2in.help	A continuous movement (arm tilt, body position...) that moves the shape while it is on screen.	Un movimiento continuo (inclinación del brazo, posición del cuerpo...) que mueve la figura mientras está en pantalla.
-phases.Ev8link2prop.label	8 Link 2 Moves	8 Enlace 2 Mueve
-phases.Ev8link2prop.help	What the movement changes.	Qué cambia el movimiento.
-phases.Ev8link2prop.menu	Size|X position|Y position|Rotation|Brightness	Tamaño|Posición X|Posición Y|Rotación|Brillo
-phases.Ev8link2from.label	8 Link 2 From	8 Enlace 2 Desde
-phases.Ev8link2from.help	The value at the low end of the movement.	El valor en el extremo bajo del movimiento.
-phases.Ev8link2to.label	8 Link 2 To	8 Enlace 2 Hasta
-phases.Ev8link2to.help	The value at the high end of the movement.	El valor en el extremo alto del movimiento.
-visuals/events.Visible.label	On	Encendido
-visuals/events.Visible.help	Show the Phase Events (the placeholder shapes of the current phase) in the output.	Muestra los eventos de fase (las figuras provisionales de la fase actual) en la salida.
-visuals/events.Opacity.label	Opacity	Opacidad
-visuals/events.Opacity.help	How strongly this instrument shows in the output: 0 = invisible, 1 = full.	Con qué fuerza se ve este instrumento en la salida: 0 = invisible, 1 = completo.
-visuals/events.Blend.label	Blend	Mezcla
-visuals/events.Blend.menu	Normal|Add	Normal|Sumar
-visuals/events.Blend.help	How it joins the instruments below it. Normal: covers them. Add: adds its light to theirs.	Cómo se une a los instrumentos de abajo. Normal: los cubre. Sumar: suma su luz a la de ellos.
-visuals/events.Order.label	Order	Orden
-visuals/events.Order.help	Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.	Apilado: un instrumento con Orden más alto se dibuja encima de uno con Orden más bajo.
 target.events.visible	Phase Events: on	Eventos de fase: encendido
 target.events.opacity	Phase Events: opacity	Eventos de fase: opacidad
 target.events.blend	Phase Events: blend	Eventos de fase: mezcla
@@ -1002,3 +634,156 @@ phases.Loadshow.label	Load Show	Abrir show
 phases.Loadshow.help	Read the Show File and set everything in it.	Lee el archivo del show y aplica todo lo que contiene.
 phases.Showstatus.label	Show Status	Estado del show
 phases.Showstatus.help	What the last Save Show or Load Show did.	Qué hizo el último Guardar show o Abrir show.
+mapping.none	-	-
+source.wearable1	Wearable 1	Sensor 1
+source.wearable2	Wearable 2	Sensor 2
+source.wearable3	Wearable 3	Sensor 3
+source.body	Body (camera)	Cuerpo (cámara)
+source.camera	Camera motion	Movimiento en la cámara
+source.test	Test signals	Señales de prueba
+source.song	Song (MIDI)	Canción (MIDI)
+instrument.particles	Particles	Partículas
+instrument.video	Video Feedback	Video eco
+instrument.noise	Noise	Ruido
+instrument.trigger	Trigger Shape	Figura con disparadores
+instrument.shapes	Shapes (all layers)	Formas (todas las capas)
+instrument.layer1	Shape layer 1	Forma capa 1
+instrument.layer2	Shape layer 2	Forma capa 2
+instrument.layer3	Shape layer 3	Forma capa 3
+instrument.layer4	Shape layer 4	Forma capa 4
+instrument.master	Output	Salida
+input.roll	Turn the wrist (roll)	Girar la muñeca (roll)
+input.pitch	Raise or lower the arm (pitch)	Subir o bajar el brazo (pitch)
+input.act	Activity (how much you move)	Actividad (cuánto te mueves)
+input.gx	Twist speed	Velocidad de giro (torcer)
+input.gy	Tilt speed	Velocidad de inclinación
+input.gz	Turn speed	Velocidad de vuelta
+input.still	Still (1 while still)	Quieto (1 mientras está quieto)
+input.hit	Hit (1 for a moment)	Golpe (1 un momento)
+input.btn	Button (1 while pressed)	Botón (1 mientras se presiona)
+input.pose_zone1	In zone 1 (1 while there)	En zona 1 (1 mientras está ahí)
+input.pose_zone2	In zone 2 (1 while there)	En zona 2 (1 mientras está ahí)
+input.pose_zone3	In zone 3 (1 while there)	En zona 3 (1 mientras está ahí)
+input.pose_zone4	In zone 4 (1 while there)	En zona 4 (1 mientras está ahí)
+input.pose_zone5	In zone 5 (1 while there)	En zona 5 (1 mientras está ahí)
+input.pose_present	Dancer seen (1 while seen)	Bailarín visto (1 mientras se ve)
+input.trigger.midi	A note of the song	Una nota de la canción
+input.trigger.hit	Hit	Golpe
+input.trigger.btn	Button press	Presionar el botón
+input.trigger.still	Becomes still	Se queda quieto
+input.trigger.pose_present	Dancer appears	Aparece el bailarín
+input.trigger.pose_zone1	Enters zone 1	Entra en la zona 1
+input.trigger.pose_zone2	Enters zone 2	Entra en la zona 2
+input.trigger.pose_zone3	Enters zone 3	Entra en la zona 3
+input.trigger.pose_zone4	Enters zone 4	Entra en la zona 4
+input.trigger.pose_zone5	Enters zone 5	Entra en la zona 5
+input.trigger.sim_trigger	Test trigger	Disparador de prueba
+mappings.Map1source.label	1 Source	1 Fuente
+mappings.Map1source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map1input.label	1 Input	1 Entrada
+mappings.Map1input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map1instrument.label	1 Instrument	1 Instrumento
+mappings.Map1instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map1setting.label	1 Setting	1 Ajuste
+mappings.Map1setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig1source.label	1 Source	1 Fuente
+mappings.Trig1source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig1input.label	1 Moment	1 Momento
+mappings.Trig1input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map2source.label	2 Source	2 Fuente
+mappings.Map2source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map2input.label	2 Input	2 Entrada
+mappings.Map2input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map2instrument.label	2 Instrument	2 Instrumento
+mappings.Map2instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map2setting.label	2 Setting	2 Ajuste
+mappings.Map2setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig2source.label	2 Source	2 Fuente
+mappings.Trig2source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig2input.label	2 Moment	2 Momento
+mappings.Trig2input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map3source.label	3 Source	3 Fuente
+mappings.Map3source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map3input.label	3 Input	3 Entrada
+mappings.Map3input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map3instrument.label	3 Instrument	3 Instrumento
+mappings.Map3instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map3setting.label	3 Setting	3 Ajuste
+mappings.Map3setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig3source.label	3 Source	3 Fuente
+mappings.Trig3source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig3input.label	3 Moment	3 Momento
+mappings.Trig3input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map4source.label	4 Source	4 Fuente
+mappings.Map4source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map4input.label	4 Input	4 Entrada
+mappings.Map4input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map4instrument.label	4 Instrument	4 Instrumento
+mappings.Map4instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map4setting.label	4 Setting	4 Ajuste
+mappings.Map4setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig4source.label	4 Source	4 Fuente
+mappings.Trig4source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig4input.label	4 Moment	4 Momento
+mappings.Trig4input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map5source.label	5 Source	5 Fuente
+mappings.Map5source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map5input.label	5 Input	5 Entrada
+mappings.Map5input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map5instrument.label	5 Instrument	5 Instrumento
+mappings.Map5instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map5setting.label	5 Setting	5 Ajuste
+mappings.Map5setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig5source.label	5 Source	5 Fuente
+mappings.Trig5source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig5input.label	5 Moment	5 Momento
+mappings.Trig5input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map6source.label	6 Source	6 Fuente
+mappings.Map6source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map6input.label	6 Input	6 Entrada
+mappings.Map6input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map6instrument.label	6 Instrument	6 Instrumento
+mappings.Map6instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map6setting.label	6 Setting	6 Ajuste
+mappings.Map6setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig6source.label	6 Source	6 Fuente
+mappings.Trig6source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig6input.label	6 Moment	6 Momento
+mappings.Trig6input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map7source.label	7 Source	7 Fuente
+mappings.Map7source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map7input.label	7 Input	7 Entrada
+mappings.Map7input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map7instrument.label	7 Instrument	7 Instrumento
+mappings.Map7instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map7setting.label	7 Setting	7 Ajuste
+mappings.Map7setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig7source.label	7 Source	7 Fuente
+mappings.Trig7source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig7input.label	7 Moment	7 Momento
+mappings.Trig7input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+mappings.Map8source.label	8 Source	8 Fuente
+mappings.Map8source.help	Where the movement comes from: a wearable, the body (camera), camera motion or test signals.	De dónde viene el movimiento: un sensor, el cuerpo (cámara), el movimiento en la cámara o señales de prueba.
+mappings.Map8input.label	8 Input	8 Entrada
+mappings.Map8input.help	Which movement of that source. The menu lists only what this source measures.	Qué movimiento de esa fuente. El menú muestra solo lo que mide esta fuente.
+mappings.Map8instrument.label	8 Instrument	8 Instrumento
+mappings.Map8instrument.help	The instrument this mapping changes.	El instrumento que cambia esta conexión.
+mappings.Map8setting.label	8 Setting	8 Ajuste
+mappings.Map8setting.help	The setting of that instrument it changes. Choosing one sets From and To to its usual range.	El ajuste de ese instrumento que cambia. Al elegirlo, Desde y Hasta toman su rango normal.
+mappings.Trig8source.label	8 Source	8 Fuente
+mappings.Trig8source.help	What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.	Qué activa el disparador: la canción (una nota MIDI), un sensor, el cuerpo (cámara) o una señal de prueba.
+mappings.Trig8input.label	8 Moment	8 Momento
+mappings.Trig8input.help	The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.	El momento que lo activa: una nota, un golpe, presionar el botón, quedarse quieto, entrar en una zona.
+phases.Phasenote9.label	Note for Phase 9	Nota para la fase 9
+phases.Phasenote9.help	The MIDI note of the song that starts phase 9 (-1 = none).	La nota MIDI de la canción que empieza la fase 9 (-1 = ninguna).
+phases.Phasenote10.label	Note for Phase 10	Nota para la fase 10
+phases.Phasenote10.help	The MIDI note of the song that starts phase 10 (-1 = none).	La nota MIDI de la canción que empieza la fase 10 (-1 = ninguna).
+visuals.Saturation.label	Saturation	Saturación
+visuals.Saturation.help	Colour strength of the whole picture: 0 = black and white, 1 = as made, 2 = extra strong.	Intensidad del color de toda la imagen: 0 = blanco y negro, 1 = como está, 2 = muy intenso.
+visuals.Monitor.label	Screen	Pantalla
+visuals.Monitor.help	The screen (projector) the output window opens on. Screen 1 is the main one.	La pantalla (proyector) donde se abre la ventana de salida. La pantalla 1 es la principal.
+visuals.Borderless.label	Borderless (Fill the Screen)	Sin bordes (llenar la pantalla)
+visuals.Borderless.help	On: the output fills the chosen screen with no frame and no mouse pointer (for the projector). Off: a normal window with a frame.	Activo: la salida llena la pantalla elegida, sin marco y sin puntero (para el proyector). Apagado: una ventana normal con marco.
+target.master.saturation	Saturation	Saturación
+setting.saturation	Saturation	Saturación
+setting.level	Brightness	Brillo

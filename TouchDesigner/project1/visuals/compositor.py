@@ -1,9 +1,11 @@
 """compositor: stacks the visible instruments into the one output image.
 
-Each instrument's Instrument page has On (Visible), Opacity, Blend (Normal or
-Add) and Order (higher is drawn on top). The values come from engine/live
-(<name>_visible, <name>_opacity ...), so MIDI and mappings drive them like any
-other target. A hidden instrument (or one at opacity 0) is in no slot, so
+Each instrument's Instrument page has On (Visible) and Opacity. The values
+come from engine/live (<name>_visible, <name>_opacity), so MIDI and mappings
+drive them like any other target. The stacking order is fixed (LAYER_ORDER:
+video at the back, then noise, particles, shapes, the trigger shape on top)
+and every layer is laid over the ones below with its own alpha, so an
+instrument with a transparent background shows the layers under it. A hidden instrument (or one at opacity 0) is in no slot, so
 nothing demands its image and it does not cook. SLOTS instruments show at
 once; with more visible, the top-most SLOTS win.
 
@@ -12,6 +14,8 @@ over comp_slot1, and so on; switch_compose takes the last filled slot.
 """
 
 SLOTS = 4
+# Back to front. An instrument not listed goes on top, in name order.
+LAYER_ORDER = ('video', 'noise', 'particles', 'shapes', 'layer1', 'layer2', 'layer3', 'layer4', 'trigger')
 _cache = {'frame': None, 'layers': []}
 
 
@@ -32,8 +36,8 @@ def layers(frame=0):
 		opacity = max(0.0, min(1.0, float(_value(live, name, 'opacity', 1.0))))
 		if out is None or _value(live, name, 'visible', 0) < 0.5 or opacity <= 0:
 			continue
-		operand = 'add' if int(round(_value(live, name, 'blend', 0))) == 1 else 'over'
-		found.append((float(_value(live, name, 'order', 0)), name, out, opacity, operand))
+		rank = LAYER_ORDER.index(name) if name in LAYER_ORDER else len(LAYER_ORDER)
+		found.append((rank, name, out, opacity, 'over'))
 	found.sort(key=lambda f: (f[0], f[1]))
 	result = [(out, opacity, operand) for _, _, out, opacity, operand in found[-SLOTS:]]
 	_cache['frame'] = absTime.frame
@@ -58,6 +62,6 @@ def slotOpacity(slot, frame=0):
 
 
 def slotOperand(slot, frame=0):
-	"""over (Blend: Normal) or add (Blend: Add)."""
+	"""How the slot is laid over the ones below: always over (alpha)."""
 	found = layers()
 	return found[slot - 1][2] if slot <= len(found) else 'over'

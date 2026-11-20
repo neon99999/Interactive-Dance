@@ -1,5 +1,7 @@
 # Phases and placeholder events: plan
 
+> **Superseded (2026-11-20).** The placeholder events were removed. Phases now keep snapshots of the instrument settings, triggers and mappings (10 phases, number keys 1-9 and 0). See README, section **phases**, and the student guides. This plan is kept for its history.
+
 Written in ASD-STE100 Simplified Technical English.
 
 Status: stages 1 and 3 are built (2026-11-19). Stage 2 is not built.

@@ -6,9 +6,6 @@ def onValueChange(par, prev):
 	mappings = getattr(op, 'Mappings', None)
 	if mappings is not None:
 		mappings.RefreshMenus()
-	phases = getattr(op, 'Phases', None)
-	if phases is not None:
-		phases.RefreshMenus()
 	control = getattr(op, 'Control', None)
 	if control is not None:
 		control.Rebuild()

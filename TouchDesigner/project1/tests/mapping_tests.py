@@ -22,12 +22,12 @@ def Steps(check):
 		op.Transport.par.Play = 0
 		logic = mappings.op('mapping_logic').module
 		presets = {p: logic.emptySlots() for p in logic.PRESETS}
-		presets['A'][0] = slot('sim_level', 'layer1.opacity', 0.2, 0.8)
-		presets['B'][0] = slot('sim_level', 'layer1.scale', 1, 3)
+		presets['1'][0] = slot('sim_level', 'layer1.opacity', 0.2, 0.8)
+		presets['2'][0] = slot('sim_level', 'layer1.scale', 1, 3)
 		mappings.ext.Mappings._writePresets(presets)
 		mappings.par.Followmidi = 1
-		mappings.par.Preset = 'A'
-		mappings.LoadPreset('A')
+		mappings.par.Preset = '1'
+		mappings.LoadPreset('1')
 		op.Inputs.par.Simlevel = 0.5
 
 	def preset_is(name):
@@ -78,18 +78,18 @@ def Steps(check):
 		base._do(start, 'mappings start'), base._setRows(MIDI_ROWS), base._seek(4.0), wait, wait,
 		base._expect(s, 'preset A maps level -> opacity', {'mapping_preset': 0, 'layer1_opacity': 0.5, 'layer1_scale': 1}),
 		base._seek(5.5), wait, wait, wait,
-		preset_is('B'),
+		preset_is('2'),
 		base._expect(s, 'MIDI note -> preset B', {'mapping_preset': 2, 'layer1_scale': 2, 'layer1_opacity': 1}),
 		base._seek(12.0), wait, wait, wait,
-		preset_is('A'),
+		preset_is('1'),
 		base._expect(s, 'later note -> back to A', {'mapping_preset': 1, 'layer1_opacity': 0.5, 'layer1_scale': 1}),
 		set_par('Followmidi', 0), base._seek(5.5), wait, wait, wait,
-		preset_is('A'),
+		preset_is('1'),
 		set_par('Followmidi', 1), base._seek(12.0), wait,
 		base._do(new_slot, 'new slot'), wait, wait, wait,
 		base._do(slot_range, 'slot range'),
 		base._expect(s, 'new slot drives the visual', {'layer2_x': 0}),
-		set_par('Preset', 'B'), wait, wait, wait,
+		set_par('Preset', '2'), wait, wait, wait,
 		base._expect(s, 'Preset menu -> B', {'layer1_scale': 2, 'layer2_x': 0}),
 		base._do(lambda: setattr(op.Lang.par, 'Language', 'es'), 'Spanish'), wait, wait,
 		base._do(spanish, 'Spanish check'),

@@ -23,23 +23,38 @@ custom_pars:
   Mappings:
   - name: Preset
     style: Menu
+    label: Mappings of Phase
     default: A
     menuNames:
-    - A
-    - B
-    - C
-    - D
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
     menuLabels:
-    - Preset A
-    - Preset B
-    - Preset C
-    - Preset D
-    help: Which set of 8 mappings is active. Edits are saved into the chosen preset at once.
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
+    help: Each phase has its own 8 mappings and 8 triggers. The Phase menu (Phases tab) chooses which ones you see and use.
+    value: '1'
   - name: Followmidi
     style: Toggle
     label: Follow MIDI
     default: true
     help: 'On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.'
+    value: false
   - name: Presetnotea
     style: Int
     label: Note for Preset A
@@ -372,6 +387,118 @@ custom_pars:
     max: 180.0
     normMax: 2.0
     help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig1source
+    style: Menu
+    label: 1 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig1input
+    style: Menu
+    label: 1 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig1source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig2source
+    style: Menu
+    label: 2 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig2input
+    style: Menu
+    label: 2 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig2source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig3source
+    style: Menu
+    label: 3 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig3input
+    style: Menu
+    label: 3 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig3source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig4source
+    style: Menu
+    label: 4 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig4input
+    style: Menu
+    label: 4 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig4source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig5source
+    style: Menu
+    label: 5 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig5input
+    style: Menu
+    label: 5 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig5source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig6source
+    style: Menu
+    label: 6 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig6input
+    style: Menu
+    label: 6 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig6source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig7source
+    style: Menu
+    label: 7 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig7input
+    style: Menu
+    label: 7 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig7source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig8source
+    style: Menu
+    label: 8 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig8input
+    style: Menu
+    label: 8 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig8source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
   Mappings 1-4:
   - name: Map1on
     style: Toggle
@@ -559,6 +686,118 @@ custom_pars:
     normMin: 0.5
     normMax: 5.0
     help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map1source
+    style: Menu
+    label: 1 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: body
+  - name: Map1input
+    style: Menu
+    label: 1 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map1source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: pose_hand_l
+  - name: Map1instrument
+    style: Menu
+    label: 1 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer1
+  - name: Map1setting
+    style: Menu
+    label: 1 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map1instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: scale
+  - name: Map2source
+    style: Menu
+    label: 2 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: body
+  - name: Map2input
+    style: Menu
+    label: 2 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map2source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: pose_hand_r
+  - name: Map2instrument
+    style: Menu
+    label: 2 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer2
+  - name: Map2setting
+    style: Menu
+    label: 2 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map2instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: scale
+  - name: Map3source
+    style: Menu
+    label: 3 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: body
+  - name: Map3input
+    style: Menu
+    label: 3 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map3source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: pose_x
+  - name: Map3instrument
+    style: Menu
+    label: 3 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer1
+  - name: Map3setting
+    style: Menu
+    label: 3 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map3instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: x
+  - name: Map4source
+    style: Menu
+    label: 4 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: body
+  - name: Map4input
+    style: Menu
+    label: 4 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map4source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: pose_spread
+  - name: Map4instrument
+    style: Menu
+    label: 4 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer1
+  - name: Map4setting
+    style: Menu
+    label: 4 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map4instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: opacity
   Mappings 5-8:
   - name: Map5on
     style: Toggle
@@ -728,37 +967,159 @@ custom_pars:
     normMin: 0.5
     normMax: 5.0
     help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map5source
+    style: Menu
+    label: 5 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map5input
+    style: Menu
+    label: 5 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map5source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map5instrument
+    style: Menu
+    label: 5 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map5setting
+    style: Menu
+    label: 5 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map5instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  - name: Map6source
+    style: Menu
+    label: 6 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map6input
+    style: Menu
+    label: 6 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map6source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map6instrument
+    style: Menu
+    label: 6 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map6setting
+    style: Menu
+    label: 6 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map6instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  - name: Map7source
+    style: Menu
+    label: 7 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map7input
+    style: Menu
+    label: 7 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map7source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map7instrument
+    style: Menu
+    label: 7 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map7setting
+    style: Menu
+    label: 7 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map7instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  - name: Map8source
+    style: Menu
+    label: 8 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map8input
+    style: Menu
+    label: 8 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map8source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map8instrument
+    style: Menu
+    label: 8 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map8setting
+    style: Menu
+    label: 8 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map8instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
   Presets:
   - name: Copyfrom
     style: Menu
     label: Copy From
     default: A
     menuNames:
-    - A
-    - B
-    - C
-    - D
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
     menuLabels:
-    - Preset A
-    - Preset B
-    - Preset C
-    - Preset D
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
     help: Preset to copy from.
+    value: '1'
   - name: Copyto
     style: Menu
     label: Copy To
     default: B
     menuNames:
-    - A
-    - B
-    - C
-    - D
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
     menuLabels:
-    - Preset A
-    - Preset B
-    - Preset C
-    - Preset D
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
     help: Preset to copy into. Its mappings are replaced.
+    value: '2'
   - name: Copy
     style: Pulse
     label: Copy Preset
@@ -789,12 +1150,694 @@ operators:
   parameters:
     file: project1/mappings/presets.tsv
     syncfile: true
-    rows: 33
+    rows: 81
     cols: 9
   position: [0, -400]
   color: [0.9, 0.3, 0.4]
   tags:
   - tsv
+- name: menu_items
+  type: tableDAT
+  position: [800, -800]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - kind
+    - key
+    - name
+    - label
+  - - source
+    - ''
+    - wearable1
+    - Wearable 1
+  - - input
+    - wearable1
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable1
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable1
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable1
+    - gx
+    - Twist speed
+  - - input
+    - wearable1
+    - gy
+    - Tilt speed
+  - - input
+    - wearable1
+    - gz
+    - Turn speed
+  - - input
+    - wearable1
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable1
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable1
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - wearable2
+    - Wearable 2
+  - - input
+    - wearable2
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable2
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable2
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable2
+    - gx
+    - Twist speed
+  - - input
+    - wearable2
+    - gy
+    - Tilt speed
+  - - input
+    - wearable2
+    - gz
+    - Turn speed
+  - - input
+    - wearable2
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable2
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable2
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - wearable3
+    - Wearable 3
+  - - input
+    - wearable3
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable3
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable3
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable3
+    - gx
+    - Twist speed
+  - - input
+    - wearable3
+    - gy
+    - Tilt speed
+  - - input
+    - wearable3
+    - gz
+    - Turn speed
+  - - input
+    - wearable3
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable3
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable3
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - body
+    - Body (camera)
+  - - input
+    - body
+    - pose_x
+    - Position left-right
+  - - input
+    - body
+    - pose_hand_l
+    - Left hand height
+  - - input
+    - body
+    - pose_hand_r
+    - Right hand height
+  - - input
+    - body
+    - pose_spread
+    - Arms spread
+  - - input
+    - body
+    - pose_energy
+    - Energy
+  - - input
+    - body
+    - pose_present
+    - Dancer seen (1 while seen)
+  - - input
+    - body
+    - pose_zone1
+    - In zone 1 (1 while there)
+  - - input
+    - body
+    - pose_zone2
+    - In zone 2 (1 while there)
+  - - input
+    - body
+    - pose_zone3
+    - In zone 3 (1 while there)
+  - - input
+    - body
+    - pose_zone4
+    - In zone 4 (1 while there)
+  - - input
+    - body
+    - pose_zone5
+    - In zone 5 (1 while there)
+  - - source
+    - ''
+    - camera
+    - Camera motion
+  - - input
+    - camera
+    - camera_motion
+    - Motion
+  - - input
+    - camera
+    - camera_left
+    - Motion left
+  - - input
+    - camera
+    - camera_right
+    - Motion right
+  - - source
+    - ''
+    - test
+    - Test signals
+  - - input
+    - test
+    - sim_level
+    - Level
+  - - input
+    - test
+    - sim_trigger
+    - Trigger
+  - - input
+    - test
+    - sim_zone
+    - Zone
+  - - trigger_source
+    - ''
+    - song
+    - Song (MIDI)
+  - - trigger_input
+    - song
+    - midi
+    - A note of the song
+  - - trigger_source
+    - ''
+    - wearable1
+    - Wearable 1
+  - - trigger_input
+    - wearable1
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable1
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable1
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - wearable2
+    - Wearable 2
+  - - trigger_input
+    - wearable2
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable2
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable2
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - wearable3
+    - Wearable 3
+  - - trigger_input
+    - wearable3
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable3
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable3
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - body
+    - Body (camera)
+  - - trigger_input
+    - body
+    - pose_present
+    - Dancer appears
+  - - trigger_input
+    - body
+    - pose_zone1
+    - Enters zone 1
+  - - trigger_input
+    - body
+    - pose_zone2
+    - Enters zone 2
+  - - trigger_input
+    - body
+    - pose_zone3
+    - Enters zone 3
+  - - trigger_input
+    - body
+    - pose_zone4
+    - Enters zone 4
+  - - trigger_input
+    - body
+    - pose_zone5
+    - Enters zone 5
+  - - trigger_source
+    - ''
+    - test
+    - Test signals
+  - - trigger_input
+    - test
+    - sim_trigger
+    - Test trigger
+  - - instrument
+    - ''
+    - particles
+    - Particles
+  - - setting
+    - particles
+    - visible
+    - 'On'
+  - - setting
+    - particles
+    - opacity
+    - Opacity
+  - - setting
+    - particles
+    - energy
+    - Energy
+  - - setting
+    - particles
+    - spread
+    - Spread
+  - - setting
+    - particles
+    - turbulence
+    - Turbulence
+  - - setting
+    - particles
+    - size
+    - Size
+  - - setting
+    - particles
+    - colour
+    - Colour
+  - - setting
+    - particles
+    - trails
+    - Trails
+  - - instrument
+    - ''
+    - noise
+    - Noise
+  - - setting
+    - noise
+    - visible
+    - 'On'
+  - - setting
+    - noise
+    - opacity
+    - Opacity
+  - - setting
+    - noise
+    - scale
+    - Scale
+  - - setting
+    - noise
+    - speed
+    - Speed
+  - - setting
+    - noise
+    - detail
+    - Detail
+  - - setting
+    - noise
+    - warp
+    - Warp
+  - - setting
+    - noise
+    - feedback
+    - Trails
+  - - setting
+    - noise
+    - colour
+    - Colour
+  - - instrument
+    - ''
+    - video
+    - Video Feedback
+  - - setting
+    - video
+    - visible
+    - 'On'
+  - - setting
+    - video
+    - opacity
+    - Opacity
+  - - setting
+    - video
+    - echo
+    - What echoes
+  - - setting
+    - video
+    - feedback
+    - Echo length
+  - - setting
+    - video
+    - zoom
+    - Zoom
+  - - setting
+    - video
+    - distortion
+    - Distortion
+  - - setting
+    - video
+    - colour
+    - Colour
+  - - instrument
+    - ''
+    - trigger
+    - Trigger Shape
+  - - setting
+    - trigger
+    - visible
+    - 'On'
+  - - setting
+    - trigger
+    - opacity
+    - Opacity
+  - - setting
+    - trigger
+    - sides
+    - Sides
+  - - setting
+    - trigger
+    - size
+    - Size
+  - - setting
+    - trigger
+    - x
+    - X
+  - - setting
+    - trigger
+    - y
+    - Y
+  - - setting
+    - trigger
+    - rotate
+    - Rotate
+  - - setting
+    - trigger
+    - fill
+    - Fill
+  - - setting
+    - trigger
+    - line
+    - Line
+  - - setting
+    - trigger
+    - colour
+    - Colour
+  - - setting
+    - trigger
+    - flashcolour
+    - Flash colour
+  - - setting
+    - trigger
+    - flash
+    - Flash
+  - - instrument
+    - ''
+    - shapes
+    - Shapes (all layers)
+  - - setting
+    - shapes
+    - visible
+    - 'On'
+  - - setting
+    - shapes
+    - opacity
+    - Opacity
+  - - instrument
+    - ''
+    - layer1
+    - Shape layer 1
+  - - setting
+    - layer1
+    - visible
+    - Visible
+  - - setting
+    - layer1
+    - opacity
+    - Opacity
+  - - setting
+    - layer1
+    - red
+    - Red
+  - - setting
+    - layer1
+    - green
+    - Green
+  - - setting
+    - layer1
+    - blue
+    - Blue
+  - - setting
+    - layer1
+    - scale
+    - Size
+  - - setting
+    - layer1
+    - x
+    - Position x
+  - - setting
+    - layer1
+    - y
+    - Position y
+  - - setting
+    - layer1
+    - rotate
+    - Rotation
+  - - setting
+    - layer1
+    - content
+    - Content
+  - - setting
+    - layer1
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer2
+    - Shape layer 2
+  - - setting
+    - layer2
+    - visible
+    - Visible
+  - - setting
+    - layer2
+    - opacity
+    - Opacity
+  - - setting
+    - layer2
+    - red
+    - Red
+  - - setting
+    - layer2
+    - green
+    - Green
+  - - setting
+    - layer2
+    - blue
+    - Blue
+  - - setting
+    - layer2
+    - scale
+    - Size
+  - - setting
+    - layer2
+    - x
+    - Position x
+  - - setting
+    - layer2
+    - y
+    - Position y
+  - - setting
+    - layer2
+    - rotate
+    - Rotation
+  - - setting
+    - layer2
+    - content
+    - Content
+  - - setting
+    - layer2
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer3
+    - Shape layer 3
+  - - setting
+    - layer3
+    - visible
+    - Visible
+  - - setting
+    - layer3
+    - opacity
+    - Opacity
+  - - setting
+    - layer3
+    - red
+    - Red
+  - - setting
+    - layer3
+    - green
+    - Green
+  - - setting
+    - layer3
+    - blue
+    - Blue
+  - - setting
+    - layer3
+    - scale
+    - Size
+  - - setting
+    - layer3
+    - x
+    - Position x
+  - - setting
+    - layer3
+    - y
+    - Position y
+  - - setting
+    - layer3
+    - rotate
+    - Rotation
+  - - setting
+    - layer3
+    - content
+    - Content
+  - - setting
+    - layer3
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer4
+    - Shape layer 4
+  - - setting
+    - layer4
+    - visible
+    - Visible
+  - - setting
+    - layer4
+    - opacity
+    - Opacity
+  - - setting
+    - layer4
+    - red
+    - Red
+  - - setting
+    - layer4
+    - green
+    - Green
+  - - setting
+    - layer4
+    - blue
+    - Blue
+  - - setting
+    - layer4
+    - scale
+    - Size
+  - - setting
+    - layer4
+    - x
+    - Position x
+  - - setting
+    - layer4
+    - y
+    - Position y
+  - - setting
+    - layer4
+    - rotate
+    - Rotation
+  - - setting
+    - layer4
+    - content
+    - Content
+  - - setting
+    - layer4
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - master
+    - Output
+  - - setting
+    - master
+    - level
+    - Brightness
+  - - setting
+    - master
+    - blackout
+    - Blackout
+  - - setting
+    - master
+    - flash
+    - Flash
+  - - setting
+    - master
+    - saturation
+    - Saturation
+  dat_content_format: table
 - name: MappingsExt
   type: textDAT
   parameters:
@@ -885,7 +1928,7 @@ operators:
   parameters:
     file: project1/mappings/trigger_presets.tsv
     syncfile: true
-    rows: 33
+    rows: 81
     cols: 7
   position: [1600, -400]
   color: [0.9, 0.3, 0.4]
@@ -918,14 +1961,34 @@ operators:
     - 'Wearable 1: hit'
   - - serial_w1_btn
     - 'Wearable 1: button'
+  - - serial_w1_still
+    - 'Wearable 1: still'
   - - serial_w2_hit
     - 'Wearable 2: hit'
   - - serial_w2_btn
     - 'Wearable 2: button'
+  - - serial_w2_still
+    - 'Wearable 2: still'
   - - serial_w3_hit
     - 'Wearable 3: hit'
   - - serial_w3_btn
     - 'Wearable 3: button'
+  - - serial_w3_still
+    - 'Wearable 3: still'
+  - - pose_present
+    - 'Body: dancer seen'
+  - - pose_zone1
+    - 'Body: in zone 1'
+  - - pose_zone2
+    - 'Body: in zone 2'
+  - - pose_zone3
+    - 'Body: in zone 3'
+  - - pose_zone4
+    - 'Body: in zone 4'
+  - - pose_zone5
+    - 'Body: in zone 5'
+  - - sim_trigger
+    - 'Test: trigger'
   dat_content_format: table
 - name: midi_preset_changed
   type: chopexecuteDAT

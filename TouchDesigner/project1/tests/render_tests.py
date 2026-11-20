@@ -75,8 +75,8 @@ def Steps(check):
 		master(Level=0.5), expect('master level 0.5 halves output', 320, 360, [0.5, 0, 0]),
 		master(Level=1, Blackout=1), expect('blackout', 960, 360, [0, 0, 0]),
 		master(Blackout=0),
-		shapes(Opacity=0.5), expect('compositor: shapes opacity 0.5 halves it', 320, 360, [0.5, 0, 0]),
-		shapes(Opacity=1, Visible=0), expect('compositor: shapes off leaves black', 320, 360, [0, 0, 0]),
+		shapes(Opacity=0.5), base._do(lambda: None, 'wait (opacity goes through engine/live)'), expect('compositor: shapes opacity 0.5 halves it', 320, 360, [0.5, 0, 0]),
+		shapes(Opacity=1, Visible=0), base._do(lambda: None, 'wait'), expect('compositor: shapes off leaves black', 320, 360, [0, 0, 0]),
 		base._do(resetLayers, 'reset layers'),
 	]
 

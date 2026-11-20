@@ -8,9 +8,9 @@ exactly as before.
 
 What the panel shows is data, not code: the layout table lists each control
 (tab, section, component, parameter, level). Rebuild()
-recreates the generated parameters from it whenever Level (Mode: Level 1-3
+recreates the generated parameters from it whenever Level (Mode: Level 1-2
 or Advanced) or Language changes. A row's level is the first Level that
-shows it (1, 2 or 3); 0 = Advanced only. Advanced shows every row. Each instrument has its own section on the Instruments
+shows it (1 or 2); 0 = Advanced only. Advanced shows every row. Each instrument has its own section on the Instruments
 tab (switching one by menu rebuilt the panel and froze it for a second). Labels, help and menus come from the bound
 parameter, so they follow the Language switch; tab and section names come
 from the lang table (control.page.<id>, control.section.<id>).
@@ -24,7 +24,7 @@ back to Show. Rebuild keeps the tab too.
 from typing import Optional
 
 PAGES = ('show', 'phases', 'instruments', 'composition', 'movement', 'inputs')
-LEVELS = {'level1': 1, 'level2': 2, 'level3': 3, 'advanced': 99}
+LEVELS = {'level1': 1, 'level2': 2, 'advanced': 99}
 OWN = ('Mode',)                       # the panel's own setting, never rebuilt
 OWN_PAGE = {'Mode': 'show'}
 KEEP_PAGES = ('About',)                # Embody's build info, kept last
@@ -215,7 +215,7 @@ class ControlExt:
 			par.normMin, par.normMax = source.normMin, source.normMax
 
 	def _ensureOwn(self, pages: dict) -> None:
-		"""Get-or-create Mode, shown as Level (Show tab): Level 1-3 reveal the tools step by step, Advanced shows all."""
+		"""Get-or-create Mode, shown as Level (Show tab): Level 1-2 reveal the tools step by step, Advanced shows all."""
 		comp = self.ownerComp
 		mode = getattr(comp.par, 'Mode', None)
 		if mode is None:
@@ -224,10 +224,12 @@ class ControlExt:
 		if list(mode.menuNames) != names:
 			value = str(mode.eval())
 			mode.menuNames = names
-			mode.menuLabels = ['Level 1', 'Level 2', 'Level 3', 'Advanced']
-			mode.val = 'advanced' if value == 'advanced' else (value if value in names else 'level1')
+			mode.menuLabels = ['Level 1', 'Level 2', 'Advanced']
+			mode.val = 'advanced' if value == 'advanced' else (value if value in names else
+				('level2' if value == 'level3' else 'level1'))
 		mode.default = 'level1'
-		mode.help = 'Level 1: music, phases and trigger events. Level 2: adds continuous links. Level 3: everything for students. Advanced: every setting.'
+		mode.help = ('Level 1: music, phases, instruments and triggers (moments: a hit, a note, entering a zone). '
+			'Level 2: adds the mappings (a movement continuously changes a setting). Advanced: every setting.')
 
 	def _shownPageKey(self) -> str:
 		"""The tab the panel shows now (stage/controls has Sync Page on, so it is this COMP's current page)."""

@@ -8,7 +8,7 @@ What it does:
 - four visual layers: shapes, noise and ring textures, video or stills, and text, with simple effects
 - a table that turns MIDI notes into visual actions (show, hide, toggle, trigger, fade, set value)
 - a second table that maps movement signals onto visual values, with range and smoothing
-- a mapping page for dancers: 8 movement-to-visual mappings in presets A-D, which MIDI notes can switch during the song
+- a mapping page for dancers: 8 movement-to-visual mappings for each of the 10 phases
 - movement inputs: simulated controls, OSC, serial (USB) sensors, camera motion, and body tracking with MediaPipe, including stage zones
 - monitor panels for MIDI notes, wearable sensors and body tracking
 - English and Spanish labels for the controls dancers use
@@ -48,14 +48,14 @@ Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()`
 
 | Tab | What is on it |
 |---|---|
-| **Show** | Level (1, 2, 3, Advanced), Language, the music (Play, Reset, files, position) and the output window (open, close, Level, Blackout) |
-| **Phases** | The phases of the piece and their placeholder events (see **phases** below). Level 2 adds the continuous links |
+| **Show** | Level (1, 2, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout) |
+| **Phases** | The 10 phases of the piece, the note that starts each one, Save Show / Load Show (see **phases** below) |
 | **Instruments** | One section per instrument (Particles, Video Feedback, Noise): its On switch, Preset, Reset to Preset and sliders; Video Feedback also its source and Status |
-| **Composition** | Every instrument's On, Opacity, Blend and Order: what is in the picture and how it is stacked |
-| **Movement** | The mapping preset and the 8 movement -> visual mappings (Basic: On, Movement, Visual; Advanced adds From, To, Smoothing, Sensitivity) |
+| **Composition** | Every instrument's On and Opacity: what is in the picture (the stacking order is fixed) |
+| **Movement** | The triggers (Level 1: Source, Moment, Does, Amount) and the 8 continuous mappings (Level 2: Source, Input, Instrument, Setting; Advanced adds From, To, Smoothing, Sensitivity) |
 | **Inputs** | Webcam (Use, Webcam, Status), Wearables (Read Serial, Port, Status, Use Wearable 1-3), Stage Zones; Advanced adds body-tracking details, test signals and OSC |
 
-**Level** reveals the tools step by step: **Level 1** shows what a dancer needs on day one (music, phases and trigger events, and the controls Basic showed before), **Level 2** adds the continuous links, **Level 3** is kept for the next tools (today the same as Level 2), **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, level: the first Level that shows the row, 0 = Advanced only): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Level or Language updates the panel, which takes a moment (a few seconds for Language).
+**Level** reveals the tools step by step: **Level 1** shows what a dancer needs on day one (music, phases, instruments and triggers), **Level 2** adds the continuous mappings, **Advanced** shows every setting. The panel holds no values of its own: each control is bound to the real parameter on its component, so changing either changes both, and MIDI, presets and mappings work as before. What the panel shows is the table `control/layout` (tab, section, component, parameter, level: the first Level that shows the row, 0 = Advanced only): edit a row and run `op.Control.Rebuild()`. Labels and help follow the Language switch. Switching Level or Language updates the panel, which takes a moment (a few seconds for Language).
 
 ## The four components
 
@@ -259,51 +259,38 @@ A friendlier front for the input table. **mappings** has 8 slots on its **Mappin
 
 Dancers never type sensor ranges: each movement's range is built in (gyro ±500 degrees per second, pitch ±90, roll ±180, everything else 0-1).
 
-- **Preset** (Mappings page) picks A, B, C or D. Every edit is saved into the current preset at once. **Presets** page: **Copy Preset** (From/To) and **Clear Current Preset**.
+- **Preset** ("Mappings of Phase", Mappings page) is the phase whose mappings and triggers are shown; it follows the Phases tab. Every edit is saved into it at once. **Presets** page: **Copy Preset** (From/To) and **Clear Current Preset**.
+- Each mapping is chosen with four short menus: **Source** (Wearable 1-3, Body, Camera motion, Test) and **Input** (only that source's movements), **Instrument** and **Setting** (only that instrument's settings). They write the same signal and target as before.
 - The mapping rows go to the engine after the input table, so a mapping wins over both the input table and MIDI for its visual.
-- **Switching presets during the song:** set **Note for Preset A-D** (Mappings page; -1 = none) to a note of the song, and that note selects the preset. The same works as a MIDI table row `note, mapping.preset, set, 2` (1 = A ... 4 = D). Like every MIDI action it follows the playback position, so seeking lands on the right preset. **Follow MIDI** off ignores both.
+- **Switching during the song:** the phase notes (Phases tab) switch the phase, and with it the mappings. A MIDI table row `note, mapping.preset, set, 2` selects phase 2's mappings only.
 - The Visual menu is built from the engine's list of values, so when visuals get new values they appear in the menu by themselves (with their raw name until a translation is added to `lang/strings`).
-- Starter presets: **A** body (hands -> layer sizes, position -> layer 1 X, arms spread -> layer 1 opacity), **B** zones (zone 1-3 -> layers 1-3 visible, energy -> flash), **C** wearables (activity -> layer sizes, wearable 1 roll -> rotate, hit -> flash), **D** mixed. Change them freely.
+- Starter mappings: phase **1** body (hands -> layer sizes, position -> layer 1 X, arms spread -> layer 1 opacity), **2** zones (zone 1-3 -> layers 1-3 visible, energy -> flash), **3** wearables (activity -> layer sizes, wearable 1 roll -> rotate, hit -> flash), **4** mixed. Change them freely.
 
 #### Triggers: events that make the Trigger Shape act
 
-Each preset also holds **8 triggers** (Triggers page; on the control panel, Movement tab, under the preset). A trigger is an event and what it does to the **Trigger Shape** instrument (below), so changing the preset changes what the same note does: the day-one teaching example.
+Each phase also holds **8 triggers** (Triggers page; on the control panel, Movement tab, under the preset). A trigger is an event and what it does to the **Trigger Shape** instrument (below), so changing the preset changes what the same note does: the day-one teaching example.
 
 | Control | What it does |
 |---|---|
 | **On** | Use this trigger |
-| **When** | **MIDI note** (a note of the song's MIDI file), or **Wearable 1-3: hit / button** |
+| **Source**, **Moment** | What starts it: **Song** (a MIDI note), **Wearable 1-3** (hit, button press, becomes still), **Body** (dancer appears, enters zone 1-5) or **Test** (test trigger). A trigger fires once, when its moment starts (a continuous signal fires when it rises past 0.5) |
 | **Note** | The note number, for MIDI note (midi_monitor shows the numbers as the song plays). Greyed out for wearable triggers |
 | **Does** | **Pulse**: swells the size and falls back (0.4 s). **Spin**: turns by Amount degrees. **More sides**: adds Amount sides (3-12, wrapping round). **Jump**: glides to a new place up to Amount away from its X / Y. **Flash colour**: goes towards Flash Colour and fades back (0.6 s) |
 | **Amount** | How much; picking a Does sets its usual amount and slider (Pulse 0.5, Spin 45, More sides 1, Jump 0.5, Flash 1) |
 
-- Song notes follow the playback position like the MIDI table: pausing repeats nothing, seeking and Reset land on the right state, and each note uses the preset in use at its moment (so a spin from preset A stays when the song switches to B). Wearable hits and buttons act live, also while paused.
-- Starter triggers, made to show on **Test Track** (notes 60, 62, 64, 65 at 5, 10, 15, 20 s): **A** pulse, spin, more sides, flash; **B** spin 90, jump, big pulse, more sides; **C** wearable 1 hit pulse, wearable 1 button more sides, note 60 flash, note 62 jump; **D** jump, flash, spin back, wearable 1 hit spin. Copy Preset and Clear Current Preset include the triggers.
+- Song notes follow the playback position like the MIDI table: pausing repeats nothing, seeking and Reset land on the right state, and each note uses the preset in use at its moment (so a spin from phase 1 stays when the song switches to phase 2). Wearable hits and buttons act live, also while paused.
+- Starter triggers, made to show on **Test Track** (notes 60, 62, 64, 65 at 5, 10, 15, 20 s): phase **1** pulse, spin, more sides, flash; **2** spin 90, jump, big pulse, more sides; **3** wearable 1 hit pulse, wearable 1 button more sides, note 60 flash, note 62 jump; **4** jump, flash, spin back, wearable 1 hit spin. Copy Preset and Clear Current Preset include the triggers.
 - The triggers are stored in `mappings/trigger_presets` (preset, slot, on, when, note, does, amount).
 
-### phases: the piece in phases, with placeholder events
+### phases: the piece in 10 phases, each with its own settings
 
-The first way students build a piece: the music and its MIDI notes divide it into **phases**, and in each phase dancers call up **events**, simple named shapes that stand in for the visuals that come later. On the control panel: **Phases** tab.
+The first way students build a piece: the music and its MIDI notes divide it into **phases**, and each phase keeps its own look: every instrument's settings, the triggers and the mappings. On the control panel: **Phases** tab. Student guides: `docs/student-guide-phases-en.md`, `docs/guia-estudiantes-fases-es.md`.
 
-**Phases.** Up to 8. The **Phase** menu shows (and edits) one phase; **Note for This Phase** is the MIDI note of the song that starts it (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, seeking moves it too, and the Phase menu follows. **Clear Phase** empties the shown phase.
+**Phases.** 10. The **Phase** menu selects one; **Note for This Phase** is the MIDI note of the song that starts it (-1 = none). With **Follow MIDI** on, the phase follows the song: before the first phase note it is phase 1, seeking moves it too, and the Phase menu follows. The number keys **1-9** select phases 1-9 and **0** selects phase 10 (click the Stage picture first; keys with Ctrl/Alt are ignored).
 
-**Save Show / Load Show** (Phases tab) write and read one file, **Show File** (default `shows/my_show.json`, in the `TouchDesigner` folder next to the .toe; any other path works too). It holds the phases and their notes, the song and MIDI file, the mapping presets and triggers, and every instrument's settings. To move a show to a new version of the toolkit: Save Show, copy the `shows` folder into the new copy, open it and Load Show. **Show Status** says what happened. The Level only changes what the panel shows: nothing is lost when you switch levels.
+**Snapshots.** While a phase is shown, every change to an instrument's Instrument, Source or Layer page is kept in that phase (checked every 10 frames). Selecting another phase first keeps the current one, then applies the new phase's values; a phase that was never shown starts as a copy of the one before. The mappings and triggers of phase N are mapping preset N, so they switch with it. Stored in `phases/phase_settings` (phase, comp, par, value); rules in `phases/phase_logic` (tested in `tests/test_phases.py`). Old shows with presets A-D load as phases 1-4.
 
-**Events.** Each phase has 8:
-
-| Control | What it does |
-|---|---|
-| **On** | Use this event |
-| **Name** | The text in the shape: what the action is (punch explode, stomp...) |
-| **Shape**, **Colour**, **X**, **Y**, **Size** | The placeholder: rectangle, circle or triangle, where and how big |
-| **Show** | **Always**: on for the whole phase. **Toggle**: the trigger shows it, the trigger again hides it. **For a time**: the trigger shows it for **Time** seconds (a new trigger starts the time again) |
-| **Trigger**, **Note** | What shows it: a MIDI note of the song, or Wearable 1-3 hit / button |
-| **Link 1-2: Movement, Moves, From, To** | (Level 2) A continuous movement (arm tilt, body position, activity...) moves the shape while it is on screen: its size, X, Y, rotation or brightness, from From to To across the movement's range |
-
-- Events fade in and out (0.3 s). A new phase starts with its events hidden; Always events fade in.
-- Song notes act when the playback crosses them (forward play), wearable hits and buttons act live.
-- Example in phase 1: *punch* (Toggle on wearable 1 hit; wearable 1 roll turns it), *stomp* (1.5 s on wearable 2 hit), *beat* (0.5 s on note 60).
-- The shapes are the **Phase Events** instrument (`visuals/events`, below), so the Composition tab places them like any instrument. Everything is stored in `phases/phases` (one row per phase and event). The rules are in `phases/phase_logic` (tested in `tests/test_phases.py`).
+**Save Show / Load Show** (Phases tab) write and read one file, **Show File** (default `shows/my_show.json`, in the `TouchDesigner` folder next to the .toe; any other path works too). It holds the phases, their notes and settings, the song and MIDI file, the mappings and triggers, and every instrument's settings. **Autosave:** 3 s after a change the show is also written to `shows/autosave.json`; on open it is loaded when it is newer than the .toe. To move a show to a new version of the toolkit: Save Show, copy the `shows` folder into the new copy, open it and Load Show. **Show Status** says what happened.
 
 ### lang: English / Español
 
@@ -335,22 +322,18 @@ The output is made of **visual instruments**: Particles, Video Feedback and Shap
 - the engine publishes the value as the channel `particles_energy` on `engine/live`, which the instrument reads (as the layers do);
 - its `out1` is its image, and the compositor puts it in the output (next).
 
-**Compositor:** every instrument has four settings at the top of its Instrument page that place it in the output:
+**Compositor:** every instrument has two settings at the top of its Instrument page that place it in the output:
 
 | Setting | What it does |
 |---|---|
 | **On** | In the output or not. An instrument that is off does not run at all, so it costs no frame time |
 | **Opacity** | 0 invisible, 1 full |
-| **Blend** | **Normal**: covers the instruments below it (dark parts too). **Add**: adds its light, so its dark parts let the ones below show through |
-| **Order** | Higher is drawn on top (1-9). Defaults: Video Feedback 1, Particles 2, Shapes 3 |
 
-Defaults: Video Feedback Normal (it fills the frame), Particles and Shapes Add. These are mapping and MIDI targets too (`video.opacity`, `particles.blend`, `shapes.order` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four by Order). After the compositor come the master **Level**, **Blackout** and **Flash**, then the output window as before.
+The order is fixed, back to front: Video Feedback, Noise, Particles, Shapes, Trigger Shape. Each is laid **over** the ones below with its own alpha (Particles and Noise make their dark parts transparent), so the layers below show through. On and Opacity are mapping and MIDI targets too (`video.opacity` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four). After the compositor come the master **Level**, **Saturation** (0 grey, 1 normal, 2 strong; target `master.saturation`), **Blackout** and **Flash**, then the output window as before.
 
-**Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default), Opacity, Blend (Add) and Order (3) only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
+**Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default) and Opacity only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
 
-**Phase Events** (`visuals/events`, Instrument page): draws the placeholder events of the current phase (see **phases**). It has only the compositor settings (On, Opacity, Blend, Order); the shapes come from the Phases tab. On by default; Order 5, Normal. `slot1` draws one event (the others are clones of it), reading its row of `phases/event_state`.
-
-**Trigger Shape** (`visuals/trigger`, Instrument page): one polygon for teaching triggers. Off by default; Order 4, Add.
+**Trigger Shape** (`visuals/trigger`, Instrument page): one polygon for teaching triggers. Off by default; always on top.
 
 | Setting | What it does |
 |---|---|
@@ -402,7 +385,7 @@ Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on
 - Mapping targets: Video feedback: what echoes, echo length, zoom, distortion, colour, mix, on (`video.feedback` ...). Presets are in `video/presets`.
 - Echo length, zoom, turn and colour shift are per second, so the look is the same at 30 or 60 fps.
 
-**Noise** (`visuals/noise`): moving noise patterns only (no camera): clouds, marble, lava, folded and smeared by feedback. Off by default; Blend Add, Order 1 (at the bottom).
+**Noise** (`visuals/noise`): moving noise patterns only (no camera): clouds, marble, lava, folded and smeared by feedback. Off by default; under Particles, its dark parts transparent.
 
 | Setting | What it does |
 |---|---|
@@ -458,7 +441,7 @@ TouchDesigner/
     imu_monitor.tdxn       graphs a wearable's motion sensor
     wearable_monitor.tdxn  shows every wearable signal live, per wearable
     pose_monitor.tdxn      camera picture with stage zones and the tracked body
-    mappings.tdxn          the mapping page (8 mappings, presets A-D)
+    mappings.tdxn          the mapping page (8 mappings and 8 triggers per phase)
     mappings/mapping_logic.py  catalogues and row building (pure Python, unit-tested)
     lang.tdxn, lang/strings.tsv  English / Spanish texts
     tests.tdxn, tests/     in-TouchDesigner tests

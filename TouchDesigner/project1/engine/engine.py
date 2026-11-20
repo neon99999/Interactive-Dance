@@ -25,7 +25,7 @@ NUM_LAYERS = 4
 LAYER_PARS = {'visible': 'Visible', 'opacity': 'Opacity', 'red': 'Colorr', 'green': 'Colorg',
 			  'blue': 'Colorb', 'scale': 'Scale', 'x': 'X', 'y': 'Y', 'rotate': 'Rotate',
 			  'content': 'Content', 'effect': 'Effect'}
-MASTER_PARS = {'level': 'Level', 'blackout': 'Blackout', 'flash': 'Flash'}
+MASTER_PARS = {'level': 'Level', 'blackout': 'Blackout', 'flash': 'Flash', 'saturation': 'Saturation'}
 
 _midi = {'key': None, 'events': [], 'errors': []}
 _inputs = {'key': None, 'assignments': [], 'errors': []}

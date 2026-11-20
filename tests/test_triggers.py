@@ -35,16 +35,16 @@ class Parse(unittest.TestCase):
 			['E', '1', '1', 'midi', '60', 'pulse', '1'],          # no preset E
 			['A', '4', '1', 'midi', 'x', 'pulse', '1']]           # bad number
 		found = sl.parseTriggers(rows)
-		self.assertEqual(found['A'], [('midi', 60, 'pulse', 0.5, 1)])
-		self.assertEqual(found['B'], [('serial_w1_hit', 0, 'flash', 1.0, 1)])
-		self.assertEqual(found['C'], [])
+		self.assertEqual(found['1'], [('midi', 60, 'pulse', 0.5, 1)])
+		self.assertEqual(found['2'], [('serial_w1_hit', 0, 'flash', 1.0, 1)])
+		self.assertEqual(found['3'], [])
 
 	def test_stored_presets_round_trip_into_the_engine(self):
 		presets = {p: ml.emptyTriggers() for p in ml.PRESETS}
-		presets['C'][2] = dict(on=1.0, when='serial_w2_btn', note=0.0, does='sides', amount=2.0)
+		presets['3'][2] = dict(on=1.0, when='serial_w2_btn', note=0.0, does='sides', amount=2.0)
 		rows = ml.triggerRows(presets)
 		self.assertEqual(ml.readTriggers(rows), presets)
-		self.assertEqual(sl.parseTriggers(rows)['C'], [('serial_w2_btn', 0, 'sides', 2.0, 3)])
+		self.assertEqual(sl.parseTriggers(rows)['3'], [('serial_w2_btn', 0, 'sides', 2.0, 3)])
 
 	def test_sources_and_amounts(self):
 		self.assertEqual(ml.triggerSources()[:3], ['midi', 'serial_w1_hit', 'serial_w1_btn'])
@@ -103,9 +103,9 @@ class Effects(unittest.TestCase):
 class SongTriggers(unittest.TestCase):
 
 	def test_each_note_uses_the_preset_of_its_moment(self):
-		triggers = {'A': [('midi', 60, 'spin', 45.0, 1)], 'B': [('midi', 60, 'pulse', 1.0, 1)], 'C': [], 'D': []}
-		switches = [(10.0, 'B')]
-		events = sl.midiTriggerEvents([(5.0, 60), (12.0, 60), (11.0, 61)], triggers, switches, 'A')
+		triggers = {'1': [('midi', 60, 'spin', 45.0, 1)], '2': [('midi', 60, 'pulse', 1.0, 1)], '3': [], '4': []}
+		switches = [(10.0, '2')]
+		events = sl.midiTriggerEvents([(5.0, 60), (12.0, 60), (11.0, 61)], triggers, switches, '1')
 		self.assertEqual([(t, a) for t, a, _amount, _seed in events], [(5.0, 'spin'), (12.0, 'pulse')])
 		# The spin from before the switch stays.
 		self.assertAlmostEqual(sl.triggerEffects(events, 30.0)['spin'], 45.0)
@@ -115,9 +115,9 @@ class SongTriggers(unittest.TestCase):
 		assignments, errors = sl.parseAssignments([header, ['1', 'mapping.preset', 'set', '2', '']])
 		self.assertEqual(errors, [])
 		switches = sl.presetSwitches(sl.buildEvents([(4.0, 1)], assignments))
-		self.assertEqual(switches, [(4.0, 'B')])
-		self.assertEqual(sl.presetAt(switches, 3.0, 'A'), 'A')
-		self.assertEqual(sl.presetAt(switches, 4.0, 'A'), 'B')
+		self.assertEqual(switches, [(4.0, '2')])
+		self.assertEqual(sl.presetAt(switches, 3.0, '1'), '1')
+		self.assertEqual(sl.presetAt(switches, 4.0, '1'), '2')
 
 
 class Live(unittest.TestCase):
