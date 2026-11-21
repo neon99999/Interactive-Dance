@@ -230,7 +230,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Loaded YAWA_Nov21.json
+    value: Loaded before_test.json
   Instruments:
   - name: Hinstparticles
     style: Header

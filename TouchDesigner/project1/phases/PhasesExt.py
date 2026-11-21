@@ -31,7 +31,7 @@ CAPTURE_EVERY = 10          # frames between looks for changed settings
 SETTLE_FRAMES = 6           # after a phase change, wait for preset callbacks before capturing
 SNAPSHOT_PAGES = ('Instrument', 'Source', 'Layer')
 SNAPSHOT_SKIP = ('Status',)
-SNAPSHOT_STYLES = ('Float', 'Int', 'Toggle', 'Menu', 'StrMenu', 'Str', 'File', 'RGBA', 'RGB')
+SNAPSHOT_STYLES = ('Float', 'Int', 'Toggle', 'Menu', 'StrMenu', 'Str', 'File', 'Folder', 'RGBA', 'RGB')
 
 
 class PhasesExt:

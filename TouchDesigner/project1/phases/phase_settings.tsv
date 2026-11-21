@@ -54,6 +54,7 @@ phase	comp	par	value
 1	media	Clip	C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
 1	media	Fade	0.13
 1	media	Fit	inside
+1	media	Folder	
 1	media	Opacity	1
 1	media	Playback	play
 1	media	Position	0

@@ -338,7 +338,72 @@ operators:
     - name: Clip
       style: StrMenu
       label: File
-      menuNames: []
+      menuNames:
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen10.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen11.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen12.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen13.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen14.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen15.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen16.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen19.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen20.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen21.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen23.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen24.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen25.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen26.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen27.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen28.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen29.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen3.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen30.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen31.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen32.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen33.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen34.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen35.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen4.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen5.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen6.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen7.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen8.png
+      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen9.png
+      menuLabels:
+      - Imagen1.png
+      - Imagen10.png
+      - Imagen11.png
+      - Imagen12.png
+      - Imagen13.png
+      - Imagen14.png
+      - Imagen15.png
+      - Imagen16.png
+      - Imagen19.png
+      - Imagen20.png
+      - Imagen21.png
+      - Imagen22.png
+      - Imagen23.png
+      - Imagen24.png
+      - Imagen25.png
+      - Imagen26.png
+      - Imagen27.png
+      - Imagen28.png
+      - Imagen29.png
+      - Imagen3.png
+      - Imagen30.png
+      - Imagen31.png
+      - Imagen32.png
+      - Imagen33.png
+      - Imagen34.png
+      - Imagen35.png
+      - Imagen4.png
+      - Imagen5.png
+      - Imagen6.png
+      - Imagen7.png
+      - Imagen8.png
+      - Imagen9.png
       help: The file shown now.
       value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
     - name: Playback
@@ -501,8 +566,8 @@ operators:
     type: textDAT
     position: [800, 400]
     color: [0.67, 0.67, 0.67]
-    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn
-      'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
+    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif not root:\n\t\t# No Folder (shows saved before Folder was kept): use the folder of the File shown.\n\t\tclip = str(_comp().par.Clip.eval()).strip()\n\t\troot = os.path.dirname(clip) if os.path.isfile(clip) else ''\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers
+      = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn 'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
     dat_content_format: text
   - name: fit_screen
     type: fitTOP
