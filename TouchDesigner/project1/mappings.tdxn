@@ -1,0 +1,4417 @@
+format: tdxn
+version: '2.2'
+build: 6
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/mappings
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  tableDAT:
+    size: [130, 90]
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+type: baseCOMP
+custom_pars:
+  Mappings:
+  - name: Preset
+    style: Menu
+    label: Mappings of Phase
+    default: A
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
+    help: Each phase has its own 8 mappings and 8 triggers. The Phase menu (Phases tab) chooses which ones you see and use.
+    value: '3'
+  - name: Followmidi
+    style: Toggle
+    label: Follow MIDI
+    default: true
+    help: 'On: a MIDI assignment row "set mapping.preset 1-4" switches the preset (A-D) at that moment of the song. Off: only this menu switches it.'
+    value: false
+  - name: Presetnotea
+    style: Int
+    label: Note for Preset A
+    startSection: true
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset A (needs Follow MIDI on). -1: none.'
+  - name: Presetnoteb
+    style: Int
+    label: Note for Preset B
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset B (needs Follow MIDI on). -1: none.'
+  - name: Presetnotec
+    style: Int
+    label: Note for Preset C
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset C (needs Follow MIDI on). -1: none.'
+  - name: Presetnoted
+    style: Int
+    label: Note for Preset D
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: 'The MIDI note in the song that switches to preset D (needs Follow MIDI on). -1: none.'
+  Triggers:
+  - name: Trig1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Trigger 1 is used while on.
+  - name: Trig1when
+    style: Menu
+    label: 1 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w1_hit
+  - name: Trig1note
+    style: Int
+    label: 1 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    enable: false
+  - name: Trig1does
+    style: Menu
+    label: 1 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig1amount
+    style: Float
+    label: 1 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 0.6
+  - name: Trig2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Trigger 2 is used while on.
+  - name: Trig2when
+    style: Menu
+    label: 2 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w1_btn
+  - name: Trig2note
+    style: Int
+    label: 2 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    enable: false
+  - name: Trig2does
+    style: Menu
+    label: 2 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: sides
+  - name: Trig2amount
+    style: Float
+    label: 2 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMin: -4.0
+    normMax: 4.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 1
+  - name: Trig3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Trigger 3 is used while on.
+  - name: Trig3when
+    style: Menu
+    label: 3 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig3note
+    style: Int
+    label: 3 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig3does
+    style: Menu
+    label: 3 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: flash
+  - name: Trig3amount
+    style: Float
+    label: 3 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 1
+  - name: Trig4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Trigger 4 is used while on.
+  - name: Trig4when
+    style: Menu
+    label: 4 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig4note
+    style: Int
+    label: 4 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    value: 62
+  - name: Trig4does
+    style: Menu
+    label: 4 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+    value: jump
+  - name: Trig4amount
+    style: Float
+    label: 4 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig5on
+    style: Toggle
+    label: 5 On
+    startSection: true
+    help: Trigger 5 is used while on.
+  - name: Trig5when
+    style: Menu
+    label: 5 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig5note
+    style: Int
+    label: 5 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig5does
+    style: Menu
+    label: 5 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig5amount
+    style: Float
+    label: 5 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig6on
+    style: Toggle
+    label: 6 On
+    startSection: true
+    help: Trigger 6 is used while on.
+  - name: Trig6when
+    style: Menu
+    label: 6 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig6note
+    style: Int
+    label: 6 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig6does
+    style: Menu
+    label: 6 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig6amount
+    style: Float
+    label: 6 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig7on
+    style: Toggle
+    label: 7 On
+    startSection: true
+    help: Trigger 7 is used while on.
+  - name: Trig7when
+    style: Menu
+    label: 7 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig7note
+    style: Int
+    label: 7 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig7does
+    style: Menu
+    label: 7 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig7amount
+    style: Float
+    label: 7 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig8on
+    style: Toggle
+    label: 8 On
+    startSection: true
+    help: Trigger 8 is used while on.
+  - name: Trig8when
+    style: Menu
+    label: 8 When
+    default: midi
+    menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
+    help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+  - name: Trig8note
+    style: Int
+    label: 8 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+  - name: Trig8does
+    style: Menu
+    label: 8 Does
+    default: pulse
+    menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
+    help: What the Trigger Shape does each time.
+  - name: Trig8amount
+    style: Float
+    label: 8 Amount
+    default: 0.5
+    min: -180.0
+    max: 180.0
+    normMax: 2.0
+    help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+  - name: Trig1source
+    style: Menu
+    label: 1 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: wearable1
+  - name: Trig1input
+    style: Menu
+    label: 1 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig1source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: hit
+  - name: Trig2source
+    style: Menu
+    label: 2 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: wearable1
+  - name: Trig2input
+    style: Menu
+    label: 2 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig2source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: btn
+  - name: Trig3source
+    style: Menu
+    label: 3 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig3input
+    style: Menu
+    label: 3 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig3source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig4source
+    style: Menu
+    label: 4 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig4input
+    style: Menu
+    label: 4 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig4source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig5source
+    style: Menu
+    label: 5 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig5input
+    style: Menu
+    label: 5 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig5source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig6source
+    style: Menu
+    label: 6 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig6input
+    style: Menu
+    label: 6 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig6source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig7source
+    style: Menu
+    label: 7 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig7input
+    style: Menu
+    label: 7 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig7source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  - name: Trig8source
+    style: Menu
+    label: 8 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_source', '')
+    help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
+    value: song
+  - name: Trig8input
+    style: Menu
+    label: 8 Moment
+    default: none
+    menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig8source.eval())
+    help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
+    value: midi
+  Mappings 1-4:
+  - name: Map1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Mapping 1 is used while on.
+  - name: Map1signal
+    style: StrMenu
+    label: 1 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: serial_w1_act
+  - name: Map1target
+    style: StrMenu
+    label: 1 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer1.scale
+  - name: Map1from
+    style: Float
+    label: 1 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.5
+  - name: Map1to
+    style: Float
+    label: 1 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 2
+  - name: Map1smooth
+    style: Float
+    label: 1 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map1sens
+    style: Float
+    label: 1 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Mapping 2 is used while on.
+  - name: Map2signal
+    style: StrMenu
+    label: 2 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: serial_w2_act
+  - name: Map2target
+    style: StrMenu
+    label: 2 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer2.scale
+  - name: Map2from
+    style: Float
+    label: 2 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.5
+  - name: Map2to
+    style: Float
+    label: 2 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 2
+  - name: Map2smooth
+    style: Float
+    label: 2 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map2sens
+    style: Float
+    label: 2 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Mapping 3 is used while on.
+  - name: Map3signal
+    style: StrMenu
+    label: 3 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: serial_w3_act
+  - name: Map3target
+    style: StrMenu
+    label: 3 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer3.scale
+  - name: Map3from
+    style: Float
+    label: 3 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+    value: 0.5
+  - name: Map3to
+    style: Float
+    label: 3 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 2
+  - name: Map3smooth
+    style: Float
+    label: 3 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map3sens
+    style: Float
+    label: 3 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Mapping 4 is used while on.
+  - name: Map4signal
+    style: StrMenu
+    label: 4 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: serial_w1_roll
+  - name: Map4target
+    style: StrMenu
+    label: 4 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: layer1.rotate
+  - name: Map4from
+    style: Float
+    label: 4 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map4to
+    style: Float
+    label: 4 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+    value: 360
+  - name: Map4smooth
+    style: Float
+    label: 4 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map4sens
+    style: Float
+    label: 4 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map1source
+    style: Menu
+    label: 1 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: wearable1
+  - name: Map1input
+    style: Menu
+    label: 1 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map1source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: act
+  - name: Map1instrument
+    style: Menu
+    label: 1 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer1
+  - name: Map1setting
+    style: Menu
+    label: 1 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map1instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: scale
+  - name: Map2source
+    style: Menu
+    label: 2 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: wearable2
+  - name: Map2input
+    style: Menu
+    label: 2 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map2source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: act
+  - name: Map2instrument
+    style: Menu
+    label: 2 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer2
+  - name: Map2setting
+    style: Menu
+    label: 2 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map2instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: scale
+  - name: Map3source
+    style: Menu
+    label: 3 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: wearable3
+  - name: Map3input
+    style: Menu
+    label: 3 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map3source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: act
+  - name: Map3instrument
+    style: Menu
+    label: 3 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer3
+  - name: Map3setting
+    style: Menu
+    label: 3 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map3instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: scale
+  - name: Map4source
+    style: Menu
+    label: 4 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: wearable1
+  - name: Map4input
+    style: Menu
+    label: 4 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map4source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: roll
+  - name: Map4instrument
+    style: Menu
+    label: 4 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: layer1
+  - name: Map4setting
+    style: Menu
+    label: 4 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map4instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: rotate
+  Mappings 5-8:
+  - name: Map5on
+    style: Toggle
+    label: 5 On
+    startSection: true
+    help: Mapping 5 is used while on.
+    value: true
+  - name: Map5signal
+    style: StrMenu
+    label: 5 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+    value: serial_w1_hit
+  - name: Map5target
+    style: StrMenu
+    label: 5 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+    value: master.flash
+  - name: Map5from
+    style: Float
+    label: 5 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map5to
+    style: Float
+    label: 5 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map5smooth
+    style: Float
+    label: 5 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+    value: 0
+  - name: Map5sens
+    style: Float
+    label: 5 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map6on
+    style: Toggle
+    label: 6 On
+    startSection: true
+    help: Mapping 6 is used while on.
+  - name: Map6signal
+    style: StrMenu
+    label: 6 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map6target
+    style: StrMenu
+    label: 6 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map6from
+    style: Float
+    label: 6 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map6to
+    style: Float
+    label: 6 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map6smooth
+    style: Float
+    label: 6 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map6sens
+    style: Float
+    label: 6 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map7on
+    style: Toggle
+    label: 7 On
+    startSection: true
+    help: Mapping 7 is used while on.
+  - name: Map7signal
+    style: StrMenu
+    label: 7 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map7target
+    style: StrMenu
+    label: 7 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map7from
+    style: Float
+    label: 7 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map7to
+    style: Float
+    label: 7 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map7smooth
+    style: Float
+    label: 7 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map7sens
+    style: Float
+    label: 7 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map8on
+    style: Toggle
+    label: 8 On
+    startSection: true
+    help: Mapping 8 is used while on.
+  - name: Map8signal
+    style: StrMenu
+    label: 8 Movement
+    menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
+    help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
+  - name: Map8target
+    style: StrMenu
+    label: 8 Visual
+    menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
+    help: The visual value it changes. Choosing one sets From and To to its usual range.
+  - name: Map8from
+    style: Float
+    label: 8 From
+    normMin: -1.0
+    help: Visual value when the movement is at its lowest.
+  - name: Map8to
+    style: Float
+    label: 8 To
+    default: 1
+    normMin: -1.0
+    help: Visual value when the movement is at its highest.
+  - name: Map8smooth
+    style: Float
+    label: 8 Smoothing
+    default: 0.1
+    clampMin: true
+    normMax: 2.0
+    help: 'Seconds the visual takes to follow the movement. 0: instant.'
+  - name: Map8sens
+    style: Float
+    label: 8 Sensitivity
+    default: 1
+    min: 0.1
+    clampMin: true
+    normMin: 0.5
+    normMax: 5.0
+    help: 'How much movement reaches To: 1 = the full movement, 2 = half of it.'
+  - name: Map5source
+    style: Menu
+    label: 5 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+    value: wearable1
+  - name: Map5input
+    style: Menu
+    label: 5 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map5source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+    value: hit
+  - name: Map5instrument
+    style: Menu
+    label: 5 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+    value: master
+  - name: Map5setting
+    style: Menu
+    label: 5 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map5instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+    value: flash
+  - name: Map6source
+    style: Menu
+    label: 6 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map6input
+    style: Menu
+    label: 6 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map6source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map6instrument
+    style: Menu
+    label: 6 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map6setting
+    style: Menu
+    label: 6 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map6instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  - name: Map7source
+    style: Menu
+    label: 7 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map7input
+    style: Menu
+    label: 7 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map7source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map7instrument
+    style: Menu
+    label: 7 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map7setting
+    style: Menu
+    label: 7 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map7instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  - name: Map8source
+    style: Menu
+    label: 8 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
+  - name: Map8input
+    style: Menu
+    label: 8 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('input', me.par.Map8source.eval())
+    help: Which movement of that source. The menu lists only what this source measures.
+  - name: Map8instrument
+    style: Menu
+    label: 8 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('instrument', '')
+    help: The instrument this mapping changes.
+  - name: Map8setting
+    style: Menu
+    label: 8 Setting
+    default: none
+    menuSource: me.ext.Mappings.menu('setting', me.par.Map8instrument.eval())
+    help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
+  Presets:
+  - name: Copyfrom
+    style: Menu
+    label: Copy From
+    default: A
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
+    help: Preset to copy from.
+    value: '1'
+  - name: Copyto
+    style: Menu
+    label: Copy To
+    default: B
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
+    help: Preset to copy into. Its mappings are replaced.
+    value: '2'
+  - name: Copy
+    style: Pulse
+    label: Copy Preset
+    help: Copy every mapping of Copy From into Copy To.
+  - name: Clear
+    style: Pulse
+    label: Clear Current Preset
+    startSection: true
+    help: Turn off and empty all 8 mappings of the current preset.
+  - name: Refresh
+    style: Pulse
+    label: Refresh Menus
+    help: Update the Movement menus with signals that appeared since (e.g. a new OSC address).
+  Connections:
+  - name: Con1on
+    style: Toggle
+    label: 1 On
+    startSection: true
+    help: Connection 1 is used while on.
+  - name: Con1source
+    style: Menu
+    label: 1 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('con_source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: wearable1
+  - name: Con1input
+    style: Menu
+    label: 1 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('con_input', me.par.Con1source.eval())
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: act
+  - name: Con1instrument
+    style: Menu
+    label: 1 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('con_instrument', '')
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: layer1
+  - name: Con1does
+    style: Menu
+    label: 1 Does
+    default: none
+    menuSource: me.ext.Mappings.doesMenu(me.par.Con1instrument.eval(), me.par.Con1input.eval())
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: set:scale
+  - name: Con1note
+    style: Int
+    label: 1 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
+  - name: Con1amount
+    style: Float
+    label: 1 Amount
+    default: 0.5
+    normMax: 2.0
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    enable: false
+  - name: Con2on
+    style: Toggle
+    label: 2 On
+    startSection: true
+    help: Connection 2 is used while on.
+  - name: Con2source
+    style: Menu
+    label: 2 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('con_source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: wearable2
+  - name: Con2input
+    style: Menu
+    label: 2 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('con_input', me.par.Con2source.eval())
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: act
+  - name: Con2instrument
+    style: Menu
+    label: 2 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('con_instrument', '')
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: layer2
+  - name: Con2does
+    style: Menu
+    label: 2 Does
+    default: none
+    menuSource: me.ext.Mappings.doesMenu(me.par.Con2instrument.eval(), me.par.Con2input.eval())
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: set:scale
+  - name: Con2note
+    style: Int
+    label: 2 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
+    value: 62
+  - name: Con2amount
+    style: Float
+    label: 2 Amount
+    default: 0.5
+    normMin: -180.0
+    normMax: 180.0
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    enable: false
+    value: 45
+  - name: Con3on
+    style: Toggle
+    label: 3 On
+    startSection: true
+    help: Connection 3 is used while on.
+  - name: Con3source
+    style: Menu
+    label: 3 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('con_source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: wearable3
+  - name: Con3input
+    style: Menu
+    label: 3 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('con_input', me.par.Con3source.eval())
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: act
+  - name: Con3instrument
+    style: Menu
+    label: 3 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('con_instrument', '')
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: layer3
+  - name: Con3does
+    style: Menu
+    label: 3 Does
+    default: none
+    menuSource: me.ext.Mappings.doesMenu(me.par.Con3instrument.eval(), me.par.Con3input.eval())
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: set:scale
+  - name: Con3note
+    style: Int
+    label: 3 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
+    value: 64
+  - name: Con3amount
+    style: Float
+    label: 3 Amount
+    default: 0.5
+    normMin: -4.0
+    normMax: 4.0
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    enable: false
+    value: 1
+  - name: Con4on
+    style: Toggle
+    label: 4 On
+    startSection: true
+    help: Connection 4 is used while on.
+  - name: Con4source
+    style: Menu
+    label: 4 Source
+    default: none
+    menuSource: me.ext.Mappings.menu('con_source', '')
+    help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
+    value: wearable1
+  - name: Con4input
+    style: Menu
+    label: 4 Input
+    default: none
+    menuSource: me.ext.Mappings.menu('con_input', me.par.Con4source.eval())
+    help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
+    value: roll
+  - name: Con4instrument
+    style: Menu
+    label: 4 Instrument
+    default: none
+    menuSource: me.ext.Mappings.menu('con_instrument', '')
+    help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
+    value: layer1
+  - name: Con4does
+    style: Menu
+    label: 4 Does
+    default: none
+    menuSource: me.ext.Mappings.doesMenu(me.par.Con4instrument.eval(), me.par.Con4input.eval())
+    help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
+    value: set:rotate
+  - name: Con4note
+    style: Int
+    label: 4 Note
+    default: 60
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMax: 127.0
+    help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
+    value: 65
+  - name: Con4amount
+    style: Float
+    label: 4 Amount
+    default: 0.5
+    help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    enable: false
+    value: 1
+parameters:
+  parentshortcut: Mappings
+  opshortcut: Mappings
+sequences:
+  ext:
+  - object: op('./MappingsExt').module.MappingsExt(me)
+    name: Mappings
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+operators:
+- name: presets
+  type: tableDAT
+  parameters:
+    file: project1/mappings/presets.tsv
+    syncfile: true
+    rows: 81
+    cols: 9
+  position: [0, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: menu_items
+  type: tableDAT
+  position: [800, -800]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - kind
+    - key
+    - name
+    - label
+  - - source
+    - ''
+    - wearable1
+    - Wearable 1
+  - - input
+    - wearable1
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable1
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable1
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable1
+    - gx
+    - Twist speed
+  - - input
+    - wearable1
+    - gy
+    - Tilt speed
+  - - input
+    - wearable1
+    - gz
+    - Turn speed
+  - - input
+    - wearable1
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable1
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable1
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - wearable2
+    - Wearable 2
+  - - input
+    - wearable2
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable2
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable2
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable2
+    - gx
+    - Twist speed
+  - - input
+    - wearable2
+    - gy
+    - Tilt speed
+  - - input
+    - wearable2
+    - gz
+    - Turn speed
+  - - input
+    - wearable2
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable2
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable2
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - wearable3
+    - Wearable 3
+  - - input
+    - wearable3
+    - roll
+    - Turn the wrist (roll)
+  - - input
+    - wearable3
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - input
+    - wearable3
+    - act
+    - Activity (how much you move)
+  - - input
+    - wearable3
+    - gx
+    - Twist speed
+  - - input
+    - wearable3
+    - gy
+    - Tilt speed
+  - - input
+    - wearable3
+    - gz
+    - Turn speed
+  - - input
+    - wearable3
+    - still
+    - Still (1 while still)
+  - - input
+    - wearable3
+    - hit
+    - Hit (1 for a moment)
+  - - input
+    - wearable3
+    - btn
+    - Button (1 while pressed)
+  - - source
+    - ''
+    - body
+    - Body (camera)
+  - - input
+    - body
+    - pose_x
+    - Position left-right
+  - - input
+    - body
+    - pose_hand_l
+    - Left hand height
+  - - input
+    - body
+    - pose_hand_r
+    - Right hand height
+  - - input
+    - body
+    - pose_spread
+    - Arms spread
+  - - input
+    - body
+    - pose_energy
+    - Energy
+  - - input
+    - body
+    - pose_present
+    - Dancer seen (1 while seen)
+  - - input
+    - body
+    - pose_zone1
+    - In zone 1 (1 while there)
+  - - input
+    - body
+    - pose_zone2
+    - In zone 2 (1 while there)
+  - - input
+    - body
+    - pose_zone3
+    - In zone 3 (1 while there)
+  - - input
+    - body
+    - pose_zone4
+    - In zone 4 (1 while there)
+  - - input
+    - body
+    - pose_zone5
+    - In zone 5 (1 while there)
+  - - source
+    - ''
+    - camera
+    - Camera motion
+  - - input
+    - camera
+    - camera_motion
+    - Motion
+  - - input
+    - camera
+    - camera_left
+    - Motion left
+  - - input
+    - camera
+    - camera_right
+    - Motion right
+  - - source
+    - ''
+    - test
+    - Test signals
+  - - input
+    - test
+    - sim_level
+    - Level
+  - - input
+    - test
+    - sim_trigger
+    - Trigger
+  - - input
+    - test
+    - sim_zone
+    - Zone
+  - - trigger_source
+    - ''
+    - song
+    - Song (MIDI)
+  - - trigger_input
+    - song
+    - midi
+    - A note of the song
+  - - trigger_source
+    - ''
+    - wearable1
+    - Wearable 1
+  - - trigger_input
+    - wearable1
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable1
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable1
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - wearable2
+    - Wearable 2
+  - - trigger_input
+    - wearable2
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable2
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable2
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - wearable3
+    - Wearable 3
+  - - trigger_input
+    - wearable3
+    - hit
+    - Hit
+  - - trigger_input
+    - wearable3
+    - btn
+    - Button press
+  - - trigger_input
+    - wearable3
+    - still
+    - Becomes still
+  - - trigger_source
+    - ''
+    - body
+    - Body (camera)
+  - - trigger_input
+    - body
+    - pose_present
+    - Dancer appears
+  - - trigger_input
+    - body
+    - pose_zone1
+    - Enters zone 1
+  - - trigger_input
+    - body
+    - pose_zone2
+    - Enters zone 2
+  - - trigger_input
+    - body
+    - pose_zone3
+    - Enters zone 3
+  - - trigger_input
+    - body
+    - pose_zone4
+    - Enters zone 4
+  - - trigger_input
+    - body
+    - pose_zone5
+    - Enters zone 5
+  - - trigger_source
+    - ''
+    - test
+    - Test signals
+  - - trigger_input
+    - test
+    - sim_trigger
+    - Test trigger
+  - - instrument
+    - ''
+    - trigger
+    - Trigger Shape
+  - - setting
+    - trigger
+    - visible
+    - 'On'
+  - - setting
+    - trigger
+    - opacity
+    - Opacity
+  - - setting
+    - trigger
+    - sides
+    - Sides
+  - - setting
+    - trigger
+    - size
+    - Size
+  - - setting
+    - trigger
+    - x
+    - X
+  - - setting
+    - trigger
+    - y
+    - Y
+  - - setting
+    - trigger
+    - rotate
+    - Rotate
+  - - setting
+    - trigger
+    - fill
+    - Fill
+  - - setting
+    - trigger
+    - line
+    - Line
+  - - setting
+    - trigger
+    - colour
+    - Colour
+  - - setting
+    - trigger
+    - flashcolour
+    - Flash colour
+  - - setting
+    - trigger
+    - flash
+    - Flash
+  - - instrument
+    - ''
+    - particles
+    - Particles
+  - - setting
+    - particles
+    - visible
+    - 'On'
+  - - setting
+    - particles
+    - opacity
+    - Opacity
+  - - setting
+    - particles
+    - energy
+    - Energy
+  - - setting
+    - particles
+    - spread
+    - Spread
+  - - setting
+    - particles
+    - turbulence
+    - Turbulence
+  - - setting
+    - particles
+    - size
+    - Size
+  - - setting
+    - particles
+    - colour
+    - Colour
+  - - setting
+    - particles
+    - trails
+    - Trails
+  - - instrument
+    - ''
+    - noise
+    - Noise
+  - - setting
+    - noise
+    - visible
+    - 'On'
+  - - setting
+    - noise
+    - opacity
+    - Opacity
+  - - setting
+    - noise
+    - scale
+    - Scale
+  - - setting
+    - noise
+    - speed
+    - Speed
+  - - setting
+    - noise
+    - detail
+    - Detail
+  - - setting
+    - noise
+    - warp
+    - Warp
+  - - setting
+    - noise
+    - feedback
+    - Trails
+  - - setting
+    - noise
+    - colour
+    - Colour
+  - - instrument
+    - ''
+    - tiles
+    - Colour Tiles
+  - - setting
+    - tiles
+    - visible
+    - 'On'
+  - - setting
+    - tiles
+    - opacity
+    - Opacity
+  - - setting
+    - tiles
+    - strips
+    - Strips
+  - - setting
+    - tiles
+    - orientation
+    - Orientation
+  - - setting
+    - tiles
+    - widthvar
+    - Width variation
+  - - setting
+    - tiles
+    - scrollspeed
+    - Scroll speed
+  - - setting
+    - tiles
+    - scrollvar
+    - Speed variation
+  - - setting
+    - tiles
+    - repeats
+    - Repeats
+  - - setting
+    - tiles
+    - tilegap
+    - Gap
+  - - setting
+    - tiles
+    - edgeshape
+    - Edgeshape
+  - - setting
+    - tiles
+    - edgesize
+    - Edge size
+  - - setting
+    - tiles
+    - randomdir
+    - Randomdir
+  - - setting
+    - tiles
+    - edgefreq
+    - Edge frequency
+  - - setting
+    - tiles
+    - matchends
+    - Matchends
+  - - setting
+    - tiles
+    - cycle
+    - Cycle
+  - - setting
+    - tiles
+    - shuffle
+    - Shuffle
+  - - instrument
+    - ''
+    - media
+    - Media
+  - - setting
+    - media
+    - visible
+    - 'On'
+  - - setting
+    - media
+    - opacity
+    - Opacity
+  - - setting
+    - media
+    - playback
+    - Playback
+  - - setting
+    - media
+    - position
+    - Position in the video
+  - - setting
+    - media
+    - fade
+    - Fade
+  - - setting
+    - media
+    - fit
+    - Fit
+  - - instrument
+    - ''
+    - video
+    - Camera
+  - - setting
+    - video
+    - visible
+    - 'On'
+  - - setting
+    - video
+    - opacity
+    - Opacity
+  - - setting
+    - video
+    - echo
+    - What echoes
+  - - setting
+    - video
+    - feedback
+    - Echo length
+  - - setting
+    - video
+    - zoom
+    - Echo zoom
+  - - setting
+    - video
+    - distortion
+    - Echo distortion
+  - - setting
+    - video
+    - colour
+    - Echo colour
+  - - instrument
+    - ''
+    - master
+    - Whole picture
+  - - setting
+    - master
+    - level
+    - Brightness
+  - - setting
+    - master
+    - blackout
+    - Blackout
+  - - setting
+    - master
+    - flash
+    - Flash
+  - - setting
+    - master
+    - saturation
+    - Saturation
+  - - setting
+    - master
+    - trails
+    - Trails
+  - - setting
+    - master
+    - trailszoom
+    - Trails zoom
+  - - setting
+    - master
+    - trailswarp
+    - Trails warp
+  - - setting
+    - master
+    - trailscolour
+    - Trails colour
+  - - setting
+    - master
+    - blur
+    - Blur
+  - - setting
+    - master
+    - glitch
+    - Glitch
+  - - setting
+    - master
+    - outline
+    - Outline
+  - - setting
+    - master
+    - melt
+    - Melt
+  - - instrument
+    - ''
+    - shapes
+    - Shapes (all layers)
+  - - setting
+    - shapes
+    - visible
+    - 'On'
+  - - setting
+    - shapes
+    - opacity
+    - Opacity
+  - - instrument
+    - ''
+    - layer1
+    - Shape layer 1
+  - - setting
+    - layer1
+    - visible
+    - Visible
+  - - setting
+    - layer1
+    - opacity
+    - Opacity
+  - - setting
+    - layer1
+    - red
+    - Red
+  - - setting
+    - layer1
+    - green
+    - Green
+  - - setting
+    - layer1
+    - blue
+    - Blue
+  - - setting
+    - layer1
+    - scale
+    - Size
+  - - setting
+    - layer1
+    - x
+    - Position x
+  - - setting
+    - layer1
+    - y
+    - Position y
+  - - setting
+    - layer1
+    - rotate
+    - Rotation
+  - - setting
+    - layer1
+    - content
+    - Content
+  - - setting
+    - layer1
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer2
+    - Shape layer 2
+  - - setting
+    - layer2
+    - visible
+    - Visible
+  - - setting
+    - layer2
+    - opacity
+    - Opacity
+  - - setting
+    - layer2
+    - red
+    - Red
+  - - setting
+    - layer2
+    - green
+    - Green
+  - - setting
+    - layer2
+    - blue
+    - Blue
+  - - setting
+    - layer2
+    - scale
+    - Size
+  - - setting
+    - layer2
+    - x
+    - Position x
+  - - setting
+    - layer2
+    - y
+    - Position y
+  - - setting
+    - layer2
+    - rotate
+    - Rotation
+  - - setting
+    - layer2
+    - content
+    - Content
+  - - setting
+    - layer2
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer3
+    - Shape layer 3
+  - - setting
+    - layer3
+    - visible
+    - Visible
+  - - setting
+    - layer3
+    - opacity
+    - Opacity
+  - - setting
+    - layer3
+    - red
+    - Red
+  - - setting
+    - layer3
+    - green
+    - Green
+  - - setting
+    - layer3
+    - blue
+    - Blue
+  - - setting
+    - layer3
+    - scale
+    - Size
+  - - setting
+    - layer3
+    - x
+    - Position x
+  - - setting
+    - layer3
+    - y
+    - Position y
+  - - setting
+    - layer3
+    - rotate
+    - Rotation
+  - - setting
+    - layer3
+    - content
+    - Content
+  - - setting
+    - layer3
+    - effect
+    - Effect
+  - - instrument
+    - ''
+    - layer4
+    - Shape layer 4
+  - - setting
+    - layer4
+    - visible
+    - Visible
+  - - setting
+    - layer4
+    - opacity
+    - Opacity
+  - - setting
+    - layer4
+    - red
+    - Red
+  - - setting
+    - layer4
+    - green
+    - Green
+  - - setting
+    - layer4
+    - blue
+    - Blue
+  - - setting
+    - layer4
+    - scale
+    - Size
+  - - setting
+    - layer4
+    - x
+    - Position x
+  - - setting
+    - layer4
+    - y
+    - Position y
+  - - setting
+    - layer4
+    - rotate
+    - Rotation
+  - - setting
+    - layer4
+    - content
+    - Content
+  - - setting
+    - layer4
+    - effect
+    - Effect
+  - - con_source
+    - ''
+    - song
+    - Song (MIDI)
+  - - con_input
+    - song
+    - midi
+    - A note of the song
+  - - con_source
+    - ''
+    - wearable1
+    - Wearable 1
+  - - con_input
+    - wearable1
+    - roll
+    - Turn the wrist (roll)
+  - - con_input
+    - wearable1
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - con_input
+    - wearable1
+    - act
+    - Activity (how much you move)
+  - - con_input
+    - wearable1
+    - gx
+    - Twist speed
+  - - con_input
+    - wearable1
+    - gy
+    - Tilt speed
+  - - con_input
+    - wearable1
+    - gz
+    - Turn speed
+  - - con_input
+    - wearable1
+    - still
+    - Still / becomes still
+  - - con_input
+    - wearable1
+    - hit
+    - Hit
+  - - con_input
+    - wearable1
+    - btn
+    - Button press
+  - - con_source
+    - ''
+    - wearable2
+    - Wearable 2
+  - - con_input
+    - wearable2
+    - roll
+    - Turn the wrist (roll)
+  - - con_input
+    - wearable2
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - con_input
+    - wearable2
+    - act
+    - Activity (how much you move)
+  - - con_input
+    - wearable2
+    - gx
+    - Twist speed
+  - - con_input
+    - wearable2
+    - gy
+    - Tilt speed
+  - - con_input
+    - wearable2
+    - gz
+    - Turn speed
+  - - con_input
+    - wearable2
+    - still
+    - Still / becomes still
+  - - con_input
+    - wearable2
+    - hit
+    - Hit
+  - - con_input
+    - wearable2
+    - btn
+    - Button press
+  - - con_source
+    - ''
+    - wearable3
+    - Wearable 3
+  - - con_input
+    - wearable3
+    - roll
+    - Turn the wrist (roll)
+  - - con_input
+    - wearable3
+    - pitch
+    - Raise or lower the arm (pitch)
+  - - con_input
+    - wearable3
+    - act
+    - Activity (how much you move)
+  - - con_input
+    - wearable3
+    - gx
+    - Twist speed
+  - - con_input
+    - wearable3
+    - gy
+    - Tilt speed
+  - - con_input
+    - wearable3
+    - gz
+    - Turn speed
+  - - con_input
+    - wearable3
+    - still
+    - Still / becomes still
+  - - con_input
+    - wearable3
+    - hit
+    - Hit
+  - - con_input
+    - wearable3
+    - btn
+    - Button press
+  - - con_source
+    - ''
+    - body
+    - Body (camera)
+  - - con_input
+    - body
+    - pose_x
+    - Position left-right
+  - - con_input
+    - body
+    - pose_hand_l
+    - Left hand height
+  - - con_input
+    - body
+    - pose_hand_r
+    - Right hand height
+  - - con_input
+    - body
+    - pose_spread
+    - Arms spread
+  - - con_input
+    - body
+    - pose_energy
+    - Energy
+  - - con_input
+    - body
+    - pose_present
+    - Dancer seen / dancer appears
+  - - con_input
+    - body
+    - pose_zone1
+    - In zone 1 / enters zone 1
+  - - con_input
+    - body
+    - pose_zone2
+    - In zone 2 / enters zone 2
+  - - con_input
+    - body
+    - pose_zone3
+    - In zone 3 / enters zone 3
+  - - con_input
+    - body
+    - pose_zone4
+    - In zone 4 / enters zone 4
+  - - con_input
+    - body
+    - pose_zone5
+    - In zone 5 / enters zone 5
+  - - con_source
+    - ''
+    - camera
+    - Camera motion
+  - - con_input
+    - camera
+    - camera_motion
+    - Motion
+  - - con_input
+    - camera
+    - camera_left
+    - Motion left
+  - - con_input
+    - camera
+    - camera_right
+    - Motion right
+  - - con_source
+    - ''
+    - test
+    - Test signals
+  - - con_input
+    - test
+    - sim_level
+    - Level
+  - - con_input
+    - test
+    - sim_trigger
+    - Test trigger
+  - - con_input
+    - test
+    - sim_zone
+    - Zone
+  - - con_instrument
+    - ''
+    - trigger
+    - Trigger Shape
+  - - does
+    - trigger|moment
+    - pulse
+    - Pulse (grow)
+  - - does
+    - trigger|moment
+    - spin
+    - Spin
+  - - does
+    - trigger|moment
+    - sides
+    - More sides
+  - - does
+    - trigger|moment
+    - jump
+    - Jump
+  - - does
+    - trigger|moment
+    - flash
+    - Flash colour
+  - - does
+    - trigger|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - trigger|moment
+    - burst:sides
+    - 'Burst: Sides'
+  - - does
+    - trigger|moment
+    - burst:size
+    - 'Burst: Size'
+  - - does
+    - trigger|moment
+    - burst:x
+    - 'Burst: X'
+  - - does
+    - trigger|moment
+    - burst:y
+    - 'Burst: Y'
+  - - does
+    - trigger|moment
+    - burst:rotate
+    - 'Burst: Rotate'
+  - - does
+    - trigger|moment
+    - burst:fill
+    - 'Burst: Fill'
+  - - does
+    - trigger|moment
+    - burst:line
+    - 'Burst: Line'
+  - - does
+    - trigger|moment
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - trigger|moment
+    - burst:flashcolour
+    - 'Burst: Flash colour'
+  - - does
+    - trigger|moment
+    - burst:flash
+    - 'Burst: Flash'
+  - - does
+    - trigger|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - trigger|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - trigger|continuous
+    - set:sides
+    - 'Controls: Sides'
+  - - does
+    - trigger|continuous
+    - set:size
+    - 'Controls: Size'
+  - - does
+    - trigger|continuous
+    - set:x
+    - 'Controls: X'
+  - - does
+    - trigger|continuous
+    - set:y
+    - 'Controls: Y'
+  - - does
+    - trigger|continuous
+    - set:rotate
+    - 'Controls: Rotate'
+  - - does
+    - trigger|continuous
+    - set:fill
+    - 'Controls: Fill'
+  - - does
+    - trigger|continuous
+    - set:line
+    - 'Controls: Line'
+  - - does
+    - trigger|continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - does
+    - trigger|continuous
+    - set:flashcolour
+    - 'Controls: Flash colour'
+  - - does
+    - trigger|continuous
+    - set:flash
+    - 'Controls: Flash'
+  - - does
+    - trigger|moment+continuous
+    - pulse
+    - Pulse (grow)
+  - - does
+    - trigger|moment+continuous
+    - spin
+    - Spin
+  - - does
+    - trigger|moment+continuous
+    - sides
+    - More sides
+  - - does
+    - trigger|moment+continuous
+    - jump
+    - Jump
+  - - does
+    - trigger|moment+continuous
+    - flash
+    - Flash colour
+  - - does
+    - trigger|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - trigger|moment+continuous
+    - burst:sides
+    - 'Burst: Sides'
+  - - does
+    - trigger|moment+continuous
+    - burst:size
+    - 'Burst: Size'
+  - - does
+    - trigger|moment+continuous
+    - burst:x
+    - 'Burst: X'
+  - - does
+    - trigger|moment+continuous
+    - burst:y
+    - 'Burst: Y'
+  - - does
+    - trigger|moment+continuous
+    - burst:rotate
+    - 'Burst: Rotate'
+  - - does
+    - trigger|moment+continuous
+    - burst:fill
+    - 'Burst: Fill'
+  - - does
+    - trigger|moment+continuous
+    - burst:line
+    - 'Burst: Line'
+  - - does
+    - trigger|moment+continuous
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - trigger|moment+continuous
+    - burst:flashcolour
+    - 'Burst: Flash colour'
+  - - does
+    - trigger|moment+continuous
+    - burst:flash
+    - 'Burst: Flash'
+  - - does
+    - trigger|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - trigger|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - trigger|moment+continuous
+    - set:sides
+    - 'Controls: Sides'
+  - - does
+    - trigger|moment+continuous
+    - set:size
+    - 'Controls: Size'
+  - - does
+    - trigger|moment+continuous
+    - set:x
+    - 'Controls: X'
+  - - does
+    - trigger|moment+continuous
+    - set:y
+    - 'Controls: Y'
+  - - does
+    - trigger|moment+continuous
+    - set:rotate
+    - 'Controls: Rotate'
+  - - does
+    - trigger|moment+continuous
+    - set:fill
+    - 'Controls: Fill'
+  - - does
+    - trigger|moment+continuous
+    - set:line
+    - 'Controls: Line'
+  - - does
+    - trigger|moment+continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - does
+    - trigger|moment+continuous
+    - set:flashcolour
+    - 'Controls: Flash colour'
+  - - does
+    - trigger|moment+continuous
+    - set:flash
+    - 'Controls: Flash'
+  - - con_instrument
+    - ''
+    - particles
+    - Particles
+  - - does
+    - particles|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - particles|moment
+    - burst:energy
+    - 'Burst: Energy'
+  - - does
+    - particles|moment
+    - burst:spread
+    - 'Burst: Spread'
+  - - does
+    - particles|moment
+    - burst:turbulence
+    - 'Burst: Turbulence'
+  - - does
+    - particles|moment
+    - burst:size
+    - 'Burst: Size'
+  - - does
+    - particles|moment
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - particles|moment
+    - burst:trails
+    - 'Burst: Trails'
+  - - does
+    - particles|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - particles|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - particles|continuous
+    - set:energy
+    - 'Controls: Energy'
+  - - does
+    - particles|continuous
+    - set:spread
+    - 'Controls: Spread'
+  - - does
+    - particles|continuous
+    - set:turbulence
+    - 'Controls: Turbulence'
+  - - does
+    - particles|continuous
+    - set:size
+    - 'Controls: Size'
+  - - does
+    - particles|continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - does
+    - particles|continuous
+    - set:trails
+    - 'Controls: Trails'
+  - - does
+    - particles|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - particles|moment+continuous
+    - burst:energy
+    - 'Burst: Energy'
+  - - does
+    - particles|moment+continuous
+    - burst:spread
+    - 'Burst: Spread'
+  - - does
+    - particles|moment+continuous
+    - burst:turbulence
+    - 'Burst: Turbulence'
+  - - does
+    - particles|moment+continuous
+    - burst:size
+    - 'Burst: Size'
+  - - does
+    - particles|moment+continuous
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - particles|moment+continuous
+    - burst:trails
+    - 'Burst: Trails'
+  - - does
+    - particles|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - particles|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - particles|moment+continuous
+    - set:energy
+    - 'Controls: Energy'
+  - - does
+    - particles|moment+continuous
+    - set:spread
+    - 'Controls: Spread'
+  - - does
+    - particles|moment+continuous
+    - set:turbulence
+    - 'Controls: Turbulence'
+  - - does
+    - particles|moment+continuous
+    - set:size
+    - 'Controls: Size'
+  - - does
+    - particles|moment+continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - does
+    - particles|moment+continuous
+    - set:trails
+    - 'Controls: Trails'
+  - - con_instrument
+    - ''
+    - noise
+    - Noise
+  - - does
+    - noise|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - noise|moment
+    - burst:scale
+    - 'Burst: Scale'
+  - - does
+    - noise|moment
+    - burst:speed
+    - 'Burst: Speed'
+  - - does
+    - noise|moment
+    - burst:detail
+    - 'Burst: Detail'
+  - - does
+    - noise|moment
+    - burst:warp
+    - 'Burst: Warp'
+  - - does
+    - noise|moment
+    - burst:feedback
+    - 'Burst: Trails'
+  - - does
+    - noise|moment
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - noise|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - noise|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - noise|continuous
+    - set:scale
+    - 'Controls: Scale'
+  - - does
+    - noise|continuous
+    - set:speed
+    - 'Controls: Speed'
+  - - does
+    - noise|continuous
+    - set:detail
+    - 'Controls: Detail'
+  - - does
+    - noise|continuous
+    - set:warp
+    - 'Controls: Warp'
+  - - does
+    - noise|continuous
+    - set:feedback
+    - 'Controls: Trails'
+  - - does
+    - noise|continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - does
+    - noise|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - noise|moment+continuous
+    - burst:scale
+    - 'Burst: Scale'
+  - - does
+    - noise|moment+continuous
+    - burst:speed
+    - 'Burst: Speed'
+  - - does
+    - noise|moment+continuous
+    - burst:detail
+    - 'Burst: Detail'
+  - - does
+    - noise|moment+continuous
+    - burst:warp
+    - 'Burst: Warp'
+  - - does
+    - noise|moment+continuous
+    - burst:feedback
+    - 'Burst: Trails'
+  - - does
+    - noise|moment+continuous
+    - burst:colour
+    - 'Burst: Colour'
+  - - does
+    - noise|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - noise|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - noise|moment+continuous
+    - set:scale
+    - 'Controls: Scale'
+  - - does
+    - noise|moment+continuous
+    - set:speed
+    - 'Controls: Speed'
+  - - does
+    - noise|moment+continuous
+    - set:detail
+    - 'Controls: Detail'
+  - - does
+    - noise|moment+continuous
+    - set:warp
+    - 'Controls: Warp'
+  - - does
+    - noise|moment+continuous
+    - set:feedback
+    - 'Controls: Trails'
+  - - does
+    - noise|moment+continuous
+    - set:colour
+    - 'Controls: Colour'
+  - - con_instrument
+    - ''
+    - tiles
+    - Colour Tiles
+  - - does
+    - tiles|moment
+    - count:shufflecount
+    - Shuffle the colours
+  - - does
+    - tiles|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - tiles|moment
+    - burst:widthvar
+    - 'Burst: Width variation'
+  - - does
+    - tiles|moment
+    - burst:scrollspeed
+    - 'Burst: Scroll speed'
+  - - does
+    - tiles|moment
+    - burst:scrollvar
+    - 'Burst: Speed variation'
+  - - does
+    - tiles|moment
+    - burst:repeats
+    - 'Burst: Repeats'
+  - - does
+    - tiles|moment
+    - burst:tilegap
+    - 'Burst: Gap'
+  - - does
+    - tiles|moment
+    - burst:edgesize
+    - 'Burst: Edge size'
+  - - does
+    - tiles|moment
+    - burst:edgefreq
+    - 'Burst: Edge frequency'
+  - - does
+    - tiles|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - tiles|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - tiles|continuous
+    - set:strips
+    - 'Controls: Strips'
+  - - does
+    - tiles|continuous
+    - set:orientation
+    - 'Controls: Orientation'
+  - - does
+    - tiles|continuous
+    - set:widthvar
+    - 'Controls: Width variation'
+  - - does
+    - tiles|continuous
+    - set:scrollspeed
+    - 'Controls: Scroll speed'
+  - - does
+    - tiles|continuous
+    - set:scrollvar
+    - 'Controls: Speed variation'
+  - - does
+    - tiles|continuous
+    - set:repeats
+    - 'Controls: Repeats'
+  - - does
+    - tiles|continuous
+    - set:tilegap
+    - 'Controls: Gap'
+  - - does
+    - tiles|continuous
+    - set:edgeshape
+    - 'Controls: Edgeshape'
+  - - does
+    - tiles|continuous
+    - set:edgesize
+    - 'Controls: Edge size'
+  - - does
+    - tiles|continuous
+    - set:randomdir
+    - 'Controls: Randomdir'
+  - - does
+    - tiles|continuous
+    - set:edgefreq
+    - 'Controls: Edge frequency'
+  - - does
+    - tiles|continuous
+    - set:matchends
+    - 'Controls: Matchends'
+  - - does
+    - tiles|continuous
+    - set:cycle
+    - 'Controls: Cycle'
+  - - does
+    - tiles|continuous
+    - set:shuffle
+    - 'Controls: Shuffle'
+  - - does
+    - tiles|moment+continuous
+    - count:shufflecount
+    - Shuffle the colours
+  - - does
+    - tiles|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - tiles|moment+continuous
+    - burst:widthvar
+    - 'Burst: Width variation'
+  - - does
+    - tiles|moment+continuous
+    - burst:scrollspeed
+    - 'Burst: Scroll speed'
+  - - does
+    - tiles|moment+continuous
+    - burst:scrollvar
+    - 'Burst: Speed variation'
+  - - does
+    - tiles|moment+continuous
+    - burst:repeats
+    - 'Burst: Repeats'
+  - - does
+    - tiles|moment+continuous
+    - burst:tilegap
+    - 'Burst: Gap'
+  - - does
+    - tiles|moment+continuous
+    - burst:edgesize
+    - 'Burst: Edge size'
+  - - does
+    - tiles|moment+continuous
+    - burst:edgefreq
+    - 'Burst: Edge frequency'
+  - - does
+    - tiles|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - tiles|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - tiles|moment+continuous
+    - set:strips
+    - 'Controls: Strips'
+  - - does
+    - tiles|moment+continuous
+    - set:orientation
+    - 'Controls: Orientation'
+  - - does
+    - tiles|moment+continuous
+    - set:widthvar
+    - 'Controls: Width variation'
+  - - does
+    - tiles|moment+continuous
+    - set:scrollspeed
+    - 'Controls: Scroll speed'
+  - - does
+    - tiles|moment+continuous
+    - set:scrollvar
+    - 'Controls: Speed variation'
+  - - does
+    - tiles|moment+continuous
+    - set:repeats
+    - 'Controls: Repeats'
+  - - does
+    - tiles|moment+continuous
+    - set:tilegap
+    - 'Controls: Gap'
+  - - does
+    - tiles|moment+continuous
+    - set:edgeshape
+    - 'Controls: Edgeshape'
+  - - does
+    - tiles|moment+continuous
+    - set:edgesize
+    - 'Controls: Edge size'
+  - - does
+    - tiles|moment+continuous
+    - set:randomdir
+    - 'Controls: Randomdir'
+  - - does
+    - tiles|moment+continuous
+    - set:edgefreq
+    - 'Controls: Edge frequency'
+  - - does
+    - tiles|moment+continuous
+    - set:matchends
+    - 'Controls: Matchends'
+  - - does
+    - tiles|moment+continuous
+    - set:cycle
+    - 'Controls: Cycle'
+  - - does
+    - tiles|moment+continuous
+    - set:shuffle
+    - 'Controls: Shuffle'
+  - - con_instrument
+    - ''
+    - media
+    - Media
+  - - does
+    - media|moment
+    - count:restartcount
+    - Play from the start
+  - - does
+    - media|moment
+    - count:nextcount
+    - Next file
+  - - does
+    - media|moment
+    - count:randomcount
+    - Random file
+  - - does
+    - media|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - media|moment
+    - burst:position
+    - 'Burst: Position in the video'
+  - - does
+    - media|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - media|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - media|continuous
+    - set:playback
+    - 'Controls: Playback'
+  - - does
+    - media|continuous
+    - set:position
+    - 'Controls: Position in the video'
+  - - does
+    - media|continuous
+    - set:fade
+    - 'Controls: Fade'
+  - - does
+    - media|continuous
+    - set:fit
+    - 'Controls: Fit'
+  - - does
+    - media|moment+continuous
+    - count:restartcount
+    - Play from the start
+  - - does
+    - media|moment+continuous
+    - count:nextcount
+    - Next file
+  - - does
+    - media|moment+continuous
+    - count:randomcount
+    - Random file
+  - - does
+    - media|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - media|moment+continuous
+    - burst:position
+    - 'Burst: Position in the video'
+  - - does
+    - media|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - media|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - media|moment+continuous
+    - set:playback
+    - 'Controls: Playback'
+  - - does
+    - media|moment+continuous
+    - set:position
+    - 'Controls: Position in the video'
+  - - does
+    - media|moment+continuous
+    - set:fade
+    - 'Controls: Fade'
+  - - does
+    - media|moment+continuous
+    - set:fit
+    - 'Controls: Fit'
+  - - con_instrument
+    - ''
+    - video
+    - Camera
+  - - does
+    - video|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - video|moment
+    - burst:feedback
+    - 'Burst: Echo length'
+  - - does
+    - video|moment
+    - burst:zoom
+    - 'Burst: Echo zoom'
+  - - does
+    - video|moment
+    - burst:distortion
+    - 'Burst: Echo distortion'
+  - - does
+    - video|moment
+    - burst:colour
+    - 'Burst: Echo colour'
+  - - does
+    - video|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - video|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - video|continuous
+    - set:echo
+    - 'Controls: What echoes'
+  - - does
+    - video|continuous
+    - set:feedback
+    - 'Controls: Echo length'
+  - - does
+    - video|continuous
+    - set:zoom
+    - 'Controls: Echo zoom'
+  - - does
+    - video|continuous
+    - set:distortion
+    - 'Controls: Echo distortion'
+  - - does
+    - video|continuous
+    - set:colour
+    - 'Controls: Echo colour'
+  - - does
+    - video|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - video|moment+continuous
+    - burst:feedback
+    - 'Burst: Echo length'
+  - - does
+    - video|moment+continuous
+    - burst:zoom
+    - 'Burst: Echo zoom'
+  - - does
+    - video|moment+continuous
+    - burst:distortion
+    - 'Burst: Echo distortion'
+  - - does
+    - video|moment+continuous
+    - burst:colour
+    - 'Burst: Echo colour'
+  - - does
+    - video|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - video|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - video|moment+continuous
+    - set:echo
+    - 'Controls: What echoes'
+  - - does
+    - video|moment+continuous
+    - set:feedback
+    - 'Controls: Echo length'
+  - - does
+    - video|moment+continuous
+    - set:zoom
+    - 'Controls: Echo zoom'
+  - - does
+    - video|moment+continuous
+    - set:distortion
+    - 'Controls: Echo distortion'
+  - - does
+    - video|moment+continuous
+    - set:colour
+    - 'Controls: Echo colour'
+  - - con_instrument
+    - ''
+    - master
+    - Whole picture
+  - - does
+    - master|moment
+    - burst:level
+    - 'Burst: Brightness'
+  - - does
+    - master|moment
+    - burst:flash
+    - 'Burst: Flash'
+  - - does
+    - master|moment
+    - burst:saturation
+    - 'Burst: Saturation'
+  - - does
+    - master|moment
+    - burst:trails
+    - 'Burst: Trails'
+  - - does
+    - master|moment
+    - burst:trailszoom
+    - 'Burst: Trails zoom'
+  - - does
+    - master|moment
+    - burst:trailswarp
+    - 'Burst: Trails warp'
+  - - does
+    - master|moment
+    - burst:trailscolour
+    - 'Burst: Trails colour'
+  - - does
+    - master|moment
+    - burst:blur
+    - 'Burst: Blur'
+  - - does
+    - master|moment
+    - burst:glitch
+    - 'Burst: Glitch'
+  - - does
+    - master|moment
+    - burst:outline
+    - 'Burst: Outline'
+  - - does
+    - master|moment
+    - burst:melt
+    - 'Burst: Melt'
+  - - does
+    - master|continuous
+    - set:level
+    - 'Controls: Brightness'
+  - - does
+    - master|continuous
+    - set:blackout
+    - 'Controls: Blackout'
+  - - does
+    - master|continuous
+    - set:flash
+    - 'Controls: Flash'
+  - - does
+    - master|continuous
+    - set:saturation
+    - 'Controls: Saturation'
+  - - does
+    - master|continuous
+    - set:trails
+    - 'Controls: Trails'
+  - - does
+    - master|continuous
+    - set:trailszoom
+    - 'Controls: Trails zoom'
+  - - does
+    - master|continuous
+    - set:trailswarp
+    - 'Controls: Trails warp'
+  - - does
+    - master|continuous
+    - set:trailscolour
+    - 'Controls: Trails colour'
+  - - does
+    - master|continuous
+    - set:blur
+    - 'Controls: Blur'
+  - - does
+    - master|continuous
+    - set:glitch
+    - 'Controls: Glitch'
+  - - does
+    - master|continuous
+    - set:outline
+    - 'Controls: Outline'
+  - - does
+    - master|continuous
+    - set:melt
+    - 'Controls: Melt'
+  - - does
+    - master|moment+continuous
+    - burst:level
+    - 'Burst: Brightness'
+  - - does
+    - master|moment+continuous
+    - burst:flash
+    - 'Burst: Flash'
+  - - does
+    - master|moment+continuous
+    - burst:saturation
+    - 'Burst: Saturation'
+  - - does
+    - master|moment+continuous
+    - burst:trails
+    - 'Burst: Trails'
+  - - does
+    - master|moment+continuous
+    - burst:trailszoom
+    - 'Burst: Trails zoom'
+  - - does
+    - master|moment+continuous
+    - burst:trailswarp
+    - 'Burst: Trails warp'
+  - - does
+    - master|moment+continuous
+    - burst:trailscolour
+    - 'Burst: Trails colour'
+  - - does
+    - master|moment+continuous
+    - burst:blur
+    - 'Burst: Blur'
+  - - does
+    - master|moment+continuous
+    - burst:glitch
+    - 'Burst: Glitch'
+  - - does
+    - master|moment+continuous
+    - burst:outline
+    - 'Burst: Outline'
+  - - does
+    - master|moment+continuous
+    - burst:melt
+    - 'Burst: Melt'
+  - - does
+    - master|moment+continuous
+    - set:level
+    - 'Controls: Brightness'
+  - - does
+    - master|moment+continuous
+    - set:blackout
+    - 'Controls: Blackout'
+  - - does
+    - master|moment+continuous
+    - set:flash
+    - 'Controls: Flash'
+  - - does
+    - master|moment+continuous
+    - set:saturation
+    - 'Controls: Saturation'
+  - - does
+    - master|moment+continuous
+    - set:trails
+    - 'Controls: Trails'
+  - - does
+    - master|moment+continuous
+    - set:trailszoom
+    - 'Controls: Trails zoom'
+  - - does
+    - master|moment+continuous
+    - set:trailswarp
+    - 'Controls: Trails warp'
+  - - does
+    - master|moment+continuous
+    - set:trailscolour
+    - 'Controls: Trails colour'
+  - - does
+    - master|moment+continuous
+    - set:blur
+    - 'Controls: Blur'
+  - - does
+    - master|moment+continuous
+    - set:glitch
+    - 'Controls: Glitch'
+  - - does
+    - master|moment+continuous
+    - set:outline
+    - 'Controls: Outline'
+  - - does
+    - master|moment+continuous
+    - set:melt
+    - 'Controls: Melt'
+  - - con_instrument
+    - ''
+    - shapes
+    - Shapes (all layers)
+  - - does
+    - shapes|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - shapes|continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - shapes|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - shapes|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - shapes|moment+continuous
+    - set:visible
+    - 'Controls: On'
+  - - does
+    - shapes|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - con_instrument
+    - ''
+    - layer1
+    - Shape layer 1
+  - - does
+    - layer1|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer1|moment
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer1|moment
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer1|moment
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer1|moment
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer1|moment
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer1|moment
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer1|moment
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer1|continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer1|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer1|continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer1|continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer1|continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer1|continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer1|continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer1|continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer1|continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer1|continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer1|continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - does
+    - layer1|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer1|moment+continuous
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer1|moment+continuous
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer1|moment+continuous
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer1|moment+continuous
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer1|moment+continuous
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer1|moment+continuous
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer1|moment+continuous
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer1|moment+continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer1|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer1|moment+continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer1|moment+continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer1|moment+continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer1|moment+continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer1|moment+continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer1|moment+continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer1|moment+continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer1|moment+continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer1|moment+continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - con_instrument
+    - ''
+    - layer2
+    - Shape layer 2
+  - - does
+    - layer2|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer2|moment
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer2|moment
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer2|moment
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer2|moment
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer2|moment
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer2|moment
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer2|moment
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer2|continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer2|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer2|continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer2|continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer2|continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer2|continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer2|continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer2|continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer2|continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer2|continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer2|continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - does
+    - layer2|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer2|moment+continuous
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer2|moment+continuous
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer2|moment+continuous
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer2|moment+continuous
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer2|moment+continuous
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer2|moment+continuous
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer2|moment+continuous
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer2|moment+continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer2|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer2|moment+continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer2|moment+continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer2|moment+continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer2|moment+continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer2|moment+continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer2|moment+continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer2|moment+continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer2|moment+continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer2|moment+continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - con_instrument
+    - ''
+    - layer3
+    - Shape layer 3
+  - - does
+    - layer3|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer3|moment
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer3|moment
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer3|moment
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer3|moment
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer3|moment
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer3|moment
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer3|moment
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer3|continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer3|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer3|continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer3|continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer3|continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer3|continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer3|continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer3|continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer3|continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer3|continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer3|continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - does
+    - layer3|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer3|moment+continuous
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer3|moment+continuous
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer3|moment+continuous
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer3|moment+continuous
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer3|moment+continuous
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer3|moment+continuous
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer3|moment+continuous
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer3|moment+continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer3|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer3|moment+continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer3|moment+continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer3|moment+continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer3|moment+continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer3|moment+continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer3|moment+continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer3|moment+continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer3|moment+continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer3|moment+continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - con_instrument
+    - ''
+    - layer4
+    - Shape layer 4
+  - - does
+    - layer4|moment
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer4|moment
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer4|moment
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer4|moment
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer4|moment
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer4|moment
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer4|moment
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer4|moment
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer4|continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer4|continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer4|continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer4|continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer4|continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer4|continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer4|continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer4|continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer4|continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer4|continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer4|continuous
+    - set:effect
+    - 'Controls: Effect'
+  - - does
+    - layer4|moment+continuous
+    - burst:opacity
+    - 'Burst: Opacity'
+  - - does
+    - layer4|moment+continuous
+    - burst:red
+    - 'Burst: Red'
+  - - does
+    - layer4|moment+continuous
+    - burst:green
+    - 'Burst: Green'
+  - - does
+    - layer4|moment+continuous
+    - burst:blue
+    - 'Burst: Blue'
+  - - does
+    - layer4|moment+continuous
+    - burst:scale
+    - 'Burst: Size'
+  - - does
+    - layer4|moment+continuous
+    - burst:x
+    - 'Burst: Position x'
+  - - does
+    - layer4|moment+continuous
+    - burst:y
+    - 'Burst: Position y'
+  - - does
+    - layer4|moment+continuous
+    - burst:rotate
+    - 'Burst: Rotation'
+  - - does
+    - layer4|moment+continuous
+    - set:visible
+    - 'Controls: Visible'
+  - - does
+    - layer4|moment+continuous
+    - set:opacity
+    - 'Controls: Opacity'
+  - - does
+    - layer4|moment+continuous
+    - set:red
+    - 'Controls: Red'
+  - - does
+    - layer4|moment+continuous
+    - set:green
+    - 'Controls: Green'
+  - - does
+    - layer4|moment+continuous
+    - set:blue
+    - 'Controls: Blue'
+  - - does
+    - layer4|moment+continuous
+    - set:scale
+    - 'Controls: Size'
+  - - does
+    - layer4|moment+continuous
+    - set:x
+    - 'Controls: Position x'
+  - - does
+    - layer4|moment+continuous
+    - set:y
+    - 'Controls: Position y'
+  - - does
+    - layer4|moment+continuous
+    - set:rotate
+    - 'Controls: Rotation'
+  - - does
+    - layer4|moment+continuous
+    - set:content
+    - 'Controls: Content'
+  - - does
+    - layer4|moment+continuous
+    - set:effect
+    - 'Controls: Effect'
+  dat_content_format: table
+- name: MappingsExt
+  type: textDAT
+  parameters:
+    file: project1/mappings/MappingsExt.py
+- name: assignments
+  type: tableDAT
+  position: [400, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - signal
+    - target
+    - in_min
+    - in_max
+    - out_min
+    - out_max
+    - smoothing
+  dat_content_format: table
+- name: midi_preset
+  type: selectCHOP
+  parameters:
+    chops: ../engine/live
+    channames: mapping_preset
+    autoexportroot: =parent()
+  position: [0, -800]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+- name: signal_menu
+  type: tableDAT
+  position: [800, -400]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: target_menu
+  type: tableDAT
+  position: [1200, -400]
+  color: [0.67, 0.67, 0.67]
+  tags:
+  - tdxn_exclude:dat_content
+- name: mapping_logic
+  type: textDAT
+  parameters:
+    file: project1/mappings/mapping_logic.py
+  position: [400, 0]
+- name: mapping_changed
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    builtin: false
+    file: project1/mappings/mapping_changed.py
+    syncfile: true
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: trigger_presets
+  type: tableDAT
+  parameters:
+    file: project1/mappings/trigger_presets.tsv
+    syncfile: true
+    rows: 81
+    cols: 7
+  position: [1600, -400]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: trigger_does_menu
+  type: tableDAT
+  position: [2400, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - pulse
+    - Pulse (grow)
+  - - spin
+    - Spin
+  - - sides
+    - More sides
+  - - jump
+    - Jump
+  - - flash
+    - Flash colour
+  - - burst:trigger.opacity
+    - 'Trigger Shape: Burst: Opacity'
+  - - burst:trigger.sides
+    - 'Trigger Shape: Burst: Sides'
+  - - burst:trigger.size
+    - 'Trigger Shape: Burst: Size'
+  - - burst:trigger.x
+    - 'Trigger Shape: Burst: X'
+  - - burst:trigger.y
+    - 'Trigger Shape: Burst: Y'
+  - - burst:trigger.rotate
+    - 'Trigger Shape: Burst: Rotate'
+  - - burst:trigger.fill
+    - 'Trigger Shape: Burst: Fill'
+  - - burst:trigger.line
+    - 'Trigger Shape: Burst: Line'
+  - - burst:trigger.colour
+    - 'Trigger Shape: Burst: Colour'
+  - - burst:trigger.flashcolour
+    - 'Trigger Shape: Burst: Flash colour'
+  - - burst:trigger.flash
+    - 'Trigger Shape: Burst: Flash'
+  - - burst:particles.opacity
+    - 'Particles: Burst: Opacity'
+  - - burst:particles.energy
+    - 'Particles: Burst: Energy'
+  - - burst:particles.spread
+    - 'Particles: Burst: Spread'
+  - - burst:particles.turbulence
+    - 'Particles: Burst: Turbulence'
+  - - burst:particles.size
+    - 'Particles: Burst: Size'
+  - - burst:particles.colour
+    - 'Particles: Burst: Colour'
+  - - burst:particles.trails
+    - 'Particles: Burst: Trails'
+  - - burst:noise.opacity
+    - 'Noise: Burst: Opacity'
+  - - burst:noise.scale
+    - 'Noise: Burst: Scale'
+  - - burst:noise.speed
+    - 'Noise: Burst: Speed'
+  - - burst:noise.detail
+    - 'Noise: Burst: Detail'
+  - - burst:noise.warp
+    - 'Noise: Burst: Warp'
+  - - burst:noise.feedback
+    - 'Noise: Burst: Trails'
+  - - burst:noise.colour
+    - 'Noise: Burst: Colour'
+  - - count:tiles.shufflecount
+    - 'Colour Tiles: Shuffle the colours'
+  - - burst:tiles.opacity
+    - 'Colour Tiles: Burst: Opacity'
+  - - burst:tiles.widthvar
+    - 'Colour Tiles: Burst: Width variation'
+  - - burst:tiles.scrollspeed
+    - 'Colour Tiles: Burst: Scroll speed'
+  - - burst:tiles.scrollvar
+    - 'Colour Tiles: Burst: Speed variation'
+  - - burst:tiles.repeats
+    - 'Colour Tiles: Burst: Repeats'
+  - - burst:tiles.tilegap
+    - 'Colour Tiles: Burst: Gap'
+  - - burst:tiles.edgesize
+    - 'Colour Tiles: Burst: Edge size'
+  - - burst:tiles.edgefreq
+    - 'Colour Tiles: Burst: Edge frequency'
+  - - count:media.restartcount
+    - 'Media: Play from the start'
+  - - count:media.nextcount
+    - 'Media: Next file'
+  - - count:media.randomcount
+    - 'Media: Random file'
+  - - burst:media.opacity
+    - 'Media: Burst: Opacity'
+  - - burst:media.position
+    - 'Media: Burst: Position in the video'
+  - - burst:video.opacity
+    - 'Camera: Burst: Opacity'
+  - - burst:video.feedback
+    - 'Camera: Burst: Echo length'
+  - - burst:video.zoom
+    - 'Camera: Burst: Echo zoom'
+  - - burst:video.distortion
+    - 'Camera: Burst: Echo distortion'
+  - - burst:video.colour
+    - 'Camera: Burst: Echo colour'
+  - - burst:master.level
+    - 'Whole picture: Burst: Brightness'
+  - - burst:master.flash
+    - 'Whole picture: Burst: Flash'
+  - - burst:master.saturation
+    - 'Whole picture: Burst: Saturation'
+  - - burst:master.trails
+    - 'Whole picture: Burst: Trails'
+  - - burst:master.trailszoom
+    - 'Whole picture: Burst: Trails zoom'
+  - - burst:master.trailswarp
+    - 'Whole picture: Burst: Trails warp'
+  - - burst:master.trailscolour
+    - 'Whole picture: Burst: Trails colour'
+  - - burst:master.blur
+    - 'Whole picture: Burst: Blur'
+  - - burst:master.glitch
+    - 'Whole picture: Burst: Glitch'
+  - - burst:master.outline
+    - 'Whole picture: Burst: Outline'
+  - - burst:master.melt
+    - 'Whole picture: Burst: Melt'
+  - - burst:shapes.opacity
+    - 'Shapes (all layers): Burst: Opacity'
+  - - burst:layer1.opacity
+    - 'Shape layer 1: Burst: Opacity'
+  - - burst:layer1.red
+    - 'Shape layer 1: Burst: Red'
+  - - burst:layer1.green
+    - 'Shape layer 1: Burst: Green'
+  - - burst:layer1.blue
+    - 'Shape layer 1: Burst: Blue'
+  - - burst:layer1.scale
+    - 'Shape layer 1: Burst: Size'
+  - - burst:layer1.x
+    - 'Shape layer 1: Burst: Position x'
+  - - burst:layer1.y
+    - 'Shape layer 1: Burst: Position y'
+  - - burst:layer1.rotate
+    - 'Shape layer 1: Burst: Rotation'
+  - - burst:layer2.opacity
+    - 'Shape layer 2: Burst: Opacity'
+  - - burst:layer2.red
+    - 'Shape layer 2: Burst: Red'
+  - - burst:layer2.green
+    - 'Shape layer 2: Burst: Green'
+  - - burst:layer2.blue
+    - 'Shape layer 2: Burst: Blue'
+  - - burst:layer2.scale
+    - 'Shape layer 2: Burst: Size'
+  - - burst:layer2.x
+    - 'Shape layer 2: Burst: Position x'
+  - - burst:layer2.y
+    - 'Shape layer 2: Burst: Position y'
+  - - burst:layer2.rotate
+    - 'Shape layer 2: Burst: Rotation'
+  - - burst:layer3.opacity
+    - 'Shape layer 3: Burst: Opacity'
+  - - burst:layer3.red
+    - 'Shape layer 3: Burst: Red'
+  - - burst:layer3.green
+    - 'Shape layer 3: Burst: Green'
+  - - burst:layer3.blue
+    - 'Shape layer 3: Burst: Blue'
+  - - burst:layer3.scale
+    - 'Shape layer 3: Burst: Size'
+  - - burst:layer3.x
+    - 'Shape layer 3: Burst: Position x'
+  - - burst:layer3.y
+    - 'Shape layer 3: Burst: Position y'
+  - - burst:layer3.rotate
+    - 'Shape layer 3: Burst: Rotation'
+  - - burst:layer4.opacity
+    - 'Shape layer 4: Burst: Opacity'
+  - - burst:layer4.red
+    - 'Shape layer 4: Burst: Red'
+  - - burst:layer4.green
+    - 'Shape layer 4: Burst: Green'
+  - - burst:layer4.blue
+    - 'Shape layer 4: Burst: Blue'
+  - - burst:layer4.scale
+    - 'Shape layer 4: Burst: Size'
+  - - burst:layer4.x
+    - 'Shape layer 4: Burst: Position x'
+  - - burst:layer4.y
+    - 'Shape layer 4: Burst: Position y'
+  - - burst:layer4.rotate
+    - 'Shape layer 4: Burst: Rotation'
+  dat_content_format: table
+- name: trigger_when_menu
+  type: tableDAT
+  position: [2000, -400]
+  color: [0.67, 0.67, 0.67]
+  dat_content:
+  - - midi
+    - MIDI note
+  - - serial_w1_hit
+    - 'Wearable 1: hit'
+  - - serial_w1_btn
+    - 'Wearable 1: button'
+  - - serial_w1_still
+    - 'Wearable 1: still'
+  - - serial_w2_hit
+    - 'Wearable 2: hit'
+  - - serial_w2_btn
+    - 'Wearable 2: button'
+  - - serial_w2_still
+    - 'Wearable 2: still'
+  - - serial_w3_hit
+    - 'Wearable 3: hit'
+  - - serial_w3_btn
+    - 'Wearable 3: button'
+  - - serial_w3_still
+    - 'Wearable 3: still'
+  - - pose_present
+    - 'Body: dancer seen'
+  - - pose_zone1
+    - 'Body: in zone 1'
+  - - pose_zone2
+    - 'Body: in zone 2'
+  - - pose_zone3
+    - 'Body: in zone 3'
+  - - pose_zone4
+    - 'Body: in zone 4'
+  - - pose_zone5
+    - 'Body: in zone 5'
+  - - sim_trigger
+    - 'Test: trigger'
+  dat_content_format: table
+- name: midi_preset_changed
+  type: chopexecuteDAT
+  parameters:
+    fromop: =parent()
+    chop: midi_preset
+    file: project1/mappings/midi_preset_changed.py
+    syncfile: true
+  position: [400, -800]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Mapping page (8 slots, 8 triggers, presets A-D)
+  text: MappingsExt + mapping_logic turn the slots into assignments (read by the engine). presets holds A-D. trigger_presets holds each preset's 8 triggers (read directly by the engine; trigger_when_menu / trigger_does_menu feed their menus). signal_menu / target_menu feed the slot menus (rebuilt by RefreshMenus, in the current language). midi_preset follows the engine's mapping_preset channel so a MIDI note can switch presets during the song.
+  position: [-70, -870]
+  size: [2670, 1130]
+  color: [0.45, 0.45, 0.45]

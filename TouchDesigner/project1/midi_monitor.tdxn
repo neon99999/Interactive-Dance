@@ -1,6 +1,10 @@
 format: tdxn
 version: '2.2'
+<<<<<<< Updated upstream
 build: 3
+=======
+build: 6
+>>>>>>> Stashed changes
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/midi_monitor
@@ -10,7 +14,12 @@ options:
 type_defaults:
   textTOP:
     parameters:
+<<<<<<< Updated upstream
       font: Artifakt Element
+=======
+      filtertype: linear
+      fontfile: C:/Windows/Fonts/arial.ttf
+>>>>>>> Stashed changes
       fontsizexunit: pixels
       outputresolution: custom
       resolutionh: 360
@@ -59,6 +68,8 @@ operators:
   - py
 - name: null_out
   type: nullTOP
+  parameters:
+    filtertype: linear
   flags:
   - viewer
   position: [550, 0]
@@ -70,6 +81,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    filtertype: linear
   flags:
   - viewer
   position: [400, 0]

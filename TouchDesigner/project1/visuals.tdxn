@@ -1,6 +1,10 @@
 format: tdxn
 version: '2.2'
+<<<<<<< Updated upstream
 build: 4
+=======
+build: 16
+>>>>>>> Stashed changes
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -12,9 +16,33 @@ type_defaults:
     parameters:
       parentshortcut: Layer
     size: [160, 130]
+<<<<<<< Updated upstream
+=======
+  blurTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  channelmixTOP:
+    parameters:
+      alpha1: 1
+      alpha2: 1
+      alpha3: 1
+      alpha4: 0
+      filtertype: linear
+      format: rgba8fixed
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  chopexecuteDAT:
+    parameters:
+      chop: live
+      fromop: =parent()
+    size: [130, 90]
+>>>>>>> Stashed changes
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
       radiusunit: pixels
       resolutionh: 720
@@ -22,40 +50,169 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
+<<<<<<< Updated upstream
       resolutionh: 720
       resolutionw: 1280
+=======
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  crossTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  displaceTOP:
+    parameters:
+      filtertype: linear
+      offsetweight: =1 - me.par.uvweight.eval()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  edgeTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  executeDAT:
+    parameters:
+      fromop: =parent()
+    size: [130, 90]
+  feedbackTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  fitTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  hsvadjustTOP:
+    parameters:
+      filtertype: linear
+>>>>>>> Stashed changes
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+<<<<<<< Updated upstream
+=======
+  lookupTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  monochromeTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  moviefileinTOP:
+    parameters:
+      filtertype: linear
+      timecodeop: =tdu.Timecode()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  noiseTOP:
+    parameters:
+      filtertype: linear
+      outputresolution: custom
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+>>>>>>> Stashed changes
   nullCHOP:
     parameters:
       autoexportroot: =parent()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+<<<<<<< Updated upstream
+=======
+  nullTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+>>>>>>> Stashed changes
   outTOP:
     parameters:
+      filtertype: linear
       label: =me.name
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
+<<<<<<< Updated upstream
   selectCHOP:
     parameters:
       autoexportroot: =parent()
       chops: =op.Engine.op('live')
       renameto: '*'
+=======
+  parameterexecuteDAT:
+    parameters:
+      builtin: false
+      fromop: =parent()
+    size: [130, 90]
+  rampTOP:
+    parameters:
+      filtertype: linear
+      outputresolution: custom
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  rectangleTOP:
+    parameters:
+      filtertype: linear
+      outputresolution: custom
+      resolutionh: =parent.Visuals.par.Resolution2
+      resolutionw: =parent.Visuals.par.Resolution1
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  selectCHOP:
+    parameters:
+      autoexportroot: =parent()
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  selectTOP:
+    parameters:
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  speedCHOP:
+    parameters:
+      autoexportroot: =parent()
+>>>>>>> Stashed changes
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   switchTOP:
     parameters:
+<<<<<<< Updated upstream
       outputresolution: custom
       resolutionh: 720
       resolutionw: 1280
+=======
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  tableDAT:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  textDAT:
+    size: [130, 90]
+  transformPOP:
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  transformTOP:
+    parameters:
+      filtertype: linear
+>>>>>>> Stashed changes
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -161,6 +318,31 @@ custom_pars:
     style: Pulse
     label: Close Output Window
     help: Close the output window.
+<<<<<<< Updated upstream
+=======
+  - name: Resolution
+    style: Int
+    size: 2
+    startSection: true
+    default: [1280, 720]
+    min: 64.0
+    clampMin: true
+    normMin: 64.0
+    normMax: 3840.0
+    help: Size of the final image in pixels (width, height). Every layer and instrument renders at this size. Set it to the projector resolution on the show computer; lower it if the frame rate drops.
+  - name: Monitor
+    style: Menu
+    label: Screen
+    default: '0'
+    menuSource: me.op('output_buttons').module.monitorMenu()
+    help: The screen (projector) the output window opens on. Screen 1 is the main one.
+    value: '1'
+  - name: Borderless
+    style: Toggle
+    label: Borderless (Fill the Screen)
+    default: true
+    help: 'On: the output fills the chosen screen with no frame and no mouse pointer (for the projector). Off: a normal window with a frame.'
+>>>>>>> Stashed changes
 parameters:
   parentshortcut: Visuals
   opshortcut: Visuals
@@ -176,6 +358,4116 @@ operators:
   position: [1450, 0]
   inputs:
   - null_out
+<<<<<<< Updated upstream
+=======
+- name: media
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: Show the pictures and videos.
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Folder
+      style: Folder
+      startSection: true
+      help: A folder of pictures and videos (sub-folders too), or one file.
+    - name: Clip
+      style: StrMenu
+      label: File
+      menuNames: []
+      help: The file shown now.
+    - name: Playback
+      style: Menu
+      default: play
+      menuNames:
+      - play
+      - position
+      menuLabels:
+      - Play
+      - Position
+      help: 'Play: videos play and loop. Position: Position sets the place in the video (a connection can control it).'
+    - name: Position
+      style: Float
+      clampMin: true
+      clampMax: true
+      help: 'Place in the video when Playback is Position: 0 = start, 1 = end.'
+    - name: Fade
+      style: Float
+      label: Fade (s)
+      default: 1
+      max: 5.0
+      clampMin: true
+      clampMax: true
+      normMax: 5.0
+      help: Seconds of crossfade when the file changes. 0 = cut.
+    - name: Fit
+      style: Menu
+      default: outside
+      menuNames:
+      - outside
+      - inside
+      - fill
+      menuLabels:
+      - Fill the Screen (crop)
+      - Whole Picture
+      - Stretch
+      help: How the picture fills the screen.
+    - name: Refresh
+      style: Pulse
+      help: Read the folder again.
+  position: [400, -2000]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [1600, 0]
+    inputs:
+    - switch_file
+  - name: empty
+    type: constantTOP
+    parameters:
+      alpha: 0
+      resolutionw: =op.Visuals.par.Resolution1
+      resolutionh: =op.Visuals.par.Resolution2
+    position: [800, -400]
+  - name: player_a
+    type: moviefileinTOP
+    parameters:
+      playmode: =op('media_mod').module.playMode(absTime.frame)
+      index: =op('media_mod').module.position(absTime.frame)
+      indexunit: fraction
+      loadingerrorimage: zero
+  - name: player_b
+    type: moviefileinTOP
+    parameters:
+      playmode: =op('media_mod').module.playMode(absTime.frame)
+      index: =op('media_mod').module.position(absTime.frame)
+      indexunit: fraction
+      loadingerrorimage: zero
+    position: [0, -200]
+  - name: media_mod
+    type: textDAT
+    position: [800, 400]
+    color: [0.67, 0.67, 0.67]
+    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn
+      'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
+    dat_content_format: text
+  - name: fit_screen
+    type: fitTOP
+    parameters:
+      fit: =op('media_mod').module.setting('Fit')
+      resolutionw: =op.Visuals.par.Resolution1
+      resolutionh: =op.Visuals.par.Resolution2
+    position: [800, 0]
+    inputs:
+    - cross_files
+  - name: media_pars
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: Folder Clip Refresh
+    position: [1600, 400]
+    color: [0.67, 0.67, 0.67]
+    dat_content: "\"\"\"media_pars: Folder or Refresh fills the File list; a new File crossfades to it.\"\"\"\n\n\ndef onValueChange(par, prev):\n\tmod = op('media_mod').module\n\tif par.name == 'Clip':\n\t\tmod.change()\n\telse:\n\t\tmod.refresh()\n\n\ndef onPulse(par):\n\top('media_mod').module.refresh()\n"
+    dat_content_format: text
+  - name: cross_files
+    type: crossTOP
+    parameters:
+      cross: 0
+    position: [400, 0]
+    inputs:
+    - player_a
+    - player_b
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [0, 400]
+  - name: media_frame
+    type: executeDAT
+    parameters:
+      framestart: true
+    position: [2000, 400]
+    color: [0.67, 0.67, 0.67]
+    dat_content: "\"\"\"media_frame: runs the crossfade between the two players.\"\"\"\n\n\ndef onFrameStart(frame):\n\top('media_mod').module.tick()\n"
+    dat_content_format: text
+  - name: switch_file
+    type: switchTOP
+    parameters:
+      index: =1 if str(parent.Instrument.par.Clip.eval()).strip() else 0
+    position: [1200, 0]
+    inputs:
+    - empty
+    - fit_screen
+  - name: live_changed
+    type: chopexecuteDAT
+    parameters:
+      channel: restartcount nextcount randomcount
+    position: [1200, 400]
+    dat_content: "\"\"\"live_changed: a moment (connection) asked to restart, go to the next file or a random one.\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tif val > prev:\n\t\top('media_mod').module.onCount(channel.name)\n"
+    dat_content_format: text
+- name: noise
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the noise patterns. MIDI: show / hide / toggle noise.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 1
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Preset
+      style: Menu
+      default: smoke
+      menuNames:
+      - smoke
+      - lava
+      - storm
+      menuLabels:
+      - Smoke
+      - Lava
+      - Storm
+      help: 'A starting look: Smoke (slow grey clouds), Lava (warm, slowly twisting), Storm (fast, detailed, neon). Choosing one sets the six settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the six settings back to the chosen preset.
+    - name: Scale
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'Size of the pattern: 0 = fine grain, 1 = big slow shapes.'
+    - name: Speed
+      style: Float
+      default: 0.2
+      clampMin: true
+      clampMax: true
+      help: 'How fast the pattern changes: 0 = almost still, 1 = boiling.'
+    - name: Detail
+      style: Float
+      default: 0.5
+      clampMin: true
+      clampMax: true
+      help: 'How much fine detail sits on the big shapes: 0 = soft and smooth, 1 = rough and grainy.'
+    - name: Warp
+      style: Float
+      default: 0.3
+      clampMin: true
+      clampMax: true
+      help: 'How much the pattern twists and folds into itself: 0 = plain noise, 1 = marbled swirls.'
+    - name: Feedback
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'How long the pattern leaves trails as it drifts outward: 0 = none, 1 = long smears.'
+    - name: Colour
+      style: Menu
+      default: smoke
+      menuNames:
+      - smoke
+      - lava
+      - ocean
+      - neon
+      menuLabels:
+      - Smoke
+      - Lava
+      - Ocean
+      - Neon
+      help: 'Colour palette: Smoke (grey-white), Lava (red-gold), Ocean (blue-cyan), Neon (violet-cyan-pink).'
+  position: [0, -1600]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [5200, 0]
+    inputs:
+    - alpha_from_light
+  - name: null_fb
+    type: nullTOP
+    position: [3600, 0]
+    inputs:
+    - cross_loop
+  - name: presets
+    type: tableDAT
+    position: [0, -800]
+    dat_content:
+    - - par
+      - smoke
+      - lava
+      - storm
+    - - Scale
+      - '0.6'
+      - '0.4'
+      - '0.25'
+    - - Speed
+      - '0.2'
+      - '0.35'
+      - '0.8'
+    - - Detail
+      - '0.5'
+      - '0.3'
+      - '0.8'
+    - - Warp
+      - '0.3'
+      - '0.7'
+      - '0.9'
+    - - Feedback
+      - '0.6'
+      - '0.75'
+      - '0.4'
+    - - Colour
+      - smoke
+      - lava
+      - neon
+    dat_content_format: table
+  - name: math_rate
+    type: mathCHOP
+    parameters:
+      gain: 0.6
+      postoff: 0.02
+      autoexportroot: =parent()
+    position: [1200, 400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - sel_speed
+  - name: sel_speed
+    type: selectCHOP
+    parameters:
+      channames: speed
+    position: [800, 400]
+    inputs:
+    - live
+  - name: cross_loop
+    type: crossTOP
+    parameters:
+      cross: =0 if op('live')['feedback'] <= 0 else math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['feedback'] ** 2 * 2.0))
+    position: [3200, 0]
+    inputs:
+    - displace_warp
+    - transform_flow
+  - name: noise_base
+    type: noiseTOP
+    parameters:
+      period: =0.15 + op('live')['scale'] * 1.6
+      harmon: =1 + int(round(op('live')['detail'] * 4))
+      rough: =0.3 + op('live')['detail'] * 0.4
+      tz: =op('speed_phase')['speed']
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [1600, 0]
+  - name: noise_warp
+    type: noiseTOP
+    parameters:
+      period: 1.2
+      harmon: 1
+      mono: false
+      tz: =op('speed_phase')['speed'] * 0.6 + 17
+      resolutionw: =parent.Visuals.par.Resolution1 / 8
+      resolutionh: =parent.Visuals.par.Resolution2 / 8
+    position: [1600, -400]
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [0, 400]
+  - name: speed_phase
+    type: speedCHOP
+    position: [1600, 400]
+    inputs:
+    - math_rate
+  - name: palette_lava
+    type: tableDAT
+    position: [3600, -800]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.35'
+      - '0.45'
+      - '0.05'
+      - '0.02'
+      - '1'
+    - - '0.7'
+      - '0.95'
+      - '0.4'
+      - '0.05'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.9'
+      - '0.5'
+      - '1'
+    dat_content_format: table
+  - name: palette_neon
+    type: tableDAT
+    position: [3600, -1200]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.3'
+      - '0.35'
+      - '0'
+      - '0.5'
+      - '1'
+    - - '0.65'
+      - '0'
+      - '0.7'
+      - '0.9'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.4'
+      - '0.9'
+      - '1'
+    dat_content_format: table
+  - name: ramp_palette
+    type: rampTOP
+    parameters:
+      dat: ='palette_' + parent.Instrument.par.Colour.menuNames[int(round(op('live')['colour']))]
+      resolutionh: 1
+    position: [4000, -400]
+  - name: displace_warp
+    type: displaceTOP
+    parameters:
+      displaceweightx: =op('live')['warp'] * 0.35
+      displaceweighty: =op('live')['warp'] * 0.35
+      extend: mirror
+    position: [2000, 0]
+    inputs:
+    - noise_base
+    - noise_warp
+  - name: feedback_loop
+    type: feedbackTOP
+    parameters:
+      top: null_fb
+    position: [2400, -200]
+    inputs:
+    - displace_warp
+  - name: lookup_colour
+    type: lookupTOP
+    parameters:
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [4400, 0]
+    inputs:
+    - level_contrast
+    - ramp_palette
+  - name: palette_ocean
+    type: tableDAT
+    position: [3600, -1000]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.4'
+      - '0'
+      - '0.15'
+      - '0.35'
+      - '1'
+    - - '0.75'
+      - '0.1'
+      - '0.55'
+      - '0.7'
+      - '1'
+    - - '1'
+      - '0.8'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: palette_smoke
+    type: tableDAT
+    position: [3600, -600]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.5'
+      - '0.25'
+      - '0.27'
+      - '0.3'
+      - '1'
+    - - '1'
+      - '0.9'
+      - '0.92'
+      - '0.95'
+      - '1'
+    dat_content_format: table
+  - name: level_contrast
+    type: levelTOP
+    parameters:
+      contrast: 1.6
+    position: [4000, 0]
+    inputs:
+    - null_fb
+  - name: transform_flow
+    type: transformTOP
+    parameters:
+      rotate: =op('live')['warp'] * 6 * min(absTime.stepSeconds, 0.1)
+      sx: =(1 + 0.12) ** min(absTime.stepSeconds, 0.1)
+      sy: =(1 + 0.12) ** min(absTime.stepSeconds, 0.1)
+      extend: mirror
+    position: [2800, -200]
+    inputs:
+    - feedback_loop
+  - name: alpha_from_light
+    type: channelmixTOP
+    position: [4800, 0]
+    inputs:
+    - lookup_colour
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Noise
+    text: 'live: this instrument''s engine values. Speed is integrated (math_rate -> speed_phase) so a changing Speed never makes the pattern jump. noise_base (Scale = period, Detail = harmonics and roughness, half resolution) is twisted by the slow noise_warp in displace_warp (Warp). Loop: feedback_loop -> transform_flow (slow outward drift, Warp turn) -> cross_loop with the new frame (Feedback, time-based decay) -> null_fb. level_contrast -> lookup_colour through ramp_palette (palette_* tables, Colour menu) at full resolution -> out1. presets: one row per setting, one column per preset.'
+    position: [-70, -1270]
+    size: [5470, 1930]
+    color: [0.45, 0.45, 0.45]
+- name: tiles
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: Show the colour tiles.
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Strips
+      style: Int
+      label: Number of Strips
+      startSection: true
+      default: 10
+      min: 1.0
+      max: 10.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 10.0
+      help: How many strips the canvas is cut into (1 to 10).
+    - name: Orientation
+      style: Menu
+      default: vertical
+      menuNames:
+      - vertical
+      - horizontal
+      menuLabels:
+      - Vertical strips
+      - Horizontal strips
+      help: Vertical strips side by side, or horizontal strips stacked.
+    - name: Widthvar
+      style: Float
+      label: Width Variation
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: How different the strip widths are (0 = all equal, 1 = very uneven).
+    - name: Scrollspeed
+      style: Float
+      label: Scroll Speed
+      startSection: true
+      default: 0.1
+      min: -1.0
+      clampMin: true
+      clampMax: true
+      help: Strip movement along its length, in screen heights (or widths) per second. Negative reverses.
+    - name: Scrollvar
+      style: Float
+      label: Scroll Speed Variation
+      default: 0.5
+      clampMin: true
+      clampMax: true
+      help: How different each strip speed is (0 = same speed, 1 = very different). Strips also scroll in random directions.
+    - name: Repeats
+      style: Int
+      label: Repeats per Screen
+      startSection: true
+      default: 4
+      min: 1.0
+      max: 40.0
+      clampMin: true
+      clampMax: true
+      help: How many tiles (one tile plus its gap) fit along the length of a strip.
+    - name: Tilegap
+      style: Float
+      label: Gap Between Repeats
+      default: 0.25
+      max: 0.95
+      clampMin: true
+      clampMax: true
+      help: Empty space between tiles, as a fraction of one repeat (0 = tiles touch, 0.9 = thin tiles). The gap is transparent.
+    - name: Edgeshape
+      style: Menu
+      label: Edge Shape
+      default: triangle
+      menuNames:
+      - straight
+      - triangle
+      - wave
+      - scallop
+      - slant
+      menuLabels:
+      - Straight
+      - Triangle
+      - Wave
+      - Scallop
+      - Slant
+      help: Shape of the ends of each tile.
+    - name: Edgesize
+      style: Float
+      label: Edge Size
+      default: 0.8
+      clampMin: true
+      clampMax: true
+      help: How strongly the ends of each tile are shaped (0 = flat, 1 = the most the shape can reach without folding over itself; dense shapes reach less far).
+    - name: Randomdir
+      style: Toggle
+      label: Random Edge Direction
+      help: 'Off: the edge shape of every strip points the same way. On: each strip gets its own random direction (some point up, some down).'
+    - name: Edgefreq
+      style: Float
+      label: Edge Frequency
+      default: 1
+      max: 10.0
+      clampMin: true
+      clampMax: true
+      normMax: 10.0
+      help: How dense the edge shape is across each strip (0 = flat edges, 10 = very dense).
+    - name: Matchends
+      style: Toggle
+      label: Match Both Ends
+      default: true
+      help: 'On: both ends of a tile have the same shape, so the gap between tiles has a constant width. Off: only the start of each tile is shaped, the end is straight.'
+    - name: Cycle
+      style: Toggle
+      label: Cycle Colours Along Strip
+      startSection: true
+      help: 'Off: every tile in a strip has the strip colour. On: tiles run through the five palette colours one after another.'
+    - name: Shuffle
+      style: Toggle
+      label: Shuffle Strip Colours
+      help: 'Off: strip 1 gets colour 1, strip 2 colour 2 and so on. On: the order is shuffled (by the Random Seed).'
+    - name: Colour1
+      style: RGBA
+      label: Colour 1
+      size: 3
+      default: [0.98, 0.21, 0.45]
+      help: Palette colour 1 (used when no Palette TOP is set).
+    - name: Colour2
+      style: RGBA
+      label: Colour 2
+      size: 3
+      default: [0.1, 0.85, 0.95]
+      help: Palette colour 2 (used when no Palette TOP is set).
+    - name: Colour3
+      style: RGBA
+      label: Colour 3
+      size: 3
+      default: [1, 0.85, 0.15]
+      help: Palette colour 3 (used when no Palette TOP is set).
+    - name: Colour4
+      style: RGBA
+      label: Colour 4
+      size: 3
+      default: [0.55, 0.3, 0.95]
+      help: Palette colour 4 (used when no Palette TOP is set).
+    - name: Colour5
+      style: RGBA
+      label: Colour 5
+      size: 3
+      default: [0.96, 0.96, 0.92]
+      help: Palette colour 5 (used when no Palette TOP is set).
+    - name: Refresh
+      style: Pulse
+      label: Refresh Colours
+      help: Re-reads the palette (use after changing the Palette TOP).
+  position: [0, -2000]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: live
+    type: nullCHOP
+    flags:
+    - viewer
+    position: [-400, 425]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [2800, -400]
+    inputs:
+    - comp_strips
+  - name: empty
+    type: constantTOP
+    parameters:
+      alpha: 0
+      resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+      resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+    position: [2000, -800]
+  - name: clocks
+    type: constantCHOP
+    sequences:
+      const:
+      - name: scroll
+        value: =op('live')['scrollspeed'] if op('live')['scrollspeed'] is not None else parent().par.Scrollspeed
+    position: [400, -600]
+  - name: layout
+    type: tableDAT
+    position: [0, -400]
+    dat_content:
+    - - idx
+      - x0
+      - x1
+      - dir
+      - speed
+    - - '0'
+      - '0.0'
+      - '0.12458446692710108'
+      - '-1'
+      - '0.599139603924817'
+    - - '1'
+      - '0.12458446692710108'
+      - '0.25116661367051135'
+      - '1'
+      - '1.2602397739740907'
+    - - '2'
+      - '0.25116661367051135'
+      - '0.34920329775141057'
+      - '1'
+      - '0.7209451730832466'
+    - - '3'
+      - '0.34920329775141057'
+      - '0.44479578132329617'
+      - '1'
+      - '1.2220617567237175'
+    - - '4'
+      - '0.44479578132329617'
+      - '0.5324970227170925'
+      - '-1'
+      - '1.1132800246752348'
+    - - '5'
+      - '0.5324970227170925'
+      - '0.6266160663041885'
+      - '-1'
+      - '1.0374571935128643'
+    - - '6'
+      - '0.6266160663041885'
+      - '0.706603276142722'
+      - '1'
+      - '0.5123924702790782'
+    - - '7'
+      - '0.706603276142722'
+      - '0.8393239781085456'
+      - '-1'
+      - '1.0938433496209707'
+    - - '8'
+      - '0.8393239781085456'
+      - '0.9372442263129229'
+      - '-1'
+      - '0.8402956357666065'
+    - - '9'
+      - '0.9372442263129229'
+      - '0.9999999999999999'
+      - '1'
+      - '0.5775917003984176'
+    dat_content_format: table
+  - name: strip0
+    type: baseCOMP
+    position: [1600, 0]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.3180000047
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: -560.2659411667
+        tunit: pixels
+        sx: 0.12421875
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(0)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 159
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.98'
+        - '0.21'
+        - '0.45'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 159
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip1
+    type: baseCOMP
+    position: [1600, -200]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.3240000048
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: -399.5193084175
+        tunit: pixels
+        sx: 0.1265625
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(1)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 162
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.1'
+        - '0.85'
+        - '0.95'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 162
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip2
+    type: baseCOMP
+    position: [1600, -400]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.2500000037
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: -255.76325669
+        tunit: pixels
+        sx: 0.09765625
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(2)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '1.0'
+        - '0.85'
+        - '0.15'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip3
+    type: baseCOMP
+    position: [1600, -600]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.2440000036
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: -131.8405893922
+        tunit: pixels
+        sx: 0.0953125
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(3)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 122
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.55'
+        - '0.3'
+        - '0.95'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 122
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip4
+    type: baseCOMP
+    position: [1600, -800]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.2240000033
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: -14.5326054142
+        tunit: pixels
+        sx: 0.0875
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(4)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 112
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.96'
+        - '0.96'
+        - '0.92'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 112
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip5
+    type: baseCOMP
+    position: [1600, -1000]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.2400000036
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: 101.8323769736
+        tunit: pixels
+        sx: 0.09375
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(5)
+        tunit: pixels
+        sy: 0.2493074792
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 120
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.98'
+        - '0.21'
+        - '0.45'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 120
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip6
+    type: baseCOMP
+    position: [1600, -1200]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.204
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: 213.260379166
+        tunit: pixels
+        sx: 0.0796875
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(6)
+        tunit: pixels
+        sy: 0.249307
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 102
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.1'
+        - '0.85'
+        - '0.95'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 102
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip7
+    type: baseCOMP
+    position: [1600, -1400]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.34
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: 349.3934427208
+        tunit: pixels
+        sx: 0.132812
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(7)
+        tunit: pixels
+        sy: 0.249307
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 170
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '1.0'
+        - '0.85'
+        - '0.15'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 170
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip8
+    type: baseCOMP
+    position: [1600, -1600]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.25
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: 497.0036508297
+        tunit: pixels
+        sx: 0.0976562
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(8)
+        tunit: pixels
+        sy: 0.249307
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.55'
+        - '0.3'
+        - '0.95'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 125
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: strip9
+    type: baseCOMP
+    position: [1600, -1800]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: grey
+      type: constantTOP
+      parameters:
+        colorr: 0.5
+        colorg: 0.5
+        colorb: 0.5
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -400]
+    - name: out1
+      type: outTOP
+      position: [2800, 200]
+      inputs:
+      - place
+    - name: zone
+      type: rampTOP
+      parameters:
+        dat: zone_keys
+        type: vertical
+        interpnotches: step
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [400, -200]
+    - name: edges
+      type: displaceTOP
+      parameters:
+        horzsource: none
+        vertsource: red
+        displaceweighty: 0.16
+        extend: repeat
+        outputresolution: custom
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [1600, 200]
+      inputs:
+      - tiles
+      - shift_map
+    - name: place
+      type: transformTOP
+      parameters:
+        tx: 599.8363048403
+        tunit: pixels
+        sx: 0.0625
+        sy: 1.0027777778
+        outputresolution: custom
+        resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
+        resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
+      position: [2400, 200]
+      inputs:
+      - scroll
+    - name: shape
+      type: rampTOP
+      parameters:
+        dat: ../shape_keys
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 0]
+    - name: tiles
+      type: rampTOP
+      parameters:
+        dat: tile_keys
+        type: vertical
+        interpnotches: step
+        antialias: 1
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [400, 400]
+    - name: scroll
+      type: transformTOP
+      parameters:
+        ty: =op('../strips_mod').module.scrollPixels(9)
+        tunit: pixels
+        sy: 0.249307
+        extend: repeat
+        limittiles: true
+        tileu1: 0
+        tileu2: 1
+        tilev1: -100
+        tilev2: 100
+        outputresolution: custom
+        resolutionw: 80
+        resolutionh: 722
+      position: [2000, 200]
+      inputs:
+      - edges
+    - name: shift_map
+      type: compositeTOP
+      parameters:
+        operand: over
+        outputresolution: custom
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [1200, -200]
+      inputs:
+      - shape_zone
+      - grey
+    - name: tile_keys
+      type: tableDAT
+      position: [0, 400]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.1249'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      - - '0.125'
+        - '0.96'
+        - '0.96'
+        - '0.92'
+        - '1'
+      - - '0.875'
+        - '0'
+        - '0'
+        - '0'
+        - '0'
+      dat_content_format: table
+    - name: zone_keys
+      type: tableDAT
+      position: [0, 200]
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0.0'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      - - '0.5'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -120]
+      dock: shape
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: shape_zone
+      type: compositeTOP
+      parameters:
+        outputresolution: custom
+        resolutionw: 80
+        resolutionh: 180
+        format: rgba16float
+      position: [800, -100]
+      inputs:
+      - shape
+      - zone
+    - name: tiles_keys
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, 280]
+      dock: tiles
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+    - name: zone_keys1
+      type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
+      position: [400, -320]
+      dock: zone
+      dat_content:
+      - - pos
+        - r
+        - g
+        - b
+        - a
+      - - '0'
+        - '0'
+        - '0'
+        - '0'
+        - '1'
+      - - '1'
+        - '1'
+        - '1'
+        - '1'
+        - '1'
+      dat_content_format: table
+  - name: shape_keys
+    type: tableDAT
+    position: [0, -800]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0.0'
+      - '0.0'
+      - '0.0'
+      - '0.0'
+      - '1'
+    - - '0.5'
+      - '1.0'
+      - '1.0'
+      - '1.0'
+      - '1'
+    - - '1.0'
+      - '0.0'
+      - '0.0'
+      - '0.0'
+      - '1'
+    dat_content_format: table
+  - name: strips_mod
+    type: textDAT
+    color: [0.67, 0.67, 0.67]
+    dat_content: |
+      """Colour Tiles instrument (from the ProjectionMappingRig scene_tiles): helper functions.
+
+      Every setting is read through val(): engine/live (live CHOP) first, so connections, MIDI and phases drive them; a
+      Shuffle Colours trigger raises live shufflecount, which picks a new colour order.
+
+      The canvas is cut into parallel strips (vertical or horizontal, optionally tilted). Each strip scrolls a repeating run of
+      coloured tiles. Tiles are separated by a transparent gap and the ends of each tile can have a shape (triangle, wave,
+      scallop, slant). Everything is plain TOPs and CHOPs; Python only builds tables and per-frame numbers.
+      """
+      import math
+      import random
+
+      MAX_STRIPS = 10
+      _FLIPS = (1, -1, -1, 1, -1, 1, 1, -1, 1, -1)   # a fixed, well-mixed pattern of edge directions
+      SEED = 1   # fixed: every strip gets its own repeatable randomness
+      PALETTE_SIZE = 5
+      RES_W = "tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1280)"
+      RES_H = "tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 720)"
+      SHAPE_POINTS = 24   # keys used to draw round shapes (wave, scallop)
+
+      _state = {'palette': None, 'strip': {}}
+
+
+      def _scene():
+          return me.parent()
+
+
+      def live(name, default=0):
+          """This instrument's value now (engine/live, so mappings and MIDI drive it), else default."""
+          chan = _scene().op('live')[name]
+          return int(chan.eval()) if name.endswith('count') and chan is not None else (chan.eval() if chan is not None else default)
+
+
+      def val(name):
+          """A setting's value now: engine/live (so connections, MIDI and phases drive it), else the parameter.
+
+          Menus come from engine/live as an index, toggles as 0/1.
+          """
+          scene = _scene()
+          par = scene.par[name]
+          chan = scene.op('live')[name.lower()]
+          if chan is None:
+              return par.eval()
+          v = chan.eval()
+          if par.isMenu:
+              names = list(par.menuNames)
+              return names[min(len(names) - 1, max(0, int(round(v))))] if names else par.eval()
+          if par.style == 'Toggle':
+              return v >= 0.5
+          if par.style == 'Int':
+              return int(round(v))
+          return v
+
+
+      def edgeSize():
+          return float(val('Edgesize'))
+
+
+      def applyEdges():
+          """Edge Size moved (by hand, a mapping or MIDI): only the edge depth changes, nothing is rebuilt."""
+          scene = _scene()
+          active = int(val('Strips'))
+          for i in range(active):
+              strip = scene.op('strip%d' % i)
+              if strip is not None:
+                  _put(strip.op('edges').par.displaceweighty, weight(i))
+
+
+      def _rigPar(name, default):
+          """Value of a rig parameter, found by walking up from this scene; `default` when there is no rig."""
+          owner = _scene().parent()
+          while owner is not None and owner.path != '/':
+              par = owner.par[name]
+              if par is not None:
+                  return par.eval()
+              owner = owner.parent()
+          return default
+
+
+      def _canvasSize():
+          return float(_rigPar('Resolution1', 1280)), float(_rigPar('Resolution2', 720))
+
+
+      def _angle():
+          """Angle in degrees (counter-clockwise) of the strip direction from vertical."""
+          scene = _scene()
+          base = 0.0 if val('Orientation') == 'vertical' else 90.0
+          return base
+
+
+      # ---------------------------------------------------------------- colours
+      def _readPalette():
+          """Colours from the Colour 1-5 pickers."""
+          scene = _scene()
+          return [tuple(float(scene.par['Colour%d%s' % (k, c)].eval()) for c in 'rgb') for k in range(1, PALETTE_SIZE + 1)]
+
+
+      def palette():
+          """The palette as PALETTE_SIZE (r, g, b) tuples (cached until refresh())."""
+          if _state['palette'] is None:
+              _state['palette'] = _readPalette()
+          return _state['palette']
+
+
+      def _order():
+          """Which palette colour each strip starts with (a shuffle when Shuffle is on)."""
+          scene = _scene()
+          order = list(range(PALETTE_SIZE))
+          if val('Shuffle'):
+              random.Random(SEED + 7 + live('shufflecount')).shuffle(order)
+          elif live('shufflecount'):
+              random.Random(SEED + live('shufflecount')).shuffle(order)
+          return order
+
+
+      # ---------------------------------------------------------------- tables
+      def _setKeys(dat, rows):
+          dat.clear()
+          dat.appendRow(['pos', 'r', 'g', 'b', 'a'])
+          for row in rows:
+              dat.appendRow(row)
+
+
+      def _shapeRows(shape):
+          """Keys for one repeat of the edge shape: grey value 0..1 across the strip width (0.5 = no displacement)."""
+          if shape == 'triangle':
+              pts = [(0.0, 0.0), (0.5, 1.0), (1.0, 0.0)]
+          elif shape == 'wave':
+              pts = [(k / SHAPE_POINTS, 0.5 - 0.5 * math.cos(2 * math.pi * k / SHAPE_POINTS)) for k in range(SHAPE_POINTS + 1)]
+          elif shape == 'scallop':
+              pts = [(k / SHAPE_POINTS, math.sqrt(max(0.0, 1 - (2.0 * k / SHAPE_POINTS - 1) ** 2))) for k in range(SHAPE_POINTS + 1)]
+          elif shape == 'slant':
+              pts = [(0.0, 0.0), (1.0, 1.0)]
+          else:
+              pts = [(0.0, 0.5), (1.0, 0.5)]
+          return [[p, v, v, v, 1] for p, v in pts]
+
+
+      def refresh():
+          """Rebuild the shared edge shape table and every strip's colour keys (call after any colour or shape change)."""
+          scene = _scene()
+          _state['palette'] = None
+          _setKeys(scene.op('shape_keys'), _shapeRows(val('Edgeshape')))
+          for strip in scene.children:
+              if strip.name.startswith('strip') and strip.name[5:].isdigit():
+                  _buildStrip(strip)
+          applySizes()
+
+
+      def _put(par, value):
+          """Set a constant parameter only when it really changes, so untouched TOPs are not recooked."""
+          if abs(float(par.eval()) - float(value)) > 1e-6:
+              par.val = value
+
+
+      def applySizes():
+          """Push every size-dependent number (image sizes, scale, rotation, shape density and reach) into the strips as constants.
+
+          These only change when a control or the output size changes, so the strips' static TOPs cook once instead of every frame.
+          Call it after changing a size-related parameter or the rig output resolution.
+          """
+          scene = _scene()
+          angle = _angle()
+          active = int(val('Strips'))
+          for strip in scene.children:
+              if not (strip.name.startswith('strip') and strip.name[5:].isdigit()):
+                  continue
+              i = int(strip.name[5:])
+              if i >= active:
+                  continue   # hidden strips are not cooked: they are sized when they are switched on
+              w, h = width(i), height(i)
+              for name in ('tiles', 'shape', 'zone', 'grey', 'shape_zone', 'shift_map', 'edges'):
+                  top = strip.op(name)
+                  _put(top.par.resolutionw, w)
+                  _put(top.par.resolutionh, h)
+              _put(strip.op('shape').par.period, period(i))
+              _put(strip.op('edges').par.displaceweighty, weight(i))
+              along = stripLength()
+              sc = strip.op('scroll')
+              _put(sc.par.resolutionw, w)
+              _put(sc.par.resolutionh, along)
+              _put(sc.par.sx, 1)
+              _put(sc.par.sy, h / float(along))
+              place_top = strip.op('place')
+              cw, ch = _canvasSize()
+              _put(place_top.par.sx, w / cw)
+              _put(place_top.par.sy, along / ch)
+              _put(place_top.par.rotate, angle)
+              _put(place_top.par.tx, place(i, 'x'))
+              _put(place_top.par.ty, place(i, 'y'))
+
+
+      def _buildStrip(strip):
+          """Write the colour/tile key tables of one strip: tile k is a solid colour with a gap of `Tilegap` around its edges."""
+          scene = _scene()
+          i = int(strip.name[5:])
+          colours = palette()
+          order = _order()
+          cycle = bool(val('Cycle'))
+          count = PALETTE_SIZE if cycle else 1
+          gap = float(val('Tilegap'))
+          match = bool(val('Matchends'))
+          rows, zone = [], []
+          for k in range(count):
+              colour = colours[(order[i % PALETTE_SIZE] + k) % PALETTE_SIZE]
+              a, b = (k + gap / 2) / count, (k + 1 - gap / 2) / count
+              mid = (k + 0.5) / count
+              if gap > 0 and a > 0:
+                  rows.append([max(0.0, a - 1e-4), 0, 0, 0, 0])
+              rows.append([a, colour[0], colour[1], colour[2], 1])
+              rows.append([b, 0, 0, 0, 0])
+              zone.append([k / count, 1, 1, 1, 1])
+              zone.append([mid, 1, 1, 1, 1] if match else [mid, 0, 0, 0, 0])
+          rows = _dedupe(rows)
+          zone = _dedupe(zone)
+          _setKeys(strip.op('tile_keys'), rows)
+          _setKeys(strip.op('zone_keys'), zone)
+
+
+      def _dedupe(rows):
+          """Ramp keys must have increasing positions: drop keys that land on the same position as the previous one."""
+          out = []
+          for row in rows:
+              if out and row[0] <= out[-1][0] + 1e-6:
+                  row = [out[-1][0] + 1e-4] + row[1:]
+              if row[0] > 1.0:
+                  continue
+              out.append(row)
+          return out
+
+
+      # ---------------------------------------------------------------- layout and strips
+      def buildLayout():
+          """Rebuild the `layout` table: strip positions (0 to 1 across the canvas), directions, speeds."""
+          scene = _scene()
+          count = int(val('Strips'))
+          variation = float(val('Widthvar'))
+          speed_var = float(val('Scrollvar'))
+          seed = SEED
+          strips = []
+          for i in range(count):
+              rnd = random.Random(seed * 1000 + i)
+              width = max(0.05, 1.0 + variation * (rnd.random() * 2 - 1) * 0.9)
+              direction = 1 if rnd.random() < 0.5 else -1
+              speed = max(0.1, 1.0 + (rnd.random() * 2 - 1) * speed_var)
+              strips.append((width, direction, speed))
+          total = sum(w for w, _, _ in strips)
+          table = scene.op('layout')
+          table.clear()
+          table.appendRow(['idx', 'x0', 'x1', 'dir', 'speed'])
+          x = 0.0
+          for i, (width, direction, speed) in enumerate(strips):
+              x1 = x + width / total
+              table.appendRow([i, x, x1, direction, speed])
+              x = x1
+
+
+      def ensureStrips():
+          """Make sure all MAX_STRIPS strips exist (built once) and switch on exactly `Strips` of them."""
+          scene = _scene()
+          count = int(val('Strips'))
+          for i in range(MAX_STRIPS):
+              strip = scene.op('strip%d' % i)
+              if strip is None:
+                  strip = _makeStrip(scene, i)
+                  strip.allowCooking = False
+                  _buildStrip(strip)
+              active = i < count
+              if strip.allowCooking != active:
+                  strip.allowCooking = active
+          applySizes()
+
+
+      def _makeStrip(scene, i):
+          strip = scene.create(baseCOMP, 'strip%d' % i)
+          strip.nodeX, strip.nodeY = 1600, -i * 200
+          call = "op('../strips_mod').module.%s(%d%s)"
+          for name in ('tile_keys', 'zone_keys'):
+              dat = strip.create(tableDAT, name)
+          strip.op('tile_keys').nodeX, strip.op('tile_keys').nodeY = 0, 400
+          strip.op('zone_keys').nodeX, strip.op('zone_keys').nodeY = 0, 200
+
+          def top(kind, name, x, y):
+              t = strip.create(kind, name)
+              t.nodeX, t.nodeY = x, y
+              t.par.outputresolution = 'custom'
+              return t
+
+          prof = top(rampTOP, 'tiles', 400, 400)
+          prof.par.type = 'vertical'
+          prof.par.dat = 'tile_keys'
+          prof.par.interpnotches = 'step'
+          prof.par.extendleft = 'repeat'
+          prof.par.format = 'rgba16float'
+          prof.par.antialias = 1
+
+          shape = top(rampTOP, 'shape', 400, 0)
+          shape.par.type = 'horizontal'
+          shape.par.dat = '../shape_keys'
+          shape.par.interpnotches = 'linear'
+          shape.par.extendleft = 'repeat'
+          shape.par.format = 'rgba16float'
+
+          zone = top(rampTOP, 'zone', 400, -200)
+          zone.par.type = 'vertical'
+          zone.par.dat = 'zone_keys'
+          zone.par.interpnotches = 'step'
+          zone.par.format = 'rgba16float'
+
+          grey = top(constantTOP, 'grey', 400, -400)
+          grey.par.colorr = grey.par.colorg = grey.par.colorb = 0.5
+          grey.par.alpha = 1
+          grey.par.format = 'rgba16float'
+
+          dz = top(compositeTOP, 'shape_zone', 800, -100)
+          dz.par.operand = 'multiply'
+          dz.par.format = 'rgba16float'
+          shape.outputConnectors[0].connect(dz.inputConnectors[0])
+          zone.outputConnectors[0].connect(dz.inputConnectors[1])
+
+          dm = top(compositeTOP, 'shift_map', 1200, -200)
+          dm.par.operand = 'over'
+          dm.par.format = 'rgba16float'
+          dz.outputConnectors[0].connect(dm.inputConnectors[0])
+          grey.outputConnectors[0].connect(dm.inputConnectors[1])
+
+          disp = top(displaceTOP, 'edges', 1600, 200)
+          disp.par.horzsource = 'none'
+          disp.par.vertsource = 'red'
+          disp.par.extend = 'repeat'
+          disp.par.format = 'rgba16float'
+          prof.outputConnectors[0].connect(disp.inputConnectors[0])
+          dm.outputConnectors[0].connect(disp.inputConnectors[1])
+
+          sc = strip.create(transformTOP, 'scroll')
+          sc.nodeX, sc.nodeY = 2000, 200
+          sc.par.outputresolution = 'custom'
+          sc.par.extend = 'repeat'
+          sc.par.tunit = 'pixels'
+          sc.par.limittiles = True
+          sc.par.tileu1, sc.par.tileu2 = 0, 1
+          sc.par.tilev1, sc.par.tilev2 = -100, 100
+          sc.par.ty.expr = call % ('scrollPixels', i, '')
+          disp.outputConnectors[0].connect(sc)
+          xf = strip.create(transformTOP, 'place')
+          xf.nodeX, xf.nodeY = 2400, 200
+          xf.par.outputresolution = 'custom'
+          xf.par.resolutionw.expr = RES_W
+          xf.par.resolutionh.expr = RES_H
+          xf.par.tunit = 'pixels'
+          sc.outputConnectors[0].connect(xf)
+          out = strip.create(outTOP, 'out1')
+          out.nodeX, out.nodeY = 2800, 200
+          xf.outputConnectors[0].connect(out)
+          return strip
+
+
+      def _row(i):
+          table = _scene().op('layout')
+          if i + 1 >= table.numRows:
+              return None
+          return table.row(i + 1)
+
+
+      def _along():
+          """Canvas extent across the strips and along them, in pixels."""
+          a = math.radians(_angle())
+          w, h = _canvasSize()
+          return w * abs(math.cos(a)) + h * abs(math.sin(a)), w * abs(math.sin(a)) + h * abs(math.cos(a))
+
+
+      def width(i):
+          """Pixel width of strip i."""
+          row = _row(i)
+          if row is None:
+              return 4
+          across, _ = _along()
+          return max(2, int(round((float(row[2].val) - float(row[1].val)) * across)))
+
+
+      def tileHeight():
+          """Pixel length of one tile plus its gap (one repeat)."""
+          _, length = _along()
+          return length / max(1.0, float(val('Repeats')))
+
+
+      def height(i):
+          """Pixel height of the repeating image of strip i: one repeat, or five when colours cycle along the strip."""
+          count = PALETTE_SIZE if val('Cycle') else 1
+          return max(4, int(round(tileHeight() * count)))
+
+
+      def period(i):
+          """Horizontal ramp period (in strip widths) of the edge shape: one over the shape frequency."""
+          return 1.0 / max(0.1, float(val('Edgefreq')))
+
+
+      def weight(i):
+          """Vertical displacement (fraction of the repeating image) that moves the edge by Edge Size x the most the shape can reach.
+
+          The reach is limited so the edges never fold over themselves: denser shapes (higher frequency) can reach less far, and
+          when only the tile start is shaped it must stay inside its own tile.
+          """
+          scene = _scene()
+          if float(val('Edgefreq')) <= 0.01:
+              return 0.0   # frequency 0: flat edges
+          reach = 0.45 * width(i) / max(0.25, float(val('Edgefreq')))
+          if not val('Matchends'):
+              reach = min(reach, 0.4 * (1 - float(val('Tilegap'))) * tileHeight())
+          return _flip(i) * edgeSize() * reach / float(height(i))
+
+
+      def _flip(i):
+          """+1 or -1: which way strip i's edge shape points (random per strip when Random Edge Direction is on)."""
+          if not val('Randomdir'):
+              return 1
+          return _FLIPS[i % len(_FLIPS)]
+
+
+      def stripLength():
+          """Pixel length of a strip: the canvas extent along the strip direction."""
+          return int(math.ceil(_along()[1])) + 2
+
+
+      def place(i, part):
+          """Canvas position (pixels from the centre) of the middle of strip i: 'x' or 'y'."""
+          row = _row(i)
+          if row is None:
+              return 0
+          a = math.radians(_angle())
+          across, _ = _along()
+          mid = ((float(row[1].val) + float(row[2].val)) / 2 - 0.5) * across
+          return mid * (math.cos(a) if part == 'x' else math.sin(a))
+
+
+      def scrollPixels(i):
+          """How far strip i's repeating image has moved along the strip, in pixels (wraps once per repeat, which is invisible)."""
+          row = _row(i)
+          if row is None:
+              return 0
+          pos = _scene().op('null_clocks')['scroll'].eval() * float(row[4].val) * float(row[3].val) * stripLength()
+          return pos % height(i)
+
+
+      _pending = {'names': set(), 'scheduled': False}
+
+
+      def onLiveChange(name):
+          """A setting changed on engine/live (a connection, MIDI or a phase): rebuild like a parameter change."""
+          _pending['names'].add(name[:1].upper() + name[1:])
+          if not _pending['scheduled']:
+              _pending['scheduled'] = True
+              run("args[0]()", _flush, delayFrames=3)
+
+
+      def onChange(par):
+          """Called by the parameter callbacks. Changes are collected and applied at most every few frames, so dragging a slider is not one rebuild per tick."""
+          _pending['names'].add(par.name)
+          if not _pending['scheduled']:
+              _pending['scheduled'] = True
+              run("args[0]()", _flush, delayFrames=3)
+
+
+      def _flush():
+          names = _pending['names']
+          _pending['names'] = set()
+          _pending['scheduled'] = False
+          layout = names & {'Strips', 'Widthvar', 'Scrollvar'}
+          sizes = names & {'Strips', 'Widthvar', 'Orientation', 'Repeats', 'Edgefreq', 'Edgesize', 'Cycle', 'Matchends', 'Tilegap', 'Randomdir'}
+          colours = names & {'Tilegap', 'Matchends', 'Cycle', 'Shuffle', 'Edgeshape'} or any(n.startswith('Colour') for n in names)
+          if layout:
+              buildLayout()
+              ensureStrips()
+          if colours:
+              refresh()
+          elif sizes and not layout:
+              applySizes()
+    dat_content_format: text
+  - name: comp_strips
+    type: compositeTOP
+    parameters:
+      tops: =' '.join('strip%d/out1' % i for i in range(int(op('strips_mod').module.val('Strips'))))
+      operand: over
+    position: [2400, -400]
+    inputs:
+    - empty
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [-800, 400]
+  - name: null_clocks
+    type: nullCHOP
+    flags:
+    - viewer
+    position: [1200, -600]
+    inputs:
+    - speed_clocks
+  - name: live_changed
+    type: chopexecuteDAT
+    position: [0, 400]
+    dat_content: "\"\"\"live_changed: a tiles setting changed on engine/live (connections, MIDI, triggers): rebuild what it needs.\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tmod = op('strips_mod').module\n\tif channel.name == 'edgesize':\n\t\tmod.applyEdges()\n\telif channel.name == 'shufflecount':\n\t\tmod.refresh()\n\telif channel.name not in ('scrollspeed', 'visible', 'opacity'):\n\t\tmod.onLiveChange(channel.name)\n"
+    dat_content_format: text
+  - name: speed_clocks
+    type: speedCHOP
+    position: [800, -600]
+    inputs:
+    - clocks
+  - name: parexec_strips
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: Strips Widthvar Scrollvar Orientation Tilt Repeats Edgefreq Edgesize Tilegap Matchends Cycle Shuffle Edgeshape Randomdir Colour* Palettetop Refresh
+    position: [400, 0]
+    color: [0.67, 0.67, 0.67]
+    dat_content: |
+      # Rebuilds layout, strips and colour tables when a strip parameter changes.
+      def onValueChange(par, prev):
+          op('strips_mod').module.onChange(par)
+
+      def onPulse(par):
+          op('strips_mod').module.refresh()
+    dat_content_format: text
+- name: video
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the camera picture. MIDI: show / hide / toggle video.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: normal
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 1
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Preset
+      style: Menu
+      default: echo
+      menuNames:
+      - clean
+      - echo
+      - abstract
+      menuLabels:
+      - Clean
+      - Echo
+      - Abstract
+      help: 'A starting look: Clean (the image, lightly echoed), Echo (trails that drift outward), Abstract (melting colour, the dancer dissolved). Choosing one sets the five settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the five settings back to the chosen preset.
+    - name: Echo
+      style: Menu
+      default: auto
+      menuNames:
+      - 'off'
+      - auto
+      - dancer
+      - movement
+      menuLabels:
+      - 'Off'
+      - Auto
+      - Dancer
+      - Movement
+      help: 'What leaves trails. Off: the plain camera picture. Dancer: only the dancer repeats (needs body tracking with Body Mask on). Movement: only what moves repeats. Auto: Dancer when available, otherwise Movement. For trails of the whole picture use the Trails effect.'
+    - name: Feedback
+      style: Float
+      startSection: true
+      default: 0.7
+      clampMin: true
+      clampMax: true
+      help: 'How long the image echoes: 0 = no echo, 1 = very long trails.'
+    - name: Zoom
+      style: Float
+      default: 0.1
+      min: -1.0
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: 'Which way the echoes move: above 0 they grow outward, below 0 they shrink inward, 0 = they stay in place.'
+    - name: Distortion
+      style: Float
+      default: 0.1
+      clampMin: true
+      clampMax: true
+      help: 'How much the echoes ripple and bend: 0 = straight, 1 = melting.'
+    - name: Colour
+      style: Float
+      default: 0.1
+      clampMin: true
+      clampMax: true
+      help: 'Colour treatment: 0 = natural colour, 1 = echoes shift through the rainbow and glow.'
+    - name: Mix
+      style: Float
+      default: 0.75
+      clampMin: true
+      clampMax: true
+      help: Balance between the plain video (0) and the echoes (1).
+    Source:
+    - name: Source
+      style: Menu
+      default: webcam
+      menuNames:
+      - webcam
+      - test
+      menuLabels:
+      - Webcam
+      - Test Pattern
+      help: 'Webcam: the camera picture (from body tracking when it is on, otherwise from inputs > Camera). Test Pattern: a moving shape, to try it without a camera.'
+    - name: Status
+      style: Str
+      readOnly: true
+      help: What the instrument is showing now.
+      value: =me.op('video_source').module.statusText(absTime.frame)
+  position: [0, -1400]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [6000, 0]
+    inputs:
+    - cross_mix
+  - name: null_fb
+    type: nullTOP
+    position: [5200, -200]
+    inputs:
+    - max_loop
+  - name: presets
+    type: tableDAT
+    position: [800, -1200]
+    dat_content:
+    - - par
+      - clean
+      - echo
+      - abstract
+    - - Feedback
+      - '0.35'
+      - '0.7'
+      - '0.95'
+    - - Zoom
+      - '0'
+      - '0.1'
+      - '0.4'
+    - - Distortion
+      - '0'
+      - '0.1'
+      - '0.6'
+    - - Colour
+      - '0'
+      - '0.1'
+      - '0.6'
+    - - Mix
+      - '0.3'
+      - '0.75'
+      - '1'
+    dat_content_format: table
+  - name: fit_mask
+    type: fitTOP
+    parameters:
+      fit: fill
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [2000, -1000]
+    inputs:
+    - sel_mask
+  - name: max_loop
+    type: compositeTOP
+    parameters:
+      operand: maximum
+    position: [4400, -400]
+    inputs:
+    - layer_masked
+    - level_fade
+  - name: sel_mask
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('mediapipe/MediaPipe/segmentation')
+    position: [1600, -1000]
+  - name: sel_pose
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('mediapipe/MediaPipe/video')
+  - name: test_bar
+    type: rectangleTOP
+    parameters:
+      sizex: 0.04
+      sizeunit: fraction
+      rotate: =(absTime.seconds * 40) % 360
+      fillcolorr: 0.5
+      fillcolorg: 0.7
+    position: [-400, -800]
+  - name: cross_mix
+    type: crossTOP
+    parameters:
+      cross: =me.parent().op('video_source').module.mix(absTime.frame)
+    position: [5600, 0]
+    inputs:
+    - null_source
+    - null_fb
+  - name: mono_mask
+    type: monochromeTOP
+    parameters:
+      rgb: rgbmax
+    position: [2400, -1000]
+    inputs:
+    - fit_mask
+  - name: fit_source
+    type: fitTOP
+    parameters:
+      fit: fill
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+      format: rgba16float
+    position: [800, -200]
+    inputs:
+    - switch_source
+  - name: hsv_colour
+    type: hsvadjustTOP
+    parameters:
+      hueoffset: =op('live')['colour'] * 120 * min(absTime.stepSeconds, 0.1)
+      saturationmult: =(1 + op('live')['colour'] * 0.6) ** min(absTime.stepSeconds, 0.1)
+    position: [2800, -400]
+    inputs:
+    - displace_warp
+  - name: level_fade
+    type: levelTOP
+    parameters:
+      brightness1: =math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['feedback'] ** 2 * 3.0))
+    position: [3200, -400]
+    inputs:
+    - hsv_colour
+  - name: level_mask
+    type: levelTOP
+    parameters:
+      inlow: 0.02
+      inhigh: 0.15
+    position: [2800, -1000]
+    inputs:
+    - mono_mask
+  - name: noise_warp
+    type: noiseTOP
+    parameters:
+      period: 2.5
+      harmon: 1
+      mono: false
+      tz: =(absTime.seconds * 0.05) % 1000
+      resolutionw: =parent.Visuals.par.Resolution1 / 8
+      resolutionh: =parent.Visuals.par.Resolution2 / 8
+    position: [2000, -700]
+  - name: sel_camera
+    type: selectTOP
+    parameters:
+      top: =op.Inputs.op('camera_in')
+    position: [0, -200]
+  - name: blur_motion
+    type: blurTOP
+    parameters:
+      size: 6
+    position: [3200, -1200]
+    inputs:
+    - level_motion
+  - name: diff_motion
+    type: compositeTOP
+    parameters:
+      operand: difference
+    position: [2000, -1200]
+    inputs:
+    - null_source
+    - feedback_prev
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [0, 400]
+  - name: mono_motion
+    type: monochromeTOP
+    parameters:
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [2400, -1200]
+    inputs:
+    - diff_motion
+  - name: null_source
+    type: nullTOP
+    position: [1200, -200]
+    inputs:
+    - fit_source
+  - name: switch_mask
+    type: switchTOP
+    parameters:
+      index: =min(me.parent().op('video_source').module.echoMode(absTime.frame), 1)
+    position: [3600, -1000]
+    inputs:
+    - level_mask
+    - blur_motion
+  - name: test_circle
+    type: circleTOP
+    parameters:
+      radiusx: 0.12
+      radiusy: 0.12
+      centerx: =0.3 * math.sin(absTime.seconds * 0.7)
+      centery: =0.2 * math.sin(absTime.seconds * 1.1)
+      fillcolorg: 0.8
+      fillcolorb: 0.6
+      bgcolorr: 0.03
+      bgcolorg: 0.03
+      bgcolorb: 0.03
+      bgalpha: 1
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [-400, -600]
+  - name: layer_masked
+    type: compositeTOP
+    position: [4000, -800]
+    inputs:
+    - null_source
+    - switch_mask
+  - name: level_motion
+    type: levelTOP
+    parameters:
+      inlow: 0.04
+      inhigh: 0.2
+    position: [2800, -1200]
+    inputs:
+    - mono_motion
+  - name: test_pattern
+    type: compositeTOP
+    parameters:
+      operand: over
+    position: [0, -700]
+    inputs:
+    - test_bar
+    - test_circle
+  - name: video_source
+    type: textDAT
+    parameters:
+      file: project1/visuals/video/video_source.py
+      syncfile: true
+      language: python
+    position: [0, -1200]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  - name: displace_warp
+    type: displaceTOP
+    parameters:
+      displaceweightx: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
+      displaceweighty: =op('live')['distortion'] * 0.15 * min(absTime.stepSeconds, 0.1)
+    position: [2400, -400]
+    inputs:
+    - transform_zoom
+    - noise_warp
+  - name: feedback_loop
+    type: feedbackTOP
+    parameters:
+      top: null_fb
+    position: [1600, -400]
+    inputs:
+    - null_source
+  - name: feedback_prev
+    type: feedbackTOP
+    parameters:
+      top: null_source
+    position: [1600, -1200]
+    inputs:
+    - null_source
+  - name: switch_source
+    type: switchTOP
+    parameters:
+      index: =op('video_source').module.sourceIndex(absTime.frame)
+    position: [400, -200]
+    inputs:
+    - sel_pose
+    - sel_camera
+    - test_pattern
+  - name: transform_zoom
+    type: transformTOP
+    parameters:
+      rotate: =op('live')['distortion'] * 12 * min(absTime.stepSeconds, 0.1)
+      sx: =(1 + op('live')['zoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+      sy: =(1 + op('live')['zoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+    position: [2000, -400]
+    inputs:
+    - feedback_loop
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Video Feedback
+    text: 'switch_source picks the image (video_source.sourceIndex): MediaPipe''s webcam image (sel_pose) while body tracking is on, else inputs/camera_in (sel_camera), the loaded file (movie_file, loaded only by the Load button), or the test pattern. fit_source -> null_source. Echo (video_source.echoMode) picks what leaves trails. Dancer: MediaPipe''s body mask (sel_mask -> level_mask). Movement: this frame minus the last (feedback_prev -> diff_motion -> blur_motion). switch_mask -> layer_masked = source x mask. Loop: feedback_loop -> transform_zoom (Zoom, Distortion turn) -> displace_warp by a slow, large noise_warp (Distortion) -> hsv_colour (Colour, hue shift per echo). Dancer/Movement: level_fade (Feedback decay) then max_loop keeps the brighter of the new layer and the fading echoes. Whole Picture: cross_loop blends the new frame into the echoes (classic video feedback). switch_loop -> null_fb. cross_mix: plain video vs echoes (Mix) -> out1. All rates use absTime.stepSeconds, so the look is the same at any frame rate.'
+    position: [-470, -1270]
+    size: [6670, 1930]
+    color: [0.45, 0.45, 0.45]
+>>>>>>> Stashed changes
 - name: layer1
   type: baseCOMP
   custom_pars:
@@ -294,8 +4586,14 @@ operators:
       fontsizex: 160
       fontsizexunit: pixels
       outputresolution: custom
+<<<<<<< Updated upstream
       resolutionw: 1280
       resolutionh: 720
+=======
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
+>>>>>>> Stashed changes
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -453,6 +4751,290 @@ operators:
     Layer:
       $t: layer
   position: [0, 400]
+<<<<<<< Updated upstream
+=======
+  color: [0.67, 0.67, 0.67]
+- name: shapes
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the four shape layers (layer1 ... layer4, set on their own pages and by MIDI). Off by default. MIDI: show / hide / toggle shapes.'
+      value: true
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 3
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+  position: [400, -1400]
+  color: [0.67, 0.67, 0.67]
+  children:
+  - name: out1
+    type: outTOP
+    position: [400, 0]
+    inputs:
+    - sel_layers
+  - name: sel_layers
+    type: selectTOP
+    parameters:
+      top: ../comp_layers
+- name: trigger
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      help: 'Show the Trigger Shape in the output. MIDI: show / hide / toggle trigger.'
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 4
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Sides
+      style: Int
+      startSection: true
+      default: 3
+      min: 3.0
+      max: 12.0
+      clampMin: true
+      clampMax: true
+      normMin: 3.0
+      normMax: 12.0
+      help: 'Number of sides: 3 = triangle, 4 = square ... 12 = nearly a circle. The "More sides" trigger adds to it.'
+    - name: Size
+      style: Float
+      default: 0.5
+      max: 2.0
+      clampMin: true
+      clampMax: true
+      help: 'How big: 1 = as tall as the image. The "Pulse" trigger swells it for a moment.'
+    - name: X
+      style: Float
+      min: -1.5
+      max: 1.5
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: Left (-1) to right (1); 0 = centre. The "Jump" trigger moves it away from here.
+    - name: Y
+      style: Float
+      min: -1.5
+      max: 1.5
+      clampMin: true
+      clampMax: true
+      normMin: -1.0
+      help: Bottom (-1) to top (1); 0 = centre.
+    - name: Rotate
+      style: Float
+      min: -3600.0
+      max: 3600.0
+      clampMin: true
+      clampMax: true
+      normMax: 360.0
+      help: Turn in degrees. The "Spin" trigger adds to it.
+    - name: Fill
+      style: Toggle
+      startSection: true
+      help: 'On: a solid shape. Off: only its outline.'
+    - name: Line
+      style: Float
+      default: 0.015
+      max: 0.2
+      clampMin: true
+      clampMax: true
+      normMax: 0.1
+      help: Outline thickness (when Fill is off).
+    - name: Colour
+      style: Menu
+      default: cyan
+      menuNames:
+      - white
+      - red
+      - orange
+      - yellow
+      - green
+      - cyan
+      - blue
+      - magenta
+      menuLabels:
+      - White
+      - Red
+      - Orange
+      - Yellow
+      - Green
+      - Cyan
+      - Blue
+      - Magenta
+      help: The colour of the shape.
+    - name: Flashcolour
+      style: Menu
+      label: Flash Colour
+      default: white
+      menuNames:
+      - white
+      - red
+      - orange
+      - yellow
+      - green
+      - cyan
+      - blue
+      - magenta
+      menuLabels:
+      - White
+      - Red
+      - Orange
+      - Yellow
+      - Green
+      - Cyan
+      - Blue
+      - Magenta
+      help: The colour the "Flash colour" trigger goes to.
+    - name: Flash
+      style: Float
+      clampMin: true
+      clampMax: true
+      help: How far the shape is towards its Flash Colour (0-1). The "Flash colour" trigger raises it for a moment.
+  position: [400, -1000]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: live
+    type: nullCHOP
+    position: [200, 0]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    position: [600, 0]
+    inputs:
+    - circle_shape
+  - name: palette
+    type: tableDAT
+    position: [0, -300]
+    dat_content:
+    - - name
+      - r
+      - g
+      - b
+    - - white
+      - '1'
+      - '1'
+      - '1'
+    - - red
+      - '1'
+      - '0.15'
+      - '0.2'
+    - - orange
+      - '1'
+      - '0.5'
+      - '0.1'
+    - - yellow
+      - '1'
+      - '0.9'
+      - '0.2'
+    - - green
+      - '0.3'
+      - '1'
+      - '0.4'
+    - - cyan
+      - '0.2'
+      - '0.9'
+      - '1'
+    - - blue
+      - '0.25'
+      - '0.4'
+      - '1'
+    - - magenta
+      - '1'
+      - '0.25'
+      - '0.9'
+    dat_content_format: table
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: trigger_*
+      renamefrom: trigger_*
+      renameto: '*'
+  - name: circle_shape
+    type: circleTOP
+    parameters:
+      radiusx: =op('live')['size'] * 0.5 * parent.Visuals.par.Resolution2 / parent.Visuals.par.Resolution1
+      radiusy: =op('live')['size'] * 0.5 * parent.Visuals.par.Resolution2 / parent.Visuals.par.Resolution1
+      rotate: =op('live')['rotate'] + 90
+      centerx: =op('live')['x'] * 0.5
+      centery: =op('live')['y'] * 0.5
+      fillcolorr: '=(lambda p, f, a, b: p[a, 1] + (p[b, 1] - p[a, 1]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillcolorg: '=(lambda p, f, a, b: p[a, 2] + (p[b, 2] - p[a, 2]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillcolorb: '=(lambda p, f, a, b: p[a, 3] + (p[b, 3] - p[a, 3]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      fillalpha: =op('live')['fill']
+      borderr: '=(lambda p, f, a, b: p[a, 1] + (p[b, 1] - p[a, 1]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderg: '=(lambda p, f, a, b: p[a, 2] + (p[b, 2] - p[a, 2]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderb: '=(lambda p, f, a, b: p[a, 3] + (p[b, 3] - p[a, 3]) * f)(op(''palette''), op(''live'')[''flash''], int(op(''live'')[''colour'']) + 1, int(op(''live'')[''flashcolour'']) + 1)'
+      borderwidth: =0 if op('live')['fill'] >= 0.5 else op('live')['line']
+      borderwidthunit: fractionaspect
+      ispolygon: true
+      sides: =int(op('live')['sides'])
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [400, 0]
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Trigger Shape
+    text: Engine values (trigger_*, trigger effects already applied by the engine) -> one polygon (Circle TOP, Polygon on). Colour and Flash Colour index the palette table.
+    position: [-70, -370]
+    size: [870, 630]
+    color: [0.45, 0.45, 0.45]
+>>>>>>> Stashed changes
 - name: bg_black
   type: constantTOP
   parameters:
@@ -468,6 +5050,864 @@ operators:
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
   inputs:
+<<<<<<< Updated upstream
+=======
+  - null_compose
+  children:
+  - name: in1
+    type: inTOP
+    parameters:
+      label: =me.name
+      filtertype: linear
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: live
+    type: selectCHOP
+    parameters:
+      chops: ../master_live
+    position: [0, -600]
+  - name: out1
+    type: outTOP
+    position: [8800, 0]
+    inputs:
+    - switch_melt
+  - name: blur_fx
+    type: blurTOP
+    parameters:
+      preshrink: 3
+      size: =op('live')['blur'] * 10
+    position: [3200, -400]
+    inputs:
+    - switch_trails
+  - name: edge_fx
+    type: edgeTOP
+    position: [4800, -400]
+    inputs:
+    - switch_glitch
+  - name: fb_melt
+    type: feedbackTOP
+    parameters:
+      top: null_melt
+      outputresolution: custom
+      resolutionw: =op('in1').width
+      resolutionh: =op('in1').height
+      format: rgba16float
+    position: [6400, -400]
+    inputs:
+    - switch_outline
+  - name: fx_reset
+    type: chopexecuteDAT
+    parameters:
+      channel: trails melt
+      offtoon: true
+      valuechange: false
+    position: [400, -600]
+    dat_content: "\"\"\"fx_reset: an effect that comes on starts from the live picture, not an old frame.\"\"\"\n\n\ndef onOffToOn(channel, sampleIndex, val, prev):\n\tfb = {'trails': 'fb_trails', 'melt': 'fb_melt'}.get(channel.name)\n\tif fb:\n\t\top(fb).par.resetpulse.pulse()\n"
+    dat_content_format: text
+  - name: fb_trails
+    type: feedbackTOP
+    parameters:
+      top: null_trails
+      outputresolution: custom
+      resolutionw: =op('in1').width
+      resolutionh: =op('in1').height
+      format: rgba16float
+    position: [400, -400]
+    inputs:
+    - in1
+  - name: luma_melt
+    type: monochromeTOP
+    position: [6400, -800]
+    inputs:
+    - switch_outline
+  - name: null_melt
+    type: nullTOP
+    position: [8000, -400]
+    inputs:
+    - cross_melt
+  - name: cross_melt
+    type: crossTOP
+    parameters:
+      cross: =0.01 + 0.05 * (1 - op('live')['melt'])
+    position: [7600, -400]
+    inputs:
+    - displace_melt
+    - switch_outline
+  - name: hsv_trails
+    type: hsvadjustTOP
+    parameters:
+      hueoffset: =op('live')['trailscolour'] * 120 * min(absTime.stepSeconds, 0.1)
+      saturationmult: =(1 + op('live')['trailscolour'] * 0.6) ** min(absTime.stepSeconds, 0.1)
+    position: [1600, -400]
+    inputs:
+    - warp_trails
+  - name: level_melt
+    type: levelTOP
+    parameters:
+      invert: 1
+    position: [6800, -800]
+    inputs:
+    - luma_melt
+  - name: glsl_glitch
+    type: glslTOP
+    parameters:
+      pixeldat: glsl_glitch_pixel
+      filtertype: linear
+    sequences:
+      vec:
+      - name: uGlitch
+        valuex: =op('live')['glitch']
+        valuey: =absTime.seconds
+        valuez: 24
+    position: [4000, -400]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    inputs:
+    - switch_blur
+  - name: null_trails
+    type: nullTOP
+    position: [2400, -400]
+    inputs:
+    - cross_trails
+  - name: switch_blur
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['blur'] > 0.001)
+    position: [3600, 0]
+    inputs:
+    - switch_trails
+    - blur_fx
+  - name: switch_melt
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['melt'] > 0.001)
+    position: [8400, 0]
+    inputs:
+    - switch_outline
+    - null_melt
+  - name: warp_trails
+    type: displaceTOP
+    parameters:
+      displaceweightx: =op('live')['trailswarp'] * 0.15 * min(absTime.stepSeconds, 0.1)
+      displaceweighty: =op('live')['trailswarp'] * 0.15 * min(absTime.stepSeconds, 0.1)
+    position: [1200, -400]
+    inputs:
+    - zoom_trails
+    - noise_trails
+  - name: zoom_trails
+    type: transformTOP
+    parameters:
+      rotate: =op('live')['trailswarp'] * 12 * min(absTime.stepSeconds, 0.1)
+      sx: =(1 + op('live')['trailszoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+      sy: =(1 + op('live')['trailszoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
+    position: [800, -400]
+    inputs:
+    - fb_trails
+  - name: cross_trails
+    type: crossTOP
+    parameters:
+      cross: =math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['trails'] ** 2 * 3.0))
+      format: rgba16float
+    position: [2000, -400]
+    inputs:
+    - in1
+    - hsv_trails
+  - name: noise_trails
+    type: noiseTOP
+    parameters:
+      period: 2.5
+      harmon: 1
+      mono: false
+      tz: =(absTime.seconds * 0.05) % 1000
+      resolutionw: 320
+      resolutionh: 180
+    position: [800, -800]
+  - name: cross_outline
+    type: crossTOP
+    parameters:
+      cross: =op('live')['outline']
+    position: [5600, -400]
+    inputs:
+    - switch_glitch
+    - edge_fx
+  - name: displace_melt
+    type: displaceTOP
+    parameters:
+      vertsource: red
+      midpointx: 0
+      midpointy: 0
+      displaceweightx: 0
+      displaceweighty: =-0.004 * op('live')['melt']
+      format: rgba16float
+    position: [7200, -400]
+    inputs:
+    - fb_melt
+    - level_melt
+  - name: switch_glitch
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['glitch'] > 0.001)
+    position: [4400, 0]
+    inputs:
+    - switch_blur
+    - glsl_glitch
+  - name: switch_trails
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['trails'] > 0.001)
+    position: [2800, 0]
+    inputs:
+    - in1
+    - null_trails
+  - name: switch_outline
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['outline'] > 0.001)
+    position: [6000, 0]
+    inputs:
+    - switch_glitch
+    - cross_outline
+  - name: glsl_glitch_info
+    type: infoDAT
+    parameters:
+      op: glsl_glitch
+    flags:
+    - viewer
+    position: [4150, -520]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+    dock: glsl_glitch
+    dat_read_only: true
+  - name: glsl_glitch_pixel
+    type: textDAT
+    parameters:
+      language: glsl
+      extension: frag
+    flags:
+    - viewer
+    position: [4000, -520]
+    color: [0.67, 0.67, 0.67]
+    dock: glsl_glitch
+    dat_content: "// Glitch: horizontal bands jump sideways and split into red, green and blue.\n// uGlitch.x amount 0-1, .y time in seconds, .z number of bands.\nuniform vec4 uGlitch;\nlayout(location = 0) out vec4 fragColor;\n\nfloat hash(float n) { return fract(sin(n) * 43758.5453); }\n\nvec4 pick(vec2 uv) { return texture(sTD2DInputs[0], vec2(fract(uv.x), uv.y)); }\n\nvoid main() {\n\tvec2 uv = vUV.st;\n\tfloat amount = uGlitch.x;\n\tfloat band = floor(uv.y * uGlitch.z);\n\tfloat tick = floor(uGlitch.y * 12.0);           // new pattern 12 times a second\n\tfloat chosen = step(1.0 - amount * 0.7, hash(band * 13.1 + tick * 7.7));\n\tfloat shift = (hash(band * 3.7 + tick * 1.3) * 2.0 - 1.0) * 0.3 * amount * chosen;\n\tfloat split = 0.02 * amount * chosen;\n\tvec4 c = pick(uv + vec2(shift, 0.0));\n\tc.r = pick(uv + vec2(shift + split, 0.0)).r;\n\tc.b = pick(uv + vec2(shift - split, 0.0)).b;\n\tfragColor = TDOutputSwizzle(c);\n}\n"
+    dat_content_format: text
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Master effects on the whole picture
+    text: 'in1 -> Trails (the old Video Feedback: echo, zoom, warp, colour) -> Blur -> Glitch (GLSL bands) -> Outline (edges) -> Melt -> out1. Amounts come from master_live (Visuals Master page, mappings, MIDI, connections). Each effect has a switch: at 0 it is skipped and does not cook. fx_reset restarts Trails and Melt from the live picture when they come on.'
+    position: [-100, -1100]
+    size: [9100, 1400]
+    color: [0.45, 0.45, 0.45]
+- name: particles
+  type: baseCOMP
+  parameters:
+    parentshortcut: Instrument
+  custom_pars:
+    Instrument:
+    - name: Visible
+      style: Toggle
+      label: 'On'
+      default: true
+      help: 'Show the particles. MIDI: show / hide / toggle particles.'
+      value: false
+    - name: Opacity
+      style: Float
+      default: 1
+      clampMin: true
+      clampMax: true
+      help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+    - name: Blend
+      style: Menu
+      default: add
+      menuNames:
+      - normal
+      - add
+      menuLabels:
+      - Normal
+      - Add
+      help: 'How it joins the instruments below it. Normal: covers them (dark parts too). Add: adds its light to theirs, so dark parts let the ones below show through.'
+    - name: Order
+      style: Int
+      default: 2
+      min: 1.0
+      max: 9.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 9.0
+      help: 'Stacking: an instrument with a higher Order is drawn on top of one with a lower Order.'
+    - name: Preset
+      style: Menu
+      default: flowing
+      menuNames:
+      - calm
+      - flowing
+      - energetic
+      menuLabels:
+      - Calm
+      - Flowing
+      - Energetic
+      help: 'A starting look: Calm (slow, wide, long trails), Flowing (the default), Energetic (fast, wild, short trails). Choosing one sets the six settings below.'
+    - name: Reset
+      style: Pulse
+      label: Reset to Preset
+      help: Put the six settings back to the chosen preset.
+    - name: Energy
+      style: Float
+      startSection: true
+      default: 0.4
+      clampMin: true
+      clampMax: true
+      help: 'How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.'
+      value: 0.83
+    - name: Spread
+      style: Float
+      default: 0.5
+      clampMin: true
+      clampMax: true
+      help: 'How far the particles spread: 0 = a tight cloud in the centre, 1 = the whole screen.'
+    - name: Turbulence
+      style: Float
+      default: 0.45
+      clampMin: true
+      clampMax: true
+      help: 'How irregular the motion is: 0 = big smooth swirls, 1 = small, restless eddies.'
+    - name: Size
+      style: Float
+      default: 0.4
+      clampMin: true
+      clampMax: true
+      help: 'Size of each particle: 0 = fine dust, 1 = large glowing dots.'
+    - name: Colour
+      style: Menu
+      default: aurora
+      menuNames:
+      - aurora
+      - ocean
+      - ember
+      - moon
+      menuLabels:
+      - Aurora
+      - Ocean
+      - Ember
+      - Moon
+      help: 'Colour palette: Aurora (green-violet), Ocean (blue-cyan), Ember (red-gold), Moon (white-silver).'
+    - name: Trails
+      style: Float
+      default: 0.6
+      clampMin: true
+      clampMax: true
+      help: 'How long the particles leave a glowing trail: 0 = none, 1 = long streaks.'
+  position: [0, -1200]
+  color: [0.3, 0.5, 0.9]
+  children:
+  - name: cam
+    type: cameraCOMP
+    position: [800, -500]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: file1
+      type: fileinPOP
+      parameters:
+        file: =app.samplesFolder + '/Geo/defcam.tog'
+      flags:
+      - display
+      - viewer
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+  - name: geo
+    type: geometryCOMP
+    parameters:
+      material: sprite_mat
+    position: [800, 0]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    children:
+    - name: flatten
+      type: transformPOP
+      parameters:
+        sz: 0
+      position: [2400, 0]
+      inputs:
+      - force_center
+    - name: null_loop
+      type: nullPOP
+      flags:
+      - display
+      - render
+      position: [2800, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - flatten
+    - name: force_curl
+      type: noisePOP
+      parameters:
+        period: =4.0 - parent.Instrument.op('live')['turbulence'] * 3.2
+        amp0: =0.15 + parent.Instrument.op('live')['energy'] * 1.6
+        t4d: =parent.Instrument.op('noise_time')[0]
+        curl2d: true
+        curl2doutputattrscope: PartVel
+        combineop: none
+        combineentity: curl3d
+        combineattrscope: PartForce
+      position: [1600, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - particle_sim
+    - name: emit_points
+      type: pointgeneratorPOP
+      parameters:
+        numpoints: 4000
+        radiusz: 0
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+    - name: force_center
+      type: forceradialPOP
+      parameters:
+        falloff: none
+        radialstrength: =-(0.2 + (1 - parent.Instrument.op('live')['spread']) * 1.5)
+      position: [2000, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - force_curl
+    - name: particle_sim
+      type: particlePOP
+      parameters:
+        targetpop: null_loop
+        maxparticles: 12000
+        birthrate: 2000
+        life: 6
+        lifevariance: 0.4
+        damping: 0.5
+        speed: =0.5 + parent.Instrument.op('live')['energy'] * 1.5
+        attrs: PointScale
+      position: [1200, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - scale_spread
+    - name: random_scale
+      type: randomPOP
+      parameters:
+        amp0: 0.5
+        offset0: 0.75
+        combineop: set
+        outputattrscope: PointScale
+      position: [400, 0]
+      size: [130, 90]
+      color: [0.67, 0.67, 0.67]
+      inputs:
+      - emit_points
+    - name: scale_spread
+      type: transformPOP
+      parameters:
+        sx: =0.3 + parent.Instrument.op('live')['spread'] * 1.7
+        sy: =0.3 + parent.Instrument.op('live')['spread'] * 1.7
+      position: [800, 0]
+      inputs:
+      - random_scale
+    annotations:
+    - name: annotate1
+      mode: annotate
+      title: Particle loop
+      text: emit_points (a disc, radius from Spread) with a random PointScale -> particle_sim (targetpop null_loop) -> force_curl writes 2D curl noise into PartVel -> force_center pulls towards the middle -> flatten keeps them on the screen plane -> null_loop (render flag).
+      position: [-70, -70]
+      size: [2640, 330]
+      color: [0.45, 0.45, 0.45]
+  - name: live
+    type: nullCHOP
+    position: [400, 400]
+    inputs:
+    - live_select
+  - name: out1
+    type: outTOP
+    flags:
+    - viewer
+    position: [5200, 0]
+    inputs:
+    - alpha_from_light
+  - name: render
+    type: renderTOP
+    parameters:
+      camera: cam
+      geometry: geo
+      lights: ''
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
+      format: rgba16float
+    position: [1200, 0]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: presets
+    type: tableDAT
+    position: [0, -600]
+    dat_content:
+    - - par
+      - calm
+      - flowing
+      - energetic
+    - - Energy
+      - '0.15'
+      - '0.4'
+      - '0.9'
+    - - Spread
+      - '0.75'
+      - '0.5'
+      - '0.35'
+    - - Turbulence
+      - '0.2'
+      - '0.45'
+      - '0.8'
+    - - Size
+      - '0.45'
+      - '0.4'
+      - '0.3'
+    - - Colour
+      - ocean
+      - aurora
+      - ember
+    - - Trails
+      - '0.85'
+      - '0.6'
+      - '0.3'
+    dat_content_format: table
+  - name: soft_dot
+    type: circleTOP
+    parameters:
+      radiusx: 0.5
+      radiusy: 0.5
+      radiusunit: fraction
+      softness: 0.6
+      resolutionw: 64
+      resolutionh: 64
+    position: [400, -300]
+  - name: blur_glow
+    type: blurTOP
+    parameters:
+      size: 16
+      outputresolution: half
+    position: [4000, -200]
+    inputs:
+    - lookup_colour
+  - name: comp_glow
+    type: compositeTOP
+    parameters:
+      operand: add
+      outputresolution: custom
+      resolutionw: =parent.Visuals.par.Resolution1
+      resolutionh: =parent.Visuals.par.Resolution2
+    position: [4400, 0]
+    inputs:
+    - lookup_colour
+    - blur_glow
+  - name: level_gain
+    type: levelTOP
+    parameters:
+      brightness1: 0.8
+    position: [3200, 0]
+    inputs:
+    - null_trails
+  - name: noise_rate
+    type: constantCHOP
+    sequences:
+      const:
+      - name: rate
+        value: =0.03 + parent.Instrument.op('live')['energy'] * 0.5
+    position: [0, 200]
+  - name: noise_time
+    type: speedCHOP
+    position: [400, 200]
+    inputs:
+    - noise_rate
+  - name: sprite_mat
+    type: pointspriteMAT
+    parameters:
+      colormap: soft_dot
+      pointsize: =(2 + parent.Instrument.op('live')['size'] * 18) * parent.Visuals.par.Resolution2 / 720
+      skelrootpath: =parent()
+      blending: true
+      destblend: one
+      depthtest: false
+      depthwriting: false
+    position: [800, -300]
+    size: [130, 90]
+    color: [0.67, 0.67, 0.67]
+  - name: comp_trails
+    type: compositeTOP
+    parameters:
+      operand: maximum
+    position: [2400, 0]
+    inputs:
+    - render
+    - level_decay
+  - name: level_decay
+    type: levelTOP
+    parameters:
+      brightness1: =0 if op('live')['trails'] <= 0 else math.exp(-min(absTime.stepSeconds, 0.1) / (0.02 + op('live')['trails'] ** 2 * 1.5))
+    position: [2000, -200]
+    inputs:
+    - feedback_trails
+  - name: live_select
+    type: selectCHOP
+    parameters:
+      chops: =op.Engine.op('live')
+      channames: =parent.Instrument.name + '_*'
+      renamefrom: =parent.Instrument.name + '_*'
+      renameto: '*'
+    position: [0, 400]
+  - name: null_trails
+    type: nullTOP
+    position: [2800, 0]
+    inputs:
+    - comp_trails
+  - name: palette_moon
+    type: tableDAT
+    position: [2800, -1000]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.12'
+      - '0.13'
+      - '0.16'
+      - '1'
+    - - '0.6'
+      - '0.55'
+      - '0.58'
+      - '0.65'
+      - '1'
+    - - '1'
+      - '1'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: ramp_palette
+    type: rampTOP
+    parameters:
+      dat: ='palette_' + parent.Instrument.par.Colour.menuNames[int(round(op('live')['colour']))]
+      resolutionh: 1
+    position: [3200, -400]
+  - name: lookup_colour
+    type: lookupTOP
+    position: [3600, 0]
+    inputs:
+    - level_gain
+    - ramp_palette
+  - name: palette_ember
+    type: tableDAT
+    position: [2800, -800]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.4'
+      - '0.05'
+      - '0.02'
+      - '1'
+    - - '0.6'
+      - '0.95'
+      - '0.45'
+      - '0.1'
+      - '1'
+    - - '1'
+      - '1'
+      - '0.95'
+      - '0.75'
+      - '1'
+    dat_content_format: table
+  - name: palette_ocean
+    type: tableDAT
+    position: [2800, -600]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.02'
+      - '0.12'
+      - '0.4'
+      - '1'
+    - - '0.6'
+      - '0.1'
+      - '0.55'
+      - '0.8'
+      - '1'
+    - - '1'
+      - '0.85'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: palette_aurora
+    type: tableDAT
+    position: [2800, -400]
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '0.25'
+      - '0.05'
+      - '0.35'
+      - '0.3'
+      - '1'
+    - - '0.6'
+      - '0.35'
+      - '0.2'
+      - '0.75'
+      - '1'
+    - - '1'
+      - '0.9'
+      - '0.95'
+      - '1'
+      - '1'
+    dat_content_format: table
+  - name: feedback_trails
+    type: feedbackTOP
+    parameters:
+      top: null_trails
+    position: [1600, -200]
+    inputs:
+    - render
+  - name: start_particles
+    type: executeDAT
+    parameters:
+      start: true
+      file: project1/visuals/particles/start_particles.py
+      syncfile: true
+    position: [0, -800]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+  - name: alpha_from_light
+    type: channelmixTOP
+    position: [4800, 0]
+    inputs:
+    - comp_glow
+  annotations:
+  - name: annotate1
+    mode: annotate
+    title: Particles
+    text: 'live: this instrument''s values from the engine (particles_*). geo: emit_points -> particle_sim -> force_curl (2D curl noise sets the velocity: Energy = speed, Turbulence = swirl size) -> force_center (pull, Spread) -> flatten -> null_loop (fed back to particle_sim). Rendered as soft point sprites (Size), then trails (feedback, Trails), level_gain, palette lookup (Colour, palette_* tables), glow -> out1. presets: Calm / Flowing / Energetic values (applied by visuals/instrument_presets). start_particles initializes and starts the simulation on project open.'
+    position: [-70, -1070]
+    size: [5470, 1730]
+    color: [0.45, 0.45, 0.45]
+- name: sel_slot1
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(1, absTime.frame)
+  position: [1200, -1200]
+- name: sel_slot2
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(2, absTime.frame)
+  position: [1600, -1400]
+- name: sel_slot3
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(3, absTime.frame)
+  position: [2000, -1600]
+- name: sel_slot4
+  type: selectTOP
+  parameters:
+    top: =op('compositor').module.slotTop(4, absTime.frame)
+  position: [2400, -1800]
+- name: comp_slot1
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(1, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2000, -1200]
+  inputs:
+  - level_slot1
+  - bg_black
+- name: comp_slot2
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(2, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2400, -1400]
+  inputs:
+  - level_slot2
+  - comp_slot1
+- name: comp_slot3
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(3, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [2800, -1600]
+  inputs:
+  - level_slot3
+  - comp_slot2
+- name: comp_slot4
+  type: compositeTOP
+  parameters:
+    operand: =op('compositor').module.slotOperand(4, absTime.frame)
+    outputresolution: custom
+    resolutionw: =parent.Visuals.par.Resolution1
+    resolutionh: =parent.Visuals.par.Resolution2
+  position: [3200, -1800]
+  inputs:
+  - level_slot4
+  - comp_slot3
+- name: compositor
+  type: textDAT
+  parameters:
+    file: project1/visuals/compositor.py
+    syncfile: true
+    language: python
+  position: [1200, -2200]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: hsv_master
+  type: hsvadjustTOP
+  parameters:
+    saturationmult: =tdu.clamp(op('master_live')['saturation'], 0, 4) if op('master_live')['saturation'] is not None else parent().par.Saturation.eval()
+  position: [5000, 0]
+  inputs:
+>>>>>>> Stashed changes
   - level_master
 - name: comp_layers
   type: compositeTOP

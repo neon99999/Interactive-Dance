@@ -10,10 +10,13 @@ options:
 type_defaults:
   analyzeTOP:
     parameters:
+      filtertype: linear
       format: mono32float
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   cropTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   mergeCHOP:
@@ -102,7 +105,18 @@ custom_pars:
   Camera:
   - name: Camerasource
     style: Menu
+<<<<<<< Updated upstream
     label: Source
+=======
+    label: Webcam
+    default: V1|||\\?\usb#vid_30c9&pid_00ac&mi_00#6&198797cf&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||Integrated Camera
+    menuSource: op('./camera_in').par.device
+    help: The one webcam the project uses, for camera motion, body tracking and the Camera instrument. Close other apps that use it.
+    value: V1|||\\?\usb#vid_046d&pid_0843&mi_00#6&1db55d84&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||Logitech Webcam C930e
+  - name: Webcamuse
+    style: Menu
+    label: Use
+>>>>>>> Stashed changes
     default: 'off'
     menuNames:
     - 'off'
@@ -110,6 +124,7 @@ custom_pars:
     - test
     menuLabels:
     - 'Off'
+<<<<<<< Updated upstream
     - Camera
     - Test Pattern
     help: 'Off: no camera, all camera signals 0. Camera: a webcam. Test Pattern: a moving dot, to try camera mappings without a camera.'
@@ -118,6 +133,19 @@ custom_pars:
     label: Device
     menuSource: op('./camera_in').par.device
     help: Which camera to use. The menu lists the cameras TouchDesigner can see.
+=======
+    - Movement Only
+    - Body Tracking
+    - Test (No Webcam)
+    help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
+    value: body
+  - name: Webcamstatus
+    style: Str
+    label: Status
+    readOnly: true
+    help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
+    value: =me.op('pose_settings').module.statusText()
+>>>>>>> Stashed changes
   - name: Camerasensitivity
     style: Float
     label: Sensitivity
@@ -125,6 +153,90 @@ custom_pars:
     clampMin: true
     normMax: 50.0
     help: Multiplies the amount of movement seen. Raise it if camera_motion stays small; signals are clamped to 0-1 by the input assignment ranges.
+<<<<<<< Updated upstream
+=======
+  - name: Camerasource
+    style: Menu
+    label: Motion From (Set by Use)
+    default: 'off'
+    menuNames:
+    - 'off'
+    - camera
+    - test
+    menuLabels:
+    - 'Off'
+    - Webcam
+    - Test Pattern
+    readOnly: true
+    help: 'Read only, set by Use above. Where the camera motion signals come from: Off (all camera signals 0), Webcam (the webcam above; with Body Tracking, measured from MediaPipe''s picture) or Test Pattern (a moving dot).'
+    value: camera
+  Pose:
+  - name: Posesource
+    style: Menu
+    label: Tracking (Set by Webcam > Use)
+    default: 'off'
+    menuNames:
+    - 'off'
+    - camera
+    - test
+    menuLabels:
+    - 'Off'
+    - Webcam (MediaPipe)
+    - Test Dancer
+    readOnly: true
+    help: 'Read only, set by Use on the Webcam page. Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): MediaPipe tracks a dancer in the webcam. Test Dancer: a made-up dancer that walks and waves.'
+    value: camera
+  - name: Poseflipx
+    style: Toggle
+    label: Flip Left/Right
+    help: 'Off: pose_x is 0 at the left of the MediaPipe picture, 1 at the right. On: reversed. Use it to match pose_x to the stage as the audience sees it.'
+  - name: Posemask
+    style: Toggle
+    label: Body Mask
+    help: 'Off (default): body tracking only, steadiest tracking. On: MediaPipe also finds the dancer''s outline (a body mask) for the Video Feedback instrument''s Echo: Dancer. It roughly halves how often MediaPipe updates the body (measured: 14 to 9 times a second, with gaps up to 2 s), so turn it on only when you use Echo: Dancer.'
+  - name: Posesmooth
+    style: Float
+    label: Smoothing (s)
+    startSection: true
+    default: 0.1
+    clampMin: true
+    help: 'Time in seconds that pose signals take to follow the dancer. Raise it if values jitter, lower it if they feel late. 0: no smoothing.'
+  - name: Posesensitivity
+    style: Float
+    label: Energy Sensitivity
+    default: 1
+    clampMin: true
+    normMax: 5.0
+    help: Multiplies pose_energy. Raise it if pose_energy stays small during big movement.
+  - name: Posehold
+    style: Float
+    label: Hold When Lost (s)
+    default: 0.5
+    clampMin: true
+    normMax: 2.0
+    help: When MediaPipe loses the dancer for less than this many seconds, the pose signals keep their last values; after that they drop to 0.
+  - name: Posezones
+    style: Int
+    label: Stage Zones
+    startSection: true
+    default: 3
+    min: 1.0
+    max: 5.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 5.0
+    help: How many equal zones pose_x is split into, left to right (1-5). pose_zone says which one the dancer is in (1 = left), and pose_zone1 ... pose_zone5 are 1 in that zone. Shown on pose_monitor.
+  - name: Posezonemargin
+    style: Float
+    label: Zone Margin
+    default: 0.05
+    max: 0.2
+    clampMin: true
+    clampMax: true
+    normMax: 0.2
+    help: 'How far past a zone border (fraction of the picture width) the dancer must go before the zone changes. Stops flicker when standing on a border. 0: change exactly at the border.'
+>>>>>>> Stashed changes
 parameters:
   parentshortcut: Inputs
   opshortcut: Inputs
@@ -152,6 +264,14 @@ operators:
   - merge_signals
 - name: camera_in
   type: videodeviceinTOP
+<<<<<<< Updated upstream
+=======
+  parameters:
+    active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera' and op('pose_settings').module.WebcamFree.val
+    device: V1|||\\?\usb#vid_046d&pid_0843&mi_00#6&1db55d84&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||Logitech Webcam C930e
+    signalformat: f640x480p-30.00hz
+    filtertype: linear
+>>>>>>> Stashed changes
   flags:
   - viewer
   position: [0, -2900]
@@ -207,6 +327,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -2500]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -229,6 +350,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [800, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -243,6 +365,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -256,6 +379,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: difference
+    filtertype: linear
   position: [2000, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -264,6 +388,8 @@ operators:
   - previous_frame
 - name: mono_camera
   type: monochromeTOP
+  parameters:
+    filtertype: linear
   position: [1200, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -319,6 +445,34 @@ operators:
   - osc_signals
   - serial_chop
   - camera_sensitivity
+<<<<<<< Updated upstream
+=======
+  - pose_chop
+- name: pose_settings
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: Webcamuse Posesource Posemask Cameradevice
+    builtin: false
+    file: project1/inputs/pose_settings.py
+    syncfile: true
+  position: [400, -4600]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: sel_mediapipe
+  type: selectTOP
+  parameters:
+    top: mediapipe/MediaPipe/video
+    filtertype: linear
+  flags:
+  - viewer
+  position: [-400, -3300]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+>>>>>>> Stashed changes
 - name: serial_values
   type: tableDAT
   position: [800, -1600]
@@ -329,7 +483,12 @@ operators:
 - name: switch_camera
   type: switchTOP
   parameters:
+<<<<<<< Updated upstream
     index: =parent.Inputs.par.Camerasource.menuIndex
+=======
+    index: '={''off'': 0, ''camera'': 3 if parent.Inputs.par.Posesource == ''camera'' else 1, ''test'': 2}[parent.Inputs.par.Camerasource.eval()]'
+    filtertype: linear
+>>>>>>> Stashed changes
   position: [400, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -347,6 +506,7 @@ operators:
   parameters:
     cachesize: 2
     outputindex: -1
+    filtertype: linear
   position: [1600, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]

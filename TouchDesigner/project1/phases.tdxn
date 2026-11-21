@@ -1,0 +1,311 @@
+format: tdxn
+version: '2.2'
+build: 8
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/phases
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  textDAT:
+    parameters:
+      language: python
+      syncfile: true
+    size: [130, 90]
+    color: [0.9, 0.3, 0.4]
+    tags:
+    - py
+type: baseCOMP
+custom_pars:
+  Phases:
+  - name: Phase
+    style: Menu
+    default: '1'
+    menuNames:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    menuLabels:
+    - Phase 1
+    - Phase 2
+    - Phase 3
+    - Phase 4
+    - Phase 5
+    - Phase 6
+    - Phase 7
+    - Phase 8
+    - Phase 9
+    - Phase 10
+    help: The phase you see and edit (1-10). Every instrument setting and every mapping you change is kept in this phase. Number keys 1-9 and 0 (= 10) switch phase when the Stage picture has focus.
+    value: '3'
+  - name: Phasenote
+    style: Int
+    label: Note for This Phase
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts the shown phase (-1 = none).
+  - name: Followmidi
+    style: Toggle
+    label: Follow MIDI
+    default: true
+    help: 'On: a phase note of the song switches the phase (before the first one: phase 1). Off: only the Phase menu switches it.'
+    value: false
+  - name: Showfile
+    style: File
+    label: Show File
+    startSection: true
+    default: shows/my_show.json
+    help: 'The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.'
+  - name: Saveshow
+    style: Pulse
+    label: Save Show
+    help: Write the phases, the music, the mapping presets and the instrument settings to the Show File.
+  - name: Loadshow
+    style: Pulse
+    label: Load Show
+    help: Read the Show File and set everything in it.
+  - name: Showstatus
+    style: Str
+    label: Show Status
+    readOnly: true
+    help: What the last Save Show or Load Show did.
+    value: Saved my_show.json
+  - name: Phasenote1
+    style: Int
+    label: Note for Phase 1
+    startSection: true
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 1 (-1 = none).
+  - name: Phasenote2
+    style: Int
+    label: Note for Phase 2
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 2 (-1 = none).
+  - name: Phasenote3
+    style: Int
+    label: Note for Phase 3
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 3 (-1 = none).
+  - name: Phasenote4
+    style: Int
+    label: Note for Phase 4
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 4 (-1 = none).
+  - name: Phasenote5
+    style: Int
+    label: Note for Phase 5
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 5 (-1 = none).
+  - name: Phasenote6
+    style: Int
+    label: Note for Phase 6
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 6 (-1 = none).
+  - name: Phasenote7
+    style: Int
+    label: Note for Phase 7
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 7 (-1 = none).
+  - name: Phasenote8
+    style: Int
+    label: Note for Phase 8
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 8 (-1 = none).
+  - name: Phasenote9
+    style: Int
+    label: Note for Phase 9
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 9 (-1 = none).
+  - name: Phasenote10
+    style: Int
+    label: Note for Phase 10
+    default: -1
+    min: -1.0
+    max: 127.0
+    clampMin: true
+    clampMax: true
+    normMin: -1.0
+    normMax: 127.0
+    help: The MIDI note of the song that starts phase 10 (-1 = none).
+parameters:
+  parentshortcut: Phases
+  opshortcut: Phases
+sequences:
+  ext:
+  - object: op('./PhasesExt').module.PhasesExt(me)
+    name: Phases
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+storage:
+  _t:
+  - $type: tuple
+    $value:
+    - 8.8
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 9.23
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 10.25
+    - '1'
+    - '1'
+  - $type: tuple
+    $value:
+    - 11.25
+    - '0'
+    - '1'
+  - $type: tuple
+    $value:
+    - 11.75
+    - '0'
+    - '1'
+  - $type: tuple
+    $value:
+    - 18.23
+    - '0'
+    - '2'
+operators:
+- name: PhasesExt
+  type: textDAT
+  parameters:
+    file: project1/phases/PhasesExt.py
+- name: phase_keys
+  type: keyboardinDAT
+  parameters:
+    callbacks: phase_keys_callbacks
+    fromop: =parent()
+  position: [400, -400]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dat_read_only: true
+- name: phase_logic
+  type: textDAT
+  parameters:
+    file: project1/phases/phase_logic.py
+  position: [400, 0]
+- name: phases_frame
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+    file: project1/phases/phases_frame.py
+    syncfile: true
+  position: [1200, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: phase_settings
+  type: tableDAT
+  parameters:
+    file: project1/phases/phase_settings.tsv
+    syncfile: true
+    rows: 569
+  position: [0, -400]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - tsv
+- name: phases_changed
+  type: parameterexecuteDAT
+  parameters:
+    fromop: =parent()
+    op: ..
+    pars: '*'
+    builtin: false
+    file: project1/phases/phases_changed.py
+    syncfile: true
+  position: [800, 0]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: phase_keys_callbacks
+  type: textDAT
+  parameters:
+    file: project1/phases/phase_keys_callbacks.py
+  flags:
+  - viewer
+  position: [400, -520]
+  dock: phase_keys
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Phases and their settings
+  text: 'Phases (1-10) start on MIDI notes of the song (Follow MIDI), from the Phase menu or from the number keys (phase_keys: 1-9, 0 = 10; only while the Stage picture or tiles have focus). Each phase keeps a snapshot of every instrument''s settings in phase_settings; the mappings keep one preset per phase (Mappings Preset = phase). phases_frame runs PhasesExt.frame: follows the song, keeps changed settings, autosaves shows/autosave.json. Rules in phase_logic (tests/test_phases.py).'
+  position: [-70, -600]
+  size: [1460, 830]
+  color: [0.45, 0.45, 0.45]

@@ -1,6 +1,10 @@
 format: tdxn
 version: '2.2'
+<<<<<<< Updated upstream
 build: 7
+=======
+build: 11
+>>>>>>> Stashed changes
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/transport
@@ -68,7 +72,7 @@ custom_pars:
     clampMin: true
     normMax: 300.0
     help: Position in seconds that Seek jumps to.
-    value: 3
+    value: 4
   - name: Seek
     style: Pulse
     help: Jump audio and MIDI to Seek To. Notes skipped over by the jump are not fired.
@@ -315,7 +319,11 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
+<<<<<<< Updated upstream
         - '374'
+=======
+        - '1820'
+>>>>>>> Stashed changes
       - - tapcount
         - '0'
       dat_content_format: table

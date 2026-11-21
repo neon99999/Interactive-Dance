@@ -56,3 +56,566 @@ TouchDesigner/*.[0-9]*.toe
 
 # Local notes from another project; not published
 HANDOFF_TouchDesigner_lessons.md
+Firmware/.pio/build/project.checksum
+Firmware/.pio/build/receiver/.sconsign311.dblite
+Firmware/.pio/build/receiver/firmware.bin
+Firmware/.pio/build/receiver/firmware.elf
+Firmware/.pio/build/receiver/FrameworkArduino/abi.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/aes_unwrap.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/base64.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/cbuf.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/cont.S.o
+Firmware/.pio/build/receiver/FrameworkArduino/cont_util.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_app_entry_noextra4k.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_eboot_command.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_features.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_flash_quirks.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_flash_utils.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_i2s.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_main.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_non32xfer.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_noniso.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_phy.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_postmortem.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_si2c.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_sigma_delta.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_spi_utils.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_timer.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_vm.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_waveform_phase.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_waveform_pwm.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring_analog.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring_digital.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring_pulse.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring_pwm.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/core_esp8266_wiring_shift.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/crc32.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Crypto.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/debug.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Esp-frag.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Esp-version.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Esp.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/exc-c-wrapper-handler.S.o
+Firmware/.pio/build/receiver/FrameworkArduino/exc-sethandler.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/flash_hal.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/FS.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/FSnoop.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/FunctionalInterrupt.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/gdb_hooks.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/HardwareSerial.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/heap.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/hwdt_app_entry.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/IPAddress.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/libb64/cdecode.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/libb64/cencode.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/libc_replacements.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/LwipDhcpServer-NonOS.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/LwipDhcpServer.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/LwipIntf.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/LwipIntfCB.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/MD5Builder.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/mmu_iram.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Print.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/reboot_uart_dwnld.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Schedule.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs/spiffs_cache.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs/spiffs_check.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs/spiffs_gc.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs/spiffs_hydrogen.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs/spiffs_nucleus.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/spiffs_api.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/sqrt32.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/StackThunk.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/stdlib_noniso.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Stream.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/StreamSend.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/time.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/Tone.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/TypeConversion.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/uart.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/umm_malloc/umm_info.c.o
+Firmware/.pio/build/receiver/FrameworkArduino/umm_malloc/umm_integrity.c.o
+Firmware/.pio/build/receiver/FrameworkArduino/umm_malloc/umm_local.c.o
+Firmware/.pio/build/receiver/FrameworkArduino/umm_malloc/umm_malloc.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/umm_malloc/umm_poison.c.o
+Firmware/.pio/build/receiver/FrameworkArduino/Updater.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/WMath.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/wpa2_eap_patch.cpp.o
+Firmware/.pio/build/receiver/FrameworkArduino/WString.cpp.o
+Firmware/.pio/build/receiver/ld/local.eagle.app.v6.common.ld
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/BearSSLHelpers.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/CertStoreBearSSL.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/enable_wifi_at_boot_time.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFi.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiAP.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiGeneric.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiGratuitous.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiMulti.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiScan.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiSTA-WPS.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/ESP8266WiFiSTA.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/WiFiClient.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/WiFiClientSecureBearSSL.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/WiFiServer.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/WiFiServerSecureBearSSL.cpp.o
+Firmware/.pio/build/receiver/lib301/ESP8266WiFi/WiFiUdp.cpp.o
+Firmware/.pio/build/receiver/lib301/libESP8266WiFi.a
+Firmware/.pio/build/receiver/lib459/libWire.a
+Firmware/.pio/build/receiver/lib459/Wire/Wire.cpp.o
+Firmware/.pio/build/receiver/lib9d7/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o
+Firmware/.pio/build/receiver/lib9d7/Adafruit BusIO/Adafruit_GenericDevice.cpp.o
+Firmware/.pio/build/receiver/lib9d7/Adafruit BusIO/Adafruit_I2CDevice.cpp.o
+Firmware/.pio/build/receiver/lib9d7/Adafruit BusIO/Adafruit_SPIDevice.cpp.o
+Firmware/.pio/build/receiver/lib9d7/libAdafruit BusIO.a
+Firmware/.pio/build/receiver/liba15/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.cpp.o
+Firmware/.pio/build/receiver/liba15/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.cpp.o
+Firmware/.pio/build/receiver/liba15/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.cpp.o
+Firmware/.pio/build/receiver/liba15/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.cpp.o
+Firmware/.pio/build/receiver/liba15/libAdafruit ST7735 and ST7789 Library.a
+Firmware/.pio/build/receiver/libbc3/libSPI.a
+Firmware/.pio/build/receiver/libbc3/SPI/SPI.cpp.o
+Firmware/.pio/build/receiver/libbd0/Adafruit GFX Library/Adafruit_GFX.cpp.o
+Firmware/.pio/build/receiver/libbd0/Adafruit GFX Library/Adafruit_GrayOLED.cpp.o
+Firmware/.pio/build/receiver/libbd0/Adafruit GFX Library/Adafruit_SPITFT.cpp.o
+Firmware/.pio/build/receiver/libbd0/Adafruit GFX Library/glcdfont.c.o
+Firmware/.pio/build/receiver/libbd0/libAdafruit GFX Library.a
+Firmware/.pio/build/receiver/libFrameworkArduino.a
+Firmware/.pio/build/receiver/libFrameworkArduinoVariant.a
+Firmware/.pio/build/receiver/src/receiver/display.cpp.o
+Firmware/.pio/build/receiver/src/receiver/main.cpp.o
+Firmware/.pio/build/receiver/src/receiver/radio_esp8266.cpp.o
+Firmware/.pio/build/wearable/.sconsign311.dblite
+Firmware/.pio/build/wearable/bootloader.bin
+Firmware/.pio/build/wearable/firmware.bin
+Firmware/.pio/build/wearable/firmware.elf
+Firmware/.pio/build/wearable/firmware.factory.bin
+Firmware/.pio/build/wearable/firmware.map
+Firmware/.pio/build/wearable/FrameworkArduino/base64.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/base64.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/cbuf.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/cbuf.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/chip-debug-report.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/chip-debug-report.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/ColorFormat.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/ColorFormat.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/Esp.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/Esp.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-adc.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-adc.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-bt.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-bt.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-cpu.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-cpu.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-dac.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-dac.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-gpio.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-gpio.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-hosted.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-hosted.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c-ng.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c-ng.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c-slave.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c-slave.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-i2c.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-ldo.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-ldo.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-ledc.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-ledc.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-log-wrapper.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-log-wrapper.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-matrix.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-matrix.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-misc.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-misc.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-periman.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-periman.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-psram.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-psram.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-rgb-led.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-rgb-led.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-rmt.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-rmt.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-sigmadelta.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-sigmadelta.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-spi.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-spi.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-time.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-time.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-timer.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-timer.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-tinyusb.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-tinyusb.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-touch-ng.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-touch-ng.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-touch.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-touch.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-uart.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/esp32-hal-uart.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/firmware_msc_fat.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/firmware_msc_fat.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/FirmwareMSC.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/FirmwareMSC.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/freertos_stats.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/freertos_stats.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/FunctionalInterrupt.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/FunctionalInterrupt.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/HardwareSerial.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/HardwareSerial.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/HashBuilder.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/HashBuilder.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/HEXBuilder.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/HEXBuilder.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/HWCDC.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/HWCDC.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/idf_openthread_mpool_wrapper.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/idf_openthread_mpool_wrapper.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/IPAddress.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/IPAddress.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/libb64/cdecode.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/libb64/cdecode.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/libb64/cencode.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/libb64/cencode.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/MacAddress.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/MacAddress.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/main.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/main.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/MD5Builder.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/MD5Builder.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/Print.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/Print.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/stdlib_noniso.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/stdlib_noniso.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/Stream.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/Stream.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/StreamString.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/StreamString.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/StringUtils.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/StringUtils.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/Tone.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/Tone.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/USB.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/USB.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/USBCDC.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/USBCDC.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/USBHost.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/USBHost.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/USBMSC.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/USBMSC.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/wiring_pulse.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/wiring_pulse.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/wiring_shift.c.d
+Firmware/.pio/build/wearable/FrameworkArduino/wiring_shift.c.o
+Firmware/.pio/build/wearable/FrameworkArduino/WMath.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/WMath.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduino/WString.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduino/WString.cpp.o
+Firmware/.pio/build/wearable/FrameworkArduinoVariant/variant.cpp.d
+Firmware/.pio/build/wearable/FrameworkArduinoVariant/variant.cpp.o
+Firmware/.pio/build/wearable/idedata.json
+Firmware/.pio/build/wearable/lib355/Wire/Wire.cpp.d
+Firmware/.pio/build/wearable/lib355/Wire/Wire.cpp.o
+Firmware/.pio/build/wearable/lib4fe/Preferences/Preferences.cpp.d
+Firmware/.pio/build/wearable/lib4fe/Preferences/Preferences.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/AP.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/AP.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/STA.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/STA.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFi.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFi.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiAP.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiAP.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiGeneric.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiGeneric.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiMulti.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiMulti.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiScan.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiScan.cpp.o
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiSTA.cpp.d
+Firmware/.pio/build/wearable/lib881/WiFi/WiFiSTA.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkClient.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkClient.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkEvents.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkEvents.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkInterface.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkInterface.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkManager.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkManager.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkServer.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkServer.cpp.o
+Firmware/.pio/build/wearable/lib96f/Network/NetworkUdp.cpp.d
+Firmware/.pio/build/wearable/lib96f/Network/NetworkUdp.cpp.o
+Firmware/.pio/build/wearable/libFrameworkArduino.a
+Firmware/.pio/build/wearable/partitions.bin
+Firmware/.pio/build/wearable/src/wearable/battery.cpp.d
+Firmware/.pio/build/wearable/src/wearable/battery.cpp.o
+Firmware/.pio/build/wearable/src/wearable/button.cpp.d
+Firmware/.pio/build/wearable/src/wearable/button.cpp.o
+Firmware/.pio/build/wearable/src/wearable/espnow_link.cpp.d
+Firmware/.pio/build/wearable/src/wearable/espnow_link.cpp.o
+Firmware/.pio/build/wearable/src/wearable/haptic.cpp.d
+Firmware/.pio/build/wearable/src/wearable/haptic.cpp.o
+Firmware/.pio/build/wearable/src/wearable/imu.cpp.d
+Firmware/.pio/build/wearable/src/wearable/imu.cpp.o
+Firmware/.pio/build/wearable/src/wearable/main.cpp.d
+Firmware/.pio/build/wearable/src/wearable/main.cpp.o
+Firmware/.pio/build/wearable/src/wearable/mode.cpp.d
+Firmware/.pio/build/wearable/src/wearable/mode.cpp.o
+Firmware/.pio/build/wearable/src/wearable/motion.cpp.d
+Firmware/.pio/build/wearable/src/wearable/motion.cpp.o
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/.clang-format
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/.github/ISSUE_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/.github/PULL_REQUEST_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/.github/workflows/githubci.yml
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/.piopm
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_BusIO_Register.cpp
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_BusIO_Register.h
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_GenericDevice.cpp
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_GenericDevice.h
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_I2CDevice.cpp
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_I2CDevice.h
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_I2CRegister.h
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_SPIDevice.cpp
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/Adafruit_SPIDevice.h
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/CMakeLists.txt
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/component.mk
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/genericdevice_uartregtest/.uno.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/genericdevice_uartregtest/genericdevice_uartregtest.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/genericdevice_uarttest/.uno.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/genericdevice_uarttest/genericdevice_uarttest.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/i2c_address_detect/i2c_address_detect.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/i2c_readwrite/i2c_readwrite.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/i2c_registers/i2c_registers.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/i2corspi_register/i2corspi_register.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/spi_modetest/spi_modetest.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/spi_readwrite/spi_readwrite.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/spi_register_bits/spi_register_bits.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/examples/spi_registers/spi_registers.ino
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/library.properties
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/LICENSE
+Firmware/.pio/libdeps/receiver/Adafruit BusIO/README.md
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/.github/ISSUE_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/.github/PULL_REQUEST_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/.github/workflows/githubci.yml
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/.piopm
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_GFX.cpp
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_GFX.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_GrayOLED.cpp
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_GrayOLED.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_SPITFT.cpp
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_SPITFT.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Adafruit_SPITFT_Macros.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/CMakeLists.txt
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/component.mk
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/examples/GFXcanvas/GFXcanvas.ino
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.cpp
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/examples/mock_ili9341/mock_ili9341.ino
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/fontconvert/bdf2adafruit.py
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/fontconvert/fontconvert.c
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/fontconvert/fontconvert_win.md
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/fontconvert/Makefile
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/fontconvert/makefonts.sh
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMono12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMono18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMono24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMono9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBold12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBold18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBold24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBold9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBoldOblique12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBoldOblique18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBoldOblique24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoBoldOblique9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoOblique12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoOblique18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoOblique24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeMonoOblique9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSans12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSans18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSans24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSans9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBold12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBold18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBold24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBold9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBoldOblique12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBoldOblique18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBoldOblique24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansBoldOblique9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansOblique12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansOblique18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansOblique24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSansOblique9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerif12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerif18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerif24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerif9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBold12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBold18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBold24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBold9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBoldItalic12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBoldItalic18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBoldItalic24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifBoldItalic9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifItalic12pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifItalic18pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifItalic24pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/FreeSerifItalic9pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/Org_01.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/Picopixel.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/Tiny3x3a2pt7b.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/Fonts/TomThumb.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/gfxfont.h
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/glcdfont.c
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/library.properties
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/license.txt
+Firmware/.pio/libdeps/receiver/Adafruit GFX Library/README.md
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/.github/ISSUE_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/.github/PULL_REQUEST_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/.github/workflows/githubci.yml
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/.piopm
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_Crickit.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_Crickit.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_miniTFTWing.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_miniTFTWing.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_NeoKey_1x4.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_NeoKey_1x4.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_NeoTrellis.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_NeoTrellis.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_seesaw.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_seesaw.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_TFTShield18.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Adafruit_TFTShield18.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/Doxyfile
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/analog/analogRead/analogRead.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/analog/Fade/Fade.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/audio_spectrum/Audio_Spectrum/Audio_Spectrum.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/communication/UART_loopback/UART_loopback.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/basic/basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/cap_touch_demo/cap_touch_demo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/drive/more_drivers/more_drivers.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/drive/test_drive/test_drive.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/fulltest/fulltest.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/motor/dual_motor/dual_motor.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/servo/more_servos/more_servos.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/servo/test_servo/test_servo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Crickit/signal/test_signal/test_signal.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/digital/attiny_blink/attiny_blink.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/digital/blink/blink.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/digital/gpio_interrupts/gpio_interrupts.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/digital/multiblink/multiblink.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/digital/multiread/multiread.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/EEPROM/EEPROM.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/encoder_basic/encoder_basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/multiple_encoders/multiple_encoders.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/.pico_rp2040.test.only
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/PID5740_ANOencoder_7Seg_demo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_demo/PID5740_ANOencoder_demo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_demo/PID5752_QuadEncoder_demo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/.feather_esp32s2_tft.test.only
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/PID5752_QuadEncoder_TFTDemo.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/encoder_delta/encoder_delta.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/.esp32.test.only
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/joy_featherwing_ESP32.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_example/joy_featherwing_example.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/joy_featherwing/joy_wing_oled/joy_wing_oled.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/LEDArcade_1x4/LEDArcade_1x4.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/Mini_I2C_Gamepad_QT/Mini_I2C_Gamepad_QT.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoKey_1x4/basic/basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoKey_1x4/basic_callback/basic_callback.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoKey_1x4/basic_multikey/basic_multikey.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoKey_1x4/basic_neoswirl/basic_neoswirl.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoPixel/NeoPixel_strandtest/NeoPixel_strandtest.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoSlider/Dual_NeoSlider/Dual_NeoSlider.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoSlider/NeoSlider/NeoSlider.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoTrellis/basic/basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoTrellis/interrupt/interrupt.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoTrellis/multitrellis/basic/basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoTrellis/pattern_game/pattern_game.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/NeoTrellis/ripples/ripples.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/PC_Joystick/PC_Joystick.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/examples/soil_sensor/soilsensor_example/soilsensor_example.ino
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/library.properties
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/README.md
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_motor.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_neopixel.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_neopixel.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_servo.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_servo.h
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_spectrum.cpp
+Firmware/.pio/libdeps/receiver/Adafruit seesaw Library/seesaw_spectrum.h
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/.github/ISSUE_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/.github/PULL_REQUEST_TEMPLATE.md
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/.github/workflows/githubci.yml
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/.piopm
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.cpp
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.h
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.cpp
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.h
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.cpp
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.h
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.cpp
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.h
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/CMakeLists.txt
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/displayOnOffTest/displayOnOffTest.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest/.cpb.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest/graphicstest.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/.feather_esp32s2_tft.test.only
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/graphicstest_feather_esp32s2_tft.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/.hallowing_m0.test.only
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/graphicstest_hallowing_m0.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/.hallowing_m4.test.only
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/graphicstest_hallowing_m4.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pybadge.test.only
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pygamer.test.only
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/graphicstest_pybadge_pygamer.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/.cpb.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/graphicstest_st7789.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.cplayClassic.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.due.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp32.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp8266.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.leonardo.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.mega2560.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.uno.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/graphicstest_tft_gizmo.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/basic/basic.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/graphicstest_v1_160x80/graphicstest_v1_160x80.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/rotationtest/rotationtest.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/.leonardo.test.skip
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/seesaw_shield18_test.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/shieldtest/shieldtest.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/examples/ST7796S_demo/ST7796S_demo.ino
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/library.properties
+Firmware/.pio/libdeps/receiver/Adafruit ST7735 and ST7789 Library/README.txt
+Firmware/.pio/libdeps/receiver/integrity.dat
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/media/test/sync_test.mid
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/media/test/sync_test.wav
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/media/test/test_image.png
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/README.md
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/DanceWorkshop.67.toe
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/DanceWorkshop.toe
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/shows/autosave.json
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/face_detector.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/face_filter_example.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/face_mapping_example.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/face_tracking.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/hand_tracking.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/image_classification.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/image_embeddings.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/image_segmentation.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/MediaPipe.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/object_tracking.tox
+dist/DanceWorkshop-student-367f092-mediapipe/DanceWorkshop/TouchDesigner/toxes/pose_tracking.tox
+dist/DanceWorkshop-student-367f092.zip
+dist/DanceWorkshop-student-eb95f01.zip
+dist/DanceWorkshop-student-eb95f01.zip
+dist/DanceWorkshop-student-367f092.zip
+dist/DanceWorkshop-student-eb95f01.zip
+dist/DanceWorkshop-student-367f092.zip
+dist/DanceWorkshop-student-eb95f01.zip
+dist/DanceWorkshop-student-367f092.zip

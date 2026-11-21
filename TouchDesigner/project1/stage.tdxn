@@ -1,0 +1,1857 @@
+format: tdxn
+version: '2.2'
+build: 6
+generator: Embody/6.2.76
+td_build: 099.2025.32280
+network_path: /project1/stage
+options:
+  include_dat_content: false
+  include_storage: true
+type_defaults:
+  buttonCOMP:
+    parameters:
+      clone: =op.TDTox.op('defaultCOMPs/button')
+      hmode: anchors
+      repocomp: =me
+      resizecomp: =me
+      vmode: anchors
+    size: [160, 134]
+  containerCOMP:
+    parameters:
+      bgalpha: 1
+      hmode: anchors
+      repocomp: =me
+      resizecomp: =me
+      vmode: anchors
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  outCHOP:
+    parameters:
+      autoexportroot: =parent()
+      label: =me.name
+    flags:
+    - viewer
+    size: [130, 90]
+  panelexecuteDAT:
+    parameters:
+      fromop: =parent()
+  parameterCHOP:
+    parameters:
+      autoexportroot: =parent()
+      builtin: true
+      custom: false
+      parameters: value0
+      renameto: v1
+    flags:
+    - viewer
+    size: [130, 90]
+  parameterexecuteDAT:
+    parameters:
+      fromop: =parent()
+  textCOMP:
+    parameters:
+      repocomp: =me
+      resizecomp: =me
+  textDAT:
+    parameters:
+      language: python
+type: containerCOMP
+custom_pars:
+  Stage:
+  - name: Mainview
+    style: Menu
+    label: Big View
+    default: output
+    menuNames:
+    - output
+    - noise
+    - video
+    - shapes
+    - particles
+    - pose
+    - wearable
+    - midi
+    menuLabels:
+    - Output
+    - Noise
+    - Video Feedback
+    - Shapes
+    - Particles
+    - Body Tracking
+    - Wearables
+    - MIDI Notes
+    help: What the big view shows. Clicking a tile picks it; Output shows the final image.
+  - name: Testtrack
+    style: Toggle
+    label: Test Track
+    help: 'On: transport plays the test track and MIDI (media/test), with the demo cues at 5, 10, 15 and 20 s. Off: your Audio File and MIDI File come back.'
+  - name: Testpattern
+    style: Toggle
+    label: Test Pattern
+    help: 'On: the Video Feedback instrument is shown with the test pattern as its source. Off: its Source and On come back.'
+  - name: Testdancer
+    style: Toggle
+    label: Test Dancer
+    help: 'On: inputs Use is Test, a made-up dancer for the pose signals (no webcam needed). Off: Use comes back.'
+  - name: Open
+    style: Pulse
+    label: Open Stage Window
+    help: Open the stage window (1920 x 1080).
+  - name: Close
+    style: Pulse
+    label: Close Stage Window
+    help: Close the stage window.
+  - name: Openonstart
+    style: Toggle
+    label: Open on Start
+    default: true
+    help: 'On: the stage window opens by itself when the project opens.'
+parameters:
+  w: 1647
+  h: 821
+  sizefromwindow: true
+  resizecomp: =me
+  repocomp: =me
+  bgcolorr: 0.035
+  bgcolorg: 0.04
+  bgcolorb: 0.05
+  bgalpha: 1
+  parentshortcut: Stage
+  opshortcut: Stage
+sequences:
+  ext:
+  - object: op('./StageExt').module.StageExt(me)
+    name: Stage
+    promote: true
+color: [0.3, 0.5, 0.9]
+tags:
+- tdxn
+storage:
+  testPrevious: {}
+operators:
+- name: bar
+  type: containerCOMP
+  parameters:
+    w: 1920
+    h: 72
+    topanchor: 0.0666667
+    alignorder: -1
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+- name: view
+  type: containerCOMP
+  parameters:
+    y: 432
+    w: 1152
+    h: 648
+    rightanchor: 0.6
+    bottomanchor: 0.4
+    top: =parent.Stage.ext.Stage.tileTop(parent.Stage.par.Mainview.eval()) if parent.Stage.extensionsReady else None
+    topfill: best
+  position: [0, 900]
+  children:
+  - name: view_label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.viewLabel() if parent.Stage.extensionsReady else ''
+      callbacks: view_label_callbacks
+      fontsize: 18
+      fontcolorr: 0.86
+      fontcolorg: 0.88
+      fontcolorb: 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      y: 612
+      w: 1152
+      h: 36
+      hmode: anchors
+      vmode: anchors
+      bottomanchor: 1
+      bottomoffset: -36
+      bgalpha: 0.55
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: view_label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: view_label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: clock
+  type: textCOMP
+  parameters:
+    text: =parent.Stage.ext.Stage.timeText() if parent.Stage.extensionsReady else ''
+    callbacks: time_callbacks
+    fontsize: 18
+    fontcolorr: 0.86
+    fontcolorg: 0.88
+    fontcolorb: 0.9
+    x: 258
+    y: 12
+    w: 150
+    h: 48
+    hmode: anchors
+    leftanchor: 0.134375
+    rightanchor: 0.2125
+    vmode: anchors
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [600, 0]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+- name: StageExt
+  type: textDAT
+  parameters:
+    file: project1/stage/StageExt.py
+    syncfile: true
+  position: [0, 2000]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: btn_play
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.play')
+    value0: ~op.Transport.par.Play
+    fontsize: 15
+    colorr: =0.85 if me.par.value0 else 0.5
+    colorg: =0.55 if me.par.value0 else 0.5
+    colorb: =0.15 if me.par.value0 else 0.5
+    x: 12
+    y: 12
+    w: 120
+    h: 48
+    leftanchor: 0.00625
+    rightanchor: 0.06875
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [200, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: controls
+  type: parameterCOMP
+  parameters:
+    op: =op.Control
+    pagenames: true
+    builtin: false
+    parscope: '* ^Build ^Date ^Touchbuild'
+    syncpage: true
+    x: 1152
+    y: 72
+    w: 768
+    h: 1008
+    hmode: anchors
+    leftanchor: 0.6
+    vmode: anchors
+    bottomanchor: 0.0666667
+    resizecomp: =me
+    repocomp: =me
+    bgcolorr: =ui.colors['parms.dialog.bg'][0]
+    bgcolorg: =ui.colors['parms.dialog.bg'][1]
+    bgcolorb: =ui.colors['parms.dialog.bg'][2]
+  position: [200, 900]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+- name: btn_reset
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.reset')
+    buttontype: momentary
+    fontsize: 15
+    x: 140
+    y: 12
+    w: 110
+    h: 48
+    leftanchor: 0.0729167
+    rightanchor: 0.130208
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [400, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: tile_midi
+  type: containerCOMP
+  parameters:
+    x: 864
+    y: 72
+    w: 288
+    h: 180
+    leftanchor: 0.45
+    rightanchor: 0.6
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('midi', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'midi' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'midi' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'midi' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'midi' else 'borderb'
+  position: [1800, 900]
+  children:
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('midi') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'midi' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'midi' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'midi' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: tile_pose
+  type: containerCOMP
+  parameters:
+    x: 288
+    y: 72
+    w: 288
+    h: 180
+    leftanchor: 0.15
+    rightanchor: 0.3
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('pose', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'pose' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'pose' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'pose' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'pose' else 'borderb'
+  position: [1400, 900]
+  children:
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('pose') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'pose' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'pose' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'pose' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: stage_pars
+  type: parameterexecuteDAT
+  parameters:
+    op: =parent.Stage
+    pars: Testtrack Testpattern Testdancer Open Close
+    builtin: false
+    file: project1/stage/stage_pars.py
+    syncfile: true
+  position: [200, 2000]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: tile_noise
+  type: containerCOMP
+  parameters:
+    x: 288
+    y: 252
+    w: 288
+    h: 180
+    leftanchor: 0.15
+    rightanchor: 0.3
+    bottomanchor: 0.233333
+    topanchor: 0.4
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('noise', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'noise' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'noise' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'noise' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'noise' else 'borderb'
+  position: [600, 900]
+  children:
+  - name: 'on'
+    type: buttonCOMP
+    parameters:
+      label: =op.Lang.T('stage.on' if me.par.value0 else 'stage.off')
+      value0: ~op.Visuals.op('noise').par.Visible
+      fontsize: 12
+      colorr: =0.3 if me.par.value0 else 0.5
+      colorg: =0.65 if me.par.value0 else 0.5
+      colorb: =0.45 if me.par.value0 else 0.5
+      x: 218
+      y: 148
+      w: 64
+      h: 26
+      leftanchor: 1
+      leftoffset: -76
+      rightoffset: -8
+      bottomanchor: 1
+      bottomoffset: -38
+      topoffset: -8
+    position: [400, 0]
+    children:
+    - name: out1
+      type: outCHOP
+      position: [275, 175]
+      inputs:
+      - par1
+    - name: par1
+      type: parameterCHOP
+      position: [65, 175]
+    - name: text
+      type: textCOMP
+      parameters:
+        text: =parent().par.label
+        type: multiline
+        legacyfontselection: true
+        scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+        fontsize: =parent().par[me.curPar.name] or me.curPar.val
+        linespacing: =parent().par[me.curPar.name] or me.curPar.val
+        fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+        fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+        fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+        textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+        hmode: fill
+        vmode: fill
+        clickthrough: true
+        bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+        bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+        bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+        bgalpha: 1
+        borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+        borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+        borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+        leftborder: bordera
+        rightborder: bordera
+        bottomborder: bordera
+        topborder: bordera
+        borderover: false
+      flags:
+      - viewer
+      position: [74, 26]
+      size: [113, 96]
+    - name: parexec1
+      type: parameterexecuteDAT
+      parameters:
+        op: ..
+        pars: value0
+        onpulse: false
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [66, -83]
+      size: [128, 66]
+      dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+      dat_content_format: text
+    - name: panelexec1
+      type: panelexecuteDAT
+      parameters:
+        panels: =parent()
+        panelvalue: state
+        offtoon: false
+        valuechange: true
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [247, -81]
+      size: [126, 62]
+      dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+      dat_content_format: text
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('noise') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'noise' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'noise' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'noise' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: tile_video
+  type: containerCOMP
+  parameters:
+    x: 576
+    y: 252
+    w: 288
+    h: 180
+    leftanchor: 0.3
+    rightanchor: 0.45
+    bottomanchor: 0.233333
+    topanchor: 0.4
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('video', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'video' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'video' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'video' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'video' else 'borderb'
+  position: [800, 900]
+  children:
+  - name: 'on'
+    type: buttonCOMP
+    parameters:
+      label: =op.Lang.T('stage.on' if me.par.value0 else 'stage.off')
+      value0: ~op.Visuals.op('video').par.Visible
+      fontsize: 12
+      colorr: =0.3 if me.par.value0 else 0.5
+      colorg: =0.65 if me.par.value0 else 0.5
+      colorb: =0.45 if me.par.value0 else 0.5
+      x: 218
+      y: 148
+      w: 64
+      h: 26
+      leftanchor: 1
+      leftoffset: -76
+      rightoffset: -8
+      bottomanchor: 1
+      bottomoffset: -38
+      topoffset: -8
+    position: [400, 0]
+    children:
+    - name: out1
+      type: outCHOP
+      position: [275, 175]
+      inputs:
+      - par1
+    - name: par1
+      type: parameterCHOP
+      position: [65, 175]
+    - name: text
+      type: textCOMP
+      parameters:
+        text: =parent().par.label
+        type: multiline
+        legacyfontselection: true
+        scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+        fontsize: =parent().par[me.curPar.name] or me.curPar.val
+        linespacing: =parent().par[me.curPar.name] or me.curPar.val
+        fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+        fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+        fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+        textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+        hmode: fill
+        vmode: fill
+        clickthrough: true
+        bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+        bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+        bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+        bgalpha: 1
+        borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+        borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+        borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+        leftborder: bordera
+        rightborder: bordera
+        bottomborder: bordera
+        topborder: bordera
+        borderover: false
+      flags:
+      - viewer
+      position: [74, 26]
+      size: [113, 96]
+    - name: parexec1
+      type: parameterexecuteDAT
+      parameters:
+        op: ..
+        pars: value0
+        onpulse: false
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [66, -83]
+      size: [128, 66]
+      dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+      dat_content_format: text
+    - name: panelexec1
+      type: panelexecuteDAT
+      parameters:
+        panels: =parent()
+        panelvalue: state
+        offtoon: false
+        valuechange: true
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [247, -81]
+      size: [126, 62]
+      dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+      dat_content_format: text
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('video') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'video' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'video' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'video' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: tile_output
+  type: containerCOMP
+  parameters:
+    y: 252
+    w: 288
+    h: 180
+    rightanchor: 0.15
+    bottomanchor: 0.233333
+    topanchor: 0.4
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('output', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'output' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'output' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'output' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'output' else 'borderb'
+  position: [400, 900]
+  children:
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('output') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'output' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'output' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'output' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: tile_shapes
+  type: containerCOMP
+  parameters:
+    x: 864
+    y: 252
+    w: 288
+    h: 180
+    leftanchor: 0.45
+    rightanchor: 0.6
+    bottomanchor: 0.233333
+    topanchor: 0.4
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('shapes', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'shapes' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'shapes' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'shapes' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'shapes' else 'borderb'
+  position: [1000, 900]
+  children:
+  - name: 'on'
+    type: buttonCOMP
+    parameters:
+      label: =op.Lang.T('stage.on' if me.par.value0 else 'stage.off')
+      value0: ~op.Visuals.op('shapes').par.Visible
+      fontsize: 12
+      colorr: =0.3 if me.par.value0 else 0.5
+      colorg: =0.65 if me.par.value0 else 0.5
+      colorb: =0.45 if me.par.value0 else 0.5
+      x: 218
+      y: 148
+      w: 64
+      h: 26
+      leftanchor: 1
+      leftoffset: -76
+      rightoffset: -8
+      bottomanchor: 1
+      bottomoffset: -38
+      topoffset: -8
+    position: [400, 0]
+    children:
+    - name: out1
+      type: outCHOP
+      position: [275, 175]
+      inputs:
+      - par1
+    - name: par1
+      type: parameterCHOP
+      position: [65, 175]
+    - name: text
+      type: textCOMP
+      parameters:
+        text: =parent().par.label
+        type: multiline
+        legacyfontselection: true
+        scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+        fontsize: =parent().par[me.curPar.name] or me.curPar.val
+        linespacing: =parent().par[me.curPar.name] or me.curPar.val
+        fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+        fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+        fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+        textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+        hmode: fill
+        vmode: fill
+        clickthrough: true
+        bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+        bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+        bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+        bgalpha: 1
+        borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+        borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+        borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+        leftborder: bordera
+        rightborder: bordera
+        bottomborder: bordera
+        topborder: bordera
+        borderover: false
+      flags:
+      - viewer
+      position: [74, 26]
+      size: [113, 96]
+    - name: parexec1
+      type: parameterexecuteDAT
+      parameters:
+        op: ..
+        pars: value0
+        onpulse: false
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [66, -83]
+      size: [128, 66]
+      dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+      dat_content_format: text
+    - name: panelexec1
+      type: panelexecuteDAT
+      parameters:
+        panels: =parent()
+        panelvalue: state
+        offtoon: false
+        valuechange: true
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [247, -81]
+      size: [126, 62]
+      dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+      dat_content_format: text
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('shapes') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'shapes' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'shapes' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'shapes' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: btn_language
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.language')
+    buttontype: momentary
+    fontsize: 15
+    x: 1708
+    y: 12
+    w: 200
+    h: 48
+    leftanchor: 0.889583
+    rightanchor: 0.99375
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [1800, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: panel_clicks
+  type: panelexecuteDAT
+  parameters:
+    panels: tile_output tile_noise tile_video tile_shapes tile_particles tile_pose tile_wearable tile_midi btn_reset btn_openoutput btn_closeoutput btn_language
+    panelvalue: lselect
+    file: project1/stage/panel_clicks.py
+    syncfile: true
+  position: [400, 2000]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: stage_window
+  type: windowCOMP
+  parameters:
+    winop: =parent.Stage
+    title: Dance Workshop - Stage
+    justifyh: center
+    justifyv: center
+    size: fill
+    winw: 1600
+    winh: 900
+  position: [600, 2000]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+- name: btn_testtrack
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.testtrack')
+    value0: ~parent.Stage.par.Testtrack
+    fontsize: 15
+    colorr: =0.85 if me.par.value0 else 0.5
+    colorg: =0.55 if me.par.value0 else 0.5
+    colorb: =0.15 if me.par.value0 else 0.5
+    x: 420
+    y: 12
+    w: 160
+    h: 48
+    leftanchor: 0.21875
+    rightanchor: 0.302083
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [800, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: open_on_start
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    start: true
+    file: project1/stage/open_on_start.py
+    syncfile: true
+  position: [800, 2000]
+  size: [130, 90]
+  color: [0.9, 0.3, 0.4]
+  tags:
+  - py
+- name: tile_wearable
+  type: containerCOMP
+  parameters:
+    x: 576
+    y: 72
+    w: 288
+    h: 180
+    leftanchor: 0.3
+    rightanchor: 0.45
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('wearable', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'wearable' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'wearable' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'wearable' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'wearable' else 'borderb'
+  position: [1600, 900]
+  children:
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('wearable') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'wearable' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'wearable' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'wearable' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: btn_openoutput
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.openoutput')
+    buttontype: momentary
+    fontsize: 15
+    x: 960
+    y: 12
+    w: 230
+    h: 48
+    leftanchor: 0.5
+    rightanchor: 0.619792
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [1400, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: btn_testdancer
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.testdancer')
+    value0: ~parent.Stage.par.Testdancer
+    fontsize: 15
+    colorr: =0.85 if me.par.value0 else 0.5
+    colorg: =0.55 if me.par.value0 else 0.5
+    colorb: =0.15 if me.par.value0 else 0.5
+    x: 756
+    y: 12
+    w: 160
+    h: 48
+    leftanchor: 0.39375
+    rightanchor: 0.477083
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [1200, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: tile_particles
+  type: containerCOMP
+  parameters:
+    y: 72
+    w: 288
+    h: 180
+    rightanchor: 0.15
+    bottomanchor: 0.0666667
+    topanchor: 0.233333
+    bgcolorr: 0.075
+    bgcolorg: 0.085
+    bgcolorb: 0.1
+    top: =parent.Stage.ext.Stage.tileTop('particles', tile=True) if parent.Stage.extensionsReady else None
+    topfill: best
+    borderag: 0.7
+    borderab: 0.25
+    borderbr: 0.035
+    borderbg: 0.04
+    borderbb: 0.05
+    leftborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'particles' else 'borderb'
+    rightborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'particles' else 'borderb'
+    bottomborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'particles' else 'borderb'
+    topborderi: ='bordera' if parent.Stage.par.Mainview.eval() == 'particles' else 'borderb'
+  position: [1200, 900]
+  children:
+  - name: 'on'
+    type: buttonCOMP
+    parameters:
+      label: =op.Lang.T('stage.on' if me.par.value0 else 'stage.off')
+      value0: ~op.Visuals.op('particles').par.Visible
+      fontsize: 12
+      colorr: =0.3 if me.par.value0 else 0.5
+      colorg: =0.65 if me.par.value0 else 0.5
+      colorb: =0.45 if me.par.value0 else 0.5
+      x: 218
+      y: 148
+      w: 64
+      h: 26
+      leftanchor: 1
+      leftoffset: -76
+      rightoffset: -8
+      bottomanchor: 1
+      bottomoffset: -38
+      topoffset: -8
+    position: [400, 0]
+    children:
+    - name: out1
+      type: outCHOP
+      position: [275, 175]
+      inputs:
+      - par1
+    - name: par1
+      type: parameterCHOP
+      position: [65, 175]
+    - name: text
+      type: textCOMP
+      parameters:
+        text: =parent().par.label
+        type: multiline
+        legacyfontselection: true
+        scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+        fontsize: =parent().par[me.curPar.name] or me.curPar.val
+        linespacing: =parent().par[me.curPar.name] or me.curPar.val
+        fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+        fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+        fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+        textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+        textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+        hmode: fill
+        vmode: fill
+        clickthrough: true
+        bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+        bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+        bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+        bgalpha: 1
+        borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+        borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+        borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+        leftborder: bordera
+        rightborder: bordera
+        bottomborder: bordera
+        topborder: bordera
+        borderover: false
+      flags:
+      - viewer
+      position: [74, 26]
+      size: [113, 96]
+    - name: parexec1
+      type: parameterexecuteDAT
+      parameters:
+        op: ..
+        pars: value0
+        onpulse: false
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [66, -83]
+      size: [128, 66]
+      dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+      dat_content_format: text
+    - name: panelexec1
+      type: panelexecuteDAT
+      parameters:
+        panels: =parent()
+        panelvalue: state
+        offtoon: false
+        valuechange: true
+        defaultreadencoding: cp1252
+        loadonstart: true
+      flags:
+      - viewer
+      position: [247, -81]
+      size: [126, 62]
+      dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+      dat_content_format: text
+  - name: label
+    type: textCOMP
+    parameters:
+      text: =parent.Stage.ext.Stage.tileLabel('particles') if parent.Stage.extensionsReady else ''
+      callbacks: label_callbacks
+      fontsize: 14
+      fontcolorr: =1.0 if parent.Stage.par.Mainview.eval() == 'particles' else 0.86
+      fontcolorg: =0.7 if parent.Stage.par.Mainview.eval() == 'particles' else 0.88
+      fontcolorb: =0.25 if parent.Stage.par.Mainview.eval() == 'particles' else 0.9
+      textpaddingl: 10
+      textpaddingr: 10
+      alignx: left
+      w: 288
+      h: 28
+      hmode: anchors
+      bgalpha: 0.6
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+  - name: label_callbacks
+    type: textDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -160]
+    size: [160, 130]
+    color: [0.67, 0.67, 0.67]
+    dock: label
+    dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+    dat_content_format: text
+- name: time_callbacks
+  type: textDAT
+  flags:
+  - viewer
+  - -showDocked
+  position: [600, -160]
+  size: [160, 130]
+  color: [0.67, 0.67, 0.67]
+  dock: clock
+  dat_content: "# Text Component callbacks\n\nfrom typing import Any, Dict\n\ndef onValueChange(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled whenever the text component's value parameter changes for any reason\n\tincluding typing in the text window or changing the parameter directly. The\n\tcallback is equivalent to the onValueChange in the parameter exectute DAT.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonValueChange comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n\t\ndef onFocus(comp: textCOMP):\n\t\"\"\"\n\tCalled when one of the text components viewers gets keyboard focus. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonFocus comp:', comp.path)\n\treturn\n\ndef onFocusEnd(comp: textCOMP, info: Dict[str, str]):\n\t\"\"\"\n\tCalled when one of the text component's viewers loses keyboard focus. In\n\tregular editing mode this is right after the contents are saved back to the\n\tvalue parameter. This function is called everytime the viewer loses focus,\n\teven if the text does not change.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tinfo: a dictionary containing information about the event including:\n\t\t\treason: a string indicating what caused the viewer to lose focus\n\t\t\t\te.g. 'enter', 'escape', 'tab', 'unknown'\n\t\n\t\"\"\"\n\t#debug('\\nonFocusEnd comp:', comp.path, '- info:\\n', info)\n\treturn\n\t\ndef onTextEdit(comp: textCOMP):\n\t\"\"\"\n\tCalled each time the contents of the text component viewer change i.e. when\n\ttyping a character, deleting text, cutting or pasting. \n\t\n\tArgs:\n\t\tcomp: the text component\n\t\"\"\"\n\t#debug('\\nonTextEdit comp:', comp.path, '- text: ', comp.editText)\n\treturn\n\t\ndef onTextEditEnd(comp: textCOMP, value: str, prevValue: str):\n\t\"\"\"\n\tCalled when the user finishes editing and the value has been changed. Not\n\tcalled in 'Continuous Edit' mode. Use onTextEdit and onFocusEnd when using\n\tcontinuous editing.\n\n    Note: Any Python undo blocks created by this callback will be included in\n    the undo step for the change to the text field.\n\t\n\tArgs:\n\t\tcomp: the text component\n\t\tvalue: the new value\n\t\tprevValue: the previous value\n\t\"\"\"\n\t#debug('\\nonTextEditEnd comp:', comp.path, '- new value: ', value,\n\t#      ', prev value: ', prevValue )\n\treturn\n"
+  dat_content_format: text
+- name: btn_closeoutput
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.closeoutput')
+    buttontype: momentary
+    fontsize: 15
+    x: 1198
+    y: 12
+    w: 230
+    h: 48
+    leftanchor: 0.623958
+    rightanchor: 0.74375
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [1600, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+- name: btn_testpattern
+  type: buttonCOMP
+  parameters:
+    label: =op.Lang.T('stage.testpattern')
+    value0: ~parent.Stage.par.Testpattern
+    fontsize: 15
+    colorr: =0.85 if me.par.value0 else 0.5
+    colorg: =0.55 if me.par.value0 else 0.5
+    colorb: =0.15 if me.par.value0 else 0.5
+    x: 588
+    y: 12
+    w: 160
+    h: 48
+    leftanchor: 0.30625
+    rightanchor: 0.389583
+    bottomanchor: 0.0111111
+    topanchor: 0.0555556
+  position: [1000, 0]
+  children:
+  - name: out1
+    type: outCHOP
+    position: [275, 175]
+    inputs:
+    - par1
+  - name: par1
+    type: parameterCHOP
+    position: [65, 175]
+  - name: text
+    type: textCOMP
+    parameters:
+      text: =parent().par.label
+      type: multiline
+      legacyfontselection: true
+      scaletofit: =parent().par[me.curPar.name] or me.curPar.val
+      fontsize: =parent().par[me.curPar.name] or me.curPar.val
+      linespacing: =parent().par[me.curPar.name] or me.curPar.val
+      fontcolorr: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorr + .5
+      fontcolorg: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorg + .5
+      fontcolorb: =[c/.5 for c in [.1, .3]][parent().par.value0] * parent().par.colorb + .5
+      textpaddingl: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingr: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingb: =parent().par[me.curPar.name] or me.curPar.val
+      textpaddingt: =parent().par[me.curPar.name] or me.curPar.val
+      hmode: fill
+      vmode: fill
+      clickthrough: true
+      bgcolorr: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorr + r * 0.1
+      bgcolorg: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorg + r * 0.1
+      bgcolorb: =[c/.5 for c in [.2, .4, .15, .35]][parent().par.value0 + 2*(r:=parent().panel.rollover)] * parent().par.colorb + r * 0.1
+      bgalpha: 1
+      borderar: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorr + .2
+      borderag: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorg + .2
+      borderab: =[c/.5 for c in [.23, .4, .3, .6]][parent().par.value0 + 2*parent().panel.rollover] * parent().par.colorb + .2
+      leftborder: bordera
+      rightborder: bordera
+      bottomborder: bordera
+      topborder: bordera
+      borderover: false
+    flags:
+    - viewer
+    position: [74, 26]
+    size: [113, 96]
+  - name: parexec1
+    type: parameterexecuteDAT
+    parameters:
+      op: ..
+      pars: value0
+      onpulse: false
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [66, -83]
+    size: [128, 66]
+    dat_content: "# par - the Par object that has changed\n# prev - the previous value\n\ndef onValueChange(par, prev):\n\tif not parent().panel.select :\n\t\tparent().panel.state = par.eval()\n\treturn"
+    dat_content_format: text
+  - name: panelexec1
+    type: panelexecuteDAT
+    parameters:
+      panels: =parent()
+      panelvalue: state
+      offtoon: false
+      valuechange: true
+      defaultreadencoding: cp1252
+      loadonstart: true
+    flags:
+    - viewer
+    position: [247, -81]
+    size: [126, 62]
+    dat_content: "# panelValue - the PanelValue object that changed\n# Make sure the corresponding toggle is enabled in the Panel Execute DAT.\n\ndef onValueChange(panelValue):\n\tparent().par.value0 = panelValue\n\treturn"
+    dat_content_format: text
+annotations:
+- name: annotate1
+  mode: annotate
+  title: Logic
+  text: 'StageExt: tiles, labels, test switches (op.Stage.Open() / Close()). stage_pars: Test Track / Pattern / Dancer, Open, Close. panel_clicks: tile clicks pick the big view; bar buttons act. stage_window: the window (fills the screen). open_on_start: opens it when the project opens (Stage page, Open on Start).'
+  position: [-70, 1930]
+  size: [1080, 330]
+  color: [0.45, 0.45, 0.45]
+- name: annotate2
+  mode: annotate
+  title: Big view, controls and tiles
+  text: 'view: the output or the clicked tile. controls: the control panel''s five tabs (a Parameter COMP showing control). tile_*: live images; a hidden instrument''s tile stays dark until clicked, so it does not cook.'
+  position: [-70, 830]
+  size: [2100, 370]
+  color: [0.45, 0.45, 0.45]
+- name: annotate3
+  mode: annotate
+  title: Bottom bar
+  text: Play (bound to transport), Reset, playback time, Test Track / Test Pattern / Test Dancer (bound to the stage's toggles), Open / Close Output Window, English / Español.
+  position: [-70, -190]
+  size: [2100, 500]
+  color: [0.45, 0.45, 0.45]
