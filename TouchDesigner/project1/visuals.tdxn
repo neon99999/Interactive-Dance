@@ -248,50 +248,16 @@ custom_pars:
     clampMin: true
     normMax: 2.0
     help: 'Colour strength of the whole picture: 0 = black and white, 1 = as made, 2 = extra strong.'
-  - name: Trails
-    style: Float
-    startSection: true
-    clampMin: true
-    clampMax: true
-    help: 'Whole-picture trails (the old Video Feedback): 0 = off, 1 = very long trails.'
-  - name: Trailszoom
-    style: Float
-    label: Trails zoom
-    clampMin: true
-    clampMax: true
-    help: Trails grow outward (above 0) or shrink inward (below 0).
-  - name: Trailswarp
-    style: Float
-    label: Trails warp
-    clampMin: true
-    clampMax: true
-    help: 'How much the trails ripple and turn: 0 = straight, 1 = melting.'
-  - name: Trailscolour
-    style: Float
-    label: Trails colour
-    clampMin: true
-    clampMax: true
-    help: 'Trails shift through the colours: 0 = natural colour, 1 = rainbow.'
-  - name: Blur
-    style: Float
-    clampMin: true
-    clampMax: true
-    help: 'Blur of the whole picture: 0 = sharp, 1 = very soft.'
   - name: Glitch
     style: Float
     clampMin: true
     clampMax: true
-    help: 'Bands slide sideways and the colours split: 0 = off, 1 = strong.'
+    help: 'Bands slide sideways and the colours split: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.'
   - name: Outline
     style: Float
     clampMin: true
     clampMax: true
-    help: 'Shows the edges only: 0 = off, 1 = only outlines.'
-  - name: Melt
-    style: Float
-    clampMin: true
-    clampMax: true
-    help: 'The picture slides down, dark parts first: 0 = off, 1 = strong.'
+    help: 'Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.'
   Output:
   - name: Openwindow
     style: Pulse
@@ -359,6 +325,10 @@ operators:
       style: Folder
       startSection: true
       help: A folder of pictures and videos (sub-folders too), or one file.
+    - name: Choosefolder
+      style: Pulse
+      label: Choose Folder...
+      help: Open a window to pick the folder of pictures and videos.
     - name: Clip
       style: StrMenu
       label: File
@@ -426,6 +396,7 @@ operators:
   - name: player_a
     type: moviefileinTOP
     parameters:
+      file: =app.samplesFolder+'/Map/Banana.tif'
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -433,6 +404,7 @@ operators:
   - name: player_b
     type: moviefileinTOP
     parameters:
+      file: =app.samplesFolder+'/Map/Banana.tif'
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -458,10 +430,10 @@ operators:
     type: parameterexecuteDAT
     parameters:
       op: ..
-      pars: Folder Clip Refresh
+      pars: Folder Clip Refresh Choosefolder
     position: [1600, 400]
     color: [0.67, 0.67, 0.67]
-    dat_content: "\"\"\"media_pars: Folder or Refresh fills the File list; a new File crossfades to it.\"\"\"\n\n\ndef onValueChange(par, prev):\n\tmod = op('media_mod').module\n\tif par.name == 'Clip':\n\t\tmod.change()\n\telse:\n\t\tmod.refresh()\n\n\ndef onPulse(par):\n\top('media_mod').module.refresh()\n"
+    dat_content: "\"\"\"media_pars: Folder or Refresh fills the File list; a new File crossfades to it; Choose Folder opens a folder window.\"\"\"\n\n\ndef onValueChange(par, prev):\n\tmod = op('media_mod').module\n\tif par.name == 'Clip':\n\t\tmod.change()\n\telse:\n\t\tmod.refresh()\n\n\ndef onPulse(par):\n\tif par.name == 'Choosefolder':\n\t\tstart = str(parent.Instrument.par.Folder.eval()) or project.folder\n\t\tpath = ui.chooseFolder(title='Folder of pictures and videos', start=start)\n\t\tif path:\n\t\t\tparent.Instrument.par.Folder = path\n\t\treturn\n\top('media_mod').module.refresh()\n"
     dat_content_format: text
   - name: cross_files
     type: crossTOP
@@ -878,6 +850,30 @@ operators:
     position: [4800, 0]
     inputs:
     - lookup_colour
+  - name: ramp_palette_keys
+    type: tableDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -120]
+    dock: ramp_palette
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '1'
+      - '1'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
   annotations:
   - name: annotate1
     mode: annotate
@@ -1271,7 +1267,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -1331,30 +1331,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -1506,7 +1482,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -1566,30 +1546,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -1741,7 +1697,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -1801,30 +1761,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -1976,7 +1912,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -2036,30 +1976,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -2211,7 +2127,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -2271,30 +2191,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -2446,7 +2342,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -2506,30 +2406,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -2681,7 +2557,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -2741,30 +2621,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -2916,7 +2772,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -2976,30 +2836,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -3151,7 +2987,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -3211,30 +3051,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -3386,7 +3202,11 @@ operators:
       dat_content_format: table
     - name: zone_keys
       type: tableDAT
+      flags:
+      - viewer
+      - -showDocked
       position: [0, 200]
+      dock: zone
       dat_content:
       - - pos
         - r
@@ -3446,30 +3266,6 @@ operators:
       - -showDocked
       position: [400, 280]
       dock: tiles
-      dat_content:
-      - - pos
-        - r
-        - g
-        - b
-        - a
-      - - '0'
-        - '0'
-        - '0'
-        - '0'
-        - '1'
-      - - '1'
-        - '1'
-        - '1'
-        - '1'
-        - '1'
-      dat_content_format: table
-    - name: zone_keys1
-      type: tableDAT
-      flags:
-      - viewer
-      - -showDocked
-      position: [400, -320]
-      dock: zone
       dat_content:
       - - pos
         - r
@@ -4100,12 +3896,14 @@ operators:
       - auto
       - dancer
       - movement
+      - whole
       menuLabels:
       - 'Off'
       - Auto
       - Dancer
       - Movement
-      help: 'What leaves trails. Off: the plain camera picture. Dancer: only the dancer repeats (needs body tracking with Body Mask on). Movement: only what moves repeats. Auto: Dancer when available, otherwise Movement. For trails of the whole picture use the Trails effect.'
+      - Whole Picture
+      help: 'What leaves trails. Off: the plain camera picture. Dancer: only the dancer repeats (needs body tracking with Body Mask on). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole picture fed back into itself. Auto: Dancer when available, otherwise Movement. Feedback, Zoom, Distortion and Colour shape the trails.'
     - name: Feedback
       style: Float
       startSection: true
@@ -4300,6 +4098,12 @@ operators:
     parameters:
       top: =op.Inputs.op('camera_in')
     position: [0, -200]
+  - name: white_mask
+    type: constantTOP
+    parameters:
+      resolutionw: =parent.Visuals.par.Resolution1 / 2
+      resolutionh: =parent.Visuals.par.Resolution2 / 2
+    position: [3200, -1400]
   - name: blur_motion
     type: blurTOP
     parameters:
@@ -4340,11 +4144,12 @@ operators:
   - name: switch_mask
     type: switchTOP
     parameters:
-      index: =min(me.parent().op('video_source').module.echoMode(absTime.frame), 1)
+      index: =min(me.parent().op('video_source').module.echoMode(absTime.frame), 2)
     position: [3600, -1000]
     inputs:
     - level_mask
     - blur_motion
+    - white_mask
   - name: test_circle
     type: circleTOP
     parameters:
@@ -5038,201 +4843,51 @@ operators:
     position: [0, -600]
   - name: out1
     type: outTOP
-    position: [8800, 0]
+    position: [2400, 0]
     inputs:
-    - switch_melt
-  - name: blur_fx
-    type: blurTOP
-    parameters:
-      preshrink: 3
-      size: =op('live')['blur'] * 10
-    position: [3200, -400]
-    inputs:
-    - switch_trails
+    - switch_outline
   - name: edge_fx
     type: edgeTOP
-    position: [4800, -400]
+    position: [1200, -400]
     inputs:
     - switch_glitch
-  - name: fb_melt
-    type: feedbackTOP
-    parameters:
-      top: null_melt
-      outputresolution: custom
-      resolutionw: =op('in1').width
-      resolutionh: =op('in1').height
-      format: rgba16float
-    position: [6400, -400]
-    inputs:
-    - switch_outline
-  - name: fx_reset
-    type: chopexecuteDAT
-    parameters:
-      channel: trails melt
-      offtoon: true
-      valuechange: false
-    position: [400, -600]
-    dat_content: "\"\"\"fx_reset: an effect that comes on starts from the live picture, not an old frame.\"\"\"\n\n\ndef onOffToOn(channel, sampleIndex, val, prev):\n\tfb = {'trails': 'fb_trails', 'melt': 'fb_melt'}.get(channel.name)\n\tif fb:\n\t\top(fb).par.resetpulse.pulse()\n"
-    dat_content_format: text
-  - name: fb_trails
-    type: feedbackTOP
-    parameters:
-      top: null_trails
-      outputresolution: custom
-      resolutionw: =op('in1').width
-      resolutionh: =op('in1').height
-      format: rgba16float
-    position: [400, -400]
-    inputs:
-    - in1
-  - name: luma_melt
-    type: monochromeTOP
-    position: [6400, -800]
-    inputs:
-    - switch_outline
-  - name: null_melt
-    type: nullTOP
-    position: [8000, -400]
-    inputs:
-    - cross_melt
-  - name: cross_melt
-    type: crossTOP
-    parameters:
-      cross: =0.01 + 0.05 * (1 - op('live')['melt'])
-    position: [7600, -400]
-    inputs:
-    - displace_melt
-    - switch_outline
-  - name: hsv_trails
-    type: hsvadjustTOP
-    parameters:
-      hueoffset: =op('live')['trailscolour'] * 120 * min(absTime.stepSeconds, 0.1)
-      saturationmult: =(1 + op('live')['trailscolour'] * 0.6) ** min(absTime.stepSeconds, 0.1)
-    position: [1600, -400]
-    inputs:
-    - warp_trails
-  - name: level_melt
-    type: levelTOP
-    parameters:
-      invert: 1
-    position: [6800, -800]
-    inputs:
-    - luma_melt
   - name: glsl_glitch
     type: glslTOP
     parameters:
       pixeldat: glsl_glitch_pixel
+      computedat: glsl_glitch_compute
     sequences:
       vec:
       - name: uGlitch
         valuex: =op('live')['glitch']
         valuey: =absTime.seconds
         valuez: 24
-    position: [4000, -400]
+    position: [400, -400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
     inputs:
-    - switch_blur
-  - name: null_trails
-    type: nullTOP
-    position: [2400, -400]
-    inputs:
-    - cross_trails
-  - name: switch_blur
-    type: switchTOP
-    parameters:
-      index: =int(op('live')['blur'] > 0.001)
-    position: [3600, 0]
-    inputs:
-    - switch_trails
-    - blur_fx
-  - name: switch_melt
-    type: switchTOP
-    parameters:
-      index: =int(op('live')['melt'] > 0.001)
-    position: [8400, 0]
-    inputs:
-    - switch_outline
-    - null_melt
-  - name: warp_trails
-    type: displaceTOP
-    parameters:
-      displaceweightx: =op('live')['trailswarp'] * 0.15 * min(absTime.stepSeconds, 0.1)
-      displaceweighty: =op('live')['trailswarp'] * 0.15 * min(absTime.stepSeconds, 0.1)
-    position: [1200, -400]
-    inputs:
-    - zoom_trails
-    - noise_trails
-  - name: zoom_trails
-    type: transformTOP
-    parameters:
-      rotate: =op('live')['trailswarp'] * 12 * min(absTime.stepSeconds, 0.1)
-      sx: =(1 + op('live')['trailszoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
-      sy: =(1 + op('live')['trailszoom'] * 0.8) ** min(absTime.stepSeconds, 0.1)
-    position: [800, -400]
-    inputs:
-    - fb_trails
-  - name: cross_trails
-    type: crossTOP
-    parameters:
-      cross: =math.exp(-min(absTime.stepSeconds, 0.1) / (0.03 + op('live')['trails'] ** 2 * 3.0))
-      format: rgba16float
-    position: [2000, -400]
-    inputs:
     - in1
-    - hsv_trails
-  - name: noise_trails
-    type: noiseTOP
-    parameters:
-      period: 2.5
-      harmon: 1
-      mono: false
-      tz: =(absTime.seconds * 0.05) % 1000
-      resolutionw: 320
-      resolutionh: 180
-    position: [800, -800]
   - name: cross_outline
     type: crossTOP
     parameters:
       cross: =op('live')['outline']
-    position: [5600, -400]
+    position: [1600, -400]
     inputs:
     - switch_glitch
     - edge_fx
-  - name: displace_melt
-    type: displaceTOP
-    parameters:
-      vertsource: red
-      midpointx: 0
-      midpointy: 0
-      displaceweightx: 0
-      displaceweighty: =-0.004 * op('live')['melt']
-      format: rgba16float
-    position: [7200, -400]
-    inputs:
-    - fb_melt
-    - level_melt
   - name: switch_glitch
     type: switchTOP
     parameters:
       index: =int(op('live')['glitch'] > 0.001)
-    position: [4400, 0]
-    inputs:
-    - switch_blur
-    - glsl_glitch
-  - name: switch_trails
-    type: switchTOP
-    parameters:
-      index: =int(op('live')['trails'] > 0.001)
-    position: [2800, 0]
+    position: [800, 0]
     inputs:
     - in1
-    - null_trails
+    - glsl_glitch
   - name: switch_outline
     type: switchTOP
     parameters:
       index: =int(op('live')['outline'] > 0.001)
-    position: [6000, 0]
+    position: [2000, 0]
     inputs:
     - switch_glitch
     - cross_outline
@@ -5242,7 +4897,7 @@ operators:
       op: glsl_glitch
     flags:
     - viewer
-    position: [4150, -520]
+    position: [550, -520]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
     dock: glsl_glitch
@@ -5254,18 +4909,28 @@ operators:
       extension: frag
     flags:
     - viewer
-    position: [4000, -520]
+    position: [400, -520]
     color: [0.67, 0.67, 0.67]
     dock: glsl_glitch
     dat_content: "// Glitch: horizontal bands jump sideways and split into red, green and blue.\n// uGlitch.x amount 0-1, .y time in seconds, .z number of bands.\nuniform vec4 uGlitch;\nlayout(location = 0) out vec4 fragColor;\n\nfloat hash(float n) { return fract(sin(n) * 43758.5453); }\n\nvec4 pick(vec2 uv) { return texture(sTD2DInputs[0], vec2(fract(uv.x), uv.y)); }\n\nvoid main() {\n\tvec2 uv = vUV.st;\n\tfloat amount = uGlitch.x;\n\tfloat band = floor(uv.y * uGlitch.z);\n\tfloat tick = floor(uGlitch.y * 12.0);           // new pattern 12 times a second\n\tfloat chosen = step(1.0 - amount * 0.7, hash(band * 13.1 + tick * 7.7));\n\tfloat shift = (hash(band * 3.7 + tick * 1.3) * 2.0 - 1.0) * 0.3 * amount * chosen;\n\tfloat split = 0.02 * amount * chosen;\n\tvec4 c = pick(uv + vec2(shift, 0.0));\n\tc.r = pick(uv + vec2(shift + split, 0.0)).r;\n\tc.b = pick(uv + vec2(shift - split, 0.0)).b;\n\tfragColor = TDOutputSwizzle(c);\n}\n"
     dat_content_format: text
+  - name: glsl_glitch_compute
+    type: textDAT
+    parameters:
+      language: glsl
+    flags:
+    - viewer
+    - -showDocked
+    position: [320, -120]
+    color: [0.67, 0.67, 0.67]
+    dock: glsl_glitch
   annotations:
   - name: annotate1
     mode: annotate
     title: Master effects on the whole picture
-    text: 'in1 -> Trails (the old Video Feedback: echo, zoom, warp, colour) -> Blur -> Glitch (GLSL bands) -> Outline (edges) -> Melt -> out1. Amounts come from master_live (Visuals Master page, mappings, MIDI, connections). Each effect has a switch: at 0 it is skipped and does not cook. fx_reset restarts Trails and Melt from the live picture when they come on.'
-    position: [-100, -1100]
-    size: [9100, 1400]
+    text: 'Whole-picture effects, each skipped by its Switch TOP while 0 (values from ../master_live): Glitch (glsl_glitch: bands slide sideways, colours split) and Outline (edges crossed over the picture). Trails moved back to the Camera instrument (Echo: Whole Picture); Blur and Melt were removed.'
+    position: [-100, -800]
+    size: [2800, 1100]
     color: [0.45, 0.45, 0.45]
 - name: particles
   type: baseCOMP
@@ -5785,6 +5450,30 @@ operators:
     position: [4800, 0]
     inputs:
     - comp_glow
+  - name: ramp_palette_keys
+    type: tableDAT
+    flags:
+    - viewer
+    - -showDocked
+    position: [0, -120]
+    dock: ramp_palette
+    dat_content:
+    - - pos
+      - r
+      - g
+      - b
+      - a
+    - - '0'
+      - '0'
+      - '0'
+      - '0'
+      - '1'
+    - - '1'
+      - '1'
+      - '1'
+      - '1'
+      - '1'
+    dat_content_format: table
   annotations:
   - name: annotate1
     mode: annotate

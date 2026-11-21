@@ -212,12 +212,11 @@ class GatedEffects(unittest.TestCase):
 	"""Whole-picture effects act only while something drives them."""
 
 	def test_undriven_effects_are_off(self):
-		base = {'master.trails': 0.7, 'master.blur': 0.5, 'master.saturation': 1.5, 'master.trailszoom': 0.3}
-		out = sl.gateEffects(dict(base), {'master.blur'})
-		self.assertEqual(out['master.trails'], 0.0)
-		self.assertEqual(out['master.blur'], 0.5)
+		base = {'master.glitch': 0.7, 'master.outline': 0.5, 'master.saturation': 1.5}
+		out = sl.gateEffects(dict(base), {'master.outline'})
+		self.assertEqual(out['master.glitch'], 0.0)
+		self.assertEqual(out['master.outline'], 0.5)
 		self.assertEqual(out['master.saturation'], 1.5)
-		self.assertEqual(out['master.trailszoom'], 0.3)
 
 
 if __name__ == '__main__':

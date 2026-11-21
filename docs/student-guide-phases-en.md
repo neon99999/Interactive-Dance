@@ -53,7 +53,7 @@ The phase changes after a short time (less than half a second). When you type a 
 
 1. Set **Phase** to **Phase 1**.
 2. Click **Composition**. Set **On** of each instrument that you want. Set the other instruments to **Off**.
-3. For **Media**, type or choose a **Folder** with pictures and videos.
+3. For **Media**, click **Choose Folder...** and select a folder with pictures and videos.
 4. Set **Phase** to **Phase 2** (or push **2**). Phase 2 starts as a copy of phase 1. Change it.
 5. Push **1**, then **2**. The look changes each time.
 
@@ -133,10 +133,10 @@ Tip: "Turn the wrist" does not work well when the arm points straight down or st
 
 | Instrument | One-time actions (moments) | Controls (movements) |
 |---|---|---|
-| Whole picture | Burst of Brightness, Saturation, Trails, Blur, Glitch, Outline, Melt, Flash | The same settings |
+| Whole picture | Burst of Brightness, Saturation, Glitch, Outline, Flash | The same settings |
 | Trigger Shape | Pulse (grow), Spin, More sides, Jump, Flash colour | Size, position, rotation ... |
 | Media | Play from the start, Next file, Random file | Position in the video, Opacity |
-| Colour Tiles | Shuffle the colours | Scroll speed, Edge size ... |
+| Colour Tiles | Shuffle the colours | Gap, Scroll speed, Opacity |
 | Particles, Noise, Camera | Burst of a setting | Each setting |
 
 ## 5. Save your work

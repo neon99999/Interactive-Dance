@@ -26,8 +26,7 @@ LAYER_PARS = {'visible': 'Visible', 'opacity': 'Opacity', 'red': 'Colorr', 'gree
 			  'blue': 'Colorb', 'scale': 'Scale', 'x': 'X', 'y': 'Y', 'rotate': 'Rotate',
 			  'content': 'Content', 'effect': 'Effect'}
 MASTER_PARS = {'level': 'Level', 'blackout': 'Blackout', 'flash': 'Flash', 'saturation': 'Saturation',
-			   'trails': 'Trails', 'trailszoom': 'Trailszoom', 'trailswarp': 'Trailswarp', 'trailscolour': 'Trailscolour',
-			   'blur': 'Blur', 'glitch': 'Glitch', 'outline': 'Outline', 'melt': 'Melt'}
+			   'glitch': 'Glitch', 'outline': 'Outline'}
 
 _midi = {'key': None, 'events': [], 'errors': []}
 _inputs = {'key': None, 'assignments': [], 'errors': []}

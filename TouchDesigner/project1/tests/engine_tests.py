@@ -197,22 +197,28 @@ def _backupTables():
 
 
 def _backupMappings():
-	"""Save the mapping page and the language, then empty every preset."""
+	"""Save the mapping page and the language, then empty every preset and its triggers.
+
+	A phase's triggers win over its mapping slots (one connection each), so the slot tests need them empty.
+	"""
 	mappings = op.Mappings
-	_mappingsBackup['presets'] = [[c.val for c in row] for row in mappings.op('presets').rows()]
+	for name in ('presets', 'trigger_presets'):
+		_mappingsBackup[name] = [[c.val for c in row] for row in mappings.op(name).rows()]
 	_mappingsBackup['pars'] = {name: mappings.par[name].eval() for name in ('Preset', 'Followmidi')}
 	_mappingsBackup['language'] = op.Lang.par['Language'].eval()
 	logic = mappings.op('mapping_logic').module
 	mappings.ext.Mappings._writePresets({p: logic.emptySlots() for p in logic.PRESETS})
+	mappings.ext.Mappings._writeTriggerPresets({p: logic.emptyTriggers() for p in logic.PRESETS})
 	mappings.LoadPreset()
 
 
 def _restoreMappings():
 	mappings = op.Mappings
-	table = mappings.op('presets')
-	table.clear()
-	for row in _mappingsBackup.get('presets', []):
-		table.appendRow(row)
+	for name in ('presets', 'trigger_presets'):
+		table = mappings.op(name)
+		table.clear()
+		for row in _mappingsBackup.get(name, []):
+			table.appendRow(row)
 	pars = _mappingsBackup.get('pars', {})
 	for name, value in pars.items():
 		mappings.par[name] = value

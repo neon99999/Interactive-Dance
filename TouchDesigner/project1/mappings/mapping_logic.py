@@ -358,6 +358,8 @@ INSTRUMENT_ACTIONS = {
 NO_BURST = ('visible', 'preset', 'echo', 'source', 'playback', 'fit', 'orientation', 'edgeshape',
 	'cycle', 'shuffle', 'matchends', 'randomdir', 'blackout', 'content', 'effect', 'strips', 'fade')
 BURST_DEFAULT = 0.5  # of the setting's range
+# Instruments whose connections offer only some settings (the rest stay on the Instruments tab).
+CONNECTION_SETTINGS = {'tiles': ('opacity', 'scrollspeed', 'tilegap')}
 
 
 def connectionInputs(source):
@@ -380,6 +382,8 @@ def inputKinds(name):
 def doesOptions(instrument, kinds, settings):
 	"""The Does values for an instrument and the input's kinds: actions, bursts, then controls."""
 	found = []
+	if instrument in CONNECTION_SETTINGS:
+		settings = [s for s in settings if s in CONNECTION_SETTINGS[instrument]]
 	if 'moment' in kinds:
 		found += list(INSTRUMENT_ACTIONS.get(instrument, ()))
 		found += ['burst:' + s for s in settings if s not in NO_BURST]

@@ -29,6 +29,12 @@ LEVELS = {'basic': 1, 'advanced': 99}
 OWN = ('Mode',)                       # the panel's own setting, never rebuilt
 OWN_PAGE = {'Mode': 'show'}
 KEEP_PAGES = ('About',)                # Embody's build info, kept last
+# Parameters that change by themselves (status lines, the playback position)
+# are copied, not bound: the panel redraws whenever a shown value changes,
+# and a redraw of the stage panel costs tens of ms, so a value that changes
+# every frame cut the frame rate in half. refreshStatus() copies them a few
+# times a second, and only when the text changed.
+COPY_PARS = (('transport', 'Position'),)  # (component, parameter)
 
 
 class ControlExt:
@@ -36,6 +42,7 @@ class ControlExt:
 
 	def __init__(self, ownerComp: COMP) -> None:
 		self.ownerComp = ownerComp
+		self._copies = None  # [(panel par name, source Par)], made by refreshStatus, reset by Rebuild
 
 	def onDestroyTD(self) -> None:
 		pass
@@ -51,6 +58,7 @@ class ControlExt:
 		destroying hundreds of parameters took several seconds.
 		"""
 		comp = self.ownerComp
+		self._copies = None
 		shown = self._shownPageKey()
 		pages = {}
 		for key in PAGES:
@@ -195,6 +203,8 @@ class ControlExt:
 			par = page.appendFloat(name, label=source.label)[0]
 		elif style == 'File':
 			par = page.appendFile(name, label=source.label)[0]
+		elif style == 'Folder':
+			par = page.appendFolder(name, label=source.label)[0]
 		else:
 			par = page.appendStr(name, label=source.label)[0]
 		if style in ('Int', 'Float'):
@@ -205,11 +215,38 @@ class ControlExt:
 		par.enable = source.enable
 		if style != 'Pulse':
 			par.default = source.default
-			par.bindExpr = path
-			par.mode = ParMode.BIND
-			if source.readOnly:
+			if self._isCopy(source):
+				par.val = source.eval()
 				par.readOnly = True
+			else:
+				par.bindExpr = path
+				par.mode = ParMode.BIND
+				if source.readOnly:
+					par.readOnly = True
 		return par
+
+	def _isCopy(self, source: Par) -> bool:
+		"""True for a parameter that changes by itself (copied a few times a second, not bound)."""
+		return source.readOnly or (source.owner.name, source.name) in COPY_PARS
+
+	def refreshStatus(self) -> None:
+		"""Copy the status lines and the playback position into the panel, only where they changed."""
+		comp = self.ownerComp
+		if self._copies is None:
+			self._copies = []
+			for row in self.rows():
+				source = self.sourcePar(row)
+				if source is not None and self._isCopy(source):
+					self._copies.append((self._name(row['page'], row['comp'], row['par']), source))
+		for name, source in self._copies:
+			par = comp.par[name]
+			if par is None or par.mode != ParMode.CONSTANT or not source.valid:
+				continue
+			value = source.eval()
+			if isinstance(value, float):
+				value = round(value, 1)
+			if par.eval() != value:
+				par.val = value
 
 	def _copyMenu(self, par: Par, source: Par, path: str) -> None:
 		"""Give a panel menu its source's entries.
@@ -233,6 +270,15 @@ class ControlExt:
 
 	def _matchSource(self, par: Par, source: Par) -> None:
 		"""Update a kept control where it differs from its source (labels and menus follow the Language)."""
+		if self._isCopy(source) and par.mode == ParMode.BIND:
+			# Unbinding can write through to the source and turn its expression into a constant: keep it.
+			mode, expr = source.mode, source.expr
+			par.mode = ParMode.CONSTANT
+			par.bindExpr = ''
+			par.readOnly = True
+			if mode == ParMode.EXPRESSION and source.mode != ParMode.EXPRESSION:
+				source.expr = expr
+				source.mode = ParMode.EXPRESSION
 		if par.label != source.label:
 			par.label = source.label
 		if par.help != source.help:

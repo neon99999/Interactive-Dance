@@ -16,14 +16,8 @@ show	output	visuals	Level	1
 show	output	visuals	Blackout	1
 show	output	visuals	Saturation	1
 show	output	visuals	Flash	0
-show	effects	visuals	Trails	0
-show	effects	visuals	Trailszoom	0
-show	effects	visuals	Trailswarp	0
-show	effects	visuals	Trailscolour	0
-show	effects	visuals	Blur	0
 show	effects	visuals	Glitch	0
 show	effects	visuals	Outline	0
-show	effects	visuals	Melt	0
 phases	phases	phases	Phase	1
 phases	phases	phases	Phasenote	1
 phases	phases	phases	Followmidi	1
@@ -94,6 +88,7 @@ instruments	trigger	visuals/trigger	Flashcolour	0
 instruments	trigger	visuals/trigger	Flash	0
 composition	media	visuals/media	Visible	1
 composition	media	visuals/media	Folder	1
+composition	media	visuals/media	Choosefolder	1
 composition	media	visuals/media	Opacity	0
 composition	video	visuals/video	Visible	1
 composition	video	visuals/video	Opacity	0

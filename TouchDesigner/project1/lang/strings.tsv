@@ -321,8 +321,8 @@ visuals/video.Preset.help	A starting look: Clean (the image, lightly echoed), Ec
 visuals/video.Reset.label	Reset to Preset	Volver al preset
 visuals/video.Reset.help	Put the five settings back to the chosen preset.	Devuelve los cinco controles al preset elegido.
 visuals/video.Echo.label	Echo	Origen del eco
-visuals/video.Echo.menu	Off|Auto|Dancer|Movement	Apagado|Auto|Bailarín|Movimiento
-visuals/video.Echo.help	What leaves trails. Off: the plain camera picture. Dancer: only the dancer repeats (needs body tracking with Body Mask on). Movement: only what moves repeats. Auto: Dancer when available, otherwise Movement. For trails of the whole picture use the Trails effect.	Qué deja estelas. Apagado: la imagen limpia de la cámara. Bailarín: solo se repite el bailarín (necesita el seguimiento del cuerpo con Máscara del cuerpo encendida). Movimiento: solo se repite lo que se mueve. Auto: Bailarín cuando está disponible; si no, Movimiento. Para estelas de toda la imagen usa el efecto Estelas.
+visuals/video.Echo.menu	Off|Auto|Dancer|Movement|Whole Picture	Apagado|Auto|Bailarín|Movimiento|Imagen completa
+visuals/video.Echo.help	What leaves trails. Off: the plain camera picture. Dancer: only the dancer repeats (needs body tracking with Body Mask on). Movement: only what moves repeats. Whole Picture: classic video feedback, the whole picture fed back into itself. Auto: Dancer when available, otherwise Movement. Feedback, Zoom, Distortion and Colour shape the trails.	Qué deja estelas. Apagado: la imagen limpia de la cámara. Bailarín: solo se repite el bailarín (necesita el seguimiento del cuerpo con Máscara del cuerpo encendida). Movimiento: solo se repite lo que se mueve. Imagen completa: el video eco clásico, toda la imagen realimentada en sí misma. Auto: Bailarín cuando está disponible; si no, Movimiento. Eco, Zoom, Distorsión y Color dan forma a las estelas.
 visuals/video.Feedback.label	Feedback	Eco
 visuals/video.Feedback.help	How long the image echoes: 0 = no echo, 1 = very long trails.	Cuánto dura el eco de la imagen: 0 = sin eco, 1 = estelas muy largas.
 visuals/video.Zoom.label	Zoom	Zoom
@@ -800,30 +800,12 @@ does.count.restartcount	Play from the start	Reproducir desde el inicio
 does.count.nextcount	Next file	Archivo siguiente
 does.count.randomcount	Random file	Archivo al azar
 does.count.shufflecount	Shuffle the colours	Mezclar los colores
-visuals.Trails.label	Trails	Estelas
-visuals.Trails.help	Whole-picture trails (the old Video Feedback): 0 = off, 1 = very long trails. Acts only while a connection (or a MIDI row) drives it.	Estelas de toda la imagen (el antiguo Video eco): 0 = apagado, 1 = estelas muy largas. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
-target.master.trails	Trails	Estelas
-visuals.Trailszoom.label	Trails zoom	Zoom de estelas
-visuals.Trailszoom.help	Trails grow outward (above 0) or shrink inward (below 0).	Las estelas crecen hacia afuera (mayor que 0) o se encogen hacia adentro (menor que 0).
-target.master.trailszoom	Trails zoom	Zoom de estelas
-visuals.Trailswarp.label	Trails warp	Distorsión de estelas
-visuals.Trailswarp.help	How much the trails ripple and turn: 0 = straight, 1 = melting.	Cuánto se ondulan y giran las estelas: 0 = rectas, 1 = derretidas.
-target.master.trailswarp	Trails warp	Distorsión de estelas
-visuals.Trailscolour.label	Trails colour	Color de estelas
-visuals.Trailscolour.help	Trails shift through the colours: 0 = natural colour, 1 = rainbow.	Las estelas cambian de color: 0 = color natural, 1 = arcoíris.
-target.master.trailscolour	Trails colour	Color de estelas
-visuals.Blur.label	Blur	Desenfoque
-visuals.Blur.help	Blur of the whole picture: 0 = sharp, 1 = very soft. Acts only while a connection (or a MIDI row) drives it.	Desenfoque de toda la imagen: 0 = nítido, 1 = muy suave. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
-target.master.blur	Blur	Desenfoque
 visuals.Glitch.label	Glitch	Glitch
 visuals.Glitch.help	Bands slide sideways and the colours split: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.	Franjas que se desplazan y colores que se separan: 0 = apagado, 1 = fuerte. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.glitch	Glitch	Glitch
 visuals.Outline.label	Outline	Contorno
 visuals.Outline.help	Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.	Muestra solo los bordes: 0 = apagado, 1 = solo contornos. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
 target.master.outline	Outline	Contorno
-visuals.Melt.label	Melt	Derretir
-visuals.Melt.help	The picture slides down, dark parts first: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.	La imagen se escurre hacia abajo, primero las partes oscuras: 0 = apagado, 1 = fuerte. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
-target.master.melt	Melt	Derretir
 visuals/media.Visible.label	On	Encendido
 visuals/media.Visible.help	Show the pictures and videos.	Muestra las fotos y los videos.
 visuals/media.Folder.label	Folder	Carpeta
@@ -911,3 +893,5 @@ mappings.Con4note.label	4 Note	4 Nota
 mappings.Con4note.help	The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.	El número de nota MIDI (0-127) cuando la Entrada es una nota de la canción. midi_monitor muestra los números mientras suena la canción.
 mappings.Con4amount.label	4 Amount	4 Cantidad
 mappings.Con4amount.help	How much, for a moment: how far a burst jumps, how far the shape jumps or spins.	Cuánto, para un momento: cuánto salta un golpe, cuánto salta o gira la figura.
+visuals/media.Choosefolder.label	Choose Folder...	Elegir carpeta...
+visuals/media.Choosefolder.help	Open a window to pick the folder of pictures and videos.	Abre una ventana para elegir la carpeta de fotos y videos.

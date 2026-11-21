@@ -48,7 +48,7 @@ Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()`
 
 | Tab | What is on it |
 |---|---|
-| **Show** | Level (Basic, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout); Advanced adds the whole-picture effects (Trails, Blur, Glitch, Outline, Melt) |
+| **Show** | Level (Basic, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout); Advanced adds the whole-picture effects (Glitch, Outline) |
 | **Phases** | The 10 phases of the piece, the note that starts each one, Save Show / Load Show (see **phases** below) |
 | **Instruments** | Advanced only. One section per instrument (Particles, Camera, Noise, Colour Tiles, Media, Trigger Shape): Preset, Reset to Preset and sliders; Camera also its source and Status |
 | **Composition** | Every instrument's On (Basic) and Opacity (Advanced), and the Media folder: what is in the picture (the stacking order is fixed). Shapes is Advanced only |
@@ -314,16 +314,12 @@ The output is made of **visual instruments**: Particles, Camera, Noise, Colour T
 
 The order is fixed, back to front: Media, Camera, Noise, Colour Tiles, Particles, Shapes, Trigger Shape. Each is laid **over** the ones below with its own alpha (Particles and Noise make their dark parts transparent), so the layers below show through. On and Opacity are mapping and MIDI targets too (`video.opacity` ...), and presets and Reset leave them alone. Up to four instruments show at once (the top four). After the compositor come the whole-picture effects (`visuals/master_fx`), then the master **Level**, **Saturation** (0 grey, 1 normal, 2 strong; target `master.saturation`), **Blackout** and **Flash**, then the output window as before.
 
-**Whole-picture effects** (visuals Master page; control panel, Show tab, Advanced). Each is off at 0 and costs nothing then (a Switch TOP skips it). Targets `master.<name>`, so a connection can control one with a movement or burst it with a moment.
+**Whole-picture effects** (visuals Master page; control panel, Show tab, Advanced). Each is off at 0 and costs nothing then (a Switch TOP skips it). An effect acts only while a connection (or a MIDI or input-table row) drives it; the slider alone does nothing, so an effect never stays on after its connection changes. Targets `master.<name>`, so a connection can control one with a movement or burst it with a moment. Trails are on the Camera instrument (Echo: Whole Picture).
 
 | Setting | What it does |
 |---|---|
-| **Trails** | The old Video Feedback on the whole picture: 0 off, 1 very long trails |
-| **Trails Zoom** / **Warp** / **Colour** | The trails grow outward (below 0: inward), ripple and turn, shift through the colours |
-| **Blur** | 0 sharp, 1 very soft |
 | **Glitch** | Bands slide sideways and the colours split (GLSL) |
 | **Outline** | Mixes towards the edges only |
-| **Melt** | The picture slides down, dark parts first, and slowly refreshes |
 
 
 **Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default) and Opacity only; the layers keep their own settings and MIDI targets (`layer1.red` ...).
@@ -358,16 +354,16 @@ The triggers (mapping page, above) act on these settings on top of everything el
 
 Mapping targets: Particles: energy, spread, turbulence, size, colour, trails, on (`particles.energy` ...). The presets are in `particles/presets` (one row per setting, one column per preset): edit a cell to change a preset.
 
-**Camera** (`visuals/video`; was Video Feedback): the webcam picture, with an optional echo of the dancer or of what moves. Off by default. Whole-picture trails are now the **Trails** effect (above).
+**Camera** (`visuals/video`; was Video Feedback): the webcam picture, with an optional echo (trails) of the dancer, of what moves, or of the whole picture. Off by default.
 
 | Setting | What it does |
 |---|---|
-| **Echo** | **Off** (the plain picture), **Auto** (default: Dancer when available, otherwise Movement), **Dancer** (only the dancer repeats), **Movement** (only what moves repeats) |
-| **Preset**, **Feedback**, **Zoom**, **Distortion**, **Colour** | The echo's look and length, as before |
+| **Echo** | **Off** (the plain picture), **Auto** (default: Dancer when available, otherwise Movement), **Dancer** (only the dancer repeats), **Movement** (only what moves repeats), **Whole Picture** (classic video feedback: the whole picture fed back into itself) |
+| **Preset**, **Feedback**, **Zoom**, **Distortion**, **Colour** | The echo's length, zoom (grow outward), distortion (ripple and turn) and colour shift, in every Echo mode |
 
 **Source** page: **Source** Webcam / Test Pattern and a read-only **Status**. Webcam never opens a camera itself: with **inputs > Webcam > Use** on Body Tracking it uses MediaPipe's image, on Movement Only the camera_in picture. **Dancer** needs **Body Mask** (Pose page) on. Targets `video.<setting>`.
 
-**Colour Tiles** (`visuals/tiles`, from the ProjectionRig `scenes/scene_tiles.tox`): scrolling strips of colour tiles with shaped edges. Colour 1-5 are kept per phase (no palette menu). Movements control Scroll Speed, Edge Size and the other sliders (`tiles.scrollspeed` ...); the moment **Shuffle the colours** re-deals the colours (counter `tiles.shufflecount`).
+**Colour Tiles** (`visuals/tiles`, from the ProjectionRig `scenes/scene_tiles.tox`): scrolling strips of colour tiles with shaped edges. Colour 1-5 are kept per phase (no palette menu). Connections offer only Tile Gap, Scroll Speed and Opacity (`tiles.tilegap`, `tiles.scrollspeed`, `tiles.opacity`; list in `mapping_logic.CONNECTION_SETTINGS`); the other settings stay on the Instruments tab; the moment **Shuffle the colours** re-deals the colours (counter `tiles.shufflecount`).
 
 **Media** (`visuals/media`): the pictures and videos of one folder (sub-folders too) or one file.
 

@@ -18,8 +18,7 @@ TRIGGER_DEFAULT_S = 0.2
 LAYER_DEFAULTS = {'visible': 0.0, 'opacity': 1.0, 'red': 1.0, 'green': 1.0, 'blue': 1.0,
 				  'scale': 1.0, 'x': 0.0, 'y': 0.0, 'rotate': 0.0, 'content': 0.0, 'effect': 0.0}
 MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0, 'saturation': 1.0,
-				   'trails': 0.0, 'trailszoom': 0.0, 'trailswarp': 0.0, 'trailscolour': 0.0,
-				   'blur': 0.0, 'glitch': 0.0, 'outline': 0.0, 'melt': 0.0}
+	'glitch': 0.0, 'outline': 0.0}
 # Show controls that are not visuals. mapping.preset: a MIDI 'set' to 1-4
 # switches the mapping page to preset A-D at that moment of the song (0 = no
 # switch yet). Like every value it is replayed from the timeline, so seeking
@@ -32,9 +31,8 @@ MASTER_PARAMS = tuple(MASTER_DEFAULTS)
 # Whole-picture effects act only while something drives them (a connection,
 # an input-table row or a MIDI row): otherwise they are off, whatever their
 # slider says, so an effect never stays on after its connection moved on.
-# Bursts (moments) add on top later. The Trails zoom/warp/colour settings
-# only shape Trails, so they keep their values.
-GATED_EFFECTS = ('trails', 'blur', 'glitch', 'outline', 'melt')
+# Bursts (moments) add on top later.
+GATED_EFFECTS = ('glitch', 'outline')
 
 
 def gateEffects(base, controlled):

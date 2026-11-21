@@ -53,7 +53,6 @@ custom_pars:
     label: Position (s)
     readOnly: true
     help: Current shared playback position in seconds (read-only).
-    value: ~me.parent().op('transport').par.Position
   - name: Showtransportaudiofile
     style: File
     label: Audio File
@@ -182,7 +181,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: ~me.parent().op('phases').par.Showstatus
+    value: Restored autosave
   Composition:
   - name: Hcompmedia
     style: Header
@@ -193,10 +192,14 @@ custom_pars:
     help: Show the pictures and videos.
     value: ~me.parent().op('visuals/media').par.Visible
   - name: Compmediafolder
-    style: Str
+    style: Folder
     label: Folder
     help: A folder of pictures and videos (sub-folders too), or one file.
     value: ~me.parent().op('visuals/media').par.Folder
+  - name: Compmediachoosefolder
+    style: Pulse
+    label: Choose Folder...
+    help: Open a window to pick the folder of pictures and videos.
   - name: Hcompvideo
     style: Header
     label: Camera
@@ -477,7 +480,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
-    value: ~me.parent().op('inputs').par.Webcamstatus
+    value: 'Off: the webcam is not used.'
   - name: Hinpuwearables
     style: Header
     label: Wearables
@@ -491,7 +494,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: 'What Read Serial is doing now. A missing port or a Bluetooth port is never opened (either froze TouchDesigner), so a wrong Port is safe: pick the receiver and reading starts within a second.'
-    value: ~me.parent().op('inputs').par.Serialstatus
+    value: 'Off'
 parameters:
   parentshortcut: Control
   opshortcut: Control
@@ -517,7 +520,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 178
+    rows: 173
     cols: 5
   position: [0, -200]
   size: [130, 90]
@@ -539,7 +542,7 @@ operators:
   parameters:
     fromop: =parent()
     op: ..
-    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasessaveshow Phasphasesloadshow
+    pars: Mode Showtransportreset Showvisualsopenwindow Showvisualsclosewindow Phasphasessaveshow Phasphasesloadshow Compmediachoosefolder
     builtin: false
     file: project1/control/control_pulses.py
     syncfile: true
@@ -548,6 +551,16 @@ operators:
   color: [0.9, 0.3, 0.4]
   tags:
   - py
+- name: status_refresh
+  type: executeDAT
+  parameters:
+    fromop: =parent()
+    framestart: true
+  position: [0, -600]
+  size: [130, 90]
+  color: [0.67, 0.67, 0.67]
+  dat_content: "\"\"\"status_refresh: copies the panel's status lines and playback position a few times a second (ControlExt.refreshStatus).\"\"\"\n\n\ndef onFrameStart(frame):\n\tif frame % 15 == 0:\n\t\top.Control.ext.Control.refreshStatus()\n"
+  dat_content_format: text
 annotations:
 - name: annotate1
   mode: annotate

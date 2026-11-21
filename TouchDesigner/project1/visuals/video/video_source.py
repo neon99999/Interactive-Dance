@@ -14,15 +14,17 @@ Echo menu (Instrument page): what leaves trails.
   body tracking on (inputs > Webcam > Use: Body Tracking, Body Mask on).
 - Movement: only what moves repeats (this frame compared with the last one).
 - Auto: Dancer when it is available, otherwise Movement.
-Whole-picture echo is the master effect Trails (visuals/master_fx).
+- Whole Picture: classic video feedback, the whole picture fed back into
+  itself. Feedback (length), Zoom, Distortion and Colour shape the trails
+  in every mode.
 """
 
 import os
 
 POSE, CAMERA, TEST = 0, 1, 2
-# Echo results: index for switch_mask (DANCER, MOVEMENT); OFF shows the plain picture.
-DANCER, MOVEMENT, OFF = 0, 1, 2
-ECHO_MENU = ('off', 'auto', 'dancer', 'movement')
+# Echo results: index for switch_mask (DANCER, MOVEMENT, WHOLE: white_mask); OFF shows the plain picture.
+DANCER, MOVEMENT, WHOLE, OFF = 0, 1, 2, 3
+ECHO_MENU = ('off', 'auto', 'dancer', 'movement', 'whole')
 
 
 def _inputs():
@@ -56,6 +58,8 @@ def echoMode(frame=0):
 	choice = ECHO_MENU[max(0, min(index, len(ECHO_MENU) - 1))]
 	if choice == 'off':
 		return OFF
+	if choice == 'whole':
+		return WHOLE
 	if choice in ('auto', 'dancer') and hasBodyMask():
 		return DANCER
 	return MOVEMENT
@@ -68,7 +72,7 @@ def mix(frame=0):
 
 def statusText(frame=0):
 	"""The Source page's Status line: the picture in use, then what echoes."""
-	echo = {DANCER: 'Echo: dancer', MOVEMENT: 'Echo: movement', OFF: 'Echo: off'}[echoMode()]
+	echo = {DANCER: 'Echo: dancer', MOVEMENT: 'Echo: movement', WHOLE: 'Echo: whole picture', OFF: 'Echo: off'}[echoMode()]
 	return _sourceText().rstrip('.') + '. ' + echo
 
 

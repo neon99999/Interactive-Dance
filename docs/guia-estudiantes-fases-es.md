@@ -53,7 +53,7 @@ La fase cambia después de un momento corto (menos de medio segundo). Cuando esc
 
 1. Pon **Fase** en **Fase 1**.
 2. Haz clic en **Composición**. Pon **Encendido** en cada instrumento que quieres. Apaga los otros instrumentos.
-3. Para **Medios**, escribe o elige una **Carpeta** con fotos y videos.
+3. Para **Medios**, haz clic en **Elegir carpeta...** y elige una carpeta con fotos y videos.
 4. Pon **Fase** en **Fase 2** (o presiona **2**). La fase 2 empieza como copia de la fase 1. Cámbiala.
 5. Presiona **1** y luego **2**. El aspecto cambia cada vez.
 
@@ -133,10 +133,10 @@ Consejo: "Girar la muñeca" no funciona bien cuando el brazo apunta recto hacia 
 
 | Instrumento | Acciones de una vez (momentos) | Controla (movimientos) |
 |---|---|---|
-| Toda la imagen | Impulso de Brillo, Saturación, Estelas, Desenfoque, Glitch, Contorno, Derretir, Destello | Los mismos ajustes |
+| Toda la imagen | Impulso de Brillo, Saturación, Glitch, Contorno, Destello | Los mismos ajustes |
 | Figura con disparadores | Pulso (crecer), Girar, Más lados, Saltar, Destello de color | Tamaño, posición, giro ... |
 | Medios | Reproducir desde el inicio, Archivo siguiente, Archivo al azar | Posición en el video, Opacidad |
-| Franjas de color | Mezclar los colores | Velocidad, tamaño del borde ... |
+| Franjas de color | Mezclar los colores | Separación, Velocidad, Opacidad |
 | Partículas, Ruido, Cámara | Impulso de un ajuste | Cada ajuste |
 
 ## 5. Guarda tu trabajo
