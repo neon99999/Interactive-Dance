@@ -11,6 +11,8 @@ type_defaults:
   baseCOMP:
     size: [160, 130]
   blurTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   channelmixTOP:
@@ -19,6 +21,7 @@ type_defaults:
       alpha2: 1
       alpha3: 1
       alpha4: 0
+      filtertype: linear
       format: rgba8fixed
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -30,10 +33,13 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantCHOP:
@@ -44,18 +50,24 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   constantTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   crossTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   displaceTOP:
     parameters:
+      filtertype: linear
       offsetweight: =1 - me.par.uvweight.eval()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   edgeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   executeDAT:
@@ -63,30 +75,42 @@ type_defaults:
       fromop: =parent()
     size: [130, 90]
   feedbackTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   fitTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   hsvadjustTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   lookupTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   monochromeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   moviefileinTOP:
     parameters:
+      filtertype: linear
       timecodeop: =tdu.Timecode()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   noiseTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -96,10 +120,13 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   nullTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   outTOP:
     parameters:
+      filtertype: linear
       label: =me.name
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -110,11 +137,13 @@ type_defaults:
     size: [130, 90]
   rampTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   rectangleTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
       resolutionh: =parent.Visuals.par.Resolution2
       resolutionw: =parent.Visuals.par.Resolution1
@@ -126,6 +155,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   selectTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   speedCHOP:
@@ -134,6 +165,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   switchTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   tableDAT:
@@ -145,6 +178,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   transformTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -258,11 +293,6 @@ custom_pars:
     clampMin: true
     clampMax: true
     help: 'Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.'
-  - name: Melt
-    style: Float
-    clampMin: true
-    clampMax: true
-    help: 'The picture slides down, dark parts first: 0 = off, 1 = strong.'
   Output:
   - name: Openwindow
     style: Pulse
@@ -338,72 +368,7 @@ operators:
     - name: Clip
       style: StrMenu
       label: File
-      menuNames:
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen10.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen11.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen12.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen13.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen14.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen15.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen16.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen19.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen20.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen21.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen23.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen24.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen25.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen26.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen27.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen28.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen29.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen3.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen30.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen31.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen32.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen33.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen34.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen35.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen4.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen5.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen6.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen7.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen8.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen9.png
-      menuLabels:
-      - Imagen1.png
-      - Imagen10.png
-      - Imagen11.png
-      - Imagen12.png
-      - Imagen13.png
-      - Imagen14.png
-      - Imagen15.png
-      - Imagen16.png
-      - Imagen19.png
-      - Imagen20.png
-      - Imagen21.png
-      - Imagen22.png
-      - Imagen23.png
-      - Imagen24.png
-      - Imagen25.png
-      - Imagen26.png
-      - Imagen27.png
-      - Imagen28.png
-      - Imagen29.png
-      - Imagen3.png
-      - Imagen30.png
-      - Imagen31.png
-      - Imagen32.png
-      - Imagen33.png
-      - Imagen34.png
-      - Imagen35.png
-      - Imagen4.png
-      - Imagen5.png
-      - Imagen6.png
-      - Imagen7.png
-      - Imagen8.png
-      - Imagen9.png
+      menuNames: []
       help: The file shown now.
       value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
     - name: Playback
@@ -444,24 +409,6 @@ operators:
       - Stretch
       help: How the picture fills the screen.
       value: inside
-    - name: Repeat
-      style: Int
-      default: 1
-      min: 1.0
-      max: 8.0
-      clampMin: true
-      clampMax: true
-      normMin: 1.0
-      normMax: 8.0
-      help: How many copies of the picture side by side. 1 = off (one picture).
-      value: 4
-    - name: Repeatspacing
-      style: Float
-      label: Repeat Spacing
-      default: 0.25
-      clampMin: true
-      normMax: 0.5
-      help: Distance between the copies, as a part of the screen width.
     - name: Refresh
       style: Pulse
       help: Read the folder again.
@@ -473,7 +420,6 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
-      filtertype: nearest
     flags:
     - viewer
     position: [-50, 25]
@@ -484,7 +430,6 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
-      filtertype: nearest
     flags:
     - viewer
     position: [-50, -100]
@@ -510,7 +455,7 @@ operators:
   - name: player_a
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
+      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -519,7 +464,7 @@ operators:
   - name: player_b
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
+      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -530,33 +475,16 @@ operators:
     parameters:
       size: outputres
       enablet: true
-      filtertype: nearest
     sequences:
       lay:
       - top: fit_screen
-        bypass: =0 >= parent().par.Repeat
-        tx: =(0 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-      - tx: =(1 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-        top: fit_screen
-        bypass: =1 >= parent().par.Repeat
-      - tx: =(2 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-        top: fit_screen
-        bypass: =2 >= parent().par.Repeat
-      - tx: =(3 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-        top: fit_screen
-        bypass: =3 >= parent().par.Repeat
+        tx: -0.351
       - top: fit_screen
-        bypass: =4 >= parent().par.Repeat
-        tx: =(4 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        tx: -0.092
       - top: fit_screen
-        bypass: =5 >= parent().par.Repeat
-        tx: =(5 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        tx: 0.141
       - top: fit_screen
-        bypass: =6 >= parent().par.Repeat
-        tx: =(6 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-      - top: fit_screen
-        bypass: =7 >= parent().par.Repeat
-        tx: =(7 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        tx: 0.391
     flags:
     - viewer
     position: [800, -125]
@@ -566,8 +494,8 @@ operators:
     type: textDAT
     position: [800, 400]
     color: [0.67, 0.67, 0.67]
-    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif not root:\n\t\t# No Folder (shows saved before Folder was kept): use the folder of the File shown.\n\t\tclip = str(_comp().par.Clip.eval()).strip()\n\t\troot = os.path.dirname(clip) if os.path.isfile(clip) else ''\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers
-      = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn 'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
+    dat_content: "\"\"\"Media instrument: plays the pictures and videos of one folder (or one file).\n\nInstrument page:\n- Folder: a folder of pictures and videos (sub-folders too), or one file.\n- File: the file shown now (the list is filled from Folder).\n- Playback: Play (videos play and loop) or Position (Position sets the place in\n  the video, 0 = start, 1 = end, so a mapping can scrub it).\n- Fade: seconds of crossfade when the file changes (0 = cut).\nMoments (connections) raise counters in engine/live; live_changed calls\nonCount: restartcount = play from the start, nextcount = next file,\nrandomcount = a random file.\n\nTwo players (player_a, player_b) and cross_files make the crossfade: a new\nfile loads into the idle player, then the cross moves over to it.\n\"\"\"\nimport os\nimport random\n\nEXTENSIONS = ('.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp', '.gif',\n\t\t\t  '.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.wmv')\n_fade = {'active': 'a', 'target': None, 't0': 0.0, 'dur': 0.0}\n\n\ndef _comp():\n\treturn parent.Instrument\n\n\ndef setting(name):\n    \"\"\"A setting's value now: engine/live first (connections, MIDI), else the parameter. Menus come as an index.\"\"\"\n    par = _comp().par[name]\n    chan = op('live')[name.lower()]\n    if chan is None:\n        return par.eval()\n    if par.isMenu:\n        names = list(par.menuNames)\n        return names[min(len(names) - 1, max(0, int(round(chan.eval()))))] if names else par.eval()\n    return chan.eval()\n\n\ndef files():\n\t\"\"\"Every picture and video under Folder (or Folder itself when it is a file), sorted.\"\"\"\n\troot = str(_comp().par.Folder.eval()).strip()\n\tif root and not os.path.isabs(root):\n\t\troot = os.path.join(project.folder, root)\n\tif os.path.isfile(root):\n\t\treturn [root.replace(os.sep, '/')]\n\tfound = []\n\tif root and os.path.isdir(root):\n\t\tfor here, dirs, names in os.walk(root):\n\t\t\tdirs.sort()\n\t\t\tfor name in sorted(names):\n\t\t\t\tif name.lower().endswith(EXTENSIONS):\n\t\t\t\t\tfound.append(os.path.join(here, name).replace(os.sep, '/'))\n\treturn found\n\n\ndef refresh():\n\t\"\"\"Fill the File menu from Folder; show the first file when the current one is not in it.\"\"\"\n\tcomp = _comp()\n\tnames = files()\n\tclip = comp.par.Clip\n\tclip.menuNames = names\n\tclip.menuLabels = [os.path.basename(n) for n in names]\n\tif names and str(clip.eval()) not in names:\n\t\tclip.val = names[0]\n\tif not names and str(clip.eval()):\n\t\tclip.val = ''\n\treturn len(names)\n\n\ndef change():\n\t\"\"\"File changed: load it into the idle player and crossfade to it (cut when Fade is 0).\"\"\"\n\tcomp = _comp()\n\tidle = 'b' if _fade['active'] == 'a' else 'a'\n\top('player_' + idle).par.file = str(comp.par.Clip.eval())\n\tdur = float(setting('Fade'))\n\tif dur <= 0.01:\n\t\t_fade.update(active=idle, target=None)\n\t\top('cross_files').par.cross = 1.0 if idle == 'b' else 0.0\n\telse:\n\t\t_fade.update(target=idle, t0=absTime.seconds, dur=dur)\n\n\ndef tick():\n\t\"\"\"Every frame while a crossfade runs: move cross_files towards the new player.\"\"\"\n\tif _fade['target'] is None:\n\t\treturn\n\tf = min(1.0, (absTime.seconds - _fade['t0']) / max(0.01, _fade['dur']))\n\top('cross_files').par.cross = f if _fade['target'] == 'b' else 1.0 - f\n\tif f >= 1.0:\n\t\t_fade.update(active=_fade['target'], target=None)\n\n\ndef onCount(name):\n\t\"\"\"A moment (connection) happened: restartcount, nextcount or randomcount.\"\"\"\n\tcomp = _comp()\n\tnames = list(comp.par.Clip.menuNames)\n\tcurrent = str(comp.par.Clip.eval())\n\tif name == 'restartcount':\n\t\top('player_' + _fade['active']).par.cuepulse.pulse()\n\t\treturn\n\tif not names:\n\t\treturn\n\tif name == 'nextcount':\n\t\ti = names.index(current) if current in names else -1\n\t\tcomp.par.Clip = names[(i + 1) % len(names)]\n\telif name == 'randomcount':\n\t\tothers = [n for n in names if n != current] or names\n\t\tcomp.par.Clip = random.choice(others)\n\n\ndef playMode(frame=0):\n\t\"\"\"specify (Position scrubs) or sequential (plays and loops).\"\"\"\n\treturn
+      'specify' if setting('Playback') == 'position' else 'sequential'\n\n\ndef position(frame=0):\n\tchan = op('live')['position']\n\treturn float(chan.eval()) if chan is not None else float(_comp().par.Position.eval())\n"
     dat_content_format: text
   - name: fit_screen
     type: fitTOP
@@ -575,6 +503,7 @@ operators:
       fit: =op('media_mod').module.setting('Fit')
       resolutionw: =op.Visuals.par.Resolution1
       resolutionh: =op.Visuals.par.Resolution2
+      filtertype: linear
     position: [675, 0]
     inputs:
     - cross_files
@@ -590,7 +519,7 @@ operators:
   - name: cross_files
     type: crossTOP
     parameters:
-      cross: 0
+      cross: 1
     position: [400, 0]
     inputs:
     - fit1
@@ -618,7 +547,7 @@ operators:
     position: [1200, 0]
     inputs:
     - empty
-    - switch_repeat
+    - layermix1
   - name: live_changed
     type: chopexecuteDAT
     parameters:
@@ -626,14 +555,6 @@ operators:
     position: [1200, 400]
     dat_content: "\"\"\"live_changed: a moment (connection) asked to restart, go to the next file or a random one.\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tif val > prev:\n\t\top('media_mod').module.onCount(channel.name)\n"
     dat_content_format: text
-  - name: switch_repeat
-    type: switchTOP
-    parameters:
-      index: =1 if parent().par.Repeat > 1 else 0
-    position: [1000, -150]
-    inputs:
-    - fit_screen
-    - layermix1
 - name: noise
   type: baseCOMP
   parameters:
@@ -4166,6 +4087,7 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1 / 2
       resolutionh: =parent.Visuals.par.Resolution2 / 2
+      filtertype: linear
     position: [2000, -1000]
     inputs:
     - sel_mask
@@ -4216,6 +4138,7 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
       format: rgba16float
     position: [800, -200]
     inputs:
@@ -4448,6 +4371,7 @@ operators:
     parameters:
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
     position: [0, -1200]
     inputs:
     - media_file
@@ -4526,6 +4450,7 @@ operators:
       outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -4994,6 +4919,7 @@ operators:
     type: inTOP
     parameters:
       label: =me.name
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   - name: live
@@ -5003,64 +4929,20 @@ operators:
     position: [0, -600]
   - name: out1
     type: outTOP
-    position: [4800, 0]
+    position: [2400, 0]
     inputs:
-    - switch_melt
+    - switch_outline
   - name: edge_fx
     type: edgeTOP
     position: [1200, -400]
     inputs:
     - switch_glitch
-  - name: fb_melt
-    type: feedbackTOP
-    parameters:
-      top: null_melt
-      outputresolution: custom
-      resolutionw: =op('in1').width
-      resolutionh: =op('in1').height
-      format: rgba16float
-    position: [2400, -400]
-    inputs:
-    - switch_outline
-  - name: fx_reset
-    type: chopexecuteDAT
-    parameters:
-      channel: melt
-      offtoon: true
-      valuechange: false
-    position: [400, -800]
-    dat_content: "\"\"\"fx_reset: Melt starts from the live picture when it comes on, not from an old frame.\"\"\"\n\n\ndef onOffToOn(channel, sampleIndex, val, prev):\n\tif channel.name == 'melt':\n\t\top('fb_melt').par.resetpulse.pulse()\n"
-    dat_content_format: text
-  - name: luma_melt
-    type: monochromeTOP
-    position: [2400, -800]
-    inputs:
-    - switch_outline
-  - name: null_melt
-    type: nullTOP
-    position: [4000, -400]
-    inputs:
-    - cross_melt
-  - name: cross_melt
-    type: crossTOP
-    parameters:
-      cross: =0.01 + 0.05 * (1 - op('live')['melt'])
-    position: [3600, -400]
-    inputs:
-    - displace_melt
-    - switch_outline
-  - name: level_melt
-    type: levelTOP
-    parameters:
-      invert: 1
-    position: [2800, -800]
-    inputs:
-    - luma_melt
   - name: glsl_glitch
     type: glslTOP
     parameters:
       pixeldat: glsl_glitch_pixel
       computedat: glsl_glitch_compute
+      filtertype: linear
     sequences:
       vec:
       - name: uGlitch
@@ -5072,14 +4954,6 @@ operators:
     color: [0.67, 0.67, 0.67]
     inputs:
     - in1
-  - name: switch_melt
-    type: switchTOP
-    parameters:
-      index: =int(op('live')['melt'] > 0.001)
-    position: [4400, 0]
-    inputs:
-    - switch_outline
-    - null_melt
   - name: cross_outline
     type: crossTOP
     parameters:
@@ -5088,19 +4962,6 @@ operators:
     inputs:
     - switch_glitch
     - edge_fx
-  - name: displace_melt
-    type: displaceTOP
-    parameters:
-      vertsource: red
-      midpointx: 0
-      midpointy: 0
-      displaceweightx: 0
-      displaceweighty: =-0.004 * op('live')['melt']
-      format: rgba16float
-    position: [3200, -400]
-    inputs:
-    - fb_melt
-    - level_melt
   - name: switch_glitch
     type: switchTOP
     parameters:
@@ -5154,9 +5015,9 @@ operators:
   - name: annotate1
     mode: annotate
     title: Master effects on the whole picture
-    text: 'in1 -> Glitch (GLSL bands) -> Outline (edges) -> Melt -> out1. Amounts come from master_live (Visuals Master page, mappings, MIDI, connections). Each effect has a switch: at 0 it is skipped and does not cook. fx_reset restarts Melt from the live picture when it comes on.'
-    position: [-100, -1100]
-    size: [5100, 1400]
+    text: 'Whole-picture effects, each skipped by its Switch TOP while 0 (values from ../master_live): Glitch (glsl_glitch: bands slide sideways, colours split) and Outline (edges crossed over the picture). Trails moved back to the Camera instrument (Echo: Whole Picture); Blur and Melt were removed.'
+    position: [-100, -800]
+    size: [2800, 1100]
     color: [0.45, 0.45, 0.45]
 - name: particles
   type: baseCOMP
@@ -5397,6 +5258,7 @@ operators:
       lights: ''
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
       format: rgba16float
     position: [1200, 0]
     size: [130, 90]

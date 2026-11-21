@@ -18,7 +18,6 @@ show	output	visuals	Saturation	1
 show	output	visuals	Flash	0
 show	effects	visuals	Glitch	0
 show	effects	visuals	Outline	0
-show	effects	visuals	Melt	0
 phases	phases	phases	Phase	1
 phases	phases	phases	Phasenote	1
 phases	phases	phases	Followmidi	1
@@ -76,8 +75,6 @@ instruments	media	visuals/media	Playback	0
 instruments	media	visuals/media	Position	0
 instruments	media	visuals/media	Fade	0
 instruments	media	visuals/media	Fit	0
-instruments	media	visuals/media	Repeat	0
-instruments	media	visuals/media	Repeatspacing	0
 instruments	media	visuals/media	Refresh	0
 instruments	trigger	visuals/trigger	Sides	0
 instruments	trigger	visuals/trigger	Size	0

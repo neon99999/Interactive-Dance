@@ -31,7 +31,7 @@ CAPTURE_EVERY = 10          # frames between looks for changed settings
 SETTLE_FRAMES = 6           # after a phase change, wait for preset callbacks before capturing
 SNAPSHOT_PAGES = ('Instrument', 'Source', 'Layer')
 SNAPSHOT_SKIP = ('Status',)
-SNAPSHOT_STYLES = ('Float', 'Int', 'Toggle', 'Menu', 'StrMenu', 'Str', 'File', 'Folder', 'RGBA', 'RGB')
+SNAPSHOT_STYLES = ('Float', 'Int', 'Toggle', 'Menu', 'StrMenu', 'Str', 'File', 'RGBA', 'RGB')
 
 
 class PhasesExt:
@@ -228,10 +228,6 @@ class PhasesExt:
 			names = sorted(values, key=lambda n: n != 'Preset')
 			for name in names:
 				self._setPar(comp, name, values[name])
-			# A setting the phase does not know (added after it was saved) goes to its default.
-			for par in self._snapshotPars(comp):
-				if par.name not in values:
-					self._setPar(comp, par.name, par.default)
 
 	def _snapshots(self) -> dict:
 		table = self.ownerComp.op('phase_settings')

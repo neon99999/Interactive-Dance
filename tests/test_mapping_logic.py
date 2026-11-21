@@ -106,11 +106,6 @@ class Presets(unittest.TestCase):
 		self.assertEqual(presets['1'][1]['to'], 1.0)
 		self.assertEqual(ml.readPresets([])['3'], ml.emptySlots())
 
-	def test_removed_target_slot_is_cleared(self):
-		rows = [list(ml.PRESET_COLUMNS), ['2', '1', '1', 'pose_spread', 'master.blur', '0', '1', '0.2', '1']]
-		slot = ml.readPresets(rows)['2'][0]
-		self.assertEqual((slot['on'], slot['target'], slot['signal']), (0.0, '', 'pose_spread'))
-
 	def test_midi_note_switches_preset_on_the_timeline(self):
 		rows = [['note', 'target', 'action', 'value', 'duration'], ['70', 'mapping.preset', 'set', '2', '']]
 		assignments, errors = sl.parseAssignments(rows)

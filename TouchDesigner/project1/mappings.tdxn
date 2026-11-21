@@ -1277,10 +1277,11 @@ custom_pars:
     style: Float
     label: 3 Amount
     default: 0.5
-    normMax: 2.0
+    normMin: -180.0
+    normMax: 180.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
-    value: 1
+    value: -45
   - name: Con4on
     style: Toggle
     label: 4 On
@@ -1324,16 +1325,15 @@ custom_pars:
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
     enable: false
-    value: 65
   - name: Con4amount
     style: Float
     label: 4 Amount
     default: 0.5
-    normMin: -4.0
-    normMax: 4.0
+    normMin: -180.0
+    normMax: 180.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
-    value: 1
+    value: 30
 parameters:
   parentshortcut: Mappings
   opshortcut: Mappings
@@ -1878,14 +1878,6 @@ operators:
     - media
     - fit
     - Fit
-  - - setting
-    - media
-    - repeat
-    - Repeat
-  - - setting
-    - media
-    - repeatspacing
-    - Repeatspacing
   - - instrument
     - ''
     - video
@@ -1946,10 +1938,6 @@ operators:
     - master
     - outline
     - Outline
-  - - setting
-    - master
-    - melt
-    - Melt
   - - instrument
     - ''
     - shapes
@@ -2923,14 +2911,6 @@ operators:
     - burst:position
     - 'Burst: Position in the video'
   - - does
-    - media|moment
-    - burst:repeat
-    - 'Burst: Repeat'
-  - - does
-    - media|moment
-    - burst:repeatspacing
-    - 'Burst: Repeatspacing'
-  - - does
     - media|continuous
     - set:visible
     - 'Controls: On'
@@ -2954,14 +2934,6 @@ operators:
     - media|continuous
     - set:fit
     - 'Controls: Fit'
-  - - does
-    - media|continuous
-    - set:repeat
-    - 'Controls: Repeat'
-  - - does
-    - media|continuous
-    - set:repeatspacing
-    - 'Controls: Repeatspacing'
   - - does
     - media|moment+continuous
     - count:restartcount
@@ -2984,14 +2956,6 @@ operators:
     - 'Burst: Position in the video'
   - - does
     - media|moment+continuous
-    - burst:repeat
-    - 'Burst: Repeat'
-  - - does
-    - media|moment+continuous
-    - burst:repeatspacing
-    - 'Burst: Repeatspacing'
-  - - does
-    - media|moment+continuous
     - set:visible
     - 'Controls: On'
   - - does
@@ -3014,14 +2978,6 @@ operators:
     - media|moment+continuous
     - set:fit
     - 'Controls: Fit'
-  - - does
-    - media|moment+continuous
-    - set:repeat
-    - 'Controls: Repeat'
-  - - does
-    - media|moment+continuous
-    - set:repeatspacing
-    - 'Controls: Repeatspacing'
   - - con_instrument
     - ''
     - video
@@ -3147,10 +3103,6 @@ operators:
     - burst:outline
     - 'Burst: Outline'
   - - does
-    - master|moment
-    - burst:melt
-    - 'Burst: Melt'
-  - - does
     - master|continuous
     - set:level
     - 'Controls: Brightness'
@@ -3174,10 +3126,6 @@ operators:
     - master|continuous
     - set:outline
     - 'Controls: Outline'
-  - - does
-    - master|continuous
-    - set:melt
-    - 'Controls: Melt'
   - - does
     - master|moment+continuous
     - burst:level
@@ -3200,10 +3148,6 @@ operators:
     - 'Burst: Outline'
   - - does
     - master|moment+continuous
-    - burst:melt
-    - 'Burst: Melt'
-  - - does
-    - master|moment+continuous
     - set:level
     - 'Controls: Brightness'
   - - does
@@ -3226,10 +3170,6 @@ operators:
     - master|moment+continuous
     - set:outline
     - 'Controls: Outline'
-  - - does
-    - master|moment+continuous
-    - set:melt
-    - 'Controls: Melt'
   - - con_instrument
     - ''
     - shapes
@@ -4041,10 +3981,6 @@ operators:
     - 'Media: Burst: Opacity'
   - - burst:media.position
     - 'Media: Burst: Position in the video'
-  - - burst:media.repeat
-    - 'Media: Burst: Repeat'
-  - - burst:media.repeatspacing
-    - 'Media: Burst: Repeatspacing'
   - - burst:video.opacity
     - 'Camera: Burst: Opacity'
   - - burst:video.feedback
@@ -4065,8 +4001,6 @@ operators:
     - 'Whole picture: Burst: Glitch'
   - - burst:master.outline
     - 'Whole picture: Burst: Outline'
-  - - burst:master.melt
-    - 'Whole picture: Burst: Melt'
   - - burst:shapes.opacity
     - 'Shapes (all layers): Burst: Opacity'
   - - burst:layer1.opacity

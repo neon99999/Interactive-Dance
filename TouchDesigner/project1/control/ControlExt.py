@@ -106,7 +106,7 @@ class ControlExt:
 					self._appendColour(page, name, source, row)
 				else:
 					self._matchSource(parts[0], source)
-				order[row['page']].append(name)  # Page.sort takes the colour's tuplet name
+				order[row['page']] += [name + c for c in 'rgb']
 				built += 1
 				continue
 			par = existing.pop(name, None)
@@ -125,7 +125,7 @@ class ControlExt:
 		for key, names in order.items():
 			own = [name for name, k in OWN_PAGE.items() if k == key]
 			wanted = own + names
-			if [t[0].tupletName for t in pages[key].parTuplets] != wanted:
+			if [p.name for p in pages[key].pars] != wanted:
 				pages[key].sort(*wanted)
 		# A tab with nothing on it at this Level (Instruments in Basic) is removed; Advanced makes it again.
 		for key in PAGES:

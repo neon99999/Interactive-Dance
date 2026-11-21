@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 8
+build: 7
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/phases
@@ -81,7 +81,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Loaded before_test.json
+    value: Loaded YAWA_Nov21.json
   - name: Phasenote1
     style: Int
     label: Note for Phase 1
@@ -272,7 +272,7 @@ operators:
   parameters:
     file: project1/phases/phase_settings.tsv
     syncfile: true
-    rows: 578
+    rows: 569
   position: [0, -400]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]
