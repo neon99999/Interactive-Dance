@@ -42,6 +42,8 @@ TARGET_RANGES = {'saturation': (0.0, 2.0), 'scale': (0.5, 2.0), 'x': (-1.0, 1.0)
 # Targets left out of the menu: switching presets from a movement would make
 # the mappings change themselves.
 HIDDEN_TARGETS = ('mapping.preset',)
+# Whole-picture effects removed on 2026-11-20. A slot that still names one is cleared, not moved to another target.
+REMOVED_TARGETS = ('master.trails', 'master.trailszoom', 'master.trailswarp', 'master.trailscolour', 'master.blur', 'master.melt')
 
 
 def signalCatalogue():
@@ -137,6 +139,8 @@ def readPresets(rows):
 			if text == '':
 				continue
 			values[name] = text if name in ('signal', 'target') else _number(text, SLOT_DEFAULTS[name])
+		if values['target'] in REMOVED_TARGETS:
+			values.update(on=0.0, target='')
 	return presets
 
 

@@ -228,6 +228,10 @@ class PhasesExt:
 			names = sorted(values, key=lambda n: n != 'Preset')
 			for name in names:
 				self._setPar(comp, name, values[name])
+			# A setting the phase does not know (added after it was saved) goes to its default.
+			for par in self._snapshotPars(comp):
+				if par.name not in values:
+					self._setPar(comp, par.name, par.default)
 
 	def _snapshots(self) -> dict:
 		table = self.ownerComp.op('phase_settings')

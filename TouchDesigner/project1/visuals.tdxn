@@ -11,8 +11,6 @@ type_defaults:
   baseCOMP:
     size: [160, 130]
   blurTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   channelmixTOP:
@@ -21,7 +19,6 @@ type_defaults:
       alpha2: 1
       alpha3: 1
       alpha4: 0
-      filtertype: linear
       format: rgba8fixed
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -33,13 +30,10 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantCHOP:
@@ -50,24 +44,18 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   constantTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   crossTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   displaceTOP:
     parameters:
-      filtertype: linear
       offsetweight: =1 - me.par.uvweight.eval()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   edgeTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   executeDAT:
@@ -75,42 +63,30 @@ type_defaults:
       fromop: =parent()
     size: [130, 90]
   feedbackTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   fitTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   hsvadjustTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   lookupTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   monochromeTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   moviefileinTOP:
     parameters:
-      filtertype: linear
       timecodeop: =tdu.Timecode()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   noiseTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -120,13 +96,10 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   nullTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   outTOP:
     parameters:
-      filtertype: linear
       label: =me.name
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -137,13 +110,11 @@ type_defaults:
     size: [130, 90]
   rampTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   rectangleTOP:
     parameters:
-      filtertype: linear
       outputresolution: custom
       resolutionh: =parent.Visuals.par.Resolution2
       resolutionw: =parent.Visuals.par.Resolution1
@@ -155,8 +126,6 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   selectTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   speedCHOP:
@@ -165,8 +134,6 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   switchTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   tableDAT:
@@ -178,8 +145,6 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   transformTOP:
-    parameters:
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -409,6 +374,24 @@ operators:
       - Stretch
       help: How the picture fills the screen.
       value: inside
+    - name: Repeat
+      style: Int
+      default: 1
+      min: 1.0
+      max: 8.0
+      clampMin: true
+      clampMax: true
+      normMin: 1.0
+      normMax: 8.0
+      help: How many copies of the picture side by side. 1 = off (one picture).
+      value: 4
+    - name: Repeatspacing
+      style: Float
+      label: Repeat Spacing
+      default: 0.25
+      clampMin: true
+      normMax: 0.5
+      help: Distance between the copies, as a part of the screen width.
     - name: Refresh
       style: Pulse
       help: Read the folder again.
@@ -420,6 +403,7 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
+      filtertype: nearest
     flags:
     - viewer
     position: [-50, 25]
@@ -430,6 +414,7 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
+      filtertype: nearest
     flags:
     - viewer
     position: [-50, -100]
@@ -455,7 +440,7 @@ operators:
   - name: player_a
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
+      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -464,7 +449,7 @@ operators:
   - name: player_b
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
+      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
@@ -475,16 +460,33 @@ operators:
     parameters:
       size: outputres
       enablet: true
+      filtertype: nearest
     sequences:
       lay:
       - top: fit_screen
-        tx: -0.351
+        bypass: =0 >= parent().par.Repeat
+        tx: =(0 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+      - tx: =(1 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+        bypass: =1 >= parent().par.Repeat
+      - tx: =(2 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+        bypass: =2 >= parent().par.Repeat
+      - tx: =(3 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+        bypass: =3 >= parent().par.Repeat
       - top: fit_screen
-        tx: -0.092
+        bypass: =4 >= parent().par.Repeat
+        tx: =(4 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
       - top: fit_screen
-        tx: 0.141
+        bypass: =5 >= parent().par.Repeat
+        tx: =(5 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
       - top: fit_screen
-        tx: 0.391
+        bypass: =6 >= parent().par.Repeat
+        tx: =(6 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+      - top: fit_screen
+        bypass: =7 >= parent().par.Repeat
+        tx: =(7 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
     flags:
     - viewer
     position: [800, -125]
@@ -503,7 +505,6 @@ operators:
       fit: =op('media_mod').module.setting('Fit')
       resolutionw: =op.Visuals.par.Resolution1
       resolutionh: =op.Visuals.par.Resolution2
-      filtertype: linear
     position: [675, 0]
     inputs:
     - cross_files
@@ -519,7 +520,7 @@ operators:
   - name: cross_files
     type: crossTOP
     parameters:
-      cross: 1
+      cross: 0
     position: [400, 0]
     inputs:
     - fit1
@@ -547,7 +548,7 @@ operators:
     position: [1200, 0]
     inputs:
     - empty
-    - layermix1
+    - switch_repeat
   - name: live_changed
     type: chopexecuteDAT
     parameters:
@@ -555,6 +556,14 @@ operators:
     position: [1200, 400]
     dat_content: "\"\"\"live_changed: a moment (connection) asked to restart, go to the next file or a random one.\"\"\"\n\n\ndef onValueChange(channel, sampleIndex, val, prev):\n\tif val > prev:\n\t\top('media_mod').module.onCount(channel.name)\n"
     dat_content_format: text
+  - name: switch_repeat
+    type: switchTOP
+    parameters:
+      index: =1 if parent().par.Repeat > 1 else 0
+    position: [1000, -150]
+    inputs:
+    - fit_screen
+    - layermix1
 - name: noise
   type: baseCOMP
   parameters:
@@ -4087,7 +4096,6 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1 / 2
       resolutionh: =parent.Visuals.par.Resolution2 / 2
-      filtertype: linear
     position: [2000, -1000]
     inputs:
     - sel_mask
@@ -4138,7 +4146,6 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
-      filtertype: linear
       format: rgba16float
     position: [800, -200]
     inputs:
@@ -4371,7 +4378,6 @@ operators:
     parameters:
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
-      filtertype: linear
     position: [0, -1200]
     inputs:
     - media_file
@@ -4450,7 +4456,6 @@ operators:
       outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
-      filtertype: linear
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -4919,7 +4924,6 @@ operators:
     type: inTOP
     parameters:
       label: =me.name
-      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   - name: live
@@ -4942,7 +4946,6 @@ operators:
     parameters:
       pixeldat: glsl_glitch_pixel
       computedat: glsl_glitch_compute
-      filtertype: linear
     sequences:
       vec:
       - name: uGlitch
@@ -5258,7 +5261,6 @@ operators:
       lights: ''
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
-      filtertype: linear
       format: rgba16float
     position: [1200, 0]
     size: [130, 90]

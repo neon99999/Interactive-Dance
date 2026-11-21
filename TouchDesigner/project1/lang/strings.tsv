@@ -820,6 +820,10 @@ visuals/media.Fade.label	Fade (s)	Fundido (s)
 visuals/media.Fade.help	Seconds of crossfade when the file changes. 0 = cut.	Segundos de fundido al cambiar de archivo. 0 = corte.
 visuals/media.Fit.label	Fit	Ajuste
 visuals/media.Fit.help	How the picture fills the screen.	Cómo la imagen llena la pantalla.
+visuals/media.Repeat.label	Repeat	Repetir
+visuals/media.Repeat.help	How many copies of the picture side by side. 1 = off (one picture).	Cuántas copias de la imagen, una al lado de otra. 1 = apagado (una imagen).
+visuals/media.Repeatspacing.label	Repeat Spacing	Espacio entre copias
+visuals/media.Repeatspacing.help	Distance between the copies, as a part of the screen width.	Distancia entre las copias, como parte del ancho de la pantalla.
 visuals/media.Refresh.label	Refresh	Actualizar
 visuals/media.Refresh.help	Read the folder again.	Vuelve a leer la carpeta.
 target.media.position	Media: position in the video	Medios: posición en el video

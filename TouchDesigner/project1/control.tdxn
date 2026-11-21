@@ -702,6 +702,26 @@ custom_pars:
     - Stretch
     help: How the picture fills the screen.
     value: ~me.parent().op('visuals/media').par.Fit
+  - name: Instmediarepeat
+    style: Int
+    label: Repeat
+    default: 1
+    min: 1.0
+    max: 8.0
+    clampMin: true
+    clampMax: true
+    normMin: 1.0
+    normMax: 8.0
+    help: How many copies of the picture side by side. 1 = off (one picture).
+    value: ~me.parent().op('visuals/media').par.Repeat
+  - name: Instmediarepeatspacing
+    style: Float
+    label: Repeat Spacing
+    default: 0.25
+    clampMin: true
+    normMax: 0.5
+    help: Distance between the copies, as a part of the screen width.
+    value: ~me.parent().op('visuals/media').par.Repeatspacing
   - name: Instmediarefresh
     style: Pulse
     label: Refresh
@@ -1176,8 +1196,7 @@ custom_pars:
     style: Float
     label: 3 Amount
     default: 0.5
-    normMin: -180.0
-    normMax: 180.0
+    normMax: 2.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
     value: ~me.parent().op('mappings').par.Con3amount
@@ -1263,8 +1282,8 @@ custom_pars:
     style: Float
     label: 4 Amount
     default: 0.5
-    normMin: -180.0
-    normMax: 180.0
+    normMin: -4.0
+    normMax: 4.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
     value: ~me.parent().op('mappings').par.Con4amount
@@ -1520,7 +1539,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 173
+    rows: 175
     cols: 5
   position: [0, -200]
   size: [130, 90]

@@ -23,7 +23,6 @@ type_defaults:
   textTOP:
     parameters:
       alignx: left
-      filtertype: linear
       fontfile: C:/Windows/Fonts/arial.ttf
       fontsizex: 22
       fontsizexunit: pixels
@@ -91,8 +90,6 @@ operators:
   color: [0.67, 0.67, 0.67]
 - name: null_out
   type: nullTOP
-  parameters:
-    filtertype: linear
   position: [1600, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -111,7 +108,6 @@ operators:
     outputresolution: custom
     resolutionw: 1280
     resolutionh: 720
-    filtertype: linear
     format: rgba8fixed
   sequences:
     vec:
@@ -145,7 +141,6 @@ operators:
   type: choptoTOP
   parameters:
     chop: panel_values
-    filtertype: linear
     format: mono32float
   position: [800, 0]
   size: [130, 90]

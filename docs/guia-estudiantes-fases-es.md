@@ -53,7 +53,7 @@ La fase cambia después de un momento corto (menos de medio segundo). Cuando esc
 
 1. Pon **Fase** en **Fase 1**.
 2. Haz clic en **Composición**. Pon **Encendido** en cada instrumento que quieres. Apaga los otros instrumentos.
-3. Para **Medios**, haz clic en **Elegir carpeta...** y elige una carpeta con fotos y videos.
+3. Para **Medios**, haz clic en **Elegir carpeta...** y elige una carpeta con fotos y videos. Para mostrar copias de la imagen una al lado de otra, pon **Repetir** (pestaña Instrumentos) en 2 o más. **Espacio entre copias** da la distancia entre las copias. 1 es apagado.
 4. Pon **Fase** en **Fase 2** (o presiona **2**). La fase 2 empieza como copia de la fase 1. Cámbiala.
 5. Presiona **1** y luego **2**. El aspecto cambia cada vez.
 

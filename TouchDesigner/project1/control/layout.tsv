@@ -75,6 +75,8 @@ instruments	media	visuals/media	Playback	0
 instruments	media	visuals/media	Position	0
 instruments	media	visuals/media	Fade	0
 instruments	media	visuals/media	Fit	0
+instruments	media	visuals/media	Repeat	0
+instruments	media	visuals/media	Repeatspacing	0
 instruments	media	visuals/media	Refresh	0
 instruments	trigger	visuals/trigger	Sides	0
 instruments	trigger	visuals/trigger	Size	0

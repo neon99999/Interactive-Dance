@@ -272,7 +272,7 @@ operators:
   parameters:
     file: project1/phases/phase_settings.tsv
     syncfile: true
-    rows: 569
+    rows: 577
   position: [0, -400]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]

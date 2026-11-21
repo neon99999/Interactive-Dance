@@ -1277,11 +1277,10 @@ custom_pars:
     style: Float
     label: 3 Amount
     default: 0.5
-    normMin: -180.0
-    normMax: 180.0
+    normMax: 2.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
-    value: -45
+    value: 1
   - name: Con4on
     style: Toggle
     label: 4 On
@@ -1325,15 +1324,16 @@ custom_pars:
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
     enable: false
+    value: 65
   - name: Con4amount
     style: Float
     label: 4 Amount
     default: 0.5
-    normMin: -180.0
-    normMax: 180.0
+    normMin: -4.0
+    normMax: 4.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
-    value: 30
+    value: 1
 parameters:
   parentshortcut: Mappings
   opshortcut: Mappings
