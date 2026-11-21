@@ -18,6 +18,7 @@ show	output	visuals	Saturation	1
 show	output	visuals	Flash	0
 show	effects	visuals	Glitch	0
 show	effects	visuals	Outline	0
+show	effects	visuals	Melt	0
 phases	phases	phases	Phase	1
 phases	phases	phases	Phasenote	1
 phases	phases	phases	Followmidi	1

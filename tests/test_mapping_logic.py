@@ -107,7 +107,7 @@ class Presets(unittest.TestCase):
 		self.assertEqual(ml.readPresets([])['3'], ml.emptySlots())
 
 	def test_removed_target_slot_is_cleared(self):
-		rows = [list(ml.PRESET_COLUMNS), ['2', '1', '1', 'pose_spread', 'master.melt', '0', '1', '0.2', '1']]
+		rows = [list(ml.PRESET_COLUMNS), ['2', '1', '1', 'pose_spread', 'master.blur', '0', '1', '0.2', '1']]
 		slot = ml.readPresets(rows)['2'][0]
 		self.assertEqual((slot['on'], slot['target'], slot['signal']), (0.0, '', 'pose_spread'))
 

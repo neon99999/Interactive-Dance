@@ -258,6 +258,11 @@ custom_pars:
     clampMin: true
     clampMax: true
     help: 'Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.'
+  - name: Melt
+    style: Float
+    clampMin: true
+    clampMax: true
+    help: 'The picture slides down, dark parts first: 0 = off, 1 = strong.'
   Output:
   - name: Openwindow
     style: Pulse
@@ -4933,14 +4938,59 @@ operators:
     position: [0, -600]
   - name: out1
     type: outTOP
-    position: [2400, 0]
+    position: [4800, 0]
     inputs:
-    - switch_outline
+    - switch_melt
   - name: edge_fx
     type: edgeTOP
     position: [1200, -400]
     inputs:
     - switch_glitch
+  - name: fb_melt
+    type: feedbackTOP
+    parameters:
+      top: null_melt
+      outputresolution: custom
+      resolutionw: =op('in1').width
+      resolutionh: =op('in1').height
+      format: rgba16float
+    position: [2400, -400]
+    inputs:
+    - switch_outline
+  - name: fx_reset
+    type: chopexecuteDAT
+    parameters:
+      channel: melt
+      offtoon: true
+      valuechange: false
+    position: [400, -800]
+    dat_content: "\"\"\"fx_reset: Melt starts from the live picture when it comes on, not from an old frame.\"\"\"\n\n\ndef onOffToOn(channel, sampleIndex, val, prev):\n\tif channel.name == 'melt':\n\t\top('fb_melt').par.resetpulse.pulse()\n"
+    dat_content_format: text
+  - name: luma_melt
+    type: monochromeTOP
+    position: [2400, -800]
+    inputs:
+    - switch_outline
+  - name: null_melt
+    type: nullTOP
+    position: [4000, -400]
+    inputs:
+    - cross_melt
+  - name: cross_melt
+    type: crossTOP
+    parameters:
+      cross: =0.01 + 0.05 * (1 - op('live')['melt'])
+    position: [3600, -400]
+    inputs:
+    - displace_melt
+    - switch_outline
+  - name: level_melt
+    type: levelTOP
+    parameters:
+      invert: 1
+    position: [2800, -800]
+    inputs:
+    - luma_melt
   - name: glsl_glitch
     type: glslTOP
     parameters:
@@ -4957,6 +5007,14 @@ operators:
     color: [0.67, 0.67, 0.67]
     inputs:
     - in1
+  - name: switch_melt
+    type: switchTOP
+    parameters:
+      index: =int(op('live')['melt'] > 0.001)
+    position: [4400, 0]
+    inputs:
+    - switch_outline
+    - null_melt
   - name: cross_outline
     type: crossTOP
     parameters:
@@ -4965,6 +5023,19 @@ operators:
     inputs:
     - switch_glitch
     - edge_fx
+  - name: displace_melt
+    type: displaceTOP
+    parameters:
+      vertsource: red
+      midpointx: 0
+      midpointy: 0
+      displaceweightx: 0
+      displaceweighty: =-0.004 * op('live')['melt']
+      format: rgba16float
+    position: [3200, -400]
+    inputs:
+    - fb_melt
+    - level_melt
   - name: switch_glitch
     type: switchTOP
     parameters:
@@ -5018,9 +5089,9 @@ operators:
   - name: annotate1
     mode: annotate
     title: Master effects on the whole picture
-    text: 'Whole-picture effects, each skipped by its Switch TOP while 0 (values from ../master_live): Glitch (glsl_glitch: bands slide sideways, colours split) and Outline (edges crossed over the picture). Trails moved back to the Camera instrument (Echo: Whole Picture); Blur and Melt were removed.'
-    position: [-100, -800]
-    size: [2800, 1100]
+    text: 'in1 -> Glitch (GLSL bands) -> Outline (edges) -> Melt -> out1. Amounts come from master_live (Visuals Master page, mappings, MIDI, connections). Each effect has a switch: at 0 it is skipped and does not cook. fx_reset restarts Melt from the live picture when it comes on.'
+    position: [-100, -1100]
+    size: [5100, 1400]
     color: [0.45, 0.45, 0.45]
 - name: particles
   type: baseCOMP

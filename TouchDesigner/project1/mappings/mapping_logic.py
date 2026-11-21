@@ -43,7 +43,7 @@ TARGET_RANGES = {'saturation': (0.0, 2.0), 'scale': (0.5, 2.0), 'x': (-1.0, 1.0)
 # the mappings change themselves.
 HIDDEN_TARGETS = ('mapping.preset',)
 # Whole-picture effects removed on 2026-11-20. A slot that still names one is cleared, not moved to another target.
-REMOVED_TARGETS = ('master.trails', 'master.trailszoom', 'master.trailswarp', 'master.trailscolour', 'master.blur', 'master.melt')
+REMOVED_TARGETS = ('master.trails', 'master.trailszoom', 'master.trailswarp', 'master.trailscolour', 'master.blur')
 
 
 def signalCatalogue():

@@ -48,7 +48,7 @@ Click **control** in `project1` and press **P** (or run `op.Control.OpenPanel()`
 
 | Tab | What is on it |
 |---|---|
-| **Show** | Level (Basic, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout); Advanced adds the whole-picture effects (Glitch, Outline) |
+| **Show** | Level (Basic, Advanced), Language, the music (Play, Reset, files, position) and the output window (Screen, Borderless, open, close, Level, Saturation, Blackout); Advanced adds the whole-picture effects (Glitch, Outline, Melt) |
 | **Phases** | The 10 phases of the piece, the note that starts each one, Save Show / Load Show (see **phases** below) |
 | **Instruments** | Advanced only. One section per instrument (Particles, Camera, Noise, Colour Tiles, Media, Trigger Shape): Preset, Reset to Preset and sliders; Camera also its source and Status |
 | **Composition** | Every instrument's On (Basic) and Opacity (Advanced), and the Media folder: what is in the picture (the stacking order is fixed). Shapes is Advanced only |
@@ -320,6 +320,7 @@ The order is fixed, back to front: Media, Camera, Noise, Colour Tiles, Particles
 |---|---|
 | **Glitch** | Bands slide sideways and the colours split (GLSL) |
 | **Outline** | Mixes towards the edges only |
+| **Melt** | The picture slides down, dark parts first, and slowly refreshes |
 
 
 **Shapes** (`visuals/shapes`): the four layers as one instrument. On (off by default) and Opacity only; the layers keep their own settings and MIDI targets (`layer1.red` ...).

@@ -151,6 +151,13 @@ custom_pars:
     clampMax: true
     help: 'Shows the edges only: 0 = off, 1 = only outlines. Acts only while a connection (or a MIDI row) drives it.'
     value: ~me.parent().op('visuals').par.Outline
+  - name: Showvisualsmelt
+    style: Float
+    label: Melt
+    clampMin: true
+    clampMax: true
+    help: 'The picture slides down, dark parts first: 0 = off, 1 = strong.'
+    value: ~me.parent().op('visuals').par.Melt
   Phases:
   - name: Hphasphases
     style: Header
@@ -1539,7 +1546,7 @@ operators:
   parameters:
     file: project1/control/layout.tsv
     syncfile: true
-    rows: 175
+    rows: 176
     cols: 5
   position: [0, -200]
   size: [130, 90]

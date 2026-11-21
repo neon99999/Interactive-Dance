@@ -818,6 +818,9 @@ visuals/media.Position.label	Position	Posición
 visuals/media.Position.help	Place in the video when Playback is Position: 0 = start, 1 = end.	Lugar en el video cuando Reproducción es Posición: 0 = inicio, 1 = final.
 visuals/media.Fade.label	Fade (s)	Fundido (s)
 visuals/media.Fade.help	Seconds of crossfade when the file changes. 0 = cut.	Segundos de fundido al cambiar de archivo. 0 = corte.
+visuals.Melt.label	Melt	Derretir
+visuals.Melt.help	The picture slides down, dark parts first: 0 = off, 1 = strong. Acts only while a connection (or a MIDI row) drives it.	La imagen se escurre hacia abajo, primero las partes oscuras: 0 = apagado, 1 = fuerte. Actúa solo mientras una conexión (o una fila MIDI) lo controla.
+target.master.melt	Melt	Derretir
 visuals/media.Fit.label	Fit	Ajuste
 visuals/media.Fit.help	How the picture fills the screen.	Cómo la imagen llena la pantalla.
 visuals/media.Repeat.label	Repeat	Repetir

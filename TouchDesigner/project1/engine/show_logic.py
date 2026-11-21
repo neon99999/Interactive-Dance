@@ -18,7 +18,7 @@ TRIGGER_DEFAULT_S = 0.2
 LAYER_DEFAULTS = {'visible': 0.0, 'opacity': 1.0, 'red': 1.0, 'green': 1.0, 'blue': 1.0,
 				  'scale': 1.0, 'x': 0.0, 'y': 0.0, 'rotate': 0.0, 'content': 0.0, 'effect': 0.0}
 MASTER_DEFAULTS = {'level': 1.0, 'blackout': 0.0, 'flash': 0.0, 'saturation': 1.0,
-	'glitch': 0.0, 'outline': 0.0}
+	'glitch': 0.0, 'outline': 0.0, 'melt': 0.0}
 # Show controls that are not visuals. mapping.preset: a MIDI 'set' to 1-4
 # switches the mapping page to preset A-D at that moment of the song (0 = no
 # switch yet). Like every value it is replayed from the timeline, so seeking
@@ -32,7 +32,7 @@ MASTER_PARAMS = tuple(MASTER_DEFAULTS)
 # an input-table row or a MIDI row): otherwise they are off, whatever their
 # slider says, so an effect never stays on after its connection moved on.
 # Bursts (moments) add on top later.
-GATED_EFFECTS = ('glitch', 'outline')
+GATED_EFFECTS = ('glitch', 'outline', 'melt')
 
 
 def gateEffects(base, controlled):
