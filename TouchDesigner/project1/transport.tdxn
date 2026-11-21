@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 9
+build: 11
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/transport
@@ -49,12 +49,12 @@ custom_pars:
     style: File
     label: Audio File
     help: Music file (WAV or MP3) played in sync with the MIDI file.
-    value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ClaudeTouch/Dance Stuff/Magallanes - In-Correcto 216- El árbol de los esfuerzos - 05 Mucho Gusto.mp3
+    value: ../media/test/sync_test.wav
   - name: Midifile
     style: File
     label: MIDI File
     help: Standard MIDI File (.mid) whose Note On events are read on the same clock as the audio.
-    value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ClaudeTouch/Dance Stuff/midi_export.mid
+    value: ../media/test/sync_test.mid
   - name: Play
     style: Toggle
     startSection: true
@@ -68,7 +68,7 @@ custom_pars:
     clampMin: true
     normMax: 300.0
     help: Position in seconds that Seek jumps to.
-    value: 3
+    value: 4
   - name: Seek
     style: Pulse
     help: Jump audio and MIDI to Seek To. Notes skipped over by the jump are not fired.
@@ -315,7 +315,7 @@ operators:
       - - rangelimit
         - loop
       - - scrubcount
-        - '953'
+        - '1820'
       - - tapcount
         - '0'
       dat_content_format: table

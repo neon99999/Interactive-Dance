@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 5
+build: 6
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/midi_monitor
@@ -10,6 +10,7 @@ options:
 type_defaults:
   textTOP:
     parameters:
+      filtertype: linear
       fontfile: C:/Windows/Fonts/arial.ttf
       fontsizexunit: pixels
       outputresolution: custom
@@ -59,6 +60,8 @@ operators:
   - py
 - name: null_out
   type: nullTOP
+  parameters:
+    filtertype: linear
   flags:
   - viewer
   position: [550, 0]
@@ -70,6 +73,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    filtertype: linear
   flags:
   - viewer
   position: [400, 0]

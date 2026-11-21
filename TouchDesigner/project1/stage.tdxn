@@ -107,8 +107,8 @@ custom_pars:
     default: true
     help: 'On: the stage window opens by itself when the project opens.'
 parameters:
-  w: 1707
-  h: 996
+  w: 1375
+  h: 773
   sizefromwindow: true
   resizecomp: =me
   repocomp: =me

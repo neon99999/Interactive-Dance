@@ -67,6 +67,7 @@ custom_pars:
     startSection: true
     default: shows/my_show.json
     help: 'The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.'
+    value: shows/YAWA_Nov21.json
   - name: Saveshow
     style: Pulse
     label: Save Show
@@ -80,6 +81,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
+    value: Loaded YAWA_Nov21.json
   - name: Phasenote1
     style: Int
     label: Note for Phase 1
@@ -270,7 +272,7 @@ operators:
   parameters:
     file: project1/phases/phase_settings.tsv
     syncfile: true
-    rows: 248
+    rows: 569
   position: [0, -400]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]

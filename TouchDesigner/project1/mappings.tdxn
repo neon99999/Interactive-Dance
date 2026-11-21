@@ -113,6 +113,7 @@ custom_pars:
     default: midi
     menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
     help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w2_hit
   - name: Trig1note
     style: Int
     label: 1 Note
@@ -122,26 +123,27 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    enable: false
   - name: Trig1does
     style: Menu
     label: 1 Does
     default: pulse
     menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
     help: What the Trigger Shape does each time.
+    value: count:media.nextcount
   - name: Trig1amount
     style: Float
     label: 1 Amount
     default: 0.5
     min: -180.0
     max: 180.0
-    normMax: 2.0
     help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
+    value: 90
   - name: Trig2on
     style: Toggle
     label: 2 On
     startSection: true
     help: Trigger 2 is used while on.
-    value: true
   - name: Trig2when
     style: Menu
     label: 2 When
@@ -180,13 +182,13 @@ custom_pars:
     label: 3 On
     startSection: true
     help: Trigger 3 is used while on.
-    value: true
   - name: Trig3when
     style: Menu
     label: 3 When
     default: midi
     menuSource: tdu.TableMenu(me.op('trigger_when_menu'), labelCol=1, includeFirstRow=True)
     help: 'What sets it off: a MIDI note of the song, or a wearable hit or button.'
+    value: serial_w2_hit
   - name: Trig3note
     style: Int
     label: 3 Note
@@ -196,6 +198,7 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when When is MIDI note. midi_monitor shows the numbers as the song plays.
+    enable: false
     value: 64
   - name: Trig3does
     style: Menu
@@ -203,23 +206,19 @@ custom_pars:
     default: pulse
     menuSource: tdu.TableMenu(me.op('trigger_does_menu'), labelCol=1, includeFirstRow=True)
     help: What the Trigger Shape does each time.
-    value: sides
+    value: count:media.nextcount
   - name: Trig3amount
     style: Float
     label: 3 Amount
     default: 0.5
     min: -180.0
     max: 180.0
-    normMin: -4.0
-    normMax: 4.0
     help: 'How much: Pulse = how much bigger (0.5 = half again), Spin = degrees, More sides = sides added, Jump = how far, Flash = how strong (0-1).'
-    value: 1
   - name: Trig4on
     style: Toggle
     label: 4 On
     startSection: true
     help: Trigger 4 is used while on.
-    value: true
   - name: Trig4when
     style: Menu
     label: 4 When
@@ -393,14 +392,14 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.menu('trigger_source', '')
     help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: song
+    value: wearable2
   - name: Trig1input
     style: Menu
     label: 1 Moment
     default: none
     menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig1source.eval())
     help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: midi
+    value: hit
   - name: Trig2source
     style: Menu
     label: 2 Source
@@ -421,14 +420,14 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.menu('trigger_source', '')
     help: 'What sets the trigger off: the song (a MIDI note), a wearable, the body (camera) or a test signal.'
-    value: song
+    value: wearable2
   - name: Trig3input
     style: Menu
     label: 3 Moment
     default: none
     menuSource: me.ext.Mappings.menu('trigger_input', me.par.Trig3source.eval())
     help: 'The moment that sets it off: a note, a hit, a button press, becoming still, entering a zone.'
-    value: midi
+    value: hit
   - name: Trig4source
     style: Menu
     label: 4 Source
@@ -510,26 +509,24 @@ custom_pars:
     label: 1 Movement
     menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
     help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
-    value: pose_hand_l
+    value: serial_w2_roll
   - name: Map1target
     style: StrMenu
     label: 1 Visual
     menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
     help: The visual value it changes. Choosing one sets From and To to its usual range.
-    value: layer1.scale
+    value: media.visible
   - name: Map1from
     style: Float
     label: 1 From
     normMin: -1.0
     help: Visual value when the movement is at its lowest.
-    value: 0.5
   - name: Map1to
     style: Float
     label: 1 To
     default: 1
     normMin: -1.0
     help: Visual value when the movement is at its highest.
-    value: 2
   - name: Map1smooth
     style: Float
     label: 1 Smoothing
@@ -551,31 +548,30 @@ custom_pars:
     label: 2 On
     startSection: true
     help: Mapping 2 is used while on.
+    value: true
   - name: Map2signal
     style: StrMenu
     label: 2 Movement
     menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
     help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
-    value: pose_hand_r
+    value: serial_w2_still
   - name: Map2target
     style: StrMenu
     label: 2 Visual
     menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
     help: The visual value it changes. Choosing one sets From and To to its usual range.
-    value: layer2.scale
+    value: master.level
   - name: Map2from
     style: Float
     label: 2 From
     normMin: -1.0
     help: Visual value when the movement is at its lowest.
-    value: 0.5
   - name: Map2to
     style: Float
     label: 2 To
     default: 1
     normMin: -1.0
     help: Visual value when the movement is at its highest.
-    value: 2
   - name: Map2smooth
     style: Float
     label: 2 Smoothing
@@ -602,19 +598,18 @@ custom_pars:
     label: 3 Movement
     menuSource: tdu.TableMenu(me.op('signal_menu'), labelCol=1, includeFirstRow=True)
     help: The movement signal that drives this mapping. Pick from the menu or type a signal name.
-    value: pose_x
+    value: serial_w3_roll
   - name: Map3target
     style: StrMenu
     label: 3 Visual
     menuSource: tdu.TableMenu(me.op('target_menu'), labelCol=1, includeFirstRow=True)
     help: The visual value it changes. Choosing one sets From and To to its usual range.
-    value: layer1.x
+    value: trigger.visible
   - name: Map3from
     style: Float
     label: 3 From
     normMin: -1.0
     help: Visual value when the movement is at its lowest.
-    value: -1
   - name: Map3to
     style: Float
     label: 3 To
@@ -688,84 +683,84 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.menu('source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
-    value: body
+    value: wearable2
   - name: Map1input
     style: Menu
     label: 1 Input
     default: none
     menuSource: me.ext.Mappings.menu('input', me.par.Map1source.eval())
     help: Which movement of that source. The menu lists only what this source measures.
-    value: pose_hand_l
+    value: roll
   - name: Map1instrument
     style: Menu
     label: 1 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('instrument', '')
     help: The instrument this mapping changes.
-    value: layer1
+    value: media
   - name: Map1setting
     style: Menu
     label: 1 Setting
     default: none
     menuSource: me.ext.Mappings.menu('setting', me.par.Map1instrument.eval())
     help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
-    value: scale
+    value: visible
   - name: Map2source
     style: Menu
     label: 2 Source
     default: none
     menuSource: me.ext.Mappings.menu('source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
-    value: body
+    value: wearable2
   - name: Map2input
     style: Menu
     label: 2 Input
     default: none
     menuSource: me.ext.Mappings.menu('input', me.par.Map2source.eval())
     help: Which movement of that source. The menu lists only what this source measures.
-    value: pose_hand_r
+    value: still
   - name: Map2instrument
     style: Menu
     label: 2 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('instrument', '')
     help: The instrument this mapping changes.
-    value: layer2
+    value: master
   - name: Map2setting
     style: Menu
     label: 2 Setting
     default: none
     menuSource: me.ext.Mappings.menu('setting', me.par.Map2instrument.eval())
     help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
-    value: scale
+    value: level
   - name: Map3source
     style: Menu
     label: 3 Source
     default: none
     menuSource: me.ext.Mappings.menu('source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), camera motion or test signals.'
-    value: body
+    value: wearable3
   - name: Map3input
     style: Menu
     label: 3 Input
     default: none
     menuSource: me.ext.Mappings.menu('input', me.par.Map3source.eval())
     help: Which movement of that source. The menu lists only what this source measures.
-    value: pose_x
+    value: roll
   - name: Map3instrument
     style: Menu
     label: 3 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('instrument', '')
     help: The instrument this mapping changes.
-    value: layer1
+    value: trigger
   - name: Map3setting
     style: Menu
     label: 3 Setting
     default: none
     menuSource: me.ext.Mappings.menu('setting', me.par.Map3instrument.eval())
     help: The setting of that instrument it changes. Choosing one sets From and To to its usual range.
-    value: x
+    value: visible
   - name: Map4source
     style: Menu
     label: 4 Source
@@ -1142,28 +1137,28 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.menu('con_source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
-    value: song
+    value: wearable2
   - name: Con1input
     style: Menu
     label: 1 Input
     default: none
     menuSource: me.ext.Mappings.menu('con_input', me.par.Con1source.eval())
     help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
-    value: midi
+    value: hit
   - name: Con1instrument
     style: Menu
     label: 1 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('con_instrument', '')
     help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
-    value: trigger
+    value: media
   - name: Con1does
     style: Menu
     label: 1 Does
     default: none
     menuSource: me.ext.Mappings.doesMenu(me.par.Con1instrument.eval(), me.par.Con1input.eval())
     help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
-    value: pulse
+    value: count:nextcount
   - name: Con1note
     style: Int
     label: 1 Note
@@ -1173,12 +1168,15 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
   - name: Con1amount
     style: Float
     label: 1 Amount
     default: 0.5
     normMax: 2.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
+    enable: false
+    value: 90
   - name: Con2on
     style: Toggle
     label: 2 On
@@ -1191,28 +1189,28 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.menu('con_source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
-    value: song
+    value: wearable2
   - name: Con2input
     style: Menu
     label: 2 Input
     default: none
     menuSource: me.ext.Mappings.menu('con_input', me.par.Con2source.eval())
     help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
-    value: midi
+    value: still
   - name: Con2instrument
     style: Menu
     label: 2 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('con_instrument', '')
     help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
-    value: trigger
+    value: master
   - name: Con2does
     style: Menu
     label: 2 Does
     default: none
     menuSource: me.ext.Mappings.doesMenu(me.par.Con2instrument.eval(), me.par.Con2input.eval())
     help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
-    value: spin
+    value: set:level
   - name: Con2note
     style: Int
     label: 2 Note
@@ -1222,35 +1220,34 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
     value: 62
   - name: Con2amount
     style: Float
     label: 2 Amount
     default: 0.5
-    normMin: -180.0
-    normMax: 180.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
-    value: 45
+    enable: false
+    value: 1
   - name: Con3on
     style: Toggle
     label: 3 On
     startSection: true
     help: Connection 3 is used while on.
-    value: true
   - name: Con3source
     style: Menu
     label: 3 Source
     default: none
     menuSource: me.ext.Mappings.menu('con_source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
-    value: song
+    value: wearable3
   - name: Con3input
     style: Menu
     label: 3 Input
     default: none
     menuSource: me.ext.Mappings.menu('con_input', me.par.Con3source.eval())
     help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
-    value: midi
+    value: roll
   - name: Con3instrument
     style: Menu
     label: 3 Instrument
@@ -1264,7 +1261,7 @@ custom_pars:
     default: none
     menuSource: me.ext.Mappings.doesMenu(me.par.Con3instrument.eval(), me.par.Con3input.eval())
     help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
-    value: sides
+    value: set:visible
   - name: Con3note
     style: Int
     label: 3 Note
@@ -1274,49 +1271,50 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
+    enable: false
     value: 64
   - name: Con3amount
     style: Float
     label: 3 Amount
     default: 0.5
-    normMin: -4.0
-    normMax: 4.0
+    normMin: -180.0
+    normMax: 180.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
-    value: 1
+    enable: false
+    value: -45
   - name: Con4on
     style: Toggle
     label: 4 On
     startSection: true
     help: Connection 4 is used while on.
-    value: true
   - name: Con4source
     style: Menu
     label: 4 Source
     default: none
     menuSource: me.ext.Mappings.menu('con_source', '')
     help: 'Where the movement comes from: a wearable, the body (camera), the song ...'
-    value: song
+    value: body
   - name: Con4input
     style: Menu
     label: 4 Input
     default: none
     menuSource: me.ext.Mappings.menu('con_input', me.par.Con4source.eval())
     help: The movement or the moment. A movement (tilt, position ...) controls a setting all the time. A moment (a hit, a note, enters a zone ...) does something once.
-    value: midi
+    value: pose_spread
   - name: Con4instrument
     style: Menu
     label: 4 Instrument
     default: none
     menuSource: me.ext.Mappings.menu('con_instrument', '')
     help: 'The instrument it acts on. Whole picture: brightness, saturation and the effects.'
-    value: trigger
+    value: layer1
   - name: Con4does
     style: Menu
     label: 4 Does
     default: none
     menuSource: me.ext.Mappings.doesMenu(me.par.Con4instrument.eval(), me.par.Con4input.eval())
     help: 'What happens. Controls: the movement sets the value. Burst: the value jumps and falls back. Other actions happen once.'
-    value: flash
+    value: set:opacity
   - name: Con4note
     style: Int
     label: 4 Note
@@ -1326,13 +1324,16 @@ custom_pars:
     clampMax: true
     normMax: 127.0
     help: The MIDI note number (0-127) when Input is a note of the song. midi_monitor shows the numbers as the song plays.
-    value: 65
+    enable: false
   - name: Con4amount
     style: Float
     label: 4 Amount
     default: 0.5
+    normMin: -180.0
+    normMax: 180.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
-    value: 1
+    enable: false
+    value: 30
 parameters:
   parentshortcut: Mappings
   opshortcut: Mappings
@@ -3838,6 +3839,13 @@ operators:
     - out_min
     - out_max
     - smoothing
+  - - serial_w2_still
+    - master.level
+    - '0'
+    - '1'
+    - '0'
+    - '1'
+    - '0.1'
   dat_content_format: table
 - name: midi_preset
   type: selectCHOP
