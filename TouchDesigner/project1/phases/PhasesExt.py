@@ -240,9 +240,10 @@ class PhasesExt:
 	def _writeSnapshots(self, snaps: dict) -> None:
 		rows = self._logic().snapshotRows(snaps)
 		table = self.ownerComp.op('phase_settings')
+		# One appendRows, not one appendRow per row: the table is synced to a file,
+		# and each appendRow wrote the whole file again (578 rows took 2.3 s and froze the show).
 		table.clear()
-		for row in rows:
-			table.appendRow(row)
+		table.appendRows([[str(c) for c in row] for row in rows])
 
 	def _transportSeconds(self) -> float:
 		transport = getattr(op, 'Transport', None)
@@ -307,8 +308,7 @@ class PhasesExt:
 				table = mappings.op(name) if name in ('presets', 'trigger_presets') else None
 				if table is not None:
 					table.clear()
-					for row in rows:
-						table.appendRow(row)
+					table.appendRows([[str(c) for c in row] for row in rows])
 		visuals = getattr(op, 'Visuals', None)
 		for inst_name, values in show.get('instruments', {}).items():
 			inst = visuals.op(inst_name) if visuals is not None else None
