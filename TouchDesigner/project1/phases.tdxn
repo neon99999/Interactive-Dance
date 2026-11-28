@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 8
+build: 9
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/phases
@@ -45,6 +45,7 @@ custom_pars:
     - Phase 9
     - Phase 10
     help: The phase you see and edit (1-10). Every instrument setting and every mapping you change is kept in this phase. Number keys 1-9 and 0 (= 10) switch phase when the Stage picture has focus.
+    value: '6'
   - name: Phasenote
     style: Int
     label: Note for This Phase
@@ -67,7 +68,7 @@ custom_pars:
     startSection: true
     default: shows/my_show.json
     help: 'The show file: a name (shows/my_show.json, next to the project) or any file. Save Show writes it, Load Show reads it.'
-    value: shows/YAWA_Nov21.json
+    value: shows/my_showJanet2.json
   - name: Saveshow
     style: Pulse
     label: Save Show
@@ -81,7 +82,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Loaded before_test.json
+    value: Saved my_showJanet2.json
   - name: Phasenote1
     style: Int
     label: Note for Phase 1
@@ -272,7 +273,7 @@ operators:
   parameters:
     file: project1/phases/phase_settings.tsv
     syncfile: true
-    rows: 578
+    rows: 1306
   position: [0, -400]
   size: [130, 90]
   color: [0.9, 0.3, 0.4]

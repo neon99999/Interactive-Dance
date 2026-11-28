@@ -10,6 +10,7 @@ options:
 type_defaults:
   textTOP:
     parameters:
+      filtertype: linear
       fontfile: C:/Windows/Fonts/arial.ttf
       fontsizexunit: pixels
       outputresolution: custom
@@ -130,6 +131,8 @@ operators:
   color: [0.67, 0.67, 0.67]
 - name: null_out
   type: nullTOP
+  parameters:
+    filtertype: linear
   position: [2400, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -143,6 +146,7 @@ operators:
     outputresolution: custom
     resolutionw: 640
     resolutionh: 480
+    filtertype: linear
     format: rgba8fixed
   sequences:
     vec:
@@ -158,6 +162,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: over
+    filtertype: linear
   position: [2000, 0]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -170,6 +175,7 @@ operators:
   type: choptoTOP
   parameters:
     chop: trail
+    filtertype: linear
     format: mono32float
   position: [1200, 0]
   size: [130, 90]

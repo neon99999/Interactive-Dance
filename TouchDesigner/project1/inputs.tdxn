@@ -10,10 +10,13 @@ options:
 type_defaults:
   analyzeTOP:
     parameters:
+      filtertype: linear
       format: mono32float
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   cropTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   mergeCHOP:
@@ -81,6 +84,7 @@ custom_pars:
     style: Toggle
     label: Read Serial
     help: 'Read lines of text from a serial (USB) device such as the wireless receiver. Off when the project opens: turn it on once the receiver is plugged in and its Port is picked. Missing and Bluetooth ports are never opened (see Status).'
+    value: true
   - name: Serialstatus
     style: Str
     label: Status
@@ -92,7 +96,7 @@ custom_pars:
     label: Port
     menuSource: op('./serial_in').par.port
     help: Serial port of the device (COM3 on Windows, /dev/cu.usbmodem... on macOS). The menu lists the ports TouchDesigner can see.
-    value: com3
+    value: com5
   - name: Serialbaud
     style: Int
     label: Baud Rate
@@ -127,8 +131,10 @@ custom_pars:
   - name: Cameradevice
     style: Menu
     label: Webcam
+    default: V1|||\\?\usb#vid_30c9&pid_00ac&mi_00#6&198797cf&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||Integrated Camera
     menuSource: op('./camera_in').par.device
     help: The one webcam the project uses, for camera motion, body tracking and the Camera instrument. Close other apps that use it.
+    value: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||HD Pro Webcam C920
   - name: Webcamuse
     style: Menu
     label: Use
@@ -144,6 +150,7 @@ custom_pars:
     - Body Tracking
     - Test (No Webcam)
     help: 'What the webcam is for. Off: nothing opens it, camera and pose signals are 0. Movement Only: camera motion signals (light, no MediaPipe). Body Tracking: MediaPipe tracks the dancer (pose signals, body mask) and the camera motion signals work too. Test: a moving test pattern and a made-up dancer, no webcam needed. Read Status below to see if it works.'
+    value: body
   - name: Webcamstatus
     style: Str
     label: Status
@@ -171,6 +178,7 @@ custom_pars:
     - Test Pattern
     readOnly: true
     help: 'Read only, set by Use above. Where the camera motion signals come from: Off (all camera signals 0), Webcam (the webcam above; with Body Tracking, measured from MediaPipe''s picture) or Test Pattern (a moving dot).'
+    value: camera
   Pose:
   - name: Posesource
     style: Menu
@@ -186,6 +194,7 @@ custom_pars:
     - Test Dancer
     readOnly: true
     help: 'Read only, set by Use on the Webcam page. Off: body tracking stopped (MediaPipe does not run), all pose signals 0. Webcam (MediaPipe): MediaPipe tracks a dancer in the webcam. Test Dancer: a made-up dancer that walks and waves.'
+    value: camera
   - name: Poseflipx
     style: Toggle
     label: Flip Left/Right
@@ -265,8 +274,9 @@ operators:
   type: videodeviceinTOP
   parameters:
     active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera' and op('pose_settings').module.WebcamFree.val
-    device: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||HD Pro Webcam C920
+    device: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||HD Pro Webcam C920
     signalformat: f640x480p-30.00hz
+    filtertype: linear
   flags:
   - viewer
   position: [0, -2900]
@@ -331,6 +341,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -2500]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -353,6 +364,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [800, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -367,6 +379,7 @@ operators:
     outputresolution: custom
     resolutionw: 160
     resolutionh: 90
+    filtertype: linear
   position: [0, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -380,6 +393,7 @@ operators:
   type: compositeTOP
   parameters:
     operand: difference
+    filtertype: linear
   position: [2000, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -388,6 +402,8 @@ operators:
   - previous_frame
 - name: mono_camera
   type: monochromeTOP
+  parameters:
+    filtertype: linear
   position: [1200, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -483,6 +499,7 @@ operators:
   type: selectTOP
   parameters:
     top: mediapipe/MediaPipe/video
+    filtertype: linear
   position: [-400, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -497,6 +514,7 @@ operators:
   type: switchTOP
   parameters:
     index: '={''off'': 0, ''camera'': 3 if parent.Inputs.par.Posesource == ''camera'' else 1, ''test'': 2}[parent.Inputs.par.Camerasource.eval()]'
+    filtertype: linear
   position: [400, -2900]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]
@@ -515,6 +533,7 @@ operators:
   parameters:
     cachesize: 2
     outputindex: -1
+    filtertype: linear
   position: [1600, -3300]
   size: [130, 90]
   color: [0.67, 0.67, 0.67]

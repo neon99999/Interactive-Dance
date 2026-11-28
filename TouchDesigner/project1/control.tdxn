@@ -230,7 +230,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Loaded before_test.json
+    value: Saved my_showJanet2.json
   Instruments:
   - name: Hinstparticles
     style: Header
@@ -402,7 +402,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: What the instrument is showing now.
-    value: 'No webcam on: showing the test pattern. Set inputs > Webcam > Use to Body Tracking or Movement Only. Echo: movement'
+    value: 'Webcam (from body tracking). Echo: movement'
   - name: Hinstnoise
     style: Header
     label: Noise
@@ -1203,7 +1203,6 @@ custom_pars:
     style: Float
     label: 3 Amount
     default: 0.5
-    normMax: 2.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
     value: ~me.parent().op('mappings').par.Con3amount
@@ -1289,8 +1288,6 @@ custom_pars:
     style: Float
     label: 4 Amount
     default: 0.5
-    normMin: -4.0
-    normMax: 4.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
     value: ~me.parent().op('mappings').par.Con4amount
@@ -1357,7 +1354,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
-    value: 'Off: the webcam is not used.'
+    value: 'Body tracking: HD Pro Webcam C920 working, no dancer seen. Step into view; check the light.'
   - name: Inpuinputscamerasensitivity
     style: Float
     label: Sensitivity
@@ -1385,7 +1382,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: 'What Read Serial is doing now. A missing port or a Bluetooth port is never opened (either froze TouchDesigner), so a wrong Port is safe: pick the receiver and reading starts within a second.'
-    value: 'Off'
+    value: Reading COM5
   - name: Inpuinputswearable1
     style: Toggle
     label: Use Wearable 1

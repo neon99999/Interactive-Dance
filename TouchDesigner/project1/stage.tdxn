@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 4
+build: 6
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/stage
@@ -81,6 +81,7 @@ custom_pars:
     - Wearables
     - MIDI Notes
     help: What the big view shows. Clicking a tile picks it; Output shows the final image.
+    value: pose
   - name: Testtrack
     style: Toggle
     label: Test Track

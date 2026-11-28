@@ -1,6 +1,6 @@
 format: tdxn
 version: '2.2'
-build: 15
+build: 17
 generator: Embody/6.2.76
 td_build: 099.2025.32280
 network_path: /project1/visuals
@@ -11,6 +11,8 @@ type_defaults:
   baseCOMP:
     size: [160, 130]
   blurTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   channelmixTOP:
@@ -19,6 +21,7 @@ type_defaults:
       alpha2: 1
       alpha3: 1
       alpha4: 0
+      filtertype: linear
       format: rgba8fixed
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -30,10 +33,13 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   circleTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   compositeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   constantCHOP:
@@ -44,18 +50,24 @@ type_defaults:
     color: [0.67, 0.67, 0.67]
   constantTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   crossTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   displaceTOP:
     parameters:
+      filtertype: linear
       offsetweight: =1 - me.par.uvweight.eval()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   edgeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   executeDAT:
@@ -63,30 +75,42 @@ type_defaults:
       fromop: =parent()
     size: [130, 90]
   feedbackTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   fitTOP:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   hsvadjustTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   levelTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   lookupTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   monochromeTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   moviefileinTOP:
     parameters:
+      filtertype: linear
       timecodeop: =tdu.Timecode()
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   noiseTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -96,10 +120,13 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   nullTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   outTOP:
     parameters:
+      filtertype: linear
       label: =me.name
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -110,11 +137,13 @@ type_defaults:
     size: [130, 90]
   rampTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   rectangleTOP:
     parameters:
+      filtertype: linear
       outputresolution: custom
       resolutionh: =parent.Visuals.par.Resolution2
       resolutionw: =parent.Visuals.par.Resolution1
@@ -126,6 +155,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   selectTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   speedCHOP:
@@ -134,6 +165,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   switchTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   tableDAT:
@@ -145,6 +178,8 @@ type_defaults:
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   transformTOP:
+    parameters:
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
 par_templates:
@@ -288,6 +323,7 @@ custom_pars:
     default: '0'
     menuSource: me.op('output_buttons').module.monitorMenu()
     help: The screen (projector) the output window opens on. Screen 1 is the main one.
+    value: '1'
   - name: Borderless
     style: Toggle
     label: Borderless (Fill the Screen)
@@ -327,10 +363,12 @@ operators:
       clampMin: true
       clampMax: true
       help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+      value: 0.972
     - name: Folder
       style: Folder
       startSection: true
       help: A folder of pictures and videos (sub-folders too), or one file.
+      value: media/Video Universo
     - name: Choosefolder
       style: Pulse
       label: Choose Folder...
@@ -339,73 +377,11 @@ operators:
       style: StrMenu
       label: File
       menuNames:
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen10.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen11.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen12.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen13.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen14.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen15.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen16.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen19.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen20.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen21.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen23.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen24.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen25.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen26.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen27.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen28.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen29.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen3.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen30.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen31.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen32.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen33.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen34.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen35.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen4.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen5.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen6.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen7.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen8.png
-      - C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen9.png
+      - C:/Users/mwadd/Documents/Projects/Interactive-Dance/TouchDesigner/media/Video Universo/Universo 16 9.mp4
       menuLabels:
-      - Imagen1.png
-      - Imagen10.png
-      - Imagen11.png
-      - Imagen12.png
-      - Imagen13.png
-      - Imagen14.png
-      - Imagen15.png
-      - Imagen16.png
-      - Imagen19.png
-      - Imagen20.png
-      - Imagen21.png
-      - Imagen22.png
-      - Imagen23.png
-      - Imagen24.png
-      - Imagen25.png
-      - Imagen26.png
-      - Imagen27.png
-      - Imagen28.png
-      - Imagen29.png
-      - Imagen3.png
-      - Imagen30.png
-      - Imagen31.png
-      - Imagen32.png
-      - Imagen33.png
-      - Imagen34.png
-      - Imagen35.png
-      - Imagen4.png
-      - Imagen5.png
-      - Imagen6.png
-      - Imagen7.png
-      - Imagen8.png
-      - Imagen9.png
+      - Universo 16 9.mp4
       help: The file shown now.
-      value: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
+      value: C:/Users/mwadd/Documents/Projects/Interactive-Dance/TouchDesigner/media/Video Universo/Universo 16 9.mp4
     - name: Playback
       style: Menu
       default: play
@@ -430,7 +406,6 @@ operators:
       clampMax: true
       normMax: 5.0
       help: Seconds of crossfade when the file changes. 0 = cut.
-      value: 0.13
     - name: Fit
       style: Menu
       default: outside
@@ -443,7 +418,6 @@ operators:
       - Whole Picture
       - Stretch
       help: How the picture fills the screen.
-      value: inside
     - name: Repeat
       style: Int
       default: 1
@@ -454,7 +428,6 @@ operators:
       normMin: 1.0
       normMax: 8.0
       help: How many copies of the picture side by side. 1 = off (one picture).
-      value: 4
     - name: Repeatspacing
       style: Float
       label: Repeat Spacing
@@ -473,7 +446,6 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
-      filtertype: nearest
     flags:
     - viewer
     position: [-50, 25]
@@ -484,7 +456,6 @@ operators:
     parameters:
       resolutionw: 1920
       resolutionh: 1080
-      filtertype: nearest
     flags:
     - viewer
     position: [-50, -100]
@@ -510,27 +481,29 @@ operators:
   - name: player_a
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen1.png
-      playmode: =op('media_mod').module.playMode(absTime.frame)
+      file: C:/Users/mwadd/Documents/Projects/Interactive-Dance/TouchDesigner/media/Video Universo/Universo 16 9.mp4
+      playmode: ='sequential'
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
       loadingerrorimage: zero
+    flags:
+    - viewer
     position: [-300, 25]
   - name: player_b
     type: moviefileinTOP
     parameters:
-      file: C:/Users/mwadd/Dropbox/0. AZMA/2026/2026-ColombiaWorkshops/Dance/Performance/transmutar/Imagen22.png
       playmode: =op('media_mod').module.playMode(absTime.frame)
       index: =op('media_mod').module.position(absTime.frame)
       indexunit: fraction
       loadingerrorimage: zero
+    flags:
+    - viewer
     position: [-300, -175]
   - name: layermix1
     type: layermixTOP
     parameters:
       size: outputres
       enablet: true
-      filtertype: nearest
     sequences:
       lay:
       - top: fit_screen
@@ -544,22 +517,17 @@ operators:
         bypass: =2 >= parent().par.Repeat
       - tx: =(3 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
         top: fit_screen
-        bypass: =3 >= parent().par.Repeat
-      - top: fit_screen
-        bypass: =4 >= parent().par.Repeat
-        tx: =(4 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-      - top: fit_screen
-        bypass: =5 >= parent().par.Repeat
-        tx: =(5 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-      - top: fit_screen
-        bypass: =6 >= parent().par.Repeat
-        tx: =(6 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
-      - top: fit_screen
-        bypass: =7 >= parent().par.Repeat
-        tx: =(7 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+      - tx: =(4 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+      - tx: =(5 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+      - tx: =(6 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
+      - tx: =(7 - (parent().par.Repeat - 1) / 2) * parent().par.Repeatspacing
+        top: fit_screen
     flags:
     - viewer
-    position: [800, -125]
+    position: [700, -175]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   - name: media_mod
@@ -575,6 +543,7 @@ operators:
       fit: =op('media_mod').module.setting('Fit')
       resolutionw: =op.Visuals.par.Resolution1
       resolutionh: =op.Visuals.par.Resolution2
+      filtertype: linear
     position: [675, 0]
     inputs:
     - cross_files
@@ -1052,6 +1021,7 @@ operators:
       style: Toggle
       label: 'On'
       help: Show the colour tiles.
+      value: true
     - name: Opacity
       style: Float
       default: 1
@@ -1070,6 +1040,7 @@ operators:
       normMin: 1.0
       normMax: 10.0
       help: How many strips the canvas is cut into (1 to 10).
+      value: 7
     - name: Orientation
       style: Menu
       default: vertical
@@ -1096,6 +1067,7 @@ operators:
       clampMin: true
       clampMax: true
       help: Strip movement along its length, in screen heights (or widths) per second. Negative reverses.
+      value: 0.076
     - name: Scrollvar
       style: Float
       label: Scroll Speed Variation
@@ -1103,6 +1075,7 @@ operators:
       clampMin: true
       clampMax: true
       help: How different each strip speed is (0 = same speed, 1 = very different). Strips also scroll in random directions.
+      value: 0.737
     - name: Repeats
       style: Int
       label: Repeats per Screen
@@ -1121,6 +1094,7 @@ operators:
       clampMin: true
       clampMax: true
       help: Empty space between tiles, as a fraction of one repeat (0 = tiles touch, 0.9 = thin tiles). The gap is transparent.
+      value: 0.95
     - name: Edgeshape
       style: Menu
       label: Edge Shape
@@ -1138,6 +1112,7 @@ operators:
       - Scallop
       - Slant
       help: Shape of the ends of each tile.
+      value: slant
     - name: Edgesize
       style: Float
       label: Edge Size
@@ -1145,6 +1120,7 @@ operators:
       clampMin: true
       clampMax: true
       help: How strongly the ends of each tile are shaped (0 = flat, 1 = the most the shape can reach without folding over itself; dense shapes reach less far).
+      value: 0.233
     - name: Randomdir
       style: Toggle
       label: Random Edge Direction
@@ -1178,24 +1154,28 @@ operators:
       size: 3
       default: [0.98, 0.21, 0.45]
       help: Palette colour 1 (used when no Palette TOP is set).
+      values: [0.7, 0.7, 0.7]
     - name: Colour2
       style: RGBA
       label: Colour 2
       size: 3
       default: [0.1, 0.85, 0.95]
       help: Palette colour 2 (used when no Palette TOP is set).
+      values: [1, 1, 1]
     - name: Colour3
       style: RGBA
       label: Colour 3
       size: 3
       default: [1, 0.85, 0.15]
       help: Palette colour 3 (used when no Palette TOP is set).
+      values: [0.6, 0.6, 0.6]
     - name: Colour4
       style: RGBA
       label: Colour 4
       size: 3
       default: [0.55, 0.3, 0.95]
       help: Palette colour 4 (used when no Palette TOP is set).
+      values: [0.6, 0.6, 0.6]
     - name: Colour5
       style: RGBA
       label: Colour 5
@@ -1244,54 +1224,39 @@ operators:
       - speed
     - - '0'
       - '0.0'
-      - '0.12458446599057013'
+      - '0.17631459000189678'
       - '-1'
-      - '0.599139603924817'
+      - '0.4091317853601466'
     - - '1'
-      - '0.12458446599057013'
-      - '0.251166611721349'
+      - '0.17631459000189678'
+      - '0.35545633901049156'
       - '1'
-      - '1.2602397739740907'
+      - '1.383593420881394'
     - - '2'
-      - '0.251166611721349'
-      - '0.34920329587703963'
+      - '0.35545633901049156'
+      - '0.4941999415254301'
       - '1'
-      - '0.7209451730832466'
+      - '0.5886731915117636'
     - - '3'
-      - '0.34920329587703963'
-      - '0.44479577961682704'
+      - '0.4941999415254301'
+      - '0.6294844594429179'
       - '1'
-      - '1.2220617567237175'
+      - '1.3273190243281694'
     - - '4'
-      - '0.44479577961682704'
-      - '0.5324970214791375'
+      - '0.6294844594429179'
+      - '0.7536011234252148'
       - '-1'
-      - '1.1132800246752348'
+      - '1.1669747537785222'
     - - '5'
-      - '0.5324970214791375'
-      - '0.626616065290265'
+      - '0.7536011234252148'
+      - '0.8868003977066512'
       - '-1'
-      - '1.0374571935128643'
+      - '1.0552119023806346'
     - - '6'
-      - '0.626616065290265'
-      - '0.7066032758911741'
-      - '1'
-      - '0.5123924702790782'
-    - - '7'
-      - '0.7066032758911741'
-      - '0.8393239766105217'
-      - '-1'
-      - '1.0938433496209707'
-    - - '8'
-      - '0.8393239766105217'
-      - '0.937244224894126'
-      - '-1'
-      - '0.8402956357666065'
-    - - '9'
-      - '0.937244224894126'
+      - '0.8868003977066512'
       - '1.0'
       - '1'
-      - '0.5775917003984176'
+      - '0.2812665123518119'
     dat_content_format: table
   - name: strip0
     type: baseCOMP
@@ -1304,7 +1269,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -1319,7 +1284,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -1328,10 +1293,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.318
+        displaceweighty: 0.1316449974
         extend: repeat
         outputresolution: custom
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -1341,10 +1306,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -560.266
+        tx: -527.1586623988
         tunit: pixels
-        sx: 0.124219
-        sy: 1.00278
+        sx: 0.1765625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1355,7 +1320,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -1366,7 +1331,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -1383,7 +1348,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -1393,7 +1358,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -1409,17 +1374,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.98'
-        - '0.21'
-        - '0.45'
+      - - '0.4749999940395355'
+        - '0.7'
+        - '0.7'
+        - '0.7'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -1477,7 +1442,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 159
+        resolutionw: 226
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -1519,7 +1484,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -1534,7 +1499,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -1543,10 +1508,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.324
+        displaceweighty: 0.1333924973
         extend: repeat
         outputresolution: custom
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -1556,10 +1521,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -399.519
+        tx: -299.6666054321
         tunit: pixels
-        sx: 0.126562
-        sy: 1.00278
+        sx: 0.17890625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1570,7 +1535,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -1581,7 +1546,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -1598,7 +1563,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -1608,7 +1573,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -1624,17 +1589,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.1'
-        - '0.85'
-        - '0.95'
+      - - '0.4749999940395355'
+        - '1.0'
+        - '1.0'
+        - '1.0'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -1692,7 +1657,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 162
+        resolutionw: 229
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -1734,7 +1699,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -1749,7 +1714,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -1758,10 +1723,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.25
+        displaceweighty: 0.1036849979
         extend: repeat
         outputresolution: custom
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -1771,10 +1736,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -255.763
+        tx: -96.219980457
         tunit: pixels
-        sx: 0.0976562
-        sy: 1.00278
+        sx: 0.1390625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -1785,7 +1750,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -1796,7 +1761,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -1813,7 +1778,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -1823,7 +1788,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -1839,17 +1804,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '1.0'
-        - '0.85'
-        - '0.15'
+      - - '0.4749999940395355'
+        - '0.6'
+        - '0.6'
+        - '0.6'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -1907,7 +1872,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 125
+        resolutionw: 178
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -1949,7 +1914,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -1964,7 +1929,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -1973,10 +1938,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.244
+        displaceweighty: 0.100772498
         extend: repeat
         outputresolution: custom
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -1986,10 +1951,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -131.841
+        tx: 79.1580166197
         tunit: pixels
-        sx: 0.0953125
-        sy: 1.00278
+        sx: 0.13515625
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2000,7 +1965,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -2011,7 +1976,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -2028,7 +1993,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -2038,7 +2003,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -2054,17 +2019,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.55'
-        - '0.3'
-        - '0.95'
+      - - '0.4749999940395355'
+        - '0.6'
+        - '0.6'
+        - '0.6'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -2122,7 +2087,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 122
+        resolutionw: 173
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -2164,7 +2129,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -2179,7 +2144,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -2188,10 +2153,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.224
+        displaceweighty: 0.0926174982
         extend: repeat
         outputresolution: custom
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -2201,10 +2166,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: -14.5326
+        tx: 245.1747730356
         tunit: pixels
-        sx: 0.0875
-        sy: 1.00278
+        sx: 0.12421875
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2215,7 +2180,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -2226,7 +2191,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -2243,7 +2208,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -2253,7 +2218,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -2269,17 +2234,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
+      - - '0.4749999940395355'
         - '0.96'
         - '0.96'
         - '0.92'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -2337,7 +2302,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 112
+        resolutionw: 159
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -2379,7 +2344,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -2394,7 +2359,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -2403,10 +2368,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.24
+        displaceweighty: 0.099024998
         extend: repeat
         outputresolution: custom
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -2416,10 +2381,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 101.832
+        tx: 409.8569735244
         tunit: pixels
-        sx: 0.09375
-        sy: 1.00278
+        sx: 0.1328125
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2430,7 +2395,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -2441,7 +2406,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -2458,7 +2423,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -2468,7 +2433,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -2484,17 +2449,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.98'
-        - '0.21'
-        - '0.45'
+      - - '0.4749999940395355'
+        - '0.7'
+        - '0.7'
+        - '0.7'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -2552,7 +2517,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 120
+        resolutionw: 170
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -2594,7 +2559,7 @@ operators:
         colorr: 0.5
         colorg: 0.5
         colorb: 0.5
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [400, -400]
@@ -2609,7 +2574,7 @@ operators:
         dat: zone_keys
         type: vertical
         interpnotches: step
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [400, -200]
@@ -2618,10 +2583,10 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.204
+        displaceweighty: 0.0844624983
         extend: repeat
         outputresolution: custom
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [1600, 200]
@@ -2631,10 +2596,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 213.26
+        tx: 567.5522545323
         tunit: pixels
-        sx: 0.0796875
-        sy: 1.00278
+        sx: 0.11328125
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2645,7 +2610,7 @@ operators:
       type: rampTOP
       parameters:
         dat: ../shape_keys
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [400, 0]
@@ -2656,7 +2621,7 @@ operators:
         type: vertical
         interpnotches: step
         antialias: 1
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [400, 400]
@@ -2673,7 +2638,7 @@ operators:
         tilev1: -100
         tilev2: 100
         outputresolution: custom
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 722
       position: [2000, 200]
       inputs:
@@ -2683,7 +2648,7 @@ operators:
       parameters:
         operand: over
         outputresolution: custom
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [1200, -200]
@@ -2699,17 +2664,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.1'
-        - '0.85'
-        - '0.95'
+      - - '0.4749999940395355'
+        - '1.0'
+        - '1.0'
+        - '1.0'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -2767,7 +2732,7 @@ operators:
       type: compositeTOP
       parameters:
         outputresolution: custom
-        resolutionw: 102
+        resolutionw: 145
         resolutionh: 180
         format: rgba16float
       position: [800, -100]
@@ -2800,6 +2765,8 @@ operators:
       dat_content_format: table
   - name: strip7
     type: baseCOMP
+    flags:
+    - -allowCooking
     position: [1600, -1400]
     color: [0.67, 0.67, 0.67]
     children:
@@ -2833,7 +2800,7 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.34
+        displaceweighty: 0.3400000051
         extend: repeat
         outputresolution: custom
         resolutionw: 170
@@ -2846,10 +2813,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 349.393
+        tx: 349.3934427208
         tunit: pixels
         sx: 0.132812
-        sy: 1.00278
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -2914,17 +2881,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '1.0'
-        - '0.85'
-        - '0.15'
+      - - '0.4749999940395355'
+        - '0.6'
+        - '0.6'
+        - '0.6'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -3015,6 +2982,8 @@ operators:
       dat_content_format: table
   - name: strip8
     type: baseCOMP
+    flags:
+    - -allowCooking
     position: [1600, -1600]
     color: [0.67, 0.67, 0.67]
     children:
@@ -3048,7 +3017,7 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.25
+        displaceweighty: 0.2500000037
         extend: repeat
         outputresolution: custom
         resolutionw: 125
@@ -3061,10 +3030,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 497.004
+        tx: 497.0036508297
         tunit: pixels
         sx: 0.0976562
-        sy: 1.00278
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -3129,17 +3098,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
-        - '0.55'
-        - '0.3'
-        - '0.95'
+      - - '0.4749999940395355'
+        - '0.6'
+        - '0.6'
+        - '0.6'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -3230,6 +3199,8 @@ operators:
       dat_content_format: table
   - name: strip9
     type: baseCOMP
+    flags:
+    - -allowCooking
     position: [1600, -1800]
     color: [0.67, 0.67, 0.67]
     children:
@@ -3263,7 +3234,7 @@ operators:
       parameters:
         horzsource: none
         vertsource: red
-        displaceweighty: 0.16
+        displaceweighty: 0.1600000024
         extend: repeat
         outputresolution: custom
         resolutionw: 80
@@ -3276,10 +3247,10 @@ operators:
     - name: place
       type: transformTOP
       parameters:
-        tx: 599.836
+        tx: 599.8363039322
         tunit: pixels
         sx: 0.0625
-        sy: 1.00278
+        sy: 1.0027777778
         outputresolution: custom
         resolutionw: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution1.eval(), 1920)'
         resolutionh: '=tdu.tryExcept(lambda: op.Visuals.par.Resolution2.eval(), 1080)'
@@ -3344,17 +3315,17 @@ operators:
         - g
         - b
         - a
-      - - '0.1249'
+      - - '0.47489999403953553'
         - '0'
         - '0'
         - '0'
         - '0'
-      - - '0.125'
+      - - '0.4749999940395355'
         - '0.96'
         - '0.96'
         - '0.92'
         - '1'
-      - - '0.875'
+      - - '0.5250000059604645'
         - '0'
         - '0'
         - '0'
@@ -3457,15 +3428,10 @@ operators:
       - '0.0'
       - '0.0'
       - '1'
-    - - '0.5'
-      - '1.0'
-      - '1.0'
-      - '1.0'
-      - '1'
     - - '1.0'
-      - '0.0'
-      - '0.0'
-      - '0.0'
+      - '1.0'
+      - '1.0'
+      - '1.0'
       - '1'
     dat_content_format: table
   - name: strips_mod
@@ -4012,6 +3978,7 @@ operators:
       clampMin: true
       clampMax: true
       help: 'How strongly this instrument shows in the output: 0 = invisible, 1 = full.'
+      value: 0.432
     - name: Blend
       style: Menu
       default: normal
@@ -4166,6 +4133,7 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1 / 2
       resolutionh: =parent.Visuals.par.Resolution2 / 2
+      filtertype: linear
     position: [2000, -1000]
     inputs:
     - sel_mask
@@ -4216,6 +4184,7 @@ operators:
       fit: fill
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
       format: rgba16float
     position: [800, -200]
     inputs:
@@ -4448,6 +4417,7 @@ operators:
     parameters:
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
     position: [0, -1200]
     inputs:
     - media_file
@@ -4526,6 +4496,7 @@ operators:
       outputresolution: custom
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
     position: [0, -1400]
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
@@ -4994,6 +4965,7 @@ operators:
     type: inTOP
     parameters:
       label: =me.name
+      filtertype: linear
     size: [130, 90]
     color: [0.67, 0.67, 0.67]
   - name: live
@@ -5061,6 +5033,7 @@ operators:
     parameters:
       pixeldat: glsl_glitch_pixel
       computedat: glsl_glitch_compute
+      filtertype: linear
     sequences:
       vec:
       - name: uGlitch
@@ -5219,6 +5192,7 @@ operators:
       clampMin: true
       clampMax: true
       help: 'How strongly and fast the particles move: 0 = almost still, 1 = wild bursts. Good for activity, energy or hits.'
+      value: 0.83
     - name: Spread
       style: Float
       default: 0.5
@@ -5397,6 +5371,7 @@ operators:
       lights: ''
       resolutionw: =parent.Visuals.par.Resolution1
       resolutionh: =parent.Visuals.par.Resolution2
+      filtertype: linear
       format: rgba16float
     position: [1200, 0]
     size: [130, 90]

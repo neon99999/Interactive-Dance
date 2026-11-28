@@ -66,3 +66,4 @@ HANDOFF_TouchDesigner_lessons.md
 # Student packages (tools/make_student_package.py)
 dist/
 TouchDesigner/shows/
+/TouchDesigner/media
