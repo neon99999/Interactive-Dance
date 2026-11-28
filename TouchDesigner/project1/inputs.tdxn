@@ -134,7 +134,6 @@ custom_pars:
     default: V1|||\\?\usb#vid_30c9&pid_00ac&mi_00#6&198797cf&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||Integrated Camera
     menuSource: op('./camera_in').par.device
     help: The one webcam the project uses, for camera motion, body tracking and the Camera instrument. Close other apps that use it.
-    value: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||HD Pro Webcam C920
   - name: Webcamuse
     style: Menu
     label: Use
@@ -274,7 +273,7 @@ operators:
   type: videodeviceinTOP
   parameters:
     active: =parent.Inputs.par.Camerasource == 'camera' and parent.Inputs.par.Posesource != 'camera' and op('pose_settings').module.WebcamFree.val
-    device: V1|||\\?\usb#vid_046d&pid_082d&mi_00#6&3430864&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||1|||0|||HD Pro Webcam C920
+    device: V1|||\\?\usb#vid_30c9&pid_00ac&mi_00#6&198797cf&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global|||0|||0|||Integrated Camera
     signalformat: f640x480p-30.00hz
     filtertype: linear
   flags:

@@ -230,7 +230,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Saved my_showJanet2.json
+    value: Loaded my_showJanet2.json
   Instruments:
   - name: Hinstparticles
     style: Header
@@ -1032,6 +1032,7 @@ custom_pars:
     style: Float
     label: 1 Amount
     default: 0.5
+    normMin: -2.0
     normMax: 2.0
     help: 'How much, for a moment: how far a burst jumps, how far the shape jumps or spins.'
     enable: false
@@ -1354,7 +1355,7 @@ custom_pars:
     label: Status
     readOnly: true
     help: 'Read only: what the webcam is doing right now, and what to do if it is not working. The same line shows on pose_monitor.'
-    value: 'Body tracking: HD Pro Webcam C920 working, no dancer seen. Step into view; check the light.'
+    value: 'Body tracking: Integrated Camera working, dancer seen.'
   - name: Inpuinputscamerasensitivity
     style: Float
     label: Sensitivity

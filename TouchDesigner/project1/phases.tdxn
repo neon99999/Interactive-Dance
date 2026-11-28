@@ -45,7 +45,7 @@ custom_pars:
     - Phase 9
     - Phase 10
     help: The phase you see and edit (1-10). Every instrument setting and every mapping you change is kept in this phase. Number keys 1-9 and 0 (= 10) switch phase when the Stage picture has focus.
-    value: '6'
+    value: '4'
   - name: Phasenote
     style: Int
     label: Note for This Phase
@@ -82,7 +82,7 @@ custom_pars:
     label: Show Status
     readOnly: true
     help: What the last Save Show or Load Show did.
-    value: Saved my_showJanet2.json
+    value: Loaded my_showJanet2.json
   - name: Phasenote1
     style: Int
     label: Note for Phase 1

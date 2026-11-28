@@ -81,7 +81,6 @@ custom_pars:
     - Wearables
     - MIDI Notes
     help: What the big view shows. Clicking a tile picks it; Output shows the final image.
-    value: pose
   - name: Testtrack
     style: Toggle
     label: Test Track
